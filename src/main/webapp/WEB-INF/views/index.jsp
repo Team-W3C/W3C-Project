@@ -110,6 +110,6 @@
 <jsp:include page="common/homePageFooter/footer.jsp" />
 
 <!-- script -->
-<%--<script src="${pageContext.request.contextPath}/js/index.js"></script>--%>
+<script src="${pageContext.request.contextPath}/js/index.js"></script>
 </body>
 </html>

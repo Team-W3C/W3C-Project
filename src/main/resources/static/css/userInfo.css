@@ -1,0 +1,523 @@
+/* ========================================
+   기본 리셋 및 폰트 설정
+   ======================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Noto Sans KR', 'Inter', 'Arial', sans-serif;
+    font-size: 14px;
+    background: #fff;
+    color: #111;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* ========================================
+   공통 버튼 스타일
+   ======================================== */
+.btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #0E787C;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #0a5f62;
+}
+
+/* 헤더 로그아웃 버튼 (스크린샷 기준) */
+.btn-primary-outline {
+    background: #fff;
+    color: #0E787C;
+    border: 1px solid #0E787C;
+    padding: 10px 24px;
+    font-weight: 700;
+}
+
+.btn-primary-outline:hover {
+    background: #f0fafa;
+}
+
+.btn-danger {
+    background: #E7000B;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #c10007;
+}
+
+.btn-secondary {
+    background: #E6E6E6;
+    color: #000;
+    font-size: 16px;
+    padding: 12px 24px;
+    font-weight: 700;
+}
+
+.btn-secondary:hover {
+    background: #dcdcdc;
+}
+
+
+/* ========================================
+   전체 레이아웃 래퍼
+   ======================================== */
+.member-info-wrap {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ========================================
+   1. Header
+   ======================================== */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.main-header__logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0E787C;
+    /* 스크린샷의 W3C 로고 대체 */
+}
+
+.main-header__nav {
+    display: flex;
+    gap: 48px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.main-header__nav a:hover {
+    color: #0E787C;
+}
+
+/* ========================================
+   2. Main Container (Sidebar + Content)
+   ======================================== */
+.member-info-container {
+    display: flex;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 40px;
+    /* 상하좌우 패딩 */
+    gap: 60px;
+    /* 사이드바와 콘텐츠 사이 간격 */
+    flex: 1;
+    /* 래퍼의 남은 공간을 모두 차지 */
+}
+
+/* ========================================
+   2a. Sidebar (mypage.css와 공통)
+   ======================================== */
+.member-info-sidebar {
+    width: 218px;
+    flex-shrink: 0;
+}
+
+.patient-info {
+    padding-bottom: 30px;
+    border-bottom: 2px solid #0E787C;
+    margin-bottom: 30px;
+}
+
+.patient-info h2 {
+    color: #006869;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: right;
+    padding: 10px 0;
+}
+
+.patient-info p {
+    color: #006869;
+    font-size: 16px;
+    text-align: right;
+}
+
+.sidebar-menu {
+    background: #F2F2F2;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.sidebar-menu-title {
+    background: #0E787C;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 17px 20px;
+    text-align: right;
+}
+
+.sidebar-menu-list {
+    list-style: none;
+    padding: 21px 20px;
+}
+
+.sidebar-menu-list li {
+    color: #666;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sidebar-menu-list li:hover {
+    color: #0E787C;
+}
+
+.sidebar-menu-list li.active {
+    color: #444;
+    /* '회원정보수정' 활성 스타일 */
+}
+
+
+/* ========================================
+   2b. Main Content
+   ======================================== */
+.member-info-content {
+    flex: 1;
+    min-width: 0;
+    /* flex 아이템이 줄어들도록 함 */
+}
+
+.content-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.content-header h1 {
+    color: #0E787C;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.content-header p {
+    color: #495565;
+    font-size: 16px;
+}
+
+/* 정보 섹션 (공통) */
+.info-section {
+    background: #fff;
+    /* 스크린샷에 보이는 경계선 */
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.info-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    /* 스크린샷의 옅은 회색 배경 */
+    background: #F9FAFB;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.info-section-header h3 {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* 아이콘 여백 */
+}
+
+.info-section-body {
+    padding: 24px 32px;
+}
+
+/* ========================================
+   1. 기본 정보 섹션 (세로 1열)
+   ======================================== */
+.basic-info .info-list {
+    list-style: none;
+    display: grid;
+    /* "전부 세로로" 요청 반영: 1열 그리드 */
+    grid-template-columns: 1fr;
+    gap: 24px;
+    /* 항목 간 세로 간격 */
+}
+
+.basic-info .info-item {
+    display: flex;
+    flex-direction: column;
+    /* 라벨과 값 박스를 수직으로 쌓음 */
+    gap: 8px;
+    /* 라벨과 값 박스 사이의 간격 */
+}
+
+.basic-info .info-label {
+    font-size: 14px;
+    color: #354152;
+    /* '이름', '생년월일' 등 라벨 텍스트 */
+    font-weight: 500;
+    /* (아이콘을 위한 왼쪽 여백) */
+    /* padding-left: 24px; */
+}
+
+.basic-info .info-value-box {
+    background: #F9FAFB;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 40px;
+    font-size: 16px;
+    color: #101727;
+    /* '김환자', '1990-03-15' 등 값 텍스트 */
+}
+
+/* 주소 항목의 값 그룹 (2개의 박스) */
+.basic-info .info-value-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* 두 개의 주소 박스 사이 간격 */
+}
+
+
+/* ========================================
+   2. 계정 관리 섹션
+   ======================================== */
+.account-management .info-section-header.danger-zone {
+    background: #FEF2F2;
+    /* 붉은색 계열 배경 */
+    border-bottom-color: #FEE2E2;
+}
+
+.account-management .info-section-header.danger-zone h3 {
+    color: #B91C1C;
+    /* 붉은색 텍스트 */
+}
+
+.account-management .info-section-body {
+    padding: 24px;
+    /* 계정 관리는 내부 패딩이 있음 */
+}
+
+.account-management .info-section-body h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 8px;
+}
+
+.account-management .info-section-body .description {
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* ========================================
+   3. 개인정보 보호 안내
+   ======================================== */
+.privacy-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #EFF6FF;
+    /* 푸른색 계열 배경 */
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid #DBEAFE;
+}
+
+.privacy-notice .notice-text h4 {
+    color: #1B388E;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.privacy-notice .notice-text p {
+    color: #1E40AF;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ========================================
+   3. Footer
+   ======================================== */
+.main-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 40px;
+    background: #F9FAFB;
+    border-top: 1px solid #eee;
+    font-family: 'Inter', 'Arial', sans-serif;
+}
+
+.main-footer__customer-center {
+    flex-basis: 250px;
+}
+
+.main-footer__customer-center h3 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.main-footer__customer-center .phone {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.main-footer__customer-center .hours {
+    font-size: 17px;
+    color: #828282;
+    margin-bottom: 4px;
+}
+
+.main-footer__customer-center .days {
+    font-size: 16px;
+    color: #828282;
+    margin-bottom: 16px;
+}
+
+.main-footer__team-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.main-footer__team-info .team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px 24px;
+    font-size: 16px;
+}
+
+.main-footer__team-info .team-grid .header {
+    font-weight: 700;
+    color: #000;
+}
+
+.main-footer__team-info .team-grid span {
+    color: #444;
+}
+
+.main-footer__legal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-basis: 100%;
+    /* legal은 새 줄로 */
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.main-footer__legal .social-links {
+    /* 소셜 아이콘 컨테이너 */
+    display: flex;
+    gap: 16px;
+}
+
+.main-footer__legal .copyright {
+    font-size: 17px;
+    color: #828282;
+}
+
+/* ========================================
+   반응형 (태블릿 1024px 이하)
+   ======================================== */
+@media (max-width: 1024px) {
+    .main-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .main-header__nav {
+        gap: 24px;
+        font-size: 18px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .member-info-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 30px;
+    }
+
+    .member-info-sidebar {
+        width: 100%;
+    }
+
+    /* 사이드바 메뉴 텍스트 중앙 정렬 */
+    .patient-info h2,
+    .patient-info p,
+    .sidebar-menu-title,
+    .sidebar-menu-list li {
+        text-align: center;
+    }
+
+    /* 기본 정보 그리드는 이미 1열이므로 태블릿에서도 동일하게 유지 */
+    .basic-info .info-list {
+        grid-template-columns: 1fr;
+    }
+
+    .main-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .main-footer__team-info .team-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        text-align: left;
+    }
+
+    .main-footer__legal {
+        align-items: center;
+    }
+}
