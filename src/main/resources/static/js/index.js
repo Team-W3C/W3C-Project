@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // 이벤트 리스너 초기화
 function initializeEventListeners() {
     // 네비게이션 링크
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', handleNavClick);
-    });
+    // const navLinks = document.querySelectorAll('.nav-link');
+    // navLinks.forEach(link => {
+    //     link.addEventListener('click', handleNavClick);
+    // });
 
     // Hero 버튼
     const ctaButton = document.querySelector('.cta-button');
@@ -54,18 +54,18 @@ function initializeEventListeners() {
 }
 
 // 네비게이션 클릭 핸들러
-function handleNavClick(e) {
-    e.preventDefault();
-    const text = this.textContent.trim();
-    console.log(`${text} 메뉴 클릭됨`);
-    
-    if (text === '대시보드') {
-        alert('대시보드 페이지로 이동합니다.');
-        // 실제 구현: window.location.href = '/dashboard';
-    } else {
-        alert(`${text} 페이지로 이동합니다.`);
-    }
-}
+// function handleNavClick(e) {
+//     e.preventDefault();
+//     const text = this.textContent.trim();
+//     console.log(`${text} 메뉴 클릭됨`);
+//
+//     if (text === '대시보드') {
+//         alert('대시보드 페이지로 이동합니다.');
+//         // 실제 구현: window.location.href = '/dashboard';
+//     } else {
+//         alert(`${text} 페이지로 이동합니다.`);
+//     }
+// }
 
 // CTA 버튼 클릭 핸들러
 function handleCtaClick() {
