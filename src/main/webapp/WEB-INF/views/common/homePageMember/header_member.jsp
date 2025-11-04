@@ -9,7 +9,7 @@
                 <a href="#" class="nav-link">게시판</a>
                 <a href="#" class="nav-link">공지사항</a>
                 <a href="#" class="nav-link">문의사항</a>
-                <a href="#" class="nav-link nav-link-primary">로그인</a>
+                <a href="${pageContext.request.contextPath}/member/loginPage.me" class="nav-link nav-link-primary">로그인</a>
             </nav>
         </div>
     </header>
