@@ -1,0 +1,263 @@
+/* 비회원 예약 모달 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+/* 모달 컨테이너 */
+.modal-container {
+  width: 592px;
+  /* [수정됨] height: 544px; 삭제 -> 내용물에 맞게 높이 자동 조절 */
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.modal-content {
+  padding: 24px 97px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 닫기 버튼 */
+.modal-close {
+  position: absolute;
+  top: 17px;
+  right: 19px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.modal-close:hover {
+  opacity: 1;
+}
+
+.modal-close svg {
+  display: block;
+  color: #0a0a0a;
+}
+
+/* 모달 헤더 */
+.modal-header {
+  /* [수정됨] margin-bottom: 90px; -> 40px; 로 조정 (임의) */
+  margin-bottom: 40px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0e787c;
+  margin: 0 0 8px 0;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #717182;
+  margin: 0;
+}
+
+/* 폼 */
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 정보 섹션 */
+.info-section {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.section-title {
+  font-size: 12px;
+  color: #697282;
+  font-weight: normal;
+  margin: 0;
+}
+
+.section-description {
+  font-size: 16px;
+  color: #101727;
+  margin: 0;
+}
+
+/* 정보 카드 */
+.info-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(14, 120, 124, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #697282;
+}
+
+.info-value {
+  font-size: 16px;
+  color: #101727;
+}
+
+/* 입력 그룹 */
+.input-group {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* [수정됨] margin-top: 76px; -> 40px; 로 조정 (임의) */
+  margin-top: 40px;
+}
+
+.input-label {
+  font-size: 12px;
+  color: #697282;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.input-field {
+  flex: 1;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #101727;
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+/* 공통 버튼 스타일 */
+.btn-confirm,
+.btn-cancel {
+  height: 36px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-confirm:hover,
+.btn-cancel:hover {
+  opacity: 0.9;
+}
+
+/* 확인 버튼 */
+.btn-confirm {
+  background: #0e787c;
+  color: #ffffff;
+  min-width: 60px;
+}
+
+/* 취소 버튼 */
+.btn-cancel {
+  background: #ffffff;
+  color: #0a0a0a;
+  border: 1px solid #e5e7eb;
+}
+
+/* [수정됨] 모달 액션 영역 삭제 */
+/*
+.modal-actions { ... }
+*/
+
+/* 반응형: 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+  .modal-container {
+    width: 90%;
+    max-width: 592px;
+    height: auto;
+    /* 고정 높이 제거 */
+  }
+
+  .modal-content {
+    padding: 24px 40px 36px;
+  }
+
+  .input-group {
+    margin-top: 40px;
+  }
+
+  .modal-header {
+    margin-bottom: 40px;
+  }
+
+  /* [수정됨] 
+     태블릿에서는 버튼이 2줄로 
+     나타나도록 .input-wrapper의 flex-direction 변경
+  */
+  .input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-confirm,
+  .btn-cancel {
+    width: 100%;
+  }
+}
+
+/* 모바일 대응 (768px 이하) */
+@media (max-width: 768px) {
+  .modal-container {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .modal-content {
+    padding: 20px 24px;
+  }
+
+  .modal-close {
+    top: 12px;
+    right: 12px;
+  }
+}

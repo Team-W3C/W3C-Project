@@ -1,0 +1,352 @@
+/* 탈퇴 확정 모달 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+/* 모달 오버레이 */
+.withdrawal-modal-overlay {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 배경 딤 처리 */
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* 모달 컨테이너 */
+.withdrawal-modal {
+  width: 592px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 24px;
+}
+
+/* 닫기 버튼 */
+.modal-close {
+  position: absolute;
+  top: 17px;
+  right: 19px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  opacity: 1;
+}
+
+.modal-close svg {
+  display: block;
+  color: #0a0a0a;
+}
+
+/* 모달 헤더 */
+.withdrawal-header {
+  margin-bottom: 70px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #0e787c;
+  margin: 0;
+}
+
+.icon-alert {
+  flex-shrink: 0;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #717182;
+  margin: 0;
+}
+
+/* 탈퇴 폼 */
+.withdrawal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 정보 카드 */
+.info-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(14, 120, 124, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #697282;
+}
+
+.info-value {
+  font-size: 16px;
+  color: #101727;
+}
+
+/* 동의 섹션 */
+.consent-section {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.consent-label {
+  font-size: 12px;
+  font-weight: normal;
+  color: #697282;
+  margin: 0;
+}
+
+.consent-text {
+  font-size: 16px;
+  color: #101727;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.btn-agree {
+  align-self: flex-end;
+  height: 36px;
+  padding: 8px 16px;
+  background: #0e787c;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  min-width: 60px;
+}
+
+.btn-agree:hover {
+  opacity: 0.9;
+}
+
+/* 모달 액션 */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 88px;
+}
+
+/* 공통 버튼 스타일 */
+.btn-cancel,
+.btn-withdraw {
+  height: 36px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-cancel:hover,
+.btn-withdraw:hover {
+  opacity: 0.9;
+}
+
+/* 취소 버튼 */
+.btn-cancel {
+  background: #ffffff;
+  color: #0a0a0a;
+  border: 1px solid #e5e7eb;
+  min-width: 61px;
+}
+
+/* 탈퇴 버튼 */
+.btn-withdraw {
+  background: #0e787c;
+  color: #ffffff;
+  min-width: 92px;
+}
+
+/* 반응형: 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+  .withdrawal-modal {
+    width: 90%;
+    max-width: 592px;
+    padding: 24px 40px;
+  }
+
+  .withdrawal-header {
+    margin-bottom: 40px;
+  }
+
+  .modal-actions {
+    margin-top: 40px;
+  }
+
+  .consent-section {
+    padding: 16px;
+  }
+
+  .btn-agree {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+/* 모바일 대응 (768px 이하) */
+@media (max-width: 768px) {
+  .withdrawal-modal {
+    width: 95%;
+    padding: 20px 24px;
+  }
+
+  .modal-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+  }
+
+  .withdrawal-header {
+    margin-bottom: 24px;
+  }
+
+  .info-card {
+    padding: 10px;
+  }
+
+  .info-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .info-value {
+    font-size: 14px;
+  }
+
+  .consent-section {
+    padding: 12px;
+  }
+
+  .consent-text {
+    font-size: 14px;
+  }
+
+  .modal-actions {
+    margin-top: 24px;
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-withdraw {
+    width: 100%;
+  }
+}
+
+/* 접근성: 키보드 포커스 */
+.modal-close:focus,
+.btn-agree:focus,
+.btn-cancel:focus,
+.btn-withdraw:focus {
+  outline: 2px solid #0e787c;
+  outline-offset: 2px;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.withdrawal-modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.withdrawal-modal {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* 스크롤 비활성화 (모달 열렸을 때) */
+body.modal-open {
+  overflow: hidden;
+}
