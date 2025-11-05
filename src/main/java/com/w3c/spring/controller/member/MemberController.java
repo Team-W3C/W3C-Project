@@ -41,7 +41,7 @@ public class MemberController {
      * 회원 정보 페이지
      * URL: /member/info
      */
-    @GetMapping("/info")
+    @GetMapping("/info.me")
     public String showUserInfo() {
         // /WEB-INF/views/common/member/userInfo.jsp 를 반환
         return "common/member/userInfo";
@@ -51,7 +51,7 @@ public class MemberController {
      * 나의 차트 페이지
      * URL: /member/mychart
      */
-    @GetMapping("/mychart")
+    @GetMapping("/mychart.me")
     public String showMyChart() {
         // /WEB-INF/views/common/member/MyChart.jsp 를 반환
         return "common/member/MyChart";

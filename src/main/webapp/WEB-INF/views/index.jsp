@@ -52,14 +52,16 @@
                     </article>
 
                     <article class="service-card">
-                        <div class="service-icon">
-                            <svg width="80" height="80" viewBox="0 0 80 80">
-                                <circle cx="40" cy="35" r="12" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                <path d="M40 47 Q25 55 25 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                <path d="M40 47 Q55 55 55 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                            </svg>
-                        </div>
-                        <h3 class="service-name">진료예약</h3>
+                        <a href="${pageContext.request.contextPath}/reservation/main.re">
+                            <div class="service-icon">
+                                <svg width="80" height="80" viewBox="0 0 80 80">
+                                    <circle cx="40" cy="35" r="12" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                    <path d="M40 47 Q25 55 25 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                    <path d="M40 47 Q55 55 55 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                            <h3 class="service-name">진료예약</h3>
+                        </a>
                     </article>
 
                     <article class="service-card">
@@ -73,15 +75,17 @@
                     </article>
 
                     <article class="service-card">
-                        <div class="service-icon">
-                            <svg width="80" height="80" viewBox="0 0 80 80">
-                                <rect x="22" y="18" width="36" height="44" rx="2" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                <line x1="30" y1="30" x2="50" y2="30" stroke="#0e787c" stroke-width="2"/>
-                                <line x1="30" y1="40" x2="50" y2="40" stroke="#0e787c" stroke-width="2"/>
-                                <line x1="30" y1="50" x2="45" y2="50" stroke="#0e787c" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <h3 class="service-name">나의차트</h3>
+                        <a href="${pageContext.request.contextPath}/member/mychart.me">
+                            <div class="service-icon">
+                                <svg width="80" height="80" viewBox="0 0 80 80">
+                                    <rect x="22" y="18" width="36" height="44" rx="2" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                    <line x1="30" y1="30" x2="50" y2="30" stroke="#0e787c" stroke-width="2"/>
+                                    <line x1="30" y1="40" x2="50" y2="40" stroke="#0e787c" stroke-width="2"/>
+                                    <line x1="30" y1="50" x2="45" y2="50" stroke="#0e787c" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="service-name">나의차트</h3>
+                        </a>
                     </article>
                 </div>
             </section>
