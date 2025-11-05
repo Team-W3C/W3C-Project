@@ -1,0 +1,287 @@
+/* === 기본 & 공통 스타일 === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    /* 페이지 배경색 (원본 .v506_326) */
+    background-color: #F9FAFB;
+    /* 기본 텍스트 색상 */
+    color: #1F2937;
+}
+
+/* 공통 버튼 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 41px;
+    /* 원본 .v506_163 */
+    border: 1px solid transparent;
+    border-radius: 7px;
+    /* 원본 .v506_163 */
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 15px;
+    /* 원본 .v506_176 */
+    font-weight: 500;
+    /* Medium */
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    /* 원본 .v506_163 (검색) */
+    background-color: #0E787C;
+    color: #FFFFFF;
+    /* 원본 .v506_176 */
+}
+
+.btn-secondary {
+    /* 원본 .v506_172 (필터) */
+    background-color: #FFFFFF;
+    color: #6B7280;
+    /* 원본 .v506_175 */
+    border: 1px solid #E5E7EB;
+    /* 테두리 추정 */
+    font-family: Arial;
+    font-size: 13px;
+    /* 원본 .v506_175 */
+}
+
+/* 공통 뱃지 */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 11px;
+    /* 원본 .v506_221 */
+    font-weight: Regular;
+    border-radius: 999px;
+    /* 원본의 매우 큰 값 대체 */
+    text-align: center;
+    /* 원본 뱃지(v506_220)의 높이(47px)가 과도하여
+       텍스트에 맞춰 패딩으로 조정 */
+}
+
+.badge-success {
+    /* 원본 .v506_220 (정상) */
+    background-color: #DCFCE7;
+    color: #008235;
+    /* 원본 .v506_221 */
+}
+
+.badge-warning {
+    /* 원본 .v506_270 (지각) */
+    background-color: #FEF9C2;
+    color: #A65F00;
+    /* 원본 .v506_271 */
+}
+
+
+/* === 페이지 레이아웃 === */
+.attendance-status-main {
+    display: flex;
+    flex-direction: column;
+    /* 원본 요소 간 간격 (약 20-24px) */
+    gap: 24px;
+    /* 원본 .v506_326의 padding-top 값 활용 */
+    padding: 32px;
+    width: 100%;
+}
+
+/* 1. 페이지 제목 */
+.attendance-status-header {
+    width: 100%;
+}
+
+.attendance-status-title {
+    font-size: 15px;
+    /* 원본 .v506_329 */
+    color: #1F2937;
+    /* 원본 .v506_329 */
+    font-weight: Regular;
+}
+
+/* 2. 검색 및 필터 바 */
+.attendance-status-toolbar {
+    background-color: #FFFFFF;
+    /* 원본 .v506_153 */
+    border-radius: 9px;
+    /* 원본 .v506_153 */
+    padding: 24px;
+    /* 원본 .v506_153 */
+    width: 100%;
+}
+
+.attendance-status-search-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    /* 버튼 간격 */
+}
+
+.search-input-group {
+    flex-grow: 1;
+    position: relative;
+}
+
+.search-input-group input {
+    width: 100%;
+    height: 41px;
+    /* 원본 .v506_157 */
+    border: 1px solid #E5E7EB;
+    /* 테두리 추정 */
+    border-radius: 7px;
+    /* 원본 .v506_157 */
+    padding-left: 39px;
+    /* 원본 .v506_157 */
+    font-size: 15px;
+    /* 원본 .v506_158 */
+    color: #6B7280;
+}
+
+.search-input-group input::placeholder {
+    color: rgba(10, 10, 10, 0.5);
+    /* 원본 .v506_158 */
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 8px;
+    /* 원본 .v506_162 margin */
+}
+
+/* 3. 근태 현황 테이블 */
+.attendance-status-content {
+    background-color: #FFFFFF;
+    /* 원본 .v506_177 */
+    border-radius: 9px;
+    /* 원본 .v506_177 */
+    width: 100%;
+    /* [중요] 테이블 반응형 처리 */
+    overflow-x: auto;
+}
+
+.attendance-status-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* 텍스트 줄바꿈 방지 */
+    white-space: nowrap;
+}
+
+.attendance-status-table th,
+.attendance-status-table td {
+    /* 원본 .v506_200 (높이 79px) 패딩값 유추 */
+    padding: 20px 24px;
+    border-bottom: 1px solid #F3F4F6;
+    /* 시각적 구분선 */
+    text-align: left;
+    vertical-align: middle;
+    font-size: 13px;
+    /* 원본 .v506_202 */
+    color: #6B7280;
+    /* 원본 .v506_202 */
+}
+
+.attendance-status-table th {
+    background-color: #F9FAFB;
+    /* 원본 .v506_179 */
+    color: #6B7280;
+    /* 원본 .v506_182 */
+    font-weight: bold;
+    /* 원본 .v506_182 */
+    font-size: 13px;
+}
+
+/* 이름 열 스타일 */
+.employee-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* 원본 .v506_204 margin */
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 37px;
+    /* 원본 .v506_205 */
+    height: 39px;
+    /* 원본 .v506_205 */
+    border-radius: 50%;
+    /* 원본 .v506_205 */
+    background-color: #0E787C;
+    /* 원본 .v506_205 */
+    color: #FFFFFF;
+    /* 원본 .v506_206 */
+    font-size: 15px;
+    /* 원본 .v506_206 */
+    font-weight: Regular;
+}
+
+/* 아바타 이니셜 처리 */
+.avatar::before {
+    content: attr(data-initial);
+}
+
+.employee-name {
+    color: #1F2937;
+    /* 원본 .v506_208 */
+    font-weight: Regular;
+}
+
+/* 작업 열 스타일 */
+.table-link {
+    color: #0E787C;
+    /* 원본 .v506_224 */
+    font-weight: Regular;
+    text-decoration: none;
+}
+
+.table-link:hover {
+    text-decoration: underline;
+}
+
+
+/* === 반응형 (태블릿) === */
+@media (max-width: 1024px) {
+    .attendance-status-main {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .attendance-status-toolbar {
+        padding: 16px;
+    }
+
+    .attendance-status-search-form {
+        /* 모바일에서는 검색/필터 수직 정렬 */
+        flex-direction: column;
+        align-items: stretch;
+        /* 전체 너비 사용 */
+    }
+
+    .toolbar-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .attendance-status-content {
+        /* 컨텐츠 영역의 좌우 패딩 제거 */
+        margin: 0 -16px;
+    }
+
+    .attendance-status-table th,
+    .attendance-status-table td {
+        padding: 16px;
+    }
+}
