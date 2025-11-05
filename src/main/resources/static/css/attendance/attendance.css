@@ -1,0 +1,343 @@
+/* ==========================================================================
+   기본 및 공통 스타일 (Base & Common)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, "Inter", sans-serif;
+    font-size: 14px;
+    color: #1f2937;
+    background-color: #f9fafb;
+}
+
+/* 공통: 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    height: 41px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-secondary {
+    background-color: #4a5565;
+    color: white;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #0e787c;
+    border-color: #e5e7eb; /* 일관성을 위해 테두리 적용 */
+}
+
+/* 공통: 뱃지 스타일 */
+.badge {
+    display: inline-block;
+    padding: 3px 11px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 999px;
+    line-height: 1.5;
+}
+
+.badge.status-normal,
+.badge-success {
+    background-color: #dcfce7;
+    color: #008235;
+}
+
+.badge.status-late,
+.badge-warning {
+    background-color: #fef9c2;
+    color: #a65f00;
+}
+
+.badge.status-leave-early {
+    background-color: #ffedd4;
+    color: #c93400;
+}
+
+.badge-info {
+    background-color: #dbeafe;
+    color: #1347e5;
+}
+
+.badge-danger {
+    background-color: #ffe2e2;
+    color: #c10007;
+}
+
+.badge-etc {
+    background-color: #e5e7eb;
+    color: #4a5565;
+}
+
+
+/* ==========================================================================
+   페이지 컨테이너 및 레이아웃
+   ========================================================================== */
+.attendance-container {
+    width: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 1. 페이지 헤더 (타이틀 + 버튼) */
+.page-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.page-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* 2. 상단 위젯 */
+.attendance-widget {
+    width: 100%;
+    background-color: white;
+    border-radius: 9px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.widget-stats-list {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+}
+
+.widget-stats-list .label {
+    font-size: 13px;
+    color: #6b7280;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.widget-stats-list .value {
+    font-size: 19px;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+/* 3. 탭 콘텐츠 컨테이너 */
+.tab-container {
+    width: 100%;
+    background-color: white;
+    border-radius: 9px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+/* 3-1. 탭 네비게이션 */
+.tab-nav ul {
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-nav li a {
+    display: block;
+    padding: 18px 24px;
+    font-size: 15px;
+    color: #6b7280;
+    text-decoration: none;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.tab-nav li.active a {
+    color: #0e787c;
+    font-weight: 600;
+    border-bottom-color: #0e787c;
+}
+
+/* 3-2. 탭 패널 공통 */
+.tab-panel {
+    padding: 24px;
+}
+
+.empty-cell {
+    padding: 32px 24px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   [탭 1] 나의 근태 현황 (테이블)
+   ========================================================================== */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.attendance-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.attendance-history-table thead {
+    background-color: #f9fafb;
+}
+
+.attendance-history-table th {
+    padding: 12px 24px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+    color: #6b7280;
+}
+
+.attendance-history-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.attendance-history-table td {
+    padding: 16px 24px;
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.attendance-history-table td.text-primary {
+    color: #1f2937;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   [탭 2] 나의 신청 내역 (카드)
+   ========================================================================== */
+.application-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* 카드 사이 여백 */
+}
+
+.application-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    padding: 16px;
+}
+
+.application-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 13px;
+}
+
+.application-card .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.application-card .card-body dl {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.application-card .card-body dt {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.application-card .card-body dd {
+    font-size: 13px;
+    color: #1f2937;
+}
+
+/* ==========================================================================
+   반응형: 태블릿 (1024px 이하)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .attendance-container {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .attendance-widget {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .widget-stats-list {
+        flex-wrap: wrap;
+        gap: 16px 24px;
+    }
+
+    .attendance-widget .badge {
+        align-self: flex-end; /* 뱃지 오른쪽 정렬 유지 */
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .page-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .btn {
+        width: 100%; /* 버튼 전체 너비 */
+    }
+
+    .tab-nav ul {
+        flex-wrap: wrap;
+    }
+
+    .tab-nav li {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .tab-nav li a {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .tab-panel {
+        padding: 16px;
+    }
+
+    .application-card .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

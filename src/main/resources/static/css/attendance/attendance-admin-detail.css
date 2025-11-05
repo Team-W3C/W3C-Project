@@ -1,0 +1,552 @@
+/* ==========================================================================
+   기본 및 공통 스타일 (Base & Common)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, "Inter", sans-serif;
+    font-size: 14px;
+    color: #1f2937;
+    /* v247_1189 */
+    background-color: #f9fafb;
+    /* v247_1162 */
+}
+
+/* 공통: 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: 7px;
+    /* v247_1167 */
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-secondary {
+    background-color: #4a5565;
+    /* v247_1167 */
+    color: white;
+    /* v247_1172 */
+}
+
+.btn-outline {
+    background-color: white;
+    color: #0e787c;
+    /* v247_1177 */
+    border: 1px solid #e0e0e0;
+    /* Figma 시각적 보정 */
+}
+
+.btn-approve {
+    /* 변경: 스크린샷에 맞춰 초록색으로 변경 (기존 #0e787c) */
+    background-color: #008235;
+    color: white;
+    /* v247_1256 */
+    width: 83px;
+    /* v247_1253 */
+    padding: 10px;
+}
+
+.btn-reject {
+    background-color: #fb2c36;
+    /* v247_1257 */
+    color: white;
+    /* v247_1261 */
+    width: 83px;
+    /* v247_1257 */
+    padding: 10px;
+}
+
+/* 공통: 뱃지 스타일 */
+.badge {
+    display: inline-block;
+    padding: 3px 11px;
+    /* v247_1205 */
+    font-size: 11px;
+    /* v247_1206 */
+    font-weight: 500;
+    border-radius: 999px;
+    /* v247_1205 */
+    line-height: 1.5;
+}
+
+.badge.status-normal {
+    background-color: #dcfce7;
+    /* v247_1205 */
+    color: #008235;
+    /* v247_1206 */
+}
+
+.badge.status-vacation {
+    background-color: #dbeafe;
+    /* v247_1234 */
+    color: #1347e5;
+    /* v247_1235 */
+}
+
+.badge.status-go-out {
+    background-color: #f3e8ff;
+    /* v247_1273 */
+    color: #8200da;
+    /* v247_1274 */
+}
+
+.badge.status-stay-out {
+    background-color: #e0e7ff;
+    /* v247_1314 */
+    color: #432dd7;
+    /* v247_1315 */
+}
+
+.badge.status-approved {
+    background-color: #dcfce7;
+    /* v247_1358 */
+    color: #008235;
+    /* v247_1359 */
+}
+
+.badge.status-rejected {
+    background-color: #ffe2e2;
+    /* v247_1383 */
+    color: #c10007;
+    /* v247_1384 */
+}
+
+.badge.count {
+    background-color: #fb2c36;
+    /* v247_1215 */
+    color: white;
+    /* v247_1216 */
+    font-size: 11px;
+    padding: 2px 7px;
+    /* v247_1215 */
+    margin-left: 8px;
+}
+
+/* ==========================================================================
+   페이지 컨테이너 및 레이아웃
+   ========================================================================== */
+.attendance-admin-container {
+    width: 100%;
+    padding: 32px;
+    /* v247_1162 padding */
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* 요소 간 간격 */
+}
+
+/* 1. 상단 위젯 */
+.attendance-widget {
+    width: 100%;
+    background-color: white;
+    /* v247_1178 */
+    border-radius: 9px;
+    /* v247_1178 */
+    padding: 24px;
+    /* v247_1178 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.widget-stats-list {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+}
+
+.widget-stats-list .label {
+    font-size: 13px;
+    /* v247_1187 */
+    color: #6b7280;
+    /* v247_1187 */
+    display: block;
+    margin-bottom: 4px;
+}
+
+.widget-stats-list .value {
+    font-size: 19px;
+    /* v247_1189 */
+    color: #1f2937;
+    /* v247_1189 */
+    font-weight: 600;
+}
+
+/* 2. 페이지 헤더 */
+.page-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header h1 {
+    font-size: 20px;
+    /* v247_1165 (15px는 너무 작아 H1로 조정) */
+    font-weight: 600;
+    color: #1f2937;
+    /* v247_1165 */
+}
+
+.page-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* 3. 탭 콘텐츠 컨테이너 */
+.tab-container {
+    width: 100%;
+    background-color: white;
+    /* v247_1207 */
+    border-radius: 9px;
+    /* v247_1207 */
+    overflow: hidden;
+    /* 자식 요소의 radius 적용을 위해 */
+}
+
+/* 3-1. 탭 네비게이션 */
+.tab-nav ul {
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid #f0f0f0;
+    /* Figma 시각적 보정 */
+}
+
+.tab-nav li a {
+    display: block;
+    padding: 18px 24px;
+    /* v247_1210 등 */
+    font-size: 15px;
+    /* v247_1210 */
+    color: #6b7280;
+    /* v247_1210 */
+    text-decoration: none;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    /* 활성 탭 보더가 컨테이너 보더와 겹치게 */
+}
+
+.tab-nav li.active a {
+    /* 변경: 스크린샷에 맞춰 빨간색으로 변경 (기존 #0e787c) */
+    color: #fb2c36;
+    font-weight: 600;
+    border-bottom-color: #fb2c36;
+}
+
+.tab-nav .badge.count {
+    background-color: #fb2c36;
+    /* v247_1215 */
+    color: white;
+    /* v247_1216 */
+    font-size: 11px;
+    padding: 2px 7px;
+    /* v247_1215 */
+    margin-left: 8px;
+}
+
+/* 3-2. 탭 패널 */
+.tab-panel {
+    padding: 24px;
+    /* v247_1217 */
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    /* section 간 간격 */
+}
+
+.request-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.request-section h2 {
+    font-size: 15px;
+    /* v247_1220 */
+    color: #1f2937;
+    /* v247_1220 */
+    font-weight: 600;
+}
+
+.request-section .total-count {
+    font-size: 13px;
+    /* v247_1222 */
+    color: #6b7280;
+    /* v247_1222 */
+}
+
+/* 3-2-1. 카드 리스트 */
+.request-card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.request-card {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    /* v247_1223 (box-shadow 대신 border로) */
+    border-radius: 9px;
+    /* v247_1223 */
+    padding: 16px;
+    /* v247_1223 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.request-card .card-content {
+    /* 변경: 수평 레이아웃으로 변경 */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* 변경: 수평 레이아웃을 위해 margin-bottom 제거 */
+    margin-bottom: 0;
+    /* 변경: 사용자 정보 영역 너비 확보 */
+    flex-basis: 250px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 39px;
+    /* v247_1227 */
+    height: 39px;
+    /* v247_1227 */
+    border-radius: 50%;
+    /* v247_1227 */
+    background-color: #0e787c;
+    /* v247_1227 */
+    color: white;
+    /* v247_1228 */
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    /* v247_1228 */
+    font-weight: 600;
+}
+
+.user-avatar--gray {
+    background-color: #e5e7eb;
+    /* v247_1349 */
+    color: #6b7280;
+    /* v247_1350 */
+}
+
+.user-details .name {
+    font-size: 13px;
+    /* v247_1231 */
+    color: #1f2937;
+    /* v247_1231 */
+    font-weight: 600;
+}
+
+.user-details .dept {
+    font-size: 11px;
+    /* v247_1233 */
+    color: #6b7280;
+    /* v247_1233 */
+    margin-top: 2px;
+}
+
+.card-body {
+    display: flex;
+    flex-wrap: wrap;
+    /* 2열 구조를 위해 */
+    gap: 16px 24px;
+    /* 변경: 상세내용 영역이 남은 공간 채우도록 설정 */
+    flex-grow: 1;
+}
+
+.card-body dl {
+    flex: 1 1 40%;
+    /* 2열 배치 */
+    min-width: 200px;
+}
+
+.card-body dl.full-width {
+    flex-basis: 100%;
+}
+
+.card-body dt {
+    font-size: 11px;
+    /* v247_1239 */
+    color: #6b7280;
+    /* v247_1239 */
+    margin-bottom: 4px;
+}
+
+.card-body dd {
+    font-size: 13px;
+    /* v247_1241 */
+    color: #1f2937;
+    /* v247_1241 */
+}
+
+.card-body dd.time {
+    font-size: 11px;
+    /* v247_1282 */
+    color: #6b7280;
+    /* v247_1282 */
+    margin-top: 2px;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+/* 3-2-2. 처리 완료 카드 수정 */
+.request-card--completed {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*
+  삭제: .request-card--completed .card-header,
+       .request-card--completed .card-content,
+       .request-card--completed .card-body
+  이유: 모든 카드의 기본 레이아웃이 수평으로 변경되어
+       완료 카드(.request-card--completed)만을 위한
+       중복 레이아웃 스타일이 더 이상 필요하지 않습니다.
+*/
+
+.request-card--completed > .badge {
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+/* ==========================================================================
+   반응형: 태블릿 (1024px 이하)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .attendance-admin-container {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .attendance-widget {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .widget-stats-list {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .page-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tab-nav ul {
+        flex-wrap: wrap;
+        /* 탭이 많아지면 줄바꿈 */
+    }
+
+    .tab-nav li {
+        flex-grow: 1;
+        /* 탭 영역 확장 */
+        text-align: center;
+    }
+
+    .tab-panel {
+        padding: 16px;
+    }
+
+    .request-card {
+        flex-direction: column;
+        align-items: stretch;
+        /* 카드 내부 요소들을 꽉 채움 */
+    }
+
+    /* 변경: 반응형에서도 수평 레이아웃이 깨지지 않도록 조정 */
+    .request-card .card-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .request-card .card-header {
+        /* 변경: 반응형에서는 다시 margin-bottom 필요 */
+        margin-bottom: 16px;
+        flex-basis: auto; /* 너비 고정 해제 */
+    }
+
+    .card-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-left: 0;
+        margin-top: 16px;
+        /* 카드 콘텐츠와 간격 */
+    }
+
+    .btn-approve,
+    .btn-reject {
+        width: 100%;
+        /* 버튼 꽉 채움 */
+    }
+
+    .request-card--completed {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .request-card--completed .card-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    /* 삭제: .request-card--completed .card-header
+      이유: 상위 .request-card .card-header 에서 이미 처리됨
+    */
+    .request-card--completed > .badge {
+        margin-left: 0;
+        margin-top: 16px;
+        align-self: flex-end;
+        /* 뱃지를 우측 정렬 */
+    }
+}
