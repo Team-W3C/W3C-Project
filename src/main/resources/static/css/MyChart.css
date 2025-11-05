@@ -73,6 +73,12 @@ body {
     text-align: right;
 }
 
+.sidebar-menu-title a {
+    color: inherit; /* 부모(h3)의 color(#fff)를 상속받습니다. */
+    text-decoration: none; /* 링크 밑줄을 제거합니다. */
+    display: block; /* 링크가 h3 영역 전체를 차지하도록 합니다. */
+}
+
 .sidebar-menu-list {
     list-style: none;
     padding: 21px 20px;

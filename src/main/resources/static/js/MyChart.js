@@ -64,20 +64,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // 폼의 기본 동작(페이지 새로고침) 방지
             e.preventDefault();
 
-            // (임시) 실제 비밀번호 확인 로직 대신, 
-            // 확인 버튼을 누르면 회원정보 페이지(userInfo.jsp)로 이동한다고 가정합니다.
-
+            // 비밀번호 input 요소를 찾습니다.
             const passwordInput = modalOverlay.querySelector('#password');
+
             if (passwordInput.value) {
-                // 실제로는 여기서 fetch 등으로 서버에 비밀번호를 보내 검증해야 합니다.
-                alert('비밀번호가 확인되었습니다. 회원정보 페이지로 이동합니다.');
 
-                // ★★★★★ 수정된 부분 ★★★★★
-                // 비밀번호 확인 성공 시 /member/info (컨트롤러 주소)로 이동
-                window.location.href = '/member/info';
+                window.location.href = contextPath + '/member/info.me';
 
-                // 실패 시에는 닫지 않고 오류 메시지를 표시할 수 있습니다.
-                // 예: alert('비밀번호가 올바르지 않습니다.');
             } else {
                 alert('비밀번호를 입력해주세요.');
             }

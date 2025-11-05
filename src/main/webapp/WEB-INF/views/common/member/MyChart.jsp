@@ -7,10 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
-            rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/MyChart.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
@@ -18,44 +16,6 @@
     <style>
         /* 비밀번호 모달(.modal-overlay)을 기본적으로 숨김 */
         .modal-overlay {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             display: none;
@@ -101,8 +61,12 @@
         </nav>
 
         <nav class="sidebar-menu">
-            <h3 class="sidebar-menu-title" id="open-password-modal">회원정보</h3>
-            <ul class="sidebar-menu-list">
+            <h3 class="sidebar-menu-title" id="open-password-modal">
+                <a href="${pageContext.request.contextPath}/member/info.me">
+                    회원정보
+                </a>
+            </h3>
+            <ul class=" sidebar-menu-list">
                 <li>회원정보수정</li>
                 <li>비밀번호 변경</li>
                 <li>회원 탈퇴</li>
@@ -155,8 +119,8 @@
                     <div class="detail-item">
                         <div class="detail-icon teal">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67" />
-                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67" />
+                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67"/>
+                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -169,8 +133,8 @@
                         <div class="detail-icon blue">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect x="3" y="4" width="14" height="14" rx="2" stroke="#155DFC"
-                                      stroke-width="1.67" />
-                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67" />
+                                      stroke-width="1.67"/>
+                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -182,9 +146,9 @@
                     <div class="detail-item">
                         <div class="detail-icon teal">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" />
+                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67"/>
                                 <path d="M5 17C5 13.5 7 11 10 11C13 11 15 13.5 15 17" stroke="#0E787C"
-                                      stroke-width="1.67" />
+                                      stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -196,8 +160,8 @@
                     <div class="detail-item">
                         <div class="detail-icon blue">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67" />
-                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67" />
+                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67"/>
+                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -211,8 +175,8 @@
                     <svg class="location-icon" viewBox="0 0 20 20" fill="none">
                         <path
                                 d="M10 2C6.5 2 3.5 5 3.5 8.5C3.5 13 10 18 10 18C10 18 16.5 13 16.5 8.5C16.5 5 13.5 2 10 2Z"
-                                stroke="#0E787C" stroke-width="1.67" />
-                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67" />
+                                stroke="#0E787C" stroke-width="1.67"/>
+                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67"/>
                     </svg>
                     <div class="location-text">
                         <h4>진료실 위치</h4>
@@ -240,8 +204,8 @@
                     <div class="detail-item">
                         <div class="detail-icon teal">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67" />
-                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67" />
+                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67"/>
+                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -254,8 +218,8 @@
                         <div class="detail-icon blue">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect x="3" y="4" width="14" height="14" rx="2" stroke="#155DFC"
-                                      stroke-width="1.67" />
-                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67" />
+                                      stroke-width="1.67"/>
+                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -267,9 +231,9 @@
                     <div class="detail-item">
                         <div class="detail-icon teal">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" />
+                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67"/>
                                 <path d="M5 17C5 13.5 7 11 10 11C13 11 15 13.5 15 17" stroke="#0E787C"
-                                      stroke-width="1.67" />
+                                      stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -281,8 +245,8 @@
                     <div class="detail-item">
                         <div class="detail-icon blue">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67" />
-                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67" />
+                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67"/>
+                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67"/>
                             </svg>
                         </div>
                         <div class="detail-info">
@@ -296,8 +260,8 @@
                     <svg class="location-icon" viewBox="0 0 20 20" fill="none">
                         <path
                                 d="M10 2C6.5 2 3.5 5 3.5 8.5C3.5 13 10 18 10 18C10 18 16.5 13 16.5 8.5C16.5 5 13.5 2 10 2Z"
-                                stroke="#0E787C" stroke-width="1.67" />
-                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67" />
+                                stroke="#0E787C" stroke-width="1.67"/>
+                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67"/>
                     </svg>
                     <div class="location-text">
                         <h4>진료실 위치</h4>
@@ -317,8 +281,8 @@
                 <div class="verification-item">
                     <div class="verification-icon">
                         <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <rect x="10" y="15" width="40" height="35" rx="3" stroke="#0E787C" stroke-width="2" />
-                            <path d="M20 10V20M40 10V20" stroke="#0E787C" stroke-width="2" />
+                            <rect x="10" y="15" width="40" height="35" rx="3" stroke="#0E787C" stroke-width="2"/>
+                            <path d="M20 10V20M40 10V20" stroke="#0E787C" stroke-width="2"/>
                         </svg>
                     </div>
                     <h4>진료내역</h4>
@@ -327,8 +291,8 @@
                 <div class="verification-item">
                     <div class="verification-icon">
                         <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <ellipse cx="30" cy="25" rx="15" ry="20" stroke="#0E787C" stroke-width="2" />
-                            <rect x="20" y="35" width="20" height="15" rx="3" stroke="#0E787C" stroke-width="2" />
+                            <ellipse cx="30" cy="25" rx="15" ry="20" stroke="#0E787C" stroke-width="2"/>
+                            <rect x="20" y="35" width="20" height="15" rx="3" stroke="#0E787C" stroke-width="2"/>
                         </svg>
                     </div>
                     <h4>투약내역</h4>
@@ -337,8 +301,8 @@
                 <div class="verification-item">
                     <div class="verification-icon">
                         <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <circle cx="30" cy="30" r="20" stroke="#0E787C" stroke-width="2" />
-                            <circle cx="30" cy="30" r="10" stroke="#0E787C" stroke-width="2" />
+                            <circle cx="30" cy="30" r="20" stroke="#0E787C" stroke-width="2"/>
+                            <circle cx="30" cy="30" r="10" stroke="#0E787C" stroke-width="2"/>
                         </svg>
                     </div>
                     <h4>진단검사결과</h4>
@@ -379,8 +343,8 @@
                     <div class="field-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C"
-                                  stroke-width="1.67" />
-                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67" />
+                                  stroke-width="1.67"/>
+                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/>
                         </svg>
                     </div>
                     <div class="field-info">
@@ -401,6 +365,11 @@
         </footer>
     </div>
 </div>
+<script>
+    // JSP가 렌더링한 contextPath 값을
+    // "contextPath"라는 이름의 JavaScript 전역 변수에 저장합니다.
+    const contextPath = "${pageContext.request.contextPath}";
+</script>
 <script src="${pageContext.request.contextPath}/js/MyChart.js" defer></script>
 
 </body>
