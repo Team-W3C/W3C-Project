@@ -43,8 +43,8 @@ public class MemberController {
      */
     @GetMapping("/info.me")
     public String showUserInfo() {
-        // /WEB-INF/views/common/member/userInfo.jsp 를 반환
-        return "common/member/userInfo";
+        // /WEB-INF/views/homePage/member/userInfo.jsp 를 반환
+        return "homePage/member/userInfo";
     }
 
     /**
@@ -53,7 +53,7 @@ public class MemberController {
      */
     @GetMapping("/mychart.me")
     public String showMyChart() {
-        // /WEB-INF/views/common/member/MyChart.jsp 를 반환
-        return "common/member/MyChart";
+        // /WEB-INF/views/homePage/member/MyChart.jsp 를 반환
+        return "homePage/member/MyChart";
     }
 }
