@@ -37,4 +37,9 @@ public class ReserVationController {
         // /WEB-INF/views/common/member/guestReservationCheck.jsp 를 반환
         return "common/member/guestReservationCheck";
     }
+
+    @GetMapping("/detail")
+    public String ShowReservationDetail(){
+        return "common/member/detailReservation";
+    }
 }

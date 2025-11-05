@@ -10,25 +10,15 @@ prefix="c" uri="jakarta.tags.core" %>
       rel="stylesheet"
       href="${pageContext.request.contextPath}/css/detailReservation.css"
     />
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
   </head>
   <body>
     <!-- Top Navigation -->
+    <jsp:include page="../homePageMember/header_member.jsp" />
     <div class="reservation">
-      <div class="navigation">
-        <img
-          class="rectangle"
-          src="https://c.animaapp.com/mhjva9g3rpbRQm/img/rectangle-9.png"
-          alt="병원 로고"
-        />
-        <div class="items">
-          <div class="text-wrapper">예약</div>
-          <div class="text-wrapper">공지사항</div>
-          <div class="text-wrapper">문의사항</div>
-          <button class="button"><div class="div">로그인</div></button>
-        </div>
-      </div>
-    </div>
-
     <main class="reservation-main">
       <!-- Sidebar Navigation -->
       <aside class="reservation-sidebar">
@@ -39,10 +29,10 @@ prefix="c" uri="jakarta.tags.core" %>
         <nav class="sidebar-nav">
           <ul class="nav-list">
             <li class="nav-item">
-              <a href="#" class="nav-link">병원안내</a>
+              <a href="#" class="link">병원안내</a>
             </li>
             <li class="nav-item active">
-              <a href="#" class="nav-link">외래진료안내</a>
+              <a href="#" class="link">외래진료안내</a>
               <ul class="nav-sublist">
                 <li class="nav-subitem active">
                   <a href="#" class="nav-sublink">진료예약</a>
@@ -630,29 +620,6 @@ prefix="c" uri="jakarta.tags.core" %>
         </article>
       </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="navigation-footer">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <img
-            src="https://c.animaapp.com/mhjva9g3rpbRQm/img/rectangle-9.png"
-            alt="병원 로고"
-          />
-        </div>
-        <div class="footer-info">
-          <p class="footer-address">주소: 서울특별시 강남구 테헤란로 123</p>
-          <p class="footer-contact">
-            대표전화: 02-1234-5678 | 팩스: 02-1234-5679
-          </p>
-          <p class="footer-copyright">© 2025 병원명. All rights reserved.</p>
-        </div>
-        <div class="footer-links">
-          <a href="#" class="footer-link">개인정보처리방침</a>
-          <a href="#" class="footer-link">이용약관</a>
-          <a href="#" class="footer-link">이메일무단수집거부</a>
-        </div>
-      </div>
-    </footer>
+        <jsp:include page="../homePageFooter/footer.jsp" />
   </body>
 </html>
