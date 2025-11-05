@@ -1,0 +1,350 @@
+/* ========== 공통 스타일 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", "Arial", sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ========== 메인 컨텐츠 ========== */
+.inquiry-detail-main {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 167px 242px 100px;
+}
+
+/* 페이지 제목 */
+.inquiry-detail-header {
+    margin-bottom: 16px;
+}
+
+.inquiry-detail-title {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    margin-bottom: 8px;
+}
+
+.inquiry-detail-subtitle {
+    font-size: 16px;
+    color: #495565;
+    line-height: 24px;
+}
+
+/* ========== 목록으로 버튼 ========== */
+.inquiry-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+
+.inquiry-detail-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #ffffff;
+    border: 0.89px solid #0e787c;
+    border-radius: 8px;
+    color: #0e787c;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.inquiry-detail-back-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.inquiry-detail-back-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ========== 문의 카드 ========== */
+.inquiry-card {
+    background-color: #ffffff;
+    border: 1.78px solid #f2f4f6;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.inquiry-card-header {
+    background: linear-gradient(90deg, rgba(14, 120, 124, 0.05) 0%, rgba(239, 246, 255, 0.3) 100%);
+    border-bottom: 0.89px solid #f2f4f6;
+    padding: 24px;
+}
+
+.inquiry-card-title-section {
+    margin-bottom: 16px;
+}
+
+.inquiry-card-title {
+    font-size: 20px;
+    color: #0e787c;
+    line-height: 28px;
+    margin-bottom: 8px;
+}
+
+.inquiry-card-category {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: rgba(14, 120, 124, 0.1);
+    color: #0e787c;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.inquiry-card-badges {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+}
+
+.inquiry-badge-complete {
+    color: #008235;
+}
+
+.inquiry-badge-privacy {
+    color: #354152;
+}
+
+.inquiry-card-body {
+    padding: 32px 24px;
+}
+
+.inquiry-meta-info {
+    display: flex;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 0.89px solid #e5e7eb;
+    margin-bottom: 24px;
+}
+
+.inquiry-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #495565;
+}
+
+.inquiry-meta-item svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+}
+
+.inquiry-content-section {
+    margin-top: 24px;
+}
+
+.inquiry-content-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.inquiry-content-heading svg {
+    width: 20px;
+    height: 20px;
+}
+
+.inquiry-content-heading h3 {
+    font-size: 16px;
+    color: #101727;
+    font-weight: 400;
+}
+
+.inquiry-content-text {
+    background-color: #f9fafb;
+    padding: 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #354152;
+    line-height: 26px;
+    white-space: pre-wrap;
+}
+
+/* ========== 답변 카드 ========== */
+.answer-card {
+    background-color: #ffffff;
+    border: 1.78px solid #dbfbe6;
+    border-radius: 14px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.answer-card-header {
+    background: linear-gradient(90deg, rgba(240, 253, 244, 1) 0%, rgba(240, 253, 244, 0.3) 100%);
+    border-bottom: 0.89px solid #dbfbe6;
+    padding: 24px;
+}
+
+.answer-card-title-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.answer-card-title-section svg {
+    width: 24px;
+    height: 24px;
+}
+
+.answer-card-title {
+    font-size: 16px;
+    color: #008235;
+    font-weight: 400;
+}
+
+.answer-card-body {
+    padding: 32px 24px;
+}
+
+.answer-meta-info {
+    display: flex;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 0.89px solid #dbfbe6;
+    margin-bottom: 24px;
+}
+
+.answer-content-text {
+    background-color: rgba(240, 253, 244, 0.5);
+    border: 0.89px solid #dbfbe6;
+    padding: 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #354152;
+    line-height: 26px;
+    white-space: pre-wrap;
+}
+
+/* ========== 답변 대기 중 카드 ========== */
+.answer-pending-card {
+    background-color: #ffffff;
+    border: 1.78px solid #fef3cd;
+    border-radius: 14px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.answer-pending-header {
+    background: linear-gradient(90deg, rgba(253, 251, 232, 1) 0%, rgba(253, 251, 232, 0.3) 100%);
+    border-bottom: 0.89px solid #fef3cd;
+    padding: 24px;
+}
+
+.answer-pending-title-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.answer-pending-title-section svg {
+    width: 24px;
+    height: 24px;
+}
+
+.answer-pending-title {
+    font-size: 16px;
+    color: #a65f00;
+    font-weight: 400;
+}
+
+.answer-pending-body {
+    padding: 32px 24px;
+    text-align: center;
+}
+
+.answer-pending-message {
+    font-size: 16px;
+    color: #495565;
+    margin-bottom: 8px;
+}
+
+.answer-pending-submessage {
+    font-size: 14px;
+    color: #697282;
+}
+
+/* ========== 하단 버튼 ========== */
+.inquiry-detail-footer-btn {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: #0e787c;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.inquiry-detail-footer-btn:hover {
+    background-color: #0c6569;
+}
+
+.inquiry-detail-footer-btn:active {
+    background-color: #0a5356;
+}
+
+/* ========== 반응형 (태블릿) ========== */
+@media (max-width: 1024px) {
+    .inquiry-detail-main {
+        padding: 120px 40px 60px;
+    }
+
+    .inquiry-detail-title {
+        font-size: 24px;
+    }
+
+    .inquiry-meta-info,
+    .answer-meta-info {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .inquiry-detail-main {
+        padding: 80px 20px 40px;
+    }
+
+    .inquiry-detail-title {
+        font-size: 20px;
+    }
+
+    .inquiry-card-title {
+        font-size: 18px;
+    }
+
+    .inquiry-content-text,
+    .answer-content-text {
+        font-size: 14px;
+        line-height: 22px;
+        padding: 16px;
+    }
+
+    .inquiry-card-body,
+    .answer-card-body {
+        padding: 24px 16px;
+    }
+}
