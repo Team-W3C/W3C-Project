@@ -15,7 +15,7 @@ public class ReserVationController {
     @GetMapping("/main.re")
     public String showReservationMain() {
         // /WEB-INF/views/common/member/appointmentPage.jsp 를 반환
-        return "common/member/appointmentPage";
+        return "homePage/member/appointmentPage";
     }
 
     /**
@@ -24,8 +24,8 @@ public class ReserVationController {
      */
     @GetMapping("/guest.re")
     public String showGuestReservation() {
-        // /WEB-INF/views/common/member/guestPatientReservation.jsp 를 반환
-        return "common/member/guestPatientReservation";
+        // /WEB-INF/views/homePage/member/guestPatientReservation.jsp 를 반환
+        return "homePage/member/guestPatientReservation";
     }
 
     /**
@@ -34,12 +34,12 @@ public class ReserVationController {
      */
     @GetMapping("/guestCheck.re")
     public String showGuestCheck() {
-        // /WEB-INF/views/common/member/guestReservationCheck.jsp 를 반환
-        return "common/member/guestReservationCheck";
+        // /WEB-INF/views/homPage/member/guestReservationCheck.jsp 를 반환
+        return "homePage/member/guestReservationCheck";
     }
 
     @GetMapping("/detail")
     public String ShowReservationDetail(){
-        return "common/member/detailReservation";
+        return "homePage/member/detailReservation";
     }
 }

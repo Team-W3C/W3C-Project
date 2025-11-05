@@ -17,7 +17,7 @@ prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <!-- Top Navigation -->
-    <jsp:include page="../homePageMember/header_member.jsp" />
+    <jsp:include page="../../common/homePageMember/header_member.jsp" />
     <div class="reservation">
     <main class="reservation-main">
       <!-- Sidebar Navigation -->
@@ -620,6 +620,6 @@ prefix="c" uri="jakarta.tags.core" %>
         </article>
       </section>
     </main>
-        <jsp:include page="../homePageFooter/footer.jsp" />
+        <jsp:include page="../../common/homePageFooter/footer.jsp" />
   </body>
 </html>

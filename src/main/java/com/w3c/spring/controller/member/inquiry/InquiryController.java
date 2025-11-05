@@ -12,17 +12,17 @@ public class InquiryController {
     @GetMapping("/inquiry-board.bo")
     public String homePageinquiryBoard() {
         System.out.println("inquiry-board");
-        return "homePageinquiry/inquiry-board";
+        return "homePage/homePageinquiry/inquiry-board";
     }
     @GetMapping("/inquiry-detail.bo")
     public String homePageinquiryDetail() {
         System.out.println("inquiry-detail");
-        return "homePageinquiry/inquiry-detail";
+        return "homePage/homePageinquiry/inquiry-detail";
     }
     @GetMapping("/inquiry-insert.bo")
     public String homePageinquiryInsert() {
         System.out.println("inquiry-insert");
-        return "homePageinquiry/inquiry-insert";
+        return "homePage/homePageinquiry/inquiry-insert";
     }
 
 }
