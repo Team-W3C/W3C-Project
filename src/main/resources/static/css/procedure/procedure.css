@@ -1,0 +1,392 @@
+/* 진료절차 페이지 스타일 */
+
+/* 전역 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 래퍼 (Sidebar와 함께 사용될 경우) */
+.procedure-wrapper {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    gap: 32px;
+}
+
+/* 메인 콘텐츠 */
+.procedure-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 페이지 헤더 */
+.procedure-header {
+    background: white;
+    padding: 32px 40px;
+    border-radius: 12px;
+
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #222;
+}
+
+
+/* 탭 메뉴 */
+.procedure-tabs {
+    display: flex;
+    gap: 8px;
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e5e5e5;
+    background: white;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+    border-color: #0E787C;
+    color: #0E787C;
+}
+
+.tab-button.active {
+    background: #0E787C;
+    color: white;
+    border-color: #0E787C;
+}
+
+/* 공통 섹션 스타일 */
+.schedule-section,
+.reservation-section,
+.medical-system-section {
+    background: white;
+    padding: 32px 40px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #0E787C;
+}
+
+/* 진료시간 테이블 */
+.schedule-table {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    border-top: 2px solid #5b9aa0;
+    border-collapse: collapse;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 14px;
+}
+
+.schedule-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.schedule-table th,
+.schedule-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.schedule-table th {
+    background-color: #e7f0f1;
+    color: #004b4b;
+    font-weight: 600;
+}
+
+.schedule-table td {
+    background-color: #fff;
+}
+
+.schedule-table tr:last-child td {
+    border-bottom: 2px solid #5b9aa0;
+}
+
+.schedule-row {
+    display: flex;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.schedule-row:last-child {
+    border-bottom: none;
+}
+
+.schedule-label {
+    width: 240px;
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.schedule-value {
+    flex: 1;
+    color: #666;
+    font-size: 15px;
+}
+
+.schedule-notice {
+    display: flex;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    justify-content: center;
+}
+
+/* 예약방법 */
+.reservation-method {
+    margin-bottom: 48px;
+}
+
+.reservation-method:last-child {
+    margin-bottom: 0;
+}
+
+.method-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0E787C;
+    margin-bottom: 12px;
+}
+
+.method-time {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+/* 프로세스 스텝 */
+.process-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.process-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.step-icon {
+    margin-bottom: 12px;
+}
+
+
+
+.step-content {
+    width: 100%;
+}
+
+.step-text {
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+.step-detail {
+    font-size: 12px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.step-connector {
+    position: absolute;
+    right: -20px;
+    top: 12px;
+    font-size: 18px;
+    color: black;
+    font-weight: 300;
+}
+
+.process-step:last-child .step-connector {
+    display: none;
+}
+
+
+/* 안내 박스 */
+.info-notice {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.info-notice p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+.info-notice p:last-child {
+    margin-bottom: 0;
+}
+
+.notice-contact {
+    font-weight: 600;
+    color: #333;
+}
+
+/* 의료전달체계 */
+
+.system-info-box li {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+
+/* 반응형 - 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+    .procedure-wrapper {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .procedure-header {
+        padding: 24px;
+    }
+
+    .page-title {
+        font-size: 26px;
+    }
+
+    .procedure-tabs {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .tab-button {
+        flex: 1 1 calc(50% - 3px);
+        min-width: 140px;
+    }
+
+    .schedule-section,
+    .reservation-section,
+    .medical-system-section {
+        padding: 24px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .schedule-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .schedule-label {
+        width: 100%;
+    }
+
+    .process-steps {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .process-step {
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+        text-align: left;
+    }
+
+    .step-icon {
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+
+    .step-connector {
+        position: static;
+        transform: rotate(90deg);
+        margin: 8px 0;
+    }
+
+    .process-step:last-child .step-connector {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .procedure-wrapper {
+        padding: 16px;
+    }
+
+    .procedure-header {
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    .tab-button {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .schedule-section,
+    .reservation-section,
+    .medical-system-section {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .method-title {
+        font-size: 16px;
+    }
+
+    .step-text {
+        font-size: 12px;
+    }
+}
