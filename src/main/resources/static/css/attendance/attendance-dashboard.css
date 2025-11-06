@@ -90,7 +90,9 @@ body {
     gap: 24px;
     /* [!!] 수정: erpDashBoard.css의 .dashboard-main이 padding을 담당하도록 이중 패딩 제거 */
     /* padding: 32px; */
-    width: 100%;
+
+    /* [!!] 수정: .dashboard-main 과의 충돌을 피하기 위해 width: 100% 제거 */
+    /* width: 100%; */
 }
 
 /* 1. 페이지 제목 */
