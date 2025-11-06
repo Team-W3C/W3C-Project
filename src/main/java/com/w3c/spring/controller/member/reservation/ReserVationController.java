@@ -1,11 +1,11 @@
-package com.w3c.spring.controller.reservation;
+package com.w3c.spring.controller.member.reservation;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/reservation") // URL이 /patientReservation 으로 시작하는 요청을 처리
+@RequestMapping("/member/reservation") // URL이 /patientReservation 으로 시작하는 요청을 처리
 public class ReserVationController {
 
     /**
@@ -38,7 +38,7 @@ public class ReserVationController {
         return "homePage/member/guestReservationCheck";
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail.re")
     public String ShowReservationDetail(){
         return "homePage/member/detailReservation";
     }

@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.erpNotice;
+package com.w3c.spring.controller.erp.erpNotice;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ErpNoticeController {
     @GetMapping("/notice.erp")
     public String erpNotice() {
-        return "ERP/notice/erp-notice";
+        return "erp/notice/erp-notice";
     }
     @GetMapping("/inquiry.erp")
     public String erpInquiry() {
-        return "ERP/notice/erp-inquiry";
+        return "erp/notice/erp-inquiry";
     }
 }
 
