@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>병원 ERP 시스템 - 커뮤니티</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-notice.css">
-
-    <!-- 헤더와 사이드 바 추가 예정 -->
-
 </head>
 <body>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
+
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 <!-- 메인 페이지 -->
 <main class="community-main">
     <div class="community-header">
