@@ -54,6 +54,7 @@ public class MemberController {
     @GetMapping("/mychart.me")
     public String showMyChart() {
         // /WEB-INF/views/homePage/member/MyChart.jsp 를 반환
-        return "homePage/member/MyChart";
+        return "homePage/member/MyChart";   
     }
+
 }

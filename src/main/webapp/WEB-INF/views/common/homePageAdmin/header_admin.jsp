@@ -10,7 +10,7 @@
                 <a href="#" class="nav-link">게시판</a>
                 <a href="#" class="nav-link">공지사항</a>
                 <a href="#" class="nav-link">문의사항</a>
-                <a href="#" class="nav-link nav-link-primary">대시보드</a>
+                <a href="${pageContext.request.contextPath}/dashBoard/enterErp.erp" class="nav-link nav-link-primary">대시보드</a>
             </nav>
         </div>
     </header>
