@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/MyChart.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <style>
@@ -44,50 +45,8 @@
 <jsp:include page="../../common/homePageMember/header_member.jsp"/>
 
 <main class="mypage-container">
-    <aside class="mypage-sidebar">
-        <div class="patient-info">
-            <h2>홍길동님</h2>
-            <p>병원등록번호 : 11111111</p>
-        </div>
+    <jsp:include page="../../common/homePageMember/member-sidebar.jsp"/>
 
-        <nav class="sidebar-menu">
-            <h3 class="sidebar-menu-title">진료서비스</h3>
-            <ul class="sidebar-menu-list">
-                <li class="active">본인예약현황</li>
-                <li>예약 내역</li>
-                <li>진료내역</li>
-                <li>알레르기 이력</li>
-                <li>투약내역</li>
-                <li>진단검사결과</li>
-                <li>건강검진결과</li>
-            </ul>
-        </nav>
-
-        <nav class="sidebar-menu">
-            <h3 class="sidebar-menu-title" id="open-password-modal">
-                <a href="${pageContext.request.contextPath}/member/info.me">
-                    회원정보
-                </a>
-            </h3>
-            <ul class=" sidebar-menu-list">
-                <li>회원정보수정</li>
-                <li>비밀번호 변경</li>
-                <li>회원 탈퇴</li>
-            </ul>
-        </nav>
-
-        <div class="notice-card">
-            <div class="notice-card-header">
-                <div class="notice-icon"></div>
-                <h3>안내사항</h3>
-            </div>
-            <ul class="notice-list">
-                <li>예약 변경은 진료 1일 전까지 가능합니다.</li>
-                <li>예약 시간 10분 전까지 도착해 주세요.</li>
-                <li>건강보험증을 반드시 지참해 주세요.</li>
-            </ul>
-        </div>
-    </aside>
 
     <section class="mypage-content">
         <header class="chart-header">
