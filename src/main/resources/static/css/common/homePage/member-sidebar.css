@@ -1,0 +1,99 @@
+/* --------------------------------
+ * 글로벌 및 기본 스타일 (sidebar.css)
+ * -------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* --------------------------------
+ * 회원 사이드바 (member-sidebar.jsp)
+ * -------------------------------- */
+.member-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 218px; /* 원본 너비 */
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 1. 사용자 정보 */
+.member-sidebar__user {
+    padding: 10px 0 10px 25px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+}
+
+.member-sidebar__user-name {
+    font-size: 26px;
+    font-weight: bold;
+    color: rgba(0, 104, 105, 1);
+    line-height: 1.4;
+}
+
+.member-sidebar__user-id {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(0, 104, 105, 1);
+    line-height: 1.4;
+}
+
+/* 2. 네비게이션 메뉴 (공통) */
+.member-sidebar__nav-group {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.member-sidebar__nav-title {
+    background-color: rgba(14, 120, 124, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 18px;
+    font-weight: bold;
+    padding: 17px 0;
+    text-align: center;
+}
+
+.member-sidebar__nav-list {
+    list-style: none;
+    background-color: rgba(242, 242, 242, 1);
+    padding: 21px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-sidebar__nav-link {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgba(102, 102, 102, 1);
+    display: block;
+    padding: 8px 25px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.member-sidebar__nav-link:hover,
+.member-sidebar__nav-link:focus {
+    color: rgba(14, 120, 124, 1);
+    background-color: #e9e9e9;
+}
+
+/* 상태별 링크 색상 */
+.member-sidebar__nav-link--active {
+    color: rgba(68, 68, 68, 1); /* 가장 진한 색 */
+}
+
+.member-sidebar__nav-link--medium {
+    color: rgba(93, 93, 93, 1); /* 중간 색 */
+}
+
+
+/* --------------------------------
+ * 3. 반응형 (태블릿)
+ * -------------------------------- */
+@media (max-width: 1024px) {
+    .member-sidebar {
+        /* 필요 시 너비 조정 */
+        /* width: 200px; */
+    }
+}
