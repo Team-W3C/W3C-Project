@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-inquiry.css">
 </head>
 <body>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
 
-<!-- 헤더와 사이드바 추가 예정 -->
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 
 <!-- 병원 ERP 시스템 > 커뮤니티 문의사항 페이지 -->
 <main class="inquiry-main">
