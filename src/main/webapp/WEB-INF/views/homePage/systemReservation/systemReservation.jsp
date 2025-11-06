@@ -8,9 +8,10 @@
     <meta charset="utf-8" />
     <title>병원 예약 시스템 - ERP</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/systemReservation.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
 </head>
 <body>
-
+<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
 <main class="reservation-container">
 
     <section class="reservation-header">
@@ -109,6 +110,6 @@
 </main>
 
 <script src="${pageContext.request.contextPath}/js/systemReservation.js"></script>
-
+<jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
 </html>
