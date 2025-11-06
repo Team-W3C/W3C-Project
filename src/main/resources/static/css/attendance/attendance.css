@@ -90,7 +90,8 @@ body {
    ========================================================================== */
 .attendance-container {
     width: 100%;
-    padding: 32px;
+    /* [!!] 수정: erpDashBoard.css의 .dashboard-main이 padding을 담당하도록 이중 패딩 제거 */
+    /* padding: 32px; */
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -280,8 +281,10 @@ body {
    반응형: 태블릿 (1024px 이하)
    ========================================================================== */
 @media (max-width: 1024px) {
+    /* [!!] 수정: .attendance-container의 padding을 .dashboard-main이 담당하므로
+       반응형에서도 padding을 제거합니다. */
     .attendance-container {
-        padding: 16px;
+        /* padding: 16px; */
         gap: 16px;
     }
 
