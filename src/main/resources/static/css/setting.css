@@ -1,0 +1,287 @@
+/* ========== 공통 스타일 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f9fafb;
+    color: #111827;
+    line-height: 1.5;
+}
+
+/* ========== 메인 컨텐츠 ========== */
+.settings-main {
+    padding: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* 페이지 제목 */
+.settings-page-title {
+    font-size: 24px;
+    color: #111827;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+/* ========== 카드 ========== */
+.settings-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+/* ========== 탭 헤더 ========== */
+.settings-tabs-header {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.settings-tab-btn {
+    flex: 1;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.settings-tab-btn:hover {
+    color: #374151;
+}
+
+.settings-tab-btn.active {
+    color: #0d9488;
+    border-bottom: 2px solid #0d9488;
+}
+
+/* ========== 탭 컨텐츠 ========== */
+.settings-tab-content {
+    padding: 32px;
+}
+
+.settings-tab-pane {
+    display: none;
+}
+
+.settings-tab-pane.active {
+    display: block;
+}
+
+/* ========== 정보 메시지 ========== */
+.settings-info-message {
+    background-color: #dbeafe;
+    border-left: 4px solid #3b82f6;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #1e40af;
+}
+
+/* ========== 섹션 제목 ========== */
+.settings-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* ========== 비밀번호 섹션 ========== */
+.settings-password-section {
+    padding: 24px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 32px;
+}
+
+.settings-password-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.settings-password-fields {
+    display: grid;
+    gap: 16px;
+}
+
+/* ========== 폼 스타일 ========== */
+.settings-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 900px;
+}
+
+.settings-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.settings-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.settings-form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.settings-form-input,
+.settings-form-select {
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.settings-form-input:focus,
+.settings-form-select:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.settings-form-input::placeholder {
+    color: #828282;
+}
+
+.settings-form-input:disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+/* ========== 버튼 ========== */
+.settings-btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.settings-btn-primary {
+    background-color: #0d9488;
+    color: white;
+}
+
+.settings-btn-primary:hover {
+    background-color: #0f766e;
+}
+
+.settings-btn-primary:active {
+    background-color: #0a5f5a;
+}
+
+.settings-btn-secondary {
+    background-color: #e6e6e6;
+    color: #2b2b2b;
+}
+
+.settings-btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.settings-btn-secondary:active {
+    background-color: #b8bdc4;
+}
+
+.settings-form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* ========== 빈 상태 ========== */
+.settings-empty-state {
+    color: #6b7280;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ========== 반응형 (태블릿) ========== */
+@media (max-width: 1024px) {
+    .settings-main {
+        padding: 24px 16px;
+    }
+
+    .settings-page-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .settings-tab-content {
+        padding: 24px 16px;
+    }
+
+    .settings-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .settings-password-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-password-fields {
+        gap: 12px;
+    }
+
+    .settings-form-actions {
+        flex-direction: column;
+    }
+
+    .settings-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .settings-tabs-header {
+        flex-direction: column;
+    }
+
+    .settings-tab-btn {
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+    }
+
+    .settings-tab-btn.active {
+        border-bottom: 1px solid #e5e7eb;
+        border-left: 3px solid #0d9488;
+    }
+
+    .settings-password-section {
+        padding: 16px;
+    }
+
+    .settings-btn {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
+}
