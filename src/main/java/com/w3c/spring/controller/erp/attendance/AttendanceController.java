@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.attendance;
+package com.w3c.spring.controller.erp.attendance;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

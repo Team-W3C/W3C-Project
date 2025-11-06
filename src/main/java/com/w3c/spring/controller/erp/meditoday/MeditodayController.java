@@ -10,6 +10,6 @@ public class MeditodayController {
 
     @GetMapping("/meditoday.do")
     public String meditoday() {
-        return "ERP/meditoday/medical-today";
+        return "erp/meditoday/medical-today";
     }
 }

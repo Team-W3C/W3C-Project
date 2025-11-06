@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.setting;
+package com.w3c.spring.controller.erp.setting;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SettingController {
     @GetMapping("/setting.me")
     public String setting() {
-        return "ERP/setting";
+        return "erp/setting";
     }
 }

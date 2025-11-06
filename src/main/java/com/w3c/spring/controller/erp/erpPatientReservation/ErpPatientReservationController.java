@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.erpPatientReservation;
+package com.w3c.spring.controller.erp.erpPatientReservation;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

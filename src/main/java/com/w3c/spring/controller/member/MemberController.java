@@ -57,4 +57,33 @@ public class MemberController {
         return "homePage/member/MyChart";   
     }
 
+//    /*====================문의사항======================*/
+//
+//    @GetMapping("/inquiry-board.bo")
+//    public String homePageinquiryBoard() {
+//        System.out.println("inquiry-board");
+//        return "homePage/homePageinquiry/inquiry-board";
+//    }
+//    @GetMapping("/inquiry-detail.bo")
+//    public String homePageinquiryDetail() {
+//        System.out.println("inquiry-detail");
+//        return "homePage/homePageinquiry/inquiry-detail";
+//    }
+//    @GetMapping("/inquiry-insert.bo")
+//    public String homePageinquiryInsert() {
+//        System.out.println("inquiry-insert");
+//        return "homePage/homePageinquiry/inquiry-insert";
+//    }
+//
+//    /*====================공지사항======================*/
+//    @GetMapping("/notice.bo")
+//    public String notice() {
+//        return "homePage/homePageNotice/notice-member";
+//    }
+//    @GetMapping("/notice-detail.bo")
+//    public String noticeDetail() {
+//        return "homePage/homePageNotice/notice-detail";
+//    }
+
+
 }

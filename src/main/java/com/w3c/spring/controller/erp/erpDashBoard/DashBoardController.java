@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.erpDashBoard;
+package com.w3c.spring.controller.erp.erpDashBoard;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +11,6 @@ public class DashBoardController {
     @GetMapping("/enterErp.erp")
     public String enterErp() {
         System.out.println("dashboard");
-        return "ERP/dashBoard/erpDashBoard";
+        return "erp/dashBoard/erpDashBoard";
     }
 }
