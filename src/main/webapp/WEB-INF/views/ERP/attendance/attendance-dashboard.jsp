@@ -7,6 +7,7 @@
 <head>
     <link href="https://fonts.googleapis.com/css?family=Arial&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css">
 
     <%-- [!!] 수정: 경로에 ${pageContext.request.contextPath} 추가 --%>
     <link href="${pageContext.request.contextPath}/css/attendance/attendance-dashboard.css" rel="stylesheet"/>
@@ -15,6 +16,11 @@
 </head>
 
 <body>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
+
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 <main class="attendance-status-main">
 
     <header class="attendance-status-header">
