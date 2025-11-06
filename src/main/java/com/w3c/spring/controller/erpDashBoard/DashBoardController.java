@@ -11,6 +11,6 @@ public class DashBoardController {
     @GetMapping("/enterErp.erp")
     public String enterErp() {
         System.out.println("dashboard");
-        return "erp/dashBoard/erpDashBoard";
+        return "ERP/dashBoard/erpDashBoard";
     }
 }
