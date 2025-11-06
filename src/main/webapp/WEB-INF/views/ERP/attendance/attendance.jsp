@@ -15,6 +15,7 @@
 <head>
     <link href="https://fonts.googleapis.com/css?family=Arial&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css">
 
     <%-- 기존 근태관리 CSS --%>
     <link href="${pageContext.request.contextPath}/css/attendance/attendance.css" rel="stylesheet"/>
@@ -25,11 +26,11 @@
     <title>근태 관리</title>
 </head>
 <body>
-<%--
-    <c:import url="/WEB-INF/views/common/header.jsp" />
-    <c:import url="/WEB-INF/views/common/sidebar.jsp" />
---%>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
 
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 <main class="attendance-container">
 
     <div class="page-header">
@@ -78,15 +79,15 @@
 
                 <%-- [!!] 추가: 관리자 전용 '승인 관리' 탭 --%>
                 <%-- [!!] test="" 안의 조건은 실제 관리자 확인 로직으로 변경해주세요 --%>
-<%--                <c:if test="${loginUser.auth == 'ADMIN'}">--%>
-                    <li class="${currentTab == 'admin' ? 'active' : ''}">
-                        <a href="?tab=admin">
-                            승인 관리
-                                <%-- TODO: 이 숫자는 동적으로 받아와야 합니다 --%>
-                            <span class="badge count">3</span>
-                        </a>
-                    </li>
-<%--                </c:if>--%>
+                <%--                <c:if test="${loginUser.auth == 'ADMIN'}">--%>
+                <li class="${currentTab == 'admin' ? 'active' : ''}">
+                    <a href="?tab=admin">
+                        승인 관리
+                        <%-- TODO: 이 숫자는 동적으로 받아와야 합니다 --%>
+                        <span class="badge count">3</span>
+                    </a>
+                </li>
+                <%--                </c:if>--%>
             </ul>
         </nav>
 
@@ -153,8 +154,14 @@
                             <span class="badge badge-warning">대기</span>
                         </header>
                         <div class="card-body">
-                            <dl><dt>기간</dt><dd>2025-11-10 ~ 2025-11-11</dd></dl>
-                            <dl><dt>사유</dt><dd>개인 사유</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-10 ~ 2025-11-11</dd>
+                            </dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>개인 사유</dd>
+                            </dl>
                         </div>
                     </article>
                     <article class="application-card">
@@ -163,8 +170,14 @@
                             <span class="badge badge-success">승인</span>
                         </header>
                         <div class="card-body">
-                            <dl><dt>기간</dt><dd>2025-11-04 ~ 2025-11-04</dd></dl>
-                            <dl><dt>사유</dt><dd>병원 방문 (14:00~16:00)</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-04 ~ 2025-11-04</dd>
+                            </dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>병원 방문 (14:00~16:00)</dd>
+                            </dl>
                         </div>
                     </article>
                     <article class="application-card">
@@ -173,8 +186,14 @@
                             <span class="badge badge-danger">반려</span>
                         </header>
                         <div class="card-body">
-                            <dl><dt>기간</dt><dd>2025-11-01 ~ 2025-11-01</dd></dl>
-                            <dl><dt>사유</dt><dd>요청 반려 (사유: 당일 인력 부족)</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-01 ~ 2025-11-01</dd>
+                            </dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>요청 반려 (사유: 당일 인력 부족)</dd>
+                            </dl>
                         </div>
                     </article>
                 </div>
@@ -186,7 +205,7 @@
         <%-- ======================================================= --%>
         <%-- [!!] test="" 안의 조건은 실제 관리자 확인 로직으로 변경해주세요 --%>
         <c:if test="${currentTab == 'admin'}">
-<%--            && loginUser.auth == 'ADMIN'}">--%>
+            <%--            && loginUser.auth == 'ADMIN'}">--%>
             <div class="tab-panel">
                     <%--
                       - 아래 내용은 attendance-admin-detail.html 의 tab-panel 내부를 그대로 가져온 것입니다.
@@ -213,9 +232,18 @@
                                     <span class="badge status-vacation">휴가</span>
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-11-01 ~ 2025-11-03</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-25</dd></dl>
-                                    <dl class="full-width"><dt>사유</dt><dd>개인 사유</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-11-01 ~ 2025-11-03</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-25</dd>
+                                    </dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>개인 사유</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <div class="card-actions">
@@ -237,9 +265,19 @@
                                     <span class="badge status-go-out">외출</span>
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-30 ~ 2025-10-30</dd><dd class="time">14:00 ~ 18:00</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-27</dd></dl>
-                                    <dl class="full-width"><dt>사유</dt><dd>병원 방문</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-30 ~ 2025-10-30</dd>
+                                        <dd class="time">14:00 ~ 18:00</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-27</dd>
+                                    </dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>병원 방문</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <div class="card-actions">
@@ -261,9 +299,18 @@
                                     <span class="badge status-stay-out">외박</span>
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-11-05 ~ 2025-11-06</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-26</dd></dl>
-                                    <dl class="full-width"><dt>사유</dt><dd>출장</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-11-05 ~ 2025-11-06</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-26</dd>
+                                    </dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>출장</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <div class="card-actions">
@@ -292,8 +339,14 @@
                                     <span class="badge status-vacation">휴가</span>
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-20 ~ 2025-10-22</dd></dl>
-                                    <dl><dt>사유</dt><dd>가족 여행</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-20 ~ 2025-10-22</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>사유</dt>
+                                        <dd>가족 여행</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <span class="badge status-approved">승인</span>
@@ -312,8 +365,15 @@
                                     <span class="badge status-go-out">외출</span>
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-18 ~ 2025-10-18</dd><dd class="time">15:00 ~ 17:00</dd></dl>
-                                    <dl><dt>사유</dt><dd>은행 업무</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-18 ~ 2025-10-18</dd>
+                                        <dd class="time">15:00 ~ 17:00</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>사유</dt>
+                                        <dd>은행 업무</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <span class="badge status-rejected">반려</span>
