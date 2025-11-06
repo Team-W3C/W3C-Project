@@ -7,10 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보</title>
-    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userInfo.css">
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/deleteAccountModal.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
@@ -36,6 +37,8 @@
 </head>
 
 <body>
+<jsp:include page="../../common/homePageMember/header_member.jsp"/>
+
 <div class="member-info-wrap">
     <main class="member-info-container">
 
@@ -154,15 +157,15 @@
     <div class="withdrawal-modal">
         <button type="button" class="modal-close" aria-label="닫기">
             <svg width="16" height="16" viewBox="0 0 16 16">
-                <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" />
+                <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="1.33" stroke-linecap="round"/>
             </svg>
         </button>
         <header class="withdrawal-header">
             <div class="header-content">
                 <h2 class="modal-title">
                     <svg class="icon-alert" width="18" height="18" viewBox="0 0 18 18">
-                        <path d="M9 1L2 15L16 15L9 1Z" stroke="#0E787C" stroke-width="2" fill="none" />
-                        <line x1="9" y1="6" x2="9" y2="11" stroke="#0E787C" stroke-width="2" />
+                        <path d="M9 1L2 15L16 15L9 1Z" stroke="#0E787C" stroke-width="2" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="11" stroke="#0E787C" stroke-width="2"/>
                     </svg>
                     탈퇴 확인
                 </h2>
@@ -175,10 +178,10 @@
                 <div class="info-icon">
                     <svg width="20" height="20" viewBox="0 0 20 20">
                         <rect x="3" y="3" width="14" height="14" rx="1" stroke="#0E787C" stroke-width="1.67"
-                              fill="none" />
-                        <line x1="6" y1="2" x2="6" y2="5" stroke="#0E787C" stroke-width="1.67" />
-                        <line x1="14" y1="2" x2="14" y2="5" stroke="#0E787C" stroke-width="1.67" />
-                        <line x1="3" y1="8" x2="17" y2="8" stroke="#0E787C" stroke-width="1.67" />
+                              fill="none"/>
+                        <line x1="6" y1="2" x2="6" y2="5" stroke="#0E787C" stroke-width="1.67"/>
+                        <line x1="14" y1="2" x2="14" y2="5" stroke="#0E787C" stroke-width="1.67"/>
+                        <line x1="3" y1="8" x2="17" y2="8" stroke="#0E787C" stroke-width="1.67"/>
                     </svg>
                 </div>
                 <div class="info-content">
@@ -189,9 +192,9 @@
             <div class="info-card">
                 <div class="info-icon">
                     <svg width="20" height="20" viewBox="0 0 20 20">
-                        <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none" />
+                        <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none"/>
                         <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="#0E787C" stroke-width="1.67"
-                              fill="none" />
+                              fill="none"/>
                     </svg>
                 </div>
                 <div class="info-content">
@@ -241,8 +244,8 @@
                     <div class="field-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C"
-                                  stroke-width="1.67" />
-                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67" />
+                                  stroke-width="1.67"/>
+                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/>
                         </svg>
                     </div>
                     <div class="field-info">
@@ -263,6 +266,8 @@
         </footer>
     </div>
 </div>
+<!-- Footer Include -->
+<jsp:include page="../../common/homePageFooter/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/userInfo.js" defer></script>
 </body>
 
