@@ -1,0 +1,634 @@
+:root {
+    --d-9d-9d-9: rgba(217, 217, 217, 1);
+    --collection-1-color: rgba(255, 255, 255, 1);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+html,
+body {
+    margin: 0px;
+    height: 100%;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+    text-decoration: none;
+}
+/* ========================================
+   직원 관리 페이지 스타일
+   ======================================== */
+
+/* 기본 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+/* ========================================
+   메인 레이아웃
+   ======================================== */
+.employee-main {
+    padding: 32px 286px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+/* ========================================
+   페이지 헤더
+   ======================================== */
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.employee-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: #1f2937;
+}
+
+.employee-header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.employee-btn-add {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 8px 16px;
+    background-color: #0e787c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.employee-btn-add:hover {
+    background-color: #0a5a5d;
+}
+
+.employee-btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 8px 16px;
+    background-color: white;
+    color: #0e787c;
+    border: 1px solid #0e787c;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.employee-btn-secondary:hover {
+    background-color: #f0f9f9;
+}
+
+/* ========================================
+   통계 카드
+   ======================================== */
+.employee-stats {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.employee-stat-card {
+    flex: 1;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.employee-stat-label {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.employee-stat-value {
+    font-size: 24px;
+    color: #1f2937;
+    font-weight: 400;
+}
+
+/* ========================================
+   검색 및 필터 섹션
+   ======================================== */
+.employee-search-section {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.employee-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.employee-search-box {
+    position: relative;
+    flex: 1;
+}
+
+.employee-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.employee-search-input {
+    width: 100%;
+    padding: 8px 16px 8px 40px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #1f2937;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.employee-search-input:focus {
+    border-color: #0e787c;
+}
+
+.employee-search-input::placeholder {
+    color: rgba(10, 10, 10, 0.5);
+}
+
+.employee-btn-search {
+    padding: 8px 24px;
+    background-color: #0e787c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.employee-btn-search:hover {
+    background-color: #0a5a5d;
+}
+
+.employee-btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.employee-btn-filter:hover {
+    background-color: #f9fafb;
+}
+
+/* ========================================
+   테이블 섹션
+   ======================================== */
+.employee-table-section {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.employee-table-wrapper {
+    overflow-x: auto;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.employee-table thead {
+    background-color: #f9fafb;
+}
+
+.employee-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.employee-table td {
+    padding: 16px;
+    font-size: 14px;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+/* 특정 컬럼 너비 설정 */
+.employee-table th:nth-child(1),
+.employee-table td:nth-child(1) {
+    width: 100px;
+}
+
+.employee-table th:nth-child(2),
+.employee-table td:nth-child(2) {
+    width: 140px;
+}
+
+.employee-table th:nth-child(3),
+.employee-table td:nth-child(3) {
+    width: 80px;
+}
+
+.employee-table th:nth-child(4),
+.employee-table td:nth-child(4) {
+    width: 100px;
+}
+
+.employee-table th:nth-child(5),
+.employee-table td:nth-child(5) {
+    width: 200px;
+}
+
+.employee-table th:nth-child(6),
+.employee-table td:nth-child(6) {
+    width: 130px;
+}
+
+.employee-table th:nth-child(7),
+.employee-table td:nth-child(7) {
+    width: 120px;
+}
+
+.employee-table th:nth-child(8),
+.employee-table td:nth-child(8) {
+    width: 100px;
+}
+
+.employee-table th:nth-child(9),
+.employee-table td:nth-child(9) {
+    width: 100px;
+}
+
+.employee-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.employee-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* 이름 셀 (아바타 + 이름) */
+.employee-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #0e787c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* 직원 상태 배지 */
+.employee-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.employee-badge-working {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.employee-badge-vacation {
+    background-color: #fef3c6;
+    color: #ba4c00;
+}
+
+.employee-badge-resigned {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* 상세보기 버튼 */
+.employee-btn-detail {
+    color: #0e787c;
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.employee-btn-detail:hover {
+    color: #0a5a5d;
+}
+
+/* ========================================
+   페이지네이션
+   ======================================== */
+.employee-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.employee-pagination-info {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.employee-pagination-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.employee-page-btn {
+    padding: 5px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.employee-page-btn:hover {
+    background-color: #f9fafb;
+}
+
+.employee-page-active {
+    background-color: #0e787c;
+    color: white;
+    border-color: #0e787c;
+}
+
+.employee-page-active:hover {
+    background-color: #0a5a5d;
+}
+
+/* ========================================
+   이번 주 근무표 섹션
+   ======================================== */
+.employee-schedule-section {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.employee-schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.employee-schedule-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.employee-btn-schedule {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.employee-btn-schedule:hover {
+    background-color: #f9fafb;
+}
+
+.employee-schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 16px;
+}
+
+.employee-schedule-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.employee-schedule-day {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.employee-schedule-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.employee-schedule-info p {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* ========================================
+   태블릿 반응형 (1024px 이하)
+   ======================================== */
+@media (max-width: 1024px) {
+    .employee-main {
+        padding: 24px;
+    }
+
+    .employee-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .employee-header-buttons {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .employee-btn-add,
+    .employee-btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .employee-search-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .employee-btn-search,
+    .employee-btn-filter {
+        width: 100%;
+    }
+
+    .employee-stats {
+        flex-wrap: wrap;
+    }
+
+    .employee-stat-card {
+        flex: 1 1 calc(50% - 12px);
+        min-width: 200px;
+    }
+
+    .employee-table-wrapper {
+        overflow-x: scroll;
+    }
+
+    .employee-table {
+        min-width: 1000px;
+    }
+
+    .employee-pagination {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .employee-pagination-info {
+        text-align: center;
+    }
+
+    .employee-pagination-buttons {
+        justify-content: center;
+    }
+
+    .employee-schedule-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .employee-schedule-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .employee-btn-schedule {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .employee-schedule-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* 기본 숨김 */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 기존 employee-detail 레이아웃 일부 조정 */
+.employee-detail {
+    padding: 24px;
+}
+
+.employee-detail__close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.employee-detail__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
