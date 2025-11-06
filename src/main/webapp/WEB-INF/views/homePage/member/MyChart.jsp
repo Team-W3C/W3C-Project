@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/MyChart.css">
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <style>
@@ -40,6 +41,8 @@
 </head>
 
 <body>
+<jsp:include page="../../common/homePageMember/header_member.jsp"/>
+
 <main class="mypage-container">
     <aside class="mypage-sidebar">
         <div class="patient-info">
@@ -365,6 +368,8 @@
         </footer>
     </div>
 </div>
+<!-- Footer Include -->
+<jsp:include page="../../common/homePageFooter/footer.jsp"/>
 <script>
     // JSP가 렌더링한 contextPath 값을
     // "contextPath"라는 이름의 JavaScript 전역 변수에 저장합니다.
