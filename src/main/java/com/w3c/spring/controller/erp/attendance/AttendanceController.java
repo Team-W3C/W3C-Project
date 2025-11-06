@@ -19,11 +19,11 @@ public class AttendanceController {
         // 기능 구현 없이 JSP 페이지만 반환합니다.
         // JSP 파일 내의 JSTL 탭 로직(${param.tab})은 이 설정과 관계없이
         // URL 파라미터(?tab=status 또는 ?tab=list)에 따라 자동으로 동작합니다.
-        return "ERP/attendance/attendance";
+        return "erp/attendance/attendance";
     }
 
     @GetMapping("/dashboard.at")
     public String showAttendanceDashboardPage() {
-        return "ERP/attendance/attendance-dashboard";
+        return "erp/attendance/attendance-dashboard";
     }
 }
