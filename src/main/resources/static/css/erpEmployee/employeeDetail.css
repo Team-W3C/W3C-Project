@@ -1,0 +1,462 @@
+/* ===================================
+   직원 상세 정보 페이지 스타일
+   =================================== */
+
+/* 기본 설정 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f2937;
+    background-color: #f3f4f6;
+}
+
+/* 메인 컨테이너 */
+.employee-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 874px;
+    height: 836px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================================
+   헤더 영역
+   =================================== */
+.employee-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    background: linear-gradient(90deg, rgba(14, 120, 124, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.employee-detail-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.employee-detail-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background-color: #0e787c;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.employee-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.employee-detail-name {
+    font-size: 16px;
+    font-weight: 400;
+    color: #1f2937;
+    line-height: 24px;
+}
+
+.employee-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-detail-position {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 20px;
+}
+
+.employee-detail-status {
+    padding: 4px 12px;
+    font-size: 12px;
+    line-height: 16px;
+    border-radius: 9999px;
+}
+
+.employee-detail-status-active {
+    background-color: #dcfce7;
+    color: #008235;
+}
+
+.employee-detail-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.employee-detail-close-btn:hover {
+    background-color: #f3f4f6;
+}
+
+/* ===================================
+   콘텐츠 영역
+   =================================== */
+.employee-detail-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 섹션 공통 스타일 */
+.employee-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.employee-detail-section-title {
+    position: relative;
+    padding-left: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1f2937;
+    line-height: 20px;
+}
+
+.employee-detail-section-title svg {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: #6b7280;
+}
+
+/* 기본 정보 그리드 */
+.employee-detail-grid-basic {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.employee-detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+}
+
+.employee-detail-field-wide {
+    grid-column: span 2;
+}
+
+.employee-detail-field label {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 16px;
+}
+
+.employee-detail-field span {
+    font-size: 14px;
+    color: #1f2937;
+    line-height: 20px;
+}
+
+/* 근태 현황 그리드 */
+.employee-detail-grid-attendance {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.employee-detail-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.employee-detail-stat label {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.employee-detail-stat strong {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+.employee-detail-stat-attendance {
+    background-color: #f0fdf4;
+    border-color: #b8f7cf;
+    color: #008235;
+}
+
+.employee-detail-stat-late {
+    background-color: #fefce8;
+    border-color: #feef85;
+    color: #a65f00;
+}
+
+.employee-detail-stat-absent {
+    background-color: #fef2f2;
+    border-color: #ffc9c9;
+    color: #c10007;
+}
+
+.employee-detail-stat-vacation {
+    background-color: #eff6ff;
+    border-color: #bddaff;
+    color: #1347e5;
+}
+
+/* 자격증 목록 */
+.employee-detail-license-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    list-style: none;
+}
+
+.employee-detail-license-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1f2937;
+    line-height: 20px;
+}
+
+.employee-detail-license-item:nth-child(3) {
+    grid-column: span 1;
+}
+
+.employee-detail-license-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #0e787c;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* 연차 정보 */
+.employee-detail-vacation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+}
+
+.employee-detail-vacation-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.employee-detail-vacation-used {
+    color: #6b7280;
+}
+
+.employee-detail-vacation-remain {
+    color: #0e787c;
+    font-weight: 400;
+}
+
+.employee-detail-vacation-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.employee-detail-vacation-progress {
+    height: 100%;
+    background-color: #0e787c;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+/* ===================================
+   푸터 영역
+   =================================== */
+.employee-detail-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+}
+
+.employee-detail-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* 버튼 공통 스타일 */
+.employee-detail-btn {
+    padding: 8px 16px;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.employee-detail-btn-secondary {
+    background-color: transparent;
+    color: #6b7280;
+    border-color: #d1d5db;
+}
+
+.employee-detail-btn-secondary:hover {
+    background-color: #f3f4f6;
+}
+
+.employee-detail-btn-outline {
+    background-color: transparent;
+    color: #0e787c;
+    border-color: #0e787c;
+}
+
+.employee-detail-btn-outline:hover {
+    background-color: rgba(14, 120, 124, 0.05);
+}
+
+.employee-detail-btn-primary {
+    background-color: #0e787c;
+    color: #ffffff;
+}
+
+.employee-detail-btn-primary:hover {
+    background-color: #0a5f63;
+}
+
+/* ===================================
+   반응형 - 태블릿 (1024px 이하)
+   =================================== */
+@media (max-width: 1024px) {
+    .employee-detail {
+        max-width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+    }
+
+    .employee-detail-header {
+        padding: 16px;
+    }
+
+    .employee-detail-avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+    }
+
+    .employee-detail-content {
+        padding: 16px;
+        gap: 20px;
+    }
+
+    /* 기본 정보 2열 */
+    .employee-detail-grid-basic {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .employee-detail-field-wide {
+        grid-column: span 2;
+    }
+
+    /* 근태 현황 2열 */
+    .employee-detail-grid-attendance {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    /* 자격증 1열 */
+    .employee-detail-license-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .employee-detail-license-item:nth-child(3) {
+        grid-column: span 1;
+    }
+
+    /* 푸터 */
+    .employee-detail-footer {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .employee-detail-actions {
+        width: 100%;
+    }
+
+    .employee-detail-btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .employee-detail-btn-secondary {
+        width: 100%;
+    }
+}
+
+/* 모바일 추가 대응 (768px 이하) */
+@media (max-width: 768px) {
+    .employee-detail-name {
+        font-size: 14px;
+    }
+
+    .employee-detail-position {
+        font-size: 12px;
+    }
+
+    .employee-detail-grid-basic {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-detail-field-wide {
+        grid-column: span 1;
+    }
+
+    .employee-detail-stat strong {
+        font-size: 20px;
+    }
+}
