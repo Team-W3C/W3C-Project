@@ -7,10 +7,12 @@
 
 .footer-content {
     border-top: 1px solid #e0e0e0;
-    padding-top: 20px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0 0 20px;
 }
 
 .footer-section {
@@ -105,8 +107,10 @@
     align-items: center;
     justify-content: space-between;;
     text-align: center;
-    padding-top: 20px;
     border-top: 1px solid #e0e0e0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0 0 20px;
 }
 
 .footer-bottom p {
