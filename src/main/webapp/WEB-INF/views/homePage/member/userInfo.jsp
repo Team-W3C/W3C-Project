@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userInfo.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/deleteAccountModal.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
@@ -42,34 +43,7 @@
 <div class="member-info-wrap">
     <main class="member-info-container">
 
-        <aside class="member-info-sidebar">
-            <div class="patient-info">
-                <h2>홍길동님</h2>
-                <p>병원등록번호 : 11111111</p>
-            </div>
-
-            <nav class="sidebar-menu">
-                <h3 class="sidebar-menu-title">진료서비스</h3>
-                <ul class="sidebar-menu-list">
-                    <li>본인예약현황</li>
-                    <li>예약 내역</li>
-                    <li>진료내역</li>
-                    <li>알레르기 이력</li>
-                    <li>투약내역</li>
-                    <li>진단검사결과</li>
-                    <li>건강검진결과</li>
-                </ul>
-            </nav>
-
-            <nav class="sidebar-menu">
-                <h3 class="sidebar-menu-title">회원정보</h3>
-                <ul class="sidebar-menu-list">
-                    <li class="active">회원정보수정</li>
-                    <li>비밀번호 변경</li>
-                    <li>회원 탈퇴</li>
-                </ul>
-            </nav>
-        </aside>
+        <jsp:include page="../../common/homePageMember/member-sidebar.jsp"/>
 
         <section class="member-info-content">
             <header class="content-header">
