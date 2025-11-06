@@ -52,7 +52,7 @@
                     </article>
 
                     <article class="service-card">
-                        <a href="${pageContext.request.contextPath}/reservation/main.re">
+                        <a href="${pageContext.request.contextPath}/member/reservation/main.re">
                             <div class="service-icon">
                                 <svg width="80" height="80" viewBox="0 0 80 80">
                                     <circle cx="40" cy="35" r="12" fill="none" stroke="#0e787c" stroke-width="2.5"/>
