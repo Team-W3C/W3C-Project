@@ -1,0 +1,648 @@
+/* 대시보드 스타일 */
+
+/* 전역 설정 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background: #F9FAFB;
+}
+
+/* 사이드바 */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 256px;
+    height: 100vh;
+    background: white;
+    border-right: 1px solid #E5E7EB;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.sidebar__logo {
+    height: 85px;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar__logo-img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.sidebar__nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 24px;
+    text-decoration: none;
+    color: #6B7280;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.sidebar__link:hover {
+    background: rgba(14, 120, 124, 0.05);
+}
+
+.sidebar__link--active {
+    background: rgba(14, 120, 124, 0.1);
+    color: #0E787C;
+    border-right: 4px solid #0E787C;
+}
+
+.sidebar__icon {
+    flex-shrink: 0;
+}
+
+.sidebar__link--active .sidebar__icon {
+    color: #0E787C;
+}
+
+.sidebar__text {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.sidebar__footer {
+    height: 53px;
+    border-top: 1px solid #E5E7EB;
+    padding: 17px 16px 0;
+}
+
+.sidebar__copyright {
+    margin: 0;
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 20px;
+}
+
+/* 헤더 */
+.header {
+    position: fixed;
+    left: 256px;
+    top: 0;
+    right: 0;
+    height: 64px;
+    background: white;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 32px;
+    z-index: 90;
+}
+
+.header__search {
+    position: relative;
+    width: 576px;
+}
+
+.header__search-input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 16px 8px 40px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.header__search-input:focus {
+    border-color: #0E787C;
+}
+
+.header__search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.header__search-btn {
+    height: 42px;
+    padding: 0 24px;
+    background: #0E787C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05);
+}
+
+.header__search-btn:hover {
+    background: #0B5F63;
+}
+
+.header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header__notification {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    border-radius: 8px;
+}
+
+.header__notification:hover {
+    background: #F3F4F6;
+}
+
+.header__notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: #FB2C36;
+    border-radius: 50%;
+}
+
+.header__divider {
+    width: 1px;
+    height: 40px;
+    background: #E5E7EB;
+}
+
+.header__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.header__user-info {
+    text-align: right;
+}
+
+.header__user-name {
+    margin: 0;
+    font-size: 14px;
+    color: #1F2937;
+    line-height: 20px;
+}
+
+.header__user-email {
+    margin: 0;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 16px;
+}
+
+.header__user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0E787C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 메인 컨테이너 */
+.dashboard-main {
+    margin-left: 256px;
+    margin-top: 64px;
+    padding: 32px;
+    min-height: calc(100vh - 64px);
+}
+
+/* 페이지 헤더 */
+.dashboard-header {
+    margin-bottom: 32px;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1F2937;
+    line-height: 24px;
+}
+
+/* 통계 카드 섹션 */
+.dashboard-stats {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    flex: 1;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-card__icon--primary {
+    background: rgba(14, 120, 124, 0.08);
+}
+
+.stat-card__icon--sky {
+    background: rgba(14, 165, 233, 0.08);
+}
+
+.stat-card__icon--amber {
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.stat-card__badge {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.stat-card__badge--positive {
+    color: #00A63E;
+}
+
+.stat-card__badge--negative {
+    color: #E7000B;
+}
+
+.stat-card__label {
+    margin: 0;
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 20px;
+}
+
+.stat-card__value {
+    margin: 0;
+    font-size: 24px;
+    color: #1F2937;
+    line-height: 32px;
+    font-weight: 600;
+}
+
+/* 차트 섹션 */
+.dashboard-charts {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.chart-card {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chart-card__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1F2937;
+    line-height: 27px;
+}
+
+.chart-card__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 250px;
+    position: relative;
+}
+
+/* 하단 섹션 */
+.dashboard-bottom {
+    display: flex;
+    gap: 24px;
+}
+
+/* 환자 등급 분포 카드 */
+.distribution-card {
+    flex: 0 0 360px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.distribution-card__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F2937;
+    line-height: 24px;
+}
+
+.distribution-card__chart {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.distribution-card__legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.legend-item__info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-item__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-item__dot--gray {
+    background: #6B7280;
+}
+
+.legend-item__dot--sky {
+    background: #0EA5E9;
+}
+
+.legend-item__dot--amber {
+    background: #F59E0B;
+}
+
+.legend-item__label {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.legend-item__value {
+    font-size: 14px;
+    color: #1F2937;
+}
+
+/* 최근 예약 카드 */
+.reservation-card {
+    flex: 1;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.reservation-card__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F2937;
+    line-height: 24px;
+}
+
+.reservation-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reservation-item {
+    height: 64px;
+    padding: 0 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reservation-item__user {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.reservation-item__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #6B7280;
+}
+
+.reservation-item__name {
+    margin: 0;
+    font-size: 14px;
+    color: #1F2937;
+    line-height: 20px;
+}
+
+.reservation-item__dept {
+    margin: 0;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 16px;
+}
+
+.reservation-item__status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.reservation-item__time {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.reservation-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    line-height: 16px;
+}
+
+.reservation-badge--confirmed {
+    background: #0E787C;
+    color: white;
+}
+
+.reservation-badge--waiting {
+    background: #E5E7EB;
+    color: #6B7280;
+}
+
+/* 반응형 - 태블릿 */
+@media (max-width: 1024px) {
+    .header {
+        left: 80px;
+    }
+
+    .header__search {
+        width: 400px;
+    }
+
+    .sidebar {
+        width: 80px;
+    }
+
+    .sidebar__text {
+        display: none;
+    }
+
+    .sidebar__link {
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    .sidebar__link--active {
+        border-right: none;
+        border-bottom: 3px solid #0E787C;
+    }
+
+    .sidebar__copyright {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .dashboard-main {
+        margin-left: 80px;
+        padding: 24px;
+    }
+
+    .dashboard-stats {
+        flex-direction: column;
+    }
+
+    .dashboard-charts {
+        flex-direction: column;
+    }
+
+    .chart-card__content {
+        height: 300px;
+    }
+
+    .dashboard-bottom {
+        flex-direction: column;
+    }
+
+    .distribution-card {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        left: 0;
+        padding: 0 16px;
+    }
+
+    .header__search {
+        width: 200px;
+    }
+
+    .header__user-info {
+        display: none;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .dashboard-main {
+        margin-left: 0;
+    }
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F1F1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

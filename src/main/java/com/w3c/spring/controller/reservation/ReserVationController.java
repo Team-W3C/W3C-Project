@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/reservation") // URL이 /reservation 으로 시작하는 요청을 처리
+@RequestMapping("/reservation") // URL이 /patientReservation 으로 시작하는 요청을 처리
 public class ReserVationController {
 
     /**
      * 예약 메인 페이지
-     * URL: /reservation/main
+     * URL: /patientReservation/main
      */
     @GetMapping("/main.re")
     public String showReservationMain() {
@@ -20,7 +20,7 @@ public class ReserVationController {
 
     /**
      * 비회원 환자 예약 페이지 (모달용이지만, 페이지로도 접근 가능하게)
-     * URL: /reservation/guest
+     * URL: /patientReservation/guest
      */
     @GetMapping("/guest.re")
     public String showGuestReservation() {
@@ -30,7 +30,7 @@ public class ReserVationController {
 
     /**
      * 비회원 예약 확인 페이지 (모달용이지만, 페이지로도 접근 가능하게)
-     * URL: /reservation/check
+     * URL: /patientReservation/check
      */
     @GetMapping("/guestCheck.re")
     public String showGuestCheck() {
