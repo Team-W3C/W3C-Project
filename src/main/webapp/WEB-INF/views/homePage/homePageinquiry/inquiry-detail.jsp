@@ -12,8 +12,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문의사항 상세</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-detail.css">
+<%--    헤더푸터css--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 </head>
 <body>
+<%--헤더--%>
+<jsp:include page="../../common/homePageMember/header_member.jsp" />
 
 <!-- 메인 컨텐츠 영역 -->
 <main class="inquiry-detail-main">
@@ -174,6 +181,8 @@
     </button>
 
 </main>
+<%--푸터--%>
+<jsp:include page="../../common/homePageFooter/footer.jsp" />
 
 </body>
 </html>

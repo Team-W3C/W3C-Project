@@ -10,9 +10,14 @@
 <head>
   <title>공지사항 - 병원 관리 시스템</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageNotice/notice-member.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 </head>
 <body>
-
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
 <!-- 메인 컨텐츠 영역 -->
 <main class="notice-main">
 
@@ -58,7 +63,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr onclick="location.href='${pageContext.request.contextPath}/member/notice-detail.bo'">
         <td>15</td>
         <td>시스템</td>
         <td><a href="#">EMR 시스템 정기 점검 안내 (2025년 1월)</a></td>
@@ -150,6 +155,7 @@
   </div>
 
 </main>
-
+<!-- Footer include-->
+<jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
 </html>
