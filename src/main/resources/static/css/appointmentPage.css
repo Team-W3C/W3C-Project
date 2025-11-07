@@ -48,7 +48,7 @@ a {
     opacity: 0.9;
 }
 
-/* [추가] 아이콘 스타일 
+/* [추가] 아이콘 스타일
 */
 .icon-small {
     height: 24px;
@@ -76,10 +76,18 @@ a {
   2. 메인 콘텐츠 레이아웃
   ---------------------------------
 */
+
+/* ▼▼▼ [수정] 사이드바와 메인 콘텐츠를 감싸는 래퍼 스타일 추가 ▼▼▼ */
+.main-container {
+    display: flex; /* 자식 요소(사이드바, 메인콘텐츠)를 가로로 배치 */
+    width: 1148px;
+    margin: 30px auto; /* 상하 여백 30px, 좌우 자동(중앙) */
+    gap: 30px; /* 사이드바와 메인 콘텐츠 사이의 간격 */
+}
+
 .reservation-content {
     /* 원본 .v216_2654의 width: 900px 기준 */
     width: 900px;
-    margin: 0 auto;
     padding: 20px 0;
 }
 
@@ -268,8 +276,18 @@ a {
   ---------------------------------
 */
 @media (max-width: 1024px) {
+
+    /* ▼▼▼ [수정] 반응형 레이아웃 수정 ▼▼▼ */
+    .main-container {
+        /* 태블릿에서는 사이드바와 콘텐츠가 세로로 쌓이도록 변경 */
+        flex-direction: column;
+        width: 100%; /* 너비 100% */
+        margin: 0; /* 여백 제거 */
+        gap: 0; /* 간격 제거 */
+    }
+
     .reservation-content {
-        width: 100%;
+        width: 100%; /* 태블릿에서는 너비 100% */
         padding: 10px;
     }
 
@@ -298,7 +316,6 @@ a {
     padding-top: 20px;
     margin-top: 20px;
   } */
-
     .reservation-quick-nav {
         padding-top: 20px;
         margin-top: 20px;
