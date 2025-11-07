@@ -195,7 +195,7 @@
         <nav class="reservation-quick-nav">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/signUpPage.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-signup.png"
                                 alt=""
@@ -204,7 +204,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/loginPage.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-login.png"
                                 alt=""
@@ -223,7 +223,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/mychart.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-chart.png"
                                 alt=""
