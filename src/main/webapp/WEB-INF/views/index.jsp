@@ -34,7 +34,7 @@
                     예약을 하나의 온라인 플랫폼에서 통합 관리하고, 환자의 직접예약에 가장 효율적인<br>
                     멀티와 의료 서비스 환경을 제공하는 차세대 병원 운영 통합 ERP 시스템입니다.
                 </p>
-                <button class="cta-button">자세히 보기</button>
+                <a href="${pageContext.request.contextPath}/detail" class="cta-button">자세히 보기</a>
             </section>
 
             <section class="services">

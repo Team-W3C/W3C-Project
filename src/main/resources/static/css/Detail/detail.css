@@ -1,0 +1,167 @@
+/* =================================
+   Global & Typography
+   ================================= */
+body {
+    /* JSP의 <head>에서 Inter와 Noto Sans KR 폰트를 로드했다고 가정합니다.
+    */
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+    color: #000000;
+    line-height: 1.5;
+}
+
+/* Typography Resets */
+h1, h2, h3, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* =================================
+   Layout (common.css에 있을 법한 내용)
+   ================================= */
+.page-wrapper {
+    display: flex;
+    width: 1280px; /* (예시) 전체 레이아웃 너비 */
+    margin: 0 auto;
+    padding: 40px;
+    gap: 30px;
+}
+
+/* =================================
+   Page Specific Layout
+   ================================= */
+.intro-container {
+    flex: 1; /* 사이드바 제외 나머지 공간 차지 */
+    max-width: 961px; /* 원본 콘텐츠 최대 너비 */
+
+    display: flex;
+    flex-direction: column;
+
+    /* H1(.text-wrapper-7) top: 244px
+      Article(.paragraph) top: 361px
+      (361 - 244 = 117px)
+      Figma 원본 간격 117px은 너무 넓어보여서
+      시각적 계층을 위해 48px로 조정합니다.
+    */
+    gap: 48px;
+}
+
+/* =================================
+   Components
+   ================================= */
+
+/* --- Title --- */
+.intro-title {
+    /* From: .text-wrapper-7 */
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 64px;
+    letter-spacing: -1.28px;
+    color: #000000;
+    line-height: 1.1;
+}
+
+/* --- Content Article --- */
+.intro-content {
+    /* From: .paragraph */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* 각 콘텐츠 섹션(소개, 기능1, 기능2) 사이의 간격 */
+
+    font-family: "Inter", sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 25px;
+    line-height: 1.5; /* 37.5px */
+    color: #000000; /* From: .text-wrapper-9 */
+}
+
+.intro-description {
+    font-size: inherit; /* .intro-content의 25px 상속 */
+}
+
+.intro-description strong {
+    /* From: .span */
+    font-weight: 700;
+    color: #0e787c;
+}
+
+.intro-subtitle {
+    /* From: .text-wrapper-10 */
+    font-weight: 600; /* SemiBold */
+    font-size: inherit;
+    color: #000000;
+}
+
+/* --- Feature Section (for list) --- */
+.intro-feature-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* 제목과 기능 목록 사이의 간격 */
+}
+
+.intro-feature-title {
+    /* From: .text-wrapper-11 */
+    font-weight: 500; /* Medium */
+    font-size: inherit;
+    color: #000000;
+}
+
+.intro-feature-list {
+    list-style-type: '• '; /* 표준 글머리 기호 */
+    padding-left: 1.2em; /* 글머리 기호가 들어갈 공간 */
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* 기능 목록(li) 사이의 간격 */
+    font-size: inherit;
+}
+
+.intro-feature-list li {
+    padding-left: 0.5em; /* 글머리 기호와 텍스트 사이 간격 */
+}
+
+.intro-feature-list strong {
+    font-weight: 600; /* '실시간 예약:' 등 키워드 강조 */
+}
+
+
+/* =================================
+   Tablet Responsive (1024px)
+   ================================= */
+@media (max-width: 1024px) {
+    .page-wrapper {
+        flex-direction: column;
+        width: 100%;
+        padding: 24px;
+        gap: 24px;
+    }
+
+    .intro-container {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+        gap: 32px;
+    }
+
+    .intro-title {
+        font-size: 48px; /* 태블릿에서 제목 폰트 축소 */
+    }
+
+    /* 태블릿에서 본문 폰트 일괄 축소 */
+    .intro-content,
+    .intro-description,
+    .intro-subtitle,
+    .intro-feature-title,
+    .intro-feature-list {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .intro-content {
+        gap: 24px;
+    }
+
+    .intro-feature-list {
+        list-style-position: outside;
+        padding-left: 1.5em; /* 들여쓰기 공간 확보 */
+    }
+}
