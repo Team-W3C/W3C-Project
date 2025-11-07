@@ -164,6 +164,26 @@
                         </div>
                     </div>
                 </article>
+                <article class="reservation-card">
+                    <div class="reservation-card-header">
+                        <h2>
+                            <img
+                                    src="${pageContext.request.contextPath}/img/v216_2656.png"
+                                    alt=""
+                                    class="icon-small"
+                            />
+                            시설 예약을 하는 경우
+                        </h2>
+                    </div>
+                    <div class="reservation-card-body">
+                        <p>
+                            홈페이지에서 쉽고 빠르게 예약을 할 수 있습니다.
+                        </p>
+                        <div class="reservation-card-actions">
+                            <a href="#" class="btn-primary">시설 예약하기</a>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
 
