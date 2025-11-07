@@ -12,10 +12,13 @@
       rel="stylesheet"
       href="${pageContext.request.contextPath}/css/erpEmployee/employeeDetail.css"
     />
+      <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
   </head>
   <body>
-    <!-- 직원 관리 메인 콘텐츠 -->
-    <main class="employee-main">
+  <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
+  <jsp:include page="/WEB-INF/views/common/erp/header.jsp" />
+
+  <main class="employee-main">
       <!-- 페이지 헤더 -->
       <section class="employee-header">
         <h1 class="employee-title">직원 관리</h1>
