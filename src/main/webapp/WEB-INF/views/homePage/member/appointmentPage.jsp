@@ -180,7 +180,7 @@
                             홈페이지에서 쉽고 빠르게 예약을 할 수 있습니다.
                         </p>
                         <div class="reservation-card-actions">
-                            <a href="#" class="btn-primary">시설 예약하기</a>
+                            <a href="${pageContext.request.contextPath}/member/reservation/systemReservation.re" class="btn-primary">시설 예약하기</a>
                         </div>
                     </div>
                 </article>
