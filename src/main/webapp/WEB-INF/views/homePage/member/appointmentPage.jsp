@@ -73,6 +73,7 @@
 
 <body>
 <jsp:include page="../../common/homePageMember/header_member.jsp"/>
+<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp" />
 
 <main class="reservation-content">
     <h1>진료예약</h1>
