@@ -30,16 +30,17 @@
 </head>
 <body>
 <%-- [!!] 수정: 헤더 및 사이드바 include 활성화 --%>
-<%-- [!!] JSP 경로(url)는 실제 프로젝트 구조에 맞게 확인해주세요. --%>
-<c:import url="/WEB-INF/views/common/erp/header.jsp" />
-<c:import url="/WEB-INF/views/common/erp/sidebar.jsp" />
+<c:import url="/WEB-INF/views/common/erp/header.jsp"/>
+<c:import url="/WEB-INF/views/common/erp/sidebar.jsp"/>
 
-<%-- [!!] 수정: <main> 태그에 'dashboard-main' 클래스 추가 --%>
 <main class="dashboard-main attendance-container">
 
     <div class="page-header">
         <h1>근태 관리</h1>
         <div class="page-actions">
+            <a href="${pageContext.request.contextPath}/attendance/dashboard.at" class="btn btn-secondary">
+                <span>전체 근태 현황</span>
+            </a>
             <button type="button" class="btn btn-secondary">
                 <span>퇴근하기</span>
 
@@ -182,8 +183,14 @@
 
                         </header>
                         <div class="card-body">
-                            <dl><dt>기간</dt><dd>2025-11-10 ~ 2025-11-11</dd></dl>
-                            <dl><dt>사유</dt><dd>개인 사유</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-10 ~ 2025-11-11</dd>
+                            </dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>개인 사유</dd>
+                            </dl>
 
                         </div>
                     </article>
@@ -195,8 +202,14 @@
                         </header>
                         <div class="card-body">
 
-                            <dl><dt>기간</dt><dd>2025-11-04 ~ 2025-11-04</dd></dl>
-                            <dl><dt>사유</dt><dd>병원 방문 (14:00~16:00)</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-04 ~ 2025-11-04</dd>
+                            </dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>병원 방문 (14:00~16:00)</dd>
+                            </dl>
                         </div>
                     </article>
 
@@ -207,9 +220,15 @@
                             <span class="badge badge-danger">반려</span>
                         </header>
                         <div class="card-body">
-                            <dl><dt>기간</dt><dd>2025-11-01 ~ 2025-11-01</dd></dl>
+                            <dl>
+                                <dt>기간</dt>
+                                <dd>2025-11-01 ~ 2025-11-01</dd>
+                            </dl>
 
-                            <dl><dt>사유</dt><dd>요청 반려 (사유: 당일 인력 부족)</dd></dl>
+                            <dl>
+                                <dt>사유</dt>
+                                <dd>요청 반려 (사유: 당일 인력 부족)</dd>
+                            </dl>
                         </div>
                     </article>
                 </div>
@@ -256,10 +275,19 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-11-01 ~ 2025-11-03</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-25</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-11-01 ~ 2025-11-03</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-25</dd>
+                                    </dl>
 
-                                    <dl class="full-width"><dt>사유</dt><dd>개인 사유</dd></dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>개인 사유</dd>
+                                    </dl>
                                 </div>
                             </div>
 
@@ -288,10 +316,20 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-30 ~ 2025-10-30</dd><dd class="time">14:00 ~ 18:00</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-27</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-30 ~ 2025-10-30</dd>
+                                        <dd class="time">14:00 ~ 18:00</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-27</dd>
+                                    </dl>
 
-                                    <dl class="full-width"><dt>사유</dt><dd>병원 방문</dd></dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>병원 방문</dd>
+                                    </dl>
                                 </div>
                             </div>
 
@@ -320,10 +358,19 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-11-05 ~ 2025-11-06</dd></dl>
-                                    <dl><dt>신청 일시</dt><dd>2025-10-26</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-11-05 ~ 2025-11-06</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>신청 일시</dt>
+                                        <dd>2025-10-26</dd>
+                                    </dl>
 
-                                    <dl class="full-width"><dt>사유</dt><dd>출장</dd></dl>
+                                    <dl class="full-width">
+                                        <dt>사유</dt>
+                                        <dd>출장</dd>
+                                    </dl>
                                 </div>
                             </div>
 
@@ -360,9 +407,15 @@
 
                                 </div>
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-20 ~ 2025-10-22</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-20 ~ 2025-10-22</dd>
+                                    </dl>
 
-                                    <dl><dt>사유</dt><dd>가족 여행</dd></dl>
+                                    <dl>
+                                        <dt>사유</dt>
+                                        <dd>가족 여행</dd>
+                                    </dl>
                                 </div>
                             </div>
 
@@ -387,9 +440,16 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <dl><dt>기간</dt><dd>2025-10-18 ~ 2025-10-18</dd><dd class="time">15:00 ~ 17:00</dd></dl>
+                                    <dl>
+                                        <dt>기간</dt>
+                                        <dd>2025-10-18 ~ 2025-10-18</dd>
+                                        <dd class="time">15:00 ~ 17:00</dd>
+                                    </dl>
 
-                                    <dl><dt>사유</dt><dd>은행 업무</dd></dl>
+                                    <dl>
+                                        <dt>사유</dt>
+                                        <dd>은행 업무</dd>
+                                    </dl>
                                 </div>
                             </div>
                             <span class="badge status-rejected">반려</span>
