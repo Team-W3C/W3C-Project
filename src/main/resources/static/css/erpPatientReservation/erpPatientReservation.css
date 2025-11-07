@@ -37,7 +37,7 @@ body {
     font-weight: 400;
 }
 
-.btn-primary {
+.btn-primary-add {
     background: #0E787C;
     color: white;
     border: none;
@@ -52,11 +52,11 @@ body {
     transition: background 0.2s;
 }
 
-.btn-primary:hover {
+.btn-primary-add:hover {
     background: #0A5F62;
 }
 
-.btn-primary svg {
+.btn-primary-add svg {
     width: 16px;
     height: 16px;
 }
@@ -403,6 +403,11 @@ body {
 .badge--waiting {
     background: #F3F4F6;
     color: #9CA3AF;
+}
+
+.badge--waiting:hover {
+    border: 1px solid #0B5F63;
+    cursor: pointer;
 }
 
 .badge--progress {
