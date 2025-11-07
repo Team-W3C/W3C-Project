@@ -30,7 +30,7 @@
                 <span class="sidebar__text">대시보드</span>
             </a>
 
-            <a href="${pageContext.request.contextPath}/erpReservation/reservation.erp" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erpReservation/reservation.pr" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M6.66667 1.66667V5M13.3333 1.66667V5M15.8333 3.33333H4.16667C3.24619 3.33333 2.5 4.07953 2.5 5V16.6667C2.5 17.5871 3.24619 18.3333 4.16667 18.3333H15.8333C16.7538 18.3333 17.5 17.5871 17.5 16.6667V5C17.5 4.07953 16.7538 3.33333 15.8333 3.33333ZM2.5 8.33333H17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>

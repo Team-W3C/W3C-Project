@@ -176,9 +176,15 @@ function createReservationCard(reservation, status) {
     if (status === 'waiting') {
         statusBadge = `<span class="badge badge--waiting" onclick="openDetailModal(${reservation.id}, '${status}')">예약됨</span>`;
     } else if (status === 'progress') {
+<<<<<<< HEAD
         statusBadge = `<span class="badge badge--progress" onclick="openDetailModal(${reservation.id}, '${status}')">진행중</span>`;
     } else {
         statusBadge = `<span class="badge badge--complete" onclick="openDetailModal(${reservation.id}, '${status}')">완료됨</span>`;
+=======
+        statusBadge = `<span class="badge badge--progress">진행중</span>`;
+    } else {
+        statusBadge = `<span class="badge badge--complete">완료됨</span>`;
+>>>>>>> 3c242dd (feat: patient reservation modal)
     }
 
     const vipBadge = reservation.isVIP ? '<span class="badge badge--vip">VIP</span>' : '';
@@ -439,7 +445,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 예약 등록 모달 이벤트
     if (addModal) {
         // X 버튼, 취소 버튼 클릭
+<<<<<<< HEAD
         const closeButtons = addModal.querySelectorAll('.close-button, #cancelButton');
+=======
+        const closeButtons = addModal.querySelectorAll('.btn-tertiary, .close-button, #cancelButton');
+>>>>>>> 3c242dd (feat: patient reservation modal)
         closeButtons.forEach(btn => {
             btn.addEventListener('click', closeAddModal);
         });

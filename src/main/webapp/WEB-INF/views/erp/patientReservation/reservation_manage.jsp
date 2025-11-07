@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예약 상세 정보</title>
-    <link rel="stylesheet" href="/ERP 예약 상세 관리/reservation_manage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpPatientReservation/reservation_manage.css">
 </head>
 <body>
     <!-- 모달 배경 오버레이 -->

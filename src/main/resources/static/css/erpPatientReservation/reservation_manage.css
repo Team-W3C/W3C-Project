@@ -179,6 +179,7 @@ body {
 
 .btn-primary {
     flex: 1;
+    justify-content: center;
     background-color: #0e787c;
     color: white;
 }
