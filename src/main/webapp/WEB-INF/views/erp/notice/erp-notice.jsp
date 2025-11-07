@@ -68,8 +68,8 @@
     </section>
 
     <nav class="community-tabs">
-        <button class="tab-btn tab-btn-active">공지사항</button>
-        <button class="tab-btn">문의사항</button>
+        <button class="tab-btn tab-btn-active">공지사항</>
+        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erpNotice/inquiry.erp'">문의사항</button>
     </nav>
 
     <div class="community-search">
