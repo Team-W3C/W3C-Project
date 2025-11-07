@@ -2,11 +2,10 @@
 
 /* 메인 컨테이너 */
 .inquiry-main {
+    margin-left: 256px;
+    margin-top: 64px;
     padding: 32px;
-    background-color: #f8f9fa;
-    min-height: 100vh;
-    max-width: 1400px;
-    margin: 0 auto;
+    min-height: calc(100vh - 64px);
 }
 
 /* 페이지 헤더 */
@@ -353,7 +352,8 @@
 /* 반응형: 태블릿 (1024px 이하) */
 @media (max-width: 1024px) {
     .inquiry-main {
-        padding: 20px;
+        margin-left: 80px;
+        padding: 24px;
     }
 
     .inquiry-title {

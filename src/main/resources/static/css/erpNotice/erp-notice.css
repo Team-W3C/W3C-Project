@@ -1,10 +1,10 @@
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    margin: 0;
+    padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: #f8f9fa;
     color: #1a1a1a;
@@ -12,11 +12,10 @@ body {
 
 /* 메인 컨테이너 */
 .community-main {
+    margin-left: 256px;
+    margin-top: 64px;
     padding: 32px;
-    background-color: #f8f9fa;
-    min-height: 100vh;
-    max-width: 1400px;
-    margin: 0 auto;
+    min-height: calc(100vh - 64px);
 }
 
 /* 페이지 헤더 */
@@ -608,7 +607,8 @@ body {
 /* 반응형: 태블릿 */
 @media (max-width: 1024px) {
     .community-main {
-        padding: 20px;
+        margin-left: 80px;
+        padding: 24px;
     }
 }
 
