@@ -73,146 +73,148 @@
 
 <body>
 <jsp:include page="../../common/homePageMember/header_member.jsp"/>
-<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp" />
+<div class="main-container">
+    <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 
-<main class="reservation-content">
-    <h1>진료예약</h1>
+    <main class="reservation-content">
+        <h1>진료예약</h1>
 
-    <section class="reservation-cards-container">
-        <div class="reservation-column">
-            <article class="reservation-card">
-                <div class="reservation-card-header">
-                    <h2>
+        <section class="reservation-cards-container">
+            <div class="reservation-column">
+                <article class="reservation-card">
+                    <div class="reservation-card-header">
+                        <h2>
+                            <img
+                                    src="${pageContext.request.contextPath}/img/v216_2656.png"
+                                    alt=""
+                                    class="icon-small"
+                            />
+                            진료를 처음 보시는 경우
+                        </h2>
+                    </div>
+                    <div class="reservation-card-body">
+                        <p>
+                            연락처를 남겨 주시면 상담 간호사가 전화를 드려 예약을
+                            도와드립니다.
+                        </p>
+                        <div class="reservation-card-actions">
+                            <a href="#" class="btn-primary">첫방문 고객 예약하기</a>
+                        </div>
+                        <div class="reservation-card-info info-box-phone">
+                            <span class="info-label">첫방문 고객<br/>예약번호 안내</span>
+                            <span class="info-number">02-1111-1111</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="reservation-card">
+                    <div class="reservation-card-header">
+                        <h2>
+                            <img
+                                    src="${pageContext.request.contextPath}/img/v216_2692.png"
+                                    alt=""
+                                    class="icon-small"
+                            />
+                            회원이 본인 예약을 할 경우
+                        </h2>
+                    </div>
+                    <div class="reservation-card-body">
+                        <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
+                        <div class="reservation-card-actions">
+                            <a
+                                    href="${pageContext.request.contextPath}/reservation/detail"
+                                    class="btn-primary"
+                            >본인 예약하기</a
+                            >
+                            <a href="#" class="btn-primary">본인 예약 조회하기</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="reservation-column">
+                <article class="reservation-card">
+                    <div class="reservation-card-header">
+                        <h2>
+                            <img
+                                    src="${pageContext.request.contextPath}/img/v216_2674.png"
+                                    alt=""
+                                    class="icon-small"
+                            />
+                            회원가입을 하지 않아도
+                        </h2>
+                    </div>
+                    <div class="reservation-card-body">
+                        <p>
+                            진료예약 및 조회가 가능합니다. 단, 일부 서비스 이용이 제한될 수
+                            있습니다.
+                        </p>
+                        <div class="reservation-card-actions">
+                            <a href="#" class="btn-primary" id="open-guest-modal"
+                            >비회원 예약하기</a
+                            >
+                            <a href="#" class="btn-primary" id="open-guest-check-modal"
+                            >비회원 예약 조회하기</a
+                            >
+                        </div>
+                        <div class="reservation-card-info">
+                            회원가입을 하실 경우 『나의차트』에서 진료 및
+                            <strong>투약내역, 복약상담, 진단검사결과</strong> 등 개인화
+                            서비스를 이용하실 수 있습니다.
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="reservation-phone-banner">
+            <div class="phone-number">전화문의 1111-1111</div>
+            <div class="phone-notice"></div>
+        </section>
+
+        <nav class="reservation-quick-nav">
+            <ul>
+                <li>
+                    <a href="#">
                         <img
-                                src="${pageContext.request.contextPath}/img/v216_2656.png"
+                                src="${pageContext.request.contextPath}/img/icon-signup.png"
                                 alt=""
-                                class="icon-small"
                         />
-                        진료를 처음 보시는 경우
-                    </h2>
-                </div>
-                <div class="reservation-card-body">
-                    <p>
-                        연락처를 남겨 주시면 상담 간호사가 전화를 드려 예약을
-                        도와드립니다.
-                    </p>
-                    <div class="reservation-card-actions">
-                        <a href="#" class="btn-primary">첫방문 고객 예약하기</a>
-                    </div>
-                    <div class="reservation-card-info info-box-phone">
-                        <span class="info-label">첫방문 고객<br/>예약번호 안내</span>
-                        <span class="info-number">02-1111-1111</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="reservation-card">
-                <div class="reservation-card-header">
-                    <h2>
+                        <span>회원가입</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
                         <img
-                                src="${pageContext.request.contextPath}/img/v216_2692.png"
+                                src="${pageContext.request.contextPath}/img/icon-login.png"
                                 alt=""
-                                class="icon-small"
                         />
-                        회원이 본인 예약을 할 경우
-                    </h2>
-                </div>
-                <div class="reservation-card-body">
-                    <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
-                    <div class="reservation-card-actions">
-                        <a
-                                href="${pageContext.request.contextPath}/reservation/detail"
-                                class="btn-primary"
-                        >본인 예약하기</a
-                        >
-                        <a href="#" class="btn-primary">본인 예약 조회하기</a>
-                    </div>
-                </div>
-            </article>
-        </div>
-
-        <div class="reservation-column">
-            <article class="reservation-card">
-                <div class="reservation-card-header">
-                    <h2>
+                        <span>로그인</span>
+                    </a>
+                    <a href="#" class="nav-sublink">아이디/비밀번호찾기</a>
+                </li>
+                <li>
+                    <a href="#">
                         <img
-                                src="${pageContext.request.contextPath}/img/v216_2674.png"
+                                src="${pageContext.request.contextPath}/img/icon-doctor.png"
                                 alt=""
-                                class="icon-small"
                         />
-                        회원가입을 하지 않아도
-                    </h2>
-                </div>
-                <div class="reservation-card-body">
-                    <p>
-                        진료예약 및 조회가 가능합니다. 단, 일부 서비스 이용이 제한될 수
-                        있습니다.
-                    </p>
-                    <div class="reservation-card-actions">
-                        <a href="#" class="btn-primary" id="open-guest-modal"
-                        >비회원 예약하기</a
-                        >
-                        <a href="#" class="btn-primary" id="open-guest-check-modal"
-                        >비회원 예약 조회하기</a
-                        >
-                    </div>
-                    <div class="reservation-card-info">
-                        회원가입을 하실 경우 『나의차트』에서 진료 및
-                        <strong>투약내역, 복약상담, 진단검사결과</strong> 등 개인화
-                        서비스를 이용하실 수 있습니다.
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <section class="reservation-phone-banner">
-        <div class="phone-number">전화문의 1111-1111</div>
-        <div class="phone-notice"></div>
-    </section>
-
-    <nav class="reservation-quick-nav">
-        <ul>
-            <li>
-                <a href="#">
-                    <img
-                            src="${pageContext.request.contextPath}/img/icon-signup.png"
-                            alt=""
-                    />
-                    <span>회원가입</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img
-                            src="${pageContext.request.contextPath}/img/icon-login.png"
-                            alt=""
-                    />
-                    <span>로그인</span>
-                </a>
-                <a href="#" class="nav-sublink">아이디/비밀번호찾기</a>
-            </li>
-            <li>
-                <a href="#">
-                    <img
-                            src="${pageContext.request.contextPath}/img/icon-doctor.png"
-                            alt=""
-                    />
-                    <span>의료진/진료과 보기</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img
-                            src="${pageContext.request.contextPath}/img/icon-chart.png"
-                            alt=""
-                    />
-                    <span>나의차트</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</main>
+                        <span>의료진/진료과 보기</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img
+                                src="${pageContext.request.contextPath}/img/icon-chart.png"
+                                alt=""
+                        />
+                        <span>나의차트</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+</div>
 <div class="guest-modal-overlay">
     <div class="guest-modal-backdrop"></div>
     <main class="patient-modal">
