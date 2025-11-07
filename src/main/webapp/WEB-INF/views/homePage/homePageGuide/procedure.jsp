@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>진료절차 - MediFlow</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/diagnosis/procedure.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/procedure/procedure.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -21,6 +21,8 @@
 <!-- Header Include -->
 <jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
 <div class="procedure-wrapper">
+<!-- sidebar include -->
+<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 
     <!-- 메인 콘텐츠 -->
     <main class="procedure-main">
@@ -263,7 +265,8 @@
             <h2 class="section-title">의료전달체계 안내</h2>
 
             <div class="system-info-box">
-                <li>서울아산병원은 국민건강보험법에 의거, 1-2차 병·의원에서 발급한 요양급여의뢰서를 제출해야만 보험 급여 혜택이 가능합니다. 요양급여의뢰서 없이도 진료는 가능하지만 보험혜택은 못 받으시며, 차후 제출하시면 그날부터 보험 혜택을 받을 수 있습니다.<br>
+                <li>서울아산병원은 국민건강보험법에 의거, 1-2차 병·의원에서 발급한 요양급여의뢰서를 제출해야만 보험 급여 혜택이 가능합니다. <br>
+                    요양급여의뢰서 없이도 진료는 가능하지만 보험혜택은 못 받으시며, 차후 제출하시면 그날부터 보험 혜택을 받을 수 있습니다.<br>
                     단, 가정의학과, 치과는 요양급여의뢰서 없이도 건강보험 혜택이 가능합니다.</li>
                 <li>의료급여는 모든 진료과에 대하여 병원급 의료급여의뢰서 필요 (의원, 보건소 불가)<br>
                     2종 대상자 중 '장애인 복지카드' 소지 환자는 창구에 장애인등록을 신청하십시오. (의료비 경감 혜택)</li>

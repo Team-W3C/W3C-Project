@@ -26,17 +26,15 @@
 
     <nav class="booking-sidebar-nav">
         <ul class="booking-sidebar-menu">
-            <%--TODO--%>
             <li>
-                <a href="#페이지 만들면 수정해야함" class="booking-sidebar-menu-item">병원안내</a>
+                <a href="#" class="booking-sidebar-menu-item">병원안내</a>
             </li>
             <li class="is-active">
                 <a href="#" class="booking-sidebar-menu-item">외래진료안내</a>
                 <ul class="booking-sidebar-submenu">
-                    <li><a href="${pageContext.request.contextPath}/member/reservation/main.re"
-                           class="booking-sidebar-submenu-item is-active">진료예약</a></li>
-                    <li><a href="#페이지 만들면 수정해야함" class="booking-sidebar-submenu-item">진료절차</a></li>
-                    <li><a href="#페이지 만들면 수정해야함" class="booking-sidebar-submenu-item">진료안내</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/reservation/main.re" class="booking-sidebar-submenu-item is-active">진료예약</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/procedure.bo" class="booking-sidebar-submenu-item">진료절차</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/guide.bo" class="booking-sidebar-submenu-item">진료안내</a></li>
                 </ul>
             </li>
             <li>
