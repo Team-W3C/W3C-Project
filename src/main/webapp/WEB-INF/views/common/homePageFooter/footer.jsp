@@ -2,7 +2,7 @@
 <body>
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
+        <div class="footer-container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3 class="footer-title">고객센터 ></h3>

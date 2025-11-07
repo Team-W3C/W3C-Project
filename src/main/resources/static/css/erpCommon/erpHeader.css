@@ -1,0 +1,157 @@
+/* 헤더 */
+.header {
+    position: fixed;
+    left: 256px;
+    top: 0;
+    right: 0;
+    height: 64px;
+    background: white;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 32px;
+    z-index: 90;
+}
+
+.header__search-btn-label{
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+.header__search-btn-label {
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+.header__search {
+    position: relative;
+    width: 576px;
+}
+
+.header__search-input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 16px 8px 40px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.header__search-input:focus {
+    border-color: #0E787C;
+}
+
+.header__search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.header__search-btn {
+    height: 42px;
+    padding: 0 24px;
+    background: #0E787C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05);
+}
+
+.header__search-btn:hover {
+    background: #0B5F63;
+}
+
+.header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header__notification {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    border-radius: 8px;
+}
+
+.header__notification:hover {
+    background: #F3F4F6;
+}
+
+.header__notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: #FB2C36;
+    border-radius: 50%;
+}
+
+.header__divider {
+    width: 1px;
+    height: 40px;
+    background: #E5E7EB;
+}
+
+.header__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.header__user-info {
+    text-align: right;
+}
+
+.header__user-name {
+    margin: 0;
+    font-size: 14px;
+    color: #1F2937;
+    line-height: 20px;
+}
+
+.header__user-email {
+    margin: 0;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 16px;
+}
+
+.header__user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0E787C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .header {
+        left: 80px;
+    }
+
+    .header__search {
+        width: 400px;
+    }
+
+}

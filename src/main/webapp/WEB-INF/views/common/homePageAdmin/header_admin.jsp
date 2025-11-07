@@ -2,7 +2,7 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
+        <div class="header-container">
             <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="로고">
             <nav class="nav">
                 <a href="#" class="nav-link">관리자 전용</a>

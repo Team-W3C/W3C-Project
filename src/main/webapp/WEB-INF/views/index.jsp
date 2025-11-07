@@ -26,7 +26,7 @@
 
     <!-- Main Content -->
     <main class="main">
-        <div class="container">
+        <div class="main-container">
             <section class="hero">
                 <h1 class="hero-title">MediFlow</h1>
                 <p class="hero-description">
