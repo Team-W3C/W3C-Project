@@ -1,5 +1,3 @@
-/* src/main/resources/static/css/appointment-sidebar.css */
-
 /* --- 1. 전역 설정 및 변수 --- */
 :root {
     /* Fonts */
@@ -9,12 +7,174 @@
     --color-bg: #ffffff;
     --color-bg-active: rgba(14, 120, 124, 1);
     --color-bg-subnav: rgba(242, 242, 242, 1);
-    /* ... (이하 CSS 내용은 원본과 동일) ... */
+
+    --color-text-title: rgba(38, 115, 118, 1);
+    --color-text-main: rgba(68, 68, 68, 1);
+    --color-text-active: rgba(255, 255, 255, 1);
+    --color-text-subnav-active: rgba(14, 120, 124, 1);
+
+    --color-border: #dfdfdf; /* 스크린샷 기준 */
+    --color-contact-border: #AAA; /* 스크린샷 기준 */
 }
 
-/* --- (중략) --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-main);
+}
+
+/* --- 2. 사이드바 레이아웃 --- */
+.booking-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 218px; /* v216_2621 */
+    height: 807px; /* v216_2621 */
+    background-color: var(--color-bg);
+    overflow: hidden; /* v216_2621 */
+}
+
+.booking-sidebar-title {
+    color: var(--color-text-title);
+    font-size: 26px; /* v216_2623 */
+    font-weight: bold; /* v216_2623 */
+    height: 72px; /* v216_2622 */
+
+    /* Flex로 수직/수평 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    /* 원본 기준:
+       width: 218px, text-box: left: 36px, width: 154px
+       -> 218 - 36 - 154 = 28px (오른쪽 여백)
+    */
+    padding-right: 28px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.booking-sidebar-nav {
+    /* v216_2624 (top: 105px, height: 441px) */
+    /* 원본의 고정 높이 대신, 메뉴 내용에 따라 유연하게 */
+}
+
+/* --- 3. 메인 메뉴 --- */
+.booking-sidebar-menu {
+    list-style: none;
+}
+
+.booking-sidebar-menu-item {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text-main);
+    font-size: 18px; /* v216_2626 */
+    font-weight: bold; /* v216_2626 */
+
+    /* 원본 기준:
+       height: 50px, padding: 17px 0
+       text-box: width: 189px -> 218 - 189 = 29px (오른쪽 여백)
+    */
+    height: 50px; /* v216_2625 */
+    padding: 17px 29px 17px 0; /* v216_2625, v216_2626 */
+    text-align: right;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* 메인 메뉴 활성 상태 */
+.booking-sidebar-menu > li.is-active > .booking-sidebar-menu-item {
+    background-color: var(--color-bg-active); /* v216_2628 */
+    color: var(--color-text-active); /* v216_2629 */
+    border-bottom: none;
+}
+
+/* --- 4. 서브 메뉴 --- */
+.booking-sidebar-submenu {
+    list-style: none;
+    background-color: var(--color-bg-subnav); /* v216_2630 */
+    padding: 21px 0; /* v216_2630 */
+}
+
+.booking-sidebar-submenu-item {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text-main); /* v216_2634 */
+    font-size: 15px; /* v216_2634 */
+    font-weight: bold; /* v216_2634 */
+
+    /* 원본 기준:
+       height: 32px, text-box: width: 189px
+       -> 218 - 189 = 29px (오른쪽 여백)
+    */
+    height: 32px; /* v216_2633 */
+    padding-right: 29px;
+    text-align: right;
+}
+
+/* 서브 메뉴 활성 상태 */
+.booking-sidebar-submenu-item.is-active {
+    color: var(--color-text-subnav-active); /* v216_2632 */
+}
+
+/* --- 5. 하단 예약문의 --- */
+.booking-sidebar-contact {
+    /* 원본 기준 v216_2645:
+       top: 586px.
+       (nav top: 105px, nav height: 441px -> 546px)
+       586px - 546px = 40px (상단 마진)
+    */
+    margin-top: 40px;
+
+    /* v216_2645 (left: 15px, margin: 3px) */
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 3px;
+
+    padding: 18px 32px; /* v216_2645 */
+    border: 1px solid var(--color-contact-border);
+    display: flex;
+    flex-direction: column;
+    gap: 3px; /* 스크린샷 기준 간격 */
+}
+
+.booking-sidebar-contact-label {
+    color: var(--color-text-main); /* v216_2647 */
+    font-size: 15px; /* v216_2647 */
+    font-weight: bold; /* v216_2647 */
+}
+
+.booking-sidebar-contact-phone {
+    color: var(--color-text-main); /* v216_2649 */
+    font-size: 23px; /* v216_2649 */
+    font-weight: bold; /* v216_2649 */
+}
 
 /* --- 6. 반응형 (태블릿) --- */
 @media (max-width: 1024px) {
-    /* ... (이하 CSS 내용은 원본과 동일) ... */
+    .booking-sidebar {
+        /* 태블릿에서는 전체 높이를 채우도록 변경 */
+        height: auto;
+        min-height: 100vh;
+        width: 100%; /* 너비를 100%로 설정 (또는 필요시 고정) */
+    }
+
+    /* 폰트 크기 미세 조정 */
+    .booking-sidebar-title {
+        font-size: 24px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: auto;
+    }
+
+    .booking-sidebar-menu-item {
+        font-size: 16px;
+        height: 48px;
+    }
+
+    .booking-sidebar-submenu-item {
+        font-size: 14px;
+        height: 30px;
+    }
 }
