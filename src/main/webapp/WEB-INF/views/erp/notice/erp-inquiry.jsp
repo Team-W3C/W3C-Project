@@ -16,7 +16,6 @@
 
 <!-- 병원 ERP 시스템 > 커뮤니티 문의사항 페이지 -->
 <main class="inquiry-main">
-    <!-- 페이지 헤더 -->
     <div class="inquiry-header">
         <h1 class="community-title">커뮤니티</h1>
         <button class="btn-primary inquiry-create-btn">
@@ -71,7 +70,7 @@
 
     <!-- 탭 네비게이션 -->
     <nav class="inquiry-tabs">
-        <button class="tab-btn">공지사항</button>
+        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erpNotice/notice.erp'">공지사항</button>
         <button class="tab-btn tab-btn-active">문의사항</button>
     </nav>
 
