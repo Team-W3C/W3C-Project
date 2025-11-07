@@ -1,10 +1,280 @@
-/* ========================================
-   시설 예약 관리 페이지 스타일
-   ======================================== */
+/* ================================== */
+/* 1. 대시보드 레이아웃 (test.css 기반) */
+/* ================================== */
+
+/* 전역 설정 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background: #F9FAFB;
+}
+
+/* 사이드바 */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 256px;
+    height: 100vh;
+    background: white;
+    border-right: 1px solid #E5E7EB;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.sidebar__logo {
+    height: 85px;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar__logo-img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.sidebar__nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 24px;
+    text-decoration: none;
+    color: #6B7280;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.sidebar__link:hover {
+    background: rgba(14, 120, 124, 0.05);
+}
+
+.sidebar__link--active {
+    background: rgba(14, 120, 124, 0.1);
+    color: #0E787C;
+    border-right: 4px solid #0E787C;
+}
+
+.sidebar__icon {
+    flex-shrink: 0;
+}
+
+.sidebar__link--active .sidebar__icon {
+    color: #0E787C;
+}
+
+.sidebar__text {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.sidebar__footer {
+    height: 53px;
+    border-top: 1px solid #E5E7EB;
+    padding: 17px 16px 0;
+}
+
+.sidebar__copyright {
+    margin: 0;
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 20px;
+}
+
+/* 헤더 */
+.header {
+    position: fixed;
+    left: 256px;
+    top: 0;
+    right: 0;
+    height: 64px;
+    background: white;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 32px;
+    z-index: 90;
+}
+
+.header__search {
+    position: relative;
+    width: 576px;
+}
+
+.header__search-input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 16px 8px 40px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.header__search-input:focus {
+    border-color: #0E787C;
+}
+
+.header__search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.header__search-btn {
+    height: 42px;
+    padding: 0 24px;
+    background: #0E787C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05);
+}
+
+.header__search-btn:hover {
+    background: #0B5F63;
+}
+
+.header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header__notification {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    border-radius: 8px;
+}
+
+.header__notification:hover {
+    background: #F3F4F6;
+}
+
+.header__notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: #FB2C36;
+    border-radius: 50%;
+}
+
+.header__divider {
+    width: 1px;
+    height: 40px;
+    background: #E5E7EB;
+}
+
+.header__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.header__user-info {
+    text-align: right;
+}
+
+.header__user-name {
+    margin: 0;
+    font-size: 14px;
+    color: #1F2937;
+    line-height: 20px;
+}
+
+.header__user-email {
+    margin: 0;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 16px;
+}
+
+.header__user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0E787C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ================================== */
+/* ※ .dashboard-main 스타일 수정 ※ */
+/* 헤더와 사이드바에 가려지지 않도록 패딩/마진 추가 */
+/* [수정] : 콘텐츠 자체 패딩(padding: 24px)은 제거하고,
+          레이아웃을 위한 padding-top과 margin-left만 남깁니다. */
+/* ================================== */
+.dashboard-main {
+    padding-top: 64px; /* 헤더 높이 */
+    margin-left: 256px; /* 사이드바 너비 */
+    /* 내용물(.reservation-container)이
+      자체 패딩을 가지므로 여기서는 패딩을 제거합니다.
+    */
+}
+
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F1F1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* ============================================= */
+/* 2. 예약 페이지 콘텐츠 (systemReservationEmployee.css) */
+/* ============================================= */
 
 /* ========================================
-   공통 변수
-   ======================================== */
+    공통 변수
+    ======================================== */
 :root {
     /* Colors */
     --primary-color: #0e787c;
@@ -48,47 +318,24 @@
 }
 
 /* ========================================
-   기본 및 레이아웃
-   ======================================== */
-/* Meyer Reset (간략) */
-html, body, div, span, h1, h2, ul, li, section, header, main, button, a, form, select {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    box-sizing: border-box;
-}
-ul {
-    list-style: none;
-}
-html, body {
-    height: 100%;
-    font-family: "Arial-Regular", Helvetica, sans-serif; /* 기본 폰트 */
-    background-color: var(--bg-gray);
-    color: var(--text-primary);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-}
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
+    레이아웃
+    ======================================== */
+/* .reservation-container가 .dashboard-main 내부에 위치합니다.
+  .dashboard-main이 레이아웃을 잡고,
+  .reservation-container는 콘텐츠 영역의 패딩과 최대 너비를 정의합니다.
+*/
 .reservation-container {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-xl); /* 32px의 콘텐츠 내부 여백 */
     max-width: 1440px;
     margin: 0 auto;
 }
 
 /* ========================================
-   공통 컴포넌트
-   ======================================== */
-
+    공통 컴포넌트
+    ======================================== */
 /* 버튼 */
 .btn-calendar {
     display: flex;
@@ -110,7 +357,6 @@ a {
 .btn-calendar .icon {
     width: 16px;
     height: 16px;
-    fill: currentColor;
 }
 .btn-nav {
     display: flex;
@@ -131,18 +377,7 @@ a {
 .btn-nav .icon {
     width: 20px;
     height: 20px;
-    fill: currentColor;
 }
-/* [신규] 비활성화된 네비게이션 버튼 (이전 달) */
-.btn-nav.is-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none; /* a태그 클릭 방지 */
-}
-.btn-nav.is-disabled:hover {
-    background-color: transparent;
-}
-
 
 /* 카드 */
 .reservation-rooms,
@@ -156,13 +391,12 @@ a {
 }
 
 /* ========================================
-   페이지 헤더
-   ======================================== */
+    페이지 헤더
+    ======================================== */
 .reservation-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* '달력 보기' 버튼이 삭제되었으므로 min-height 등 불필요 */
 }
 .reservation-header h1 {
     font-size: 16px;
@@ -171,8 +405,8 @@ a {
 }
 
 /* ========================================
-   검사실 선택
-   ======================================== */
+    검사실 선택
+    ======================================== */
 .reservation-rooms h2 {
     font-size: 16px;
     font-weight: 400;
@@ -195,27 +429,17 @@ a {
     border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s;
-    font-family: inherit; /* 버튼 폰트 상속 */
 }
 .room-btn:hover {
     background-color: var(--bg-gray);
 }
 .room-btn.active {
-    background-color: var(--primary-light);
+    border-color: var(--primary-color);
 }
-
 .room-indicator {
     width: 12px;
     height: 12px;
     border-radius: var(--radius-full);
-}
-
-.room-btn[data-room="all"] .room-indicator {
-    background-color: transparent;
-    display: none;
-}
-.room-btn[data-room="all"].active {
-    border-color: var(--primary-color);
 }
 .room-btn[data-room="mri"] .room-indicator {
     background-color: var(--mri-color);
@@ -247,7 +471,6 @@ a {
 .room-btn[data-room="endoscopy"].active {
     border-color: var(--endoscopy-color);
 }
-
 .room-name {
     font-size: 14px;
     font-weight: 400;
@@ -259,55 +482,24 @@ a {
 }
 
 /* ========================================
-   달력 네비게이션
-   ======================================== */
+    달력 네비게이션
+    ======================================== */
 .reservation-calendar-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-lg);
 }
-
-/* [신규] 네비게이션 폼 & 드롭다운 */
-.calendar-nav-form {
-    display: flex;
-    gap: var(--spacing-md);
-    align-items: center;
-}
-.calendar-select {
+.reservation-calendar-nav h2 {
     font-size: 18px;
     font-weight: 400;
     color: var(--text-primary);
-    border: none;
-    background-color: transparent;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%236b7280%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M5.293%207.293%20a1%201%200%20011.414%200L10%2010.586l3.293-3.293a1%201%200%20111.414%201.414l-4%204a1%201%200%2001-1.414%200l-4-4a1%201%200%20010-1.414z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px 16px;
-    padding-right: 32px;
+    text-align: center;
 }
-.calendar-select:hover {
-    background-color: var(--bg-gray);
-}
-.calendar-select:focus {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-}
-
 
 /* ========================================
-   달력
-   ======================================== */
-.reservation-calendar {
-    padding: 0;
-    overflow: hidden;
-}
+    달력
+    ======================================== */
 .calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -347,23 +539,19 @@ a {
 .calendar-cell:last-child {
     border-right: none;
 }
-
-/* 달력 셀 상태 (지난 날짜/오늘) */
 .calendar-cell.empty {
     background-color: var(--bg-gray);
-    cursor: not-allowed;
-    pointer-events: none;
 }
 .calendar-cell.is-past {
-    background-color: var(--bg-gray);
-    opacity: 0.6;
+    background-color: #f9fafb;
+    opacity: 0.7;
+}
+.calendar-cell.is-past .status-item {
     cursor: not-allowed;
-    pointer-events: none;
 }
 .calendar-cell.today {
     background-color: var(--primary-light);
 }
-
 .calendar-cell.sunday .date {
     color: var(--sunday-color);
 }
@@ -403,9 +591,6 @@ a {
     padding: 0 var(--spacing-sm);
     height: 24px;
     border-radius: var(--radius-sm);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .status-item.available {
     background-color: var(--available-bg);
@@ -420,10 +605,7 @@ a {
     width: 8px;
     height: 8px;
     border-radius: var(--radius-full);
-    flex-shrink: 0;
 }
-
-/* 검사실별 점 색상 */
 .status-item.mri .status-dot {
     background-color: var(--mri-color);
 }
@@ -439,7 +621,6 @@ a {
 .status-item.endoscopy .status-dot {
     background-color: var(--endoscopy-color);
 }
-
 .status-text {
     font-size: 12px;
     font-weight: 400;
@@ -456,8 +637,8 @@ a {
 }
 
 /* ========================================
-   상태 안내
-   ======================================== */
+    상태 안내
+    ======================================== */
 .reservation-legend h2 {
     font-size: 16px;
     font-weight: 400;
@@ -508,11 +689,342 @@ a {
 }
 
 /* ========================================
-   반응형 - 태블릿 (1024px 이하)
-   ======================================== */
+    모달 스타일
+    ======================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 12px;
+    max-width: 750px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.modal-room-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.modal-title-text h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.modal-title-text p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #6b7280;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+    color: #1f2937;
+}
+
+.modal-body {
+    padding: 32px;
+}
+
+.availability-notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #dcfce7;
+    border-radius: 8px;
+    margin-bottom: 32px;
+}
+
+.availability-notice-icon {
+    width: 24px;
+    height: 24px;
+    color: #008235;
+    flex-shrink: 0;
+}
+
+.availability-notice-text {
+    font-size: 14px;
+    color: #008235;
+    font-weight: 500;
+}
+
+.time-selection-section {
+    margin-bottom: 32px;
+}
+
+.section-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.time-btn {
+    padding: 12px;
+    border: 2px solid #0e787c;
+    border-radius: 8px;
+    background-color: white;
+    color: #0e787c;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.time-btn:hover {
+    background-color: #f0fdfa;
+}
+
+.time-btn.selected {
+    background-color: #0e787c;
+    color: white;
+}
+
+.time-btn:disabled {
+    border-color: #e5e7eb;
+    color: #9ca3af;
+    background-color: #f9fafb;
+    cursor: not-allowed;
+}
+
+.facility-info-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 24px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin-top: 32px; /* 위쪽 콘텐츠와 간격 */
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 24px 32px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.modal-btn-cancel {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.modal-btn-cancel:hover {
+    background-color: #e5e7eb;
+}
+
+.modal-btn-confirm {
+    background-color: #0e787c;
+    color: white;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #0a5c5f;
+}
+
+.modal-btn-confirm:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+}
+
+/* JS로 숨김/표시를 제어하기 위한 유틸리티 클래스 */
+.hidden {
+    display: none !important;
+}
+
+/* 상태별 안내창 (점검, 마감) */
+.status-notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+.notice-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.notice-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* '점검' 스타일 (빨간색) */
+.notice-closed {
+    background-color: var(--closed-bg);
+    color: var(--closed-text);
+}
+.notice-closed .notice-icon {
+    color: var(--closed-text);
+}
+
+/* '마감' 스타일 (노란색) */
+.notice-full {
+    background-color: var(--full-bg);
+    color: var(--full-text);
+}
+.notice-full .notice-icon {
+    color: var(--full-text);
+}
+
+/* 상태 상세 안내 (회색 배경) */
+.status-details {
+    padding: 24px;
+    background-color: #f9fafb; /* --bg-gray */
+    border-radius: 8px;
+}
+.details-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937; /* --text-primary */
+    margin-bottom: 16px;
+}
+.details-text {
+    font-size: 14px;
+    color: #6b7280; /* --text-secondary */
+    line-height: 1.6;
+}
+
+
+/* ========================================
+    반응형 (두 파일의 미디어 쿼리 통합)
+    ======================================== */
+
 @media (max-width: 1024px) {
+    /* --- 1. 레이아웃 (test.css) --- */
+    .header {
+        left: 80px;
+    }
+
+    .header__search {
+        width: 400px;
+    }
+
+    .sidebar {
+        width: 80px;
+    }
+
+    .sidebar__text {
+        display: none;
+    }
+
+    .sidebar__link {
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    .sidebar__link--active {
+        border-right: none;
+        border-bottom: 3px solid #0E787C;
+    }
+
+    .sidebar__copyright {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* [수정] .dashboard-main: 불필요한 padding: 24px; 제거 */
+    /* [버그 수정] padding-top: 64px; 를 유지해야 헤더에 가려지지 않음 */
+    .dashboard-main {
+        margin-left: 80px;
+        padding-top: 64px;
+    }
+
+    /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
     .reservation-container {
-        padding: var(--spacing-md);
+        padding: var(--spacing-md); /* 16px */
     }
     .room-list {
         gap: var(--spacing-sm);
@@ -520,13 +1032,6 @@ a {
     .room-btn {
         flex: 1 1 calc(50% - var(--spacing-sm));
         min-width: 150px;
-    }
-    .reservation-calendar {
-        overflow-x: auto;
-    }
-    .calendar-header,
-    .calendar-body {
-        min-width: 900px;
     }
     .calendar-cell {
         min-height: 120px;
@@ -554,19 +1059,48 @@ a {
         width: 36px;
         height: 20px;
     }
-    .calendar-select {
-        font-size: 16px; /* 태블릿에서 폰트 살짝 줄임 */
-    }
 }
 
-/* ========================================
-   반응형 - 모바일 (768px 이하)
-   ======================================== */
 @media (max-width: 768px) {
+    /* --- 1. 레이아웃 (test.css) --- */
+    .header {
+        left: 0;
+        padding: 0 16px;
+    }
+
+    .header__search {
+        width: 200px;
+    }
+
+    .header__user-info {
+        display: none;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* [수정] .dashboard-main: margin-left: 0으로 변경 */
+    /* [버그 수정] padding-top: 64px; 유지 */
+    .dashboard-main {
+        margin-left: 0;
+        padding-top: 64px;
+    }
+
+    /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
     .reservation-header {
         flex-direction: column;
         gap: var(--spacing-md);
         align-items: stretch;
+    }
+    .btn-calendar {
+        width: 100%;
+        justify-content: center;
     }
     .room-btn {
         flex: 1 1 100%;
@@ -579,52 +1113,31 @@ a {
         padding: var(--spacing-sm);
     }
     .status-list {
-        display: none;
+        display: none; /* 모바일에서는 상세 상태 숨김 */
     }
     .legend-list {
         flex-direction: column;
         gap: var(--spacing-sm);
     }
-    .calendar-nav-form {
-        gap: var(--spacing-sm); /* 모바일에선 드롭다운 간격 줄임 */
+
+    /* 모달 반응형 */
+    .modal-container {
+        width: 95%;
+        max-height: 95vh;
     }
-    .calendar-select {
-        font-size: 14px; /* 모바일에서 폰트 더 줄임 */
-        padding-right: 28px; /* 화살표 공간 */
-        background-position: right 4px center;
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 20px;
     }
-}
 
-/* ========================================
-   유틸리티 및 호버 효과
-   ======================================== */
+    .time-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-/* 필터링 시 숨김 처리 */
-.status-item.is-hidden {
-    display: none;
-}
-
-/* '가능' 항목만 클릭 가능하게 */
-.status-item.available {
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* '가능' 항목에 마우스 올렸을 때 */
-.status-item.available:hover {
-    background-color: var(--primary-color);
-    color: var(--bg-white);
-}
-.status-item.available:hover .status-text {
-    color: var(--bg-white);
-}
-.status-item.available:hover .status-dot {
-    background-color: var(--bg-white);
-}
-
-/* '마감'/'휴진' 항목은 클릭 불가능하게 */
-.status-item.full,
-.status-item.closed {
-    cursor: not-allowed;
-    opacity: 0.8;
+    .facility-info-section {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 }
