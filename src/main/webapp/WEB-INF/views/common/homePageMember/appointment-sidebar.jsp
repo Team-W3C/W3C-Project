@@ -27,7 +27,7 @@
     <nav class="booking-sidebar-nav">
         <ul class="booking-sidebar-menu">
             <li>
-                <a href="#" class="booking-sidebar-menu-item">병원안내</a>
+                <a href="${pageContext.request.contextPath}/detail" class="booking-sidebar-menu-item">병원안내</a>
             </li>
             <li class="is-active">
                 <a href="#" class="booking-sidebar-menu-item">외래진료안내</a>
