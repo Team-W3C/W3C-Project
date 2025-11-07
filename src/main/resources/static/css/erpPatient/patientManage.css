@@ -46,6 +46,8 @@ body {
     padding: 32px 286px;
     background-color: #f9fafb;
     min-height: 100vh;
+    margin-top: 60px;
+    margin-left : 100px;
 }
 
 /* ========================================

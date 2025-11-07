@@ -12,9 +12,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
       rel="stylesheet"
       href="${pageContext.request.contextPath}/css/erpPatient/patientManage.css"
     />
+      <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
   </head>
   <body>
-    <!-- 환자 관리 메인 콘텐츠 -->
+  <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
+  <jsp:include page="/WEB-INF/views/common/erp/header.jsp" />
     <main class="patient-main">
       <!-- 페이지 헤더 -->
       <section class="patient-header">
