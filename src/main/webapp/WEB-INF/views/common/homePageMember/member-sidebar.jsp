@@ -37,20 +37,18 @@
     </nav>
 
     <nav class="member-sidebar__nav-group">
-        <h3 class="sidebar-menu-title" id="open-password-modal">
-            <a href="${pageContext.request.contextPath}/member/info.me">
+        <h3 class="sidebar-menu-title">
                 회원정보
-            </a>
         </h3>
         <ul class="member-sidebar__nav-list">
-            <li class="member-sidebar__nav-item">
+            <li class="member-sidebar__nav-item" id="open-password-modal">
                 <a href="#" class="member-sidebar__nav-link member-sidebar__nav-link--active">회원정보수정</a>
             </li>
             <li class="member-sidebar__nav-item">
                 <a href="#" class="member-sidebar__nav-link member-sidebar__nav-link--medium">비밀번호 변경</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">회원 탈퇴</a>
+                <a href="${pageContext.request.contextPath}/member/info.me" class="member-sidebar__nav-link">회원 탈퇴</a>
             </li>
         </ul>
     </nav>
