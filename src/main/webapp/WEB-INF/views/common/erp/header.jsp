@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpHeader.css">
+
 </head>
 <body>
 <!-- 헤더 -->
@@ -16,7 +19,7 @@
                 <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#6B7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
             </svg>
         </div>
-        <button class="header__search-btn">검색</button>
+        <button class="header__search-btn"><label class="header__search-btn-label">검색</label></button>
         
         <div class="header__actions">
             <!-- 알림 버튼 -->
