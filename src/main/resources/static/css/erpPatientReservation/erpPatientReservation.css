@@ -406,11 +406,7 @@ body {
 }
 
 .badge--waiting:hover {
-<<<<<<< HEAD
     border: 1px solid #0B5F63;
-=======
-    border: 2px solid #0E787C;
->>>>>>> 3c242dd (feat: patient reservation modal)
     cursor: pointer;
 }
 

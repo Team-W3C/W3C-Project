@@ -176,9 +176,9 @@ function createReservationCard(reservation, status) {
     if (status === 'waiting') {
         statusBadge = `<span class="badge badge--waiting" onclick="openDetailModal(${reservation.id}, '${status}')">예약됨</span>`;
     } else if (status === 'progress') {
-        statusBadge = `<span class="badge badge--progress">진행중</span>`;
+        statusBadge = `<span class="badge badge--progress" onclick="openDetailModal(${reservation.id}, '${status}')">진행중</span>`;
     } else {
-        statusBadge = `<span class="badge badge--complete">완료됨</span>`;
+        statusBadge = `<span class="badge badge--complete" onclick="openDetailModal(${reservation.id}, '${status}')">완료됨</span>`;
     }
 
     const vipBadge = reservation.isVIP ? '<span class="badge badge--vip">VIP</span>' : '';
