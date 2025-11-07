@@ -14,11 +14,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/appointment-sidebar.css">
 </head>
 <body>
 <!-- Header Include -->
 <jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
-
+<div class="guide-wrapper">
+<!-- sidebar include -->
+<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 <main class="guide-main">
     <!-- 메인 콘텐츠 -->
     <section class="guide-content">
@@ -121,11 +124,10 @@
                     </p>
                 </div>
             </article>
-
         </div>
     </section>
 </main>
-
+</div>
 <!-- Footer include-->
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
