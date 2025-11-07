@@ -3,7 +3,9 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="로고">
+            <a href="${pageContext.request.contextPath}/member/backToHomePage.me">
+                <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="로고"/>
+            </a>
             <nav class="nav">
                 <a href="#" class="nav-link">예약</a>
                 <a href="#" class="nav-link">게시판</a>
@@ -13,4 +15,5 @@
             </nav>
         </div>
     </header>
+
 </body>

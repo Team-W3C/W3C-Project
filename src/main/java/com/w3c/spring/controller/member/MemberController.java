@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/member") // URL이 /member 로 시작하는 요청을 처리
 public class MemberController {
 
+    @GetMapping("/backToHomePage.me")
+    public String backHomePage(){
+        System.out.println("backHomePage");
+        return "index";
+    }
+
     @GetMapping("/loginPage.me")
     public String homePageLogin() {
         System.out.println("homePageLogin");
