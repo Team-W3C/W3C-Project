@@ -14,7 +14,9 @@
 <!-- 사이드바 -->
     <aside class="sidebar">
         <div class="sidebar__logo">
-            <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="W3C" class="sidebar__logo-img">
+            <a href="${pageContext.request.contextPath}/member/backToHomePage.me">
+                <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="W3C" class="sidebar__logo-img" >
+            </a>
         </div>
 
         <nav class="sidebar__nav">
@@ -93,6 +95,6 @@
             <p class="sidebar__copyright">© 2025 병원 ERP</p>
         </div>
     </aside>
-</aside>
+
 </body>
 </html>
