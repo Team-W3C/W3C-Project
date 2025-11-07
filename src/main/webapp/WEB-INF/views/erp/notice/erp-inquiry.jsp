@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-inquiry.css">
 </head>
 <body>
-<%-- [!!] 수정: 헤더 및 사이드바 include 활성화 --%>
+<%-- 수정: 헤더 및 사이드바 include 활성화 --%>
 <c:import url="/WEB-INF/views/common/erp/header.jsp"/>
 <c:import url="/WEB-INF/views/common/erp/sidebar.jsp"/>
 
