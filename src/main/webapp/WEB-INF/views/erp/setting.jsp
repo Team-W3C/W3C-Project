@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/setting.css">
 </head>
 <body>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
 
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 <!-- 메인 컨텐츠 영역 -->
 <main class="settings-main">
 
