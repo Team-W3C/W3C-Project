@@ -14,7 +14,7 @@ public class MemberController {
     @GetMapping("/backToHomePage.me")
     public String backHomePage(){
         System.out.println("backHomePage");
-        return "redirect:/";
+        return "index";
     }
 
     @GetMapping("/loginPage.me")
