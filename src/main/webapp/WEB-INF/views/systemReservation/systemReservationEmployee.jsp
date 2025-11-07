@@ -9,8 +9,8 @@
     <title>병원 예약 시스템 - ERP</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/systemReservation/systemReservation.css">
-    <%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/erp/header.css">--%>
-    <%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/erp/sidebar.css">--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpHeader.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpSidebar.css">
 
 </head>
 <body>
