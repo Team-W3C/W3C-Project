@@ -42,4 +42,8 @@ public class ReserVationController {
     public String ShowReservationDetail(){
         return "homePage/member/detailReservation";
     }
+
+    @GetMapping("/systemReservation.re")
+    public String ShowSystemReservation(){ return "homePage/systemReservation/systemReservation";
+    }
 }
