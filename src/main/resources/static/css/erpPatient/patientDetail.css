@@ -1,0 +1,536 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+/* ===== 모달 기본 ===== */
+.modal-patient-detail {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-patient-detail.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-overlay {
+    position: relative;
+    max-width: 1017px;
+    width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== 모달 헤더 ===== */
+.modal-patient-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: linear-gradient(90deg, rgba(14, 120, 124, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.modal-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.modal-avatar {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e7eb;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.modal-badge {
+    padding: 4px 12px;
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #354152;
+}
+
+.modal-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.modal-btn-menu {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.modal-btn-menu:hover {
+    background-color: #f3f4f6;
+}
+
+/* ===== 모달 콘텐츠 ===== */
+.modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #ffffff;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 2px;
+}
+
+.modal-section-icon {
+    color: #6b7280;
+}
+
+/* ===== 기본 정보 그리드 ===== */
+.modal-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.modal-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 10px;
+}
+
+.modal-info-full {
+    grid-column: 2 / 4;
+}
+
+.modal-info-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.modal-info-value {
+    font-size: 14px;
+    color: #1f2937;
+}
+
+/* ===== 의료 정보 ===== */
+.modal-medical-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.modal-medical-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 17px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.modal-medical-chronic {
+    background-color: rgba(14, 120, 124, 0.05);
+    border-color: rgba(14, 120, 124, 0.2);
+}
+
+.modal-medical-allergy {
+    background-color: #fef2f2;
+    border-color: #ffc9c9;
+}
+
+.modal-medical-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.modal-medical-value {
+    font-size: 14px;
+}
+
+.modal-medical-chronic .modal-medical-value {
+    color: #1f2937;
+}
+
+.modal-medical-allergy .modal-medical-value {
+    color: #c10007;
+}
+
+/* ===== 방문 통계 ===== */
+.modal-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.modal-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 17px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.modal-stat-primary {
+    background-color: rgba(14, 120, 124, 0.05);
+    border-color: rgba(14, 120, 124, 0.2);
+}
+
+.modal-stat-blue {
+    background-color: #eff6ff;
+    border-color: #bddaff;
+}
+
+.modal-stat-green {
+    background-color: #f0fdf4;
+    border-color: #b8f7cf;
+}
+
+.modal-stat-label {
+    font-size: 12px;
+}
+
+.modal-stat-primary .modal-stat-label {
+    color: #6b7280;
+}
+
+.modal-stat-blue .modal-stat-label {
+    color: #1347e5;
+}
+
+.modal-stat-green .modal-stat-label {
+    color: #008235;
+}
+
+.modal-stat-value {
+    font-size: 24px;
+}
+
+.modal-stat-primary .modal-stat-value {
+    color: #0e787c;
+}
+
+.modal-stat-blue .modal-stat-value {
+    color: #1347e5;
+}
+
+.modal-stat-green .modal-stat-value {
+    color: #008235;
+}
+
+/* ===== 진료 기록 ===== */
+.modal-record-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-record-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 17px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.modal-record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-record-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-record-date {
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.modal-record-dept {
+    padding: 4px 8px;
+    background-color: rgba(14, 120, 124, 0.1);
+    color: #0e787c;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.modal-record-status {
+    padding: 4px 12px;
+    background-color: #dcfce7;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #008235;
+}
+
+.modal-record-details {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.modal-record-separator {
+    color: #6b7280;
+}
+
+/* ===== 예약 카드 ===== */
+.modal-appointment-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 17px;
+    background-color: #eff6ff;
+    border: 1px solid #bddaff;
+    border-radius: 10px;
+}
+
+.modal-appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-appointment-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-appointment-datetime {
+    font-size: 14px;
+    color: #1b388e;
+}
+
+.modal-appointment-dept {
+    padding: 4px 8px;
+    background-color: #dbeafe;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #1347e5;
+}
+
+.modal-appointment-type {
+    font-size: 12px;
+    color: #1347e5;
+}
+
+.modal-appointment-doctor {
+    font-size: 14px;
+    color: #1347e5;
+}
+
+/* ===== 모달 푸터 ===== */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+}
+
+/* ===== 버튼 ===== */
+.modal-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.modal-btn-secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+    border-color: #d1d5db;
+}
+
+.modal-btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.modal-btn-outline {
+    background-color: transparent;
+    color: #0e787c;
+    border-color: #0e787c;
+}
+
+.modal-btn-outline:hover {
+    background-color: rgba(14, 120, 124, 0.05);
+}
+
+.modal-btn-primary {
+    background-color: #0e787c;
+    color: #ffffff;
+    border: none;
+}
+
+.modal-btn-primary:hover {
+    background-color: #0a5a5d;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 1024px) {
+    .modal-overlay {
+        width: 95%;
+    }
+
+    .modal-patient-header,
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modal-info-full {
+        grid-column: 1 / 3;
+    }
+
+    .modal-medical-grid,
+    .modal-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-overlay {
+        width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-patient-header,
+    .modal-content {
+        padding: 16px;
+    }
+
+    .modal-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-info-full {
+        grid-column: 1;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+    }
+
+    .modal-actions {
+        width: 100%;
+        flex-direction: column;
+        margin-left: 0;
+    }
+
+    .modal-btn {
+        width: 100%;
+    }
+}
