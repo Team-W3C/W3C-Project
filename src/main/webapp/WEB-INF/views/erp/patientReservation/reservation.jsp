@@ -16,10 +16,10 @@
 <body>
     <div class="app">
         <!-- Header Include -->
-        <jsp:include page="/WEB-INF/views/common/erp/header.jsp" />
+        <jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
 
         <!-- sidebar Include -->
-        <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
+        <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 
         <!-- Main Content -->
         <main class="reservation">
@@ -589,8 +589,6 @@
         </div>
     </div>
 
-=======
->>>>>>> 3c242dd (feat: patient reservation modal)
     <script src="${pageContext.request.contextPath}/js/erp/patientReservation/reservation.js"></script>
 </body>
 </html>

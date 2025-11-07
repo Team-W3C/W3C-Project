@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/erpReservation")
 public class ErpPatientReservationController {
 
-    @GetMapping("/reservation.pr")
+    @GetMapping("/reservation.erp")
     public String enterErp() {
         System.out.println("patientReservation");
         return "erp/patientReservation/reservation";
