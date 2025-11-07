@@ -13,8 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-insert.css">
+<%--    헤더푸터 css--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 </head>
 <body>
+<%--헤더--%>
+<jsp:include page="../../common/homePageMember/header_member.jsp" />
 
 <!-- 메인 컨텐츠 영역 -->
 <main class="faq-main">
@@ -156,6 +163,8 @@
   </aside>
 
 </main>
+<%--푸터--%>
+<jsp:include page="../../common/homePageFooter/footer.jsp" />
 
 </body>
 </html>

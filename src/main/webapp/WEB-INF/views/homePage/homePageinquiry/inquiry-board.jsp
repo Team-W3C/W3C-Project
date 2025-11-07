@@ -11,8 +11,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>inquery-board</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-board.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-board.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/signUp.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 <body>
+
+<!--헤더-->
+<jsp:include page="../../common/homePageMember/header_member.jsp" />
 
 <!-- 메인 컨텐츠 영역 -->
 <main class="inquiry-main">
@@ -165,6 +172,6 @@
   </div>
 
 </main>
-
+<jsp:include page="../../common/homePageFooter/footer.jsp" />
 </body>
 </html>
