@@ -21,38 +21,8 @@ prefix="c" uri="jakarta.tags.core" %>
     <div class="reservation">
     <main class="reservation-main">
       <!-- Sidebar Navigation -->
-      <aside class="reservation-sidebar">
-        <div class="sidebar-header">
-          <h2>진료예약/안내</h2>
-        </div>
 
-        <nav class="sidebar-nav">
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a href="#" class="link">병원안내</a>
-            </li>
-            <li class="nav-item active">
-              <a href="#" class="link">외래진료안내</a>
-              <ul class="nav-sublist">
-                <li class="nav-subitem active">
-                  <a href="#" class="nav-sublink">진료예약</a>
-                </li>
-                <li class="nav-subitem">
-                  <a href="#" class="nav-sublink">진료절차</a>
-                </li>
-                <li class="nav-subitem">
-                  <a href="#" class="nav-sublink">진료안내</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="sidebar-contact">
-          <p class="contact-label">예약문의</p>
-          <p class="contact-number">1111-1111</p>
-        </div>
-      </aside>
+        <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 
       <!-- Main Content Area -->
       <section class="reservation-content">

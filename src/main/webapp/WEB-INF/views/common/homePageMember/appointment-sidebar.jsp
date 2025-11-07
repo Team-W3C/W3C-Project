@@ -38,16 +38,8 @@
                 </ul>
             </li>
             <li>
-                <a href="#" class="booking-sidebar-menu-item">응급진료안내</a>
-            </li>
-            <li>
-                <a href="#" class="booking-sidebar-menu-item">입원진료안내</a>
-            </li>
-            <li>
-                <a href="#" class="booking-sidebar-menu-item">가정간호안내</a>
-            </li>
-            <li>
-                <a href="#" class="booking-sidebar-menu-item">검사실안내</a>
+                <a href="${pageContext.request.contextPath}/member/reservation/systemReservation.re"
+                   class="booking-sidebar-menu-item">검사실 예약</a>
             </li>
         </ul>
     </nav>

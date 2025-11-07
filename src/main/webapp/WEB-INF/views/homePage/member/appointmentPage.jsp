@@ -122,7 +122,7 @@
                         <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
                         <div class="reservation-card-actions">
                             <a
-                                    href="${pageContext.request.contextPath}/reservation/detail"
+                                    href="${pageContext.request.contextPath}/member/reservation/detail.re"
                                     class="btn-primary"
                             >본인 예약하기</a
                             >
@@ -195,7 +195,7 @@
         <nav class="reservation-quick-nav">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/signUpPage.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-signup.png"
                                 alt=""
@@ -204,7 +204,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/loginPage.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-login.png"
                                 alt=""
@@ -223,7 +223,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/member/mychart.me">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-chart.png"
                                 alt=""

@@ -1,10 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%--
-  회원 공통 사이드바 (member-sidebar.jsp)
-  - 메인 레이아웃 JSP에서 <jsp:include> 또는 <%@ include>로 호출됩니다.
-  - 이 파일의 CSS는 메인 페이지의 <head>에서 링크해야 합니다.
---%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
+
+    <title>Document</title>
+</head>
 <aside class="member-sidebar">
 
     <div class="member-sidebar__user">
@@ -37,22 +44,22 @@
     </nav>
 
     <nav class="member-sidebar__nav-group">
-        <h3 class="sidebar-menu-title" id="open-password-modal">
-            <a href="${pageContext.request.contextPath}/member/info.me">
-                회원정보
-            </a>
+        <h3 class="sidebar-menu-title">
+            회원정보
         </h3>
         <ul class="member-sidebar__nav-list">
-            <li class="member-sidebar__nav-item">
+            <li class="member-sidebar__nav-item" id="open-password-modal">
                 <a href="#" class="member-sidebar__nav-link member-sidebar__nav-link--active">회원정보수정</a>
             </li>
             <li class="member-sidebar__nav-item">
                 <a href="#" class="member-sidebar__nav-link member-sidebar__nav-link--medium">비밀번호 변경</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">회원 탈퇴</a>
+                <a href="${pageContext.request.contextPath}/member/info.me" class="member-sidebar__nav-link">회원 탈퇴</a>
             </li>
         </ul>
     </nav>
 
 </aside>
+
+</html>
