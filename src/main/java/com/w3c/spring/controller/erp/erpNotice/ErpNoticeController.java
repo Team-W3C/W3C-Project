@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/erpNotice")
+@RequestMapping("/erp/erpNotice")
 public class ErpNoticeController {
-    @GetMapping("/notice.erp")
+    @GetMapping("/notice")
     public String erpNotice() {
         return "erp/notice/erp-notice";
     }
-    @GetMapping("/inquiry.erp")
+    @GetMapping("/inquiry")
     public String erpInquiry() {
         return "erp/notice/erp-inquiry";
     }

@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class InquiryController {
 
 
-    @GetMapping("/inquiry-board.bo")
+    @GetMapping("/inquiry-board")
     public String homePageinquiryBoard() {
         System.out.println("inquiry-board");
         return "homePage/homePageinquiry/inquiry-board";
     }
-    @GetMapping("/inquiry-detail.bo")
+    @GetMapping("/inquiry-detail")
     public String homePageinquiryDetail() {
         System.out.println("inquiry-detail");
         return "homePage/homePageinquiry/inquiry-detail";
     }
-    @GetMapping("/inquiry-insert.bo")
+    @GetMapping("/inquiry-insert")
     public String homePageinquiryInsert() {
         System.out.println("inquiry-insert");
         return "homePage/homePageinquiry/inquiry-insert";

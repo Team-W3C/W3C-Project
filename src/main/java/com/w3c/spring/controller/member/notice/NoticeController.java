@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/member")
 public class NoticeController {
 
-    @GetMapping("/notice.bo")
+    @GetMapping("/notice")
     public String notice() {
         return "homePage/homePageNotice/notice-member";
     }
-    @GetMapping("/notice-detail.bo")
+    @GetMapping("/notice-detail")
     public String noticeDetail() {
         return "homePage/homePageNotice/notice-detail";
     }

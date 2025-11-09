@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/erp/reservation")
 public class systemReservation {
-    @GetMapping("/systemReservationEmployee.re")
+    @GetMapping("/systemReservationEmployee")
     public String ShowSystemReservation(){ return "systemReservation/systemReservationEmployee";
     }
 }

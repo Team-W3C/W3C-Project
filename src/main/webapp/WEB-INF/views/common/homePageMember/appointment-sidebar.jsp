@@ -32,13 +32,13 @@
             <li class="is-active">
                 <a href="#" class="booking-sidebar-menu-item">외래진료안내</a>
                 <ul class="booking-sidebar-submenu">
-                    <li><a href="${pageContext.request.contextPath}/member/reservation/main.re" class="booking-sidebar-submenu-item is-active">진료예약</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/procedure.bo" class="booking-sidebar-submenu-item">진료절차</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/guide.bo" class="booking-sidebar-submenu-item">진료안내</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/reservation/main" class="booking-sidebar-submenu-item is-active">진료예약</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/procedure" class="booking-sidebar-submenu-item">진료절차</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/guide" class="booking-sidebar-submenu-item">진료안내</a></li>
                 </ul>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/member/reservation/systemReservation.re"
+                <a href="${pageContext.request.contextPath}/member/reservation/systemReservation"
                    class="booking-sidebar-menu-item">검사실 예약</a>
             </li>
         </ul>

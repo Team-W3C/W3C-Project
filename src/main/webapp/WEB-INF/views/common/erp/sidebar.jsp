@@ -14,13 +14,13 @@
 <!-- 사이드바 -->
     <aside class="sidebar">
         <div class="sidebar__logo">
-            <a href="${pageContext.request.contextPath}/member/backToHomePage.me">
+            <a href="${pageContext.request.contextPath}/">
                 <img src="${pageContext.request.contextPath}/img/w3c_icon_100px.png" alt="W3C" class="sidebar__logo-img" >
             </a>
         </div>
 
         <nav class="sidebar__nav">
-            <a href="${pageContext.request.contextPath}/dashBoard/enterErp.erp" class="sidebar__link sidebar__link--active">
+            <a href="${pageContext.request.contextPath}/erp/dashBoard/enterErp" class="sidebar__link sidebar__link--active">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M7.5 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V9.16667C2.5 9.6269 2.8731 10 3.33333 10H7.5C7.96024 10 8.33333 9.6269 8.33333 9.16667V3.33333C8.33333 2.8731 7.96024 2.5 7.5 2.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                     <path d="M16.6667 2.5H12.5C12.0398 2.5 11.6667 2.8731 11.6667 3.33333V5.83333C11.6667 6.29357 12.0398 6.66667 12.5 6.66667H16.6667C17.1269 6.66667 17.5 6.29357 17.5 5.83333V3.33333C17.5 2.8731 17.1269 2.5 16.6667 2.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -30,14 +30,14 @@
                 <span class="sidebar__text">대시보드</span>
             </a>
 
-            <a href="${pageContext.request.contextPath}/erpReservation/reservation.erp" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/erpReservation/reservation" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M6.66667 1.66667V5M13.3333 1.66667V5M15.8333 3.33333H4.16667C3.24619 3.33333 2.5 4.07953 2.5 5V16.6667C2.5 17.5871 3.24619 18.3333 4.16667 18.3333H15.8333C16.7538 18.3333 17.5 17.5871 17.5 16.6667V5C17.5 4.07953 16.7538 3.33333 15.8333 3.33333ZM2.5 8.33333H17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>
                 <span class="sidebar__text">예약 관리</span>
             </a>
 
-            <a href="${pageContext.request.contextPath}/erp/reservation/systemReservationEmployee.re" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/reservation/systemReservationEmployee" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M8.33333 10H11.6667M8.33333 6.66667H11.6667M11.6667 17.5V15C11.6667 14.558 11.4911 14.134 11.1785 13.8215C10.8659 13.5089 10.442 13.3333 10 13.3333C9.55797 13.3333 9.13405 13.5089 8.82149 13.8215C8.50893 14.134 8.33333 14.558 8.33333 15V17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                     <path d="M5 8.33333H3.33333C2.89131 8.33333 2.46738 8.50893 2.15482 8.82149C1.84226 9.13405 1.66667 9.55797 1.66667 10V15.8333C1.66667 16.2754 1.84226 16.6993 2.15482 17.0118C2.46738 17.3244 2.89131 17.5 3.33333 17.5H16.6667C17.1087 17.5 17.5326 17.3244 17.8452 17.0118C18.1577 16.6993 18.3333 16.2754 18.3333 15.8333V7.5C18.3333 7.05797 18.1577 6.63405 17.8452 6.32149C17.5326 6.00893 17.1087 5.83333 16.6667 5.83333H15M5 17.5V4.16667C5 3.72464 5.17559 3.30072 5.48816 2.98816C5.80072 2.67559 6.22464 2.5 6.66667 2.5H13.3333C13.7754 2.5 14.1993 2.67559 14.5118 2.98816C14.8244 3.30072 15 3.72464 15 4.16667V17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -45,14 +45,14 @@
                 <span class="sidebar__text">검사실 관리</span>
             </a>
             
-            <a href="${pageContext.request.contextPath}/employee/manage" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/employee/manage" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M13.3333 17.5V15.8333C13.3333 14.9493 12.9821 14.1014 12.357 13.4763C11.7319 12.8512 10.8841 12.5 10 12.5H5C4.11595 12.5 3.2681 12.8512 2.64298 13.4763C2.01786 14.1014 1.66667 14.9493 1.66667 15.8333V17.5M13.3333 2.60666C14.0481 2.79197 14.6812 3.20938 15.1331 3.79338C15.585 4.37738 15.8302 5.0949 15.8302 5.83333C15.8302 6.57175 15.585 7.28927 15.1331 7.87327C14.6812 8.45727 14.0481 8.87468 13.3333 9.05999M18.3333 17.5V15.8333C18.3328 15.0948 18.087 14.3773 17.6345 13.7936C17.182 13.2099 16.5484 12.793 15.8333 12.6083M7.5 9.16667C9.34095 9.16667 10.8333 7.67428 10.8333 5.83333C10.8333 3.99238 9.34095 2.5 7.5 2.5C5.65905 2.5 4.16667 3.99238 4.16667 5.83333C4.16667 7.67428 5.65905 9.16667 7.5 9.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>
                 <span class="sidebar__text">직원 관리</span>
             </a>
 
-            <a href="${pageContext.request.contextPath}/patient/manage" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/patient/manage" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                     <path d="M10 10.8333C11.3807 10.8333 12.5 9.71405 12.5 8.33333C12.5 6.95262 11.3807 5.83333 10 5.83333C8.61929 5.83333 7.5 6.95262 7.5 8.33333C7.5 9.71405 8.61929 10.8333 10 10.8333ZM5.83333 17.2183V15.8333C5.83333 15.3913 6.00893 14.9674 6.32149 14.6548C6.63405 14.3423 7.05797 14.1667 7.5 14.1667H12.5C12.942 14.1667 13.366 14.3423 13.6785 14.6548C13.9911 14.9674 14.1667 15.3913 14.1667 15.8333V17.2183" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -60,8 +60,8 @@
                 <span class="sidebar__text">환자 관리</span>
             </a>
 
-<%--            <a href="${pageContext.request.contextPath}/attendance/dashboard.at" class="sidebar__link">--%>
-                <a href="${pageContext.request.contextPath}/attendance/main.at" class="sidebar__link">
+<%--            <a href="${pageContext.request.contextPath}/erp/attendance/dashboard" class="sidebar__link">--%>
+                <a href="${pageContext.request.contextPath}/erp/attendance/main" class="sidebar__link">
 
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M10 5V10L13.3333 11.6667M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -76,7 +76,7 @@
                 <span class="sidebar__text">진료 관리</span>
             </a>
 <%--            커뮤니티--%>
-            <a href="${pageContext.request.contextPath}/erpNotice/notice.erp" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/erpNotice/notice" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M18.3333 14.1667C18.3333 14.6087 18.1577 15.0326 17.8452 15.3452C17.5326 15.6577 17.1087 15.8333 16.6667 15.8333H5.69C5.24801 15.8334 4.82415 16.0091 4.51167 16.3217L2.67667 18.1567C2.59392 18.2394 2.4885 18.2957 2.37374 18.3186C2.25898 18.3414 2.14003 18.3297 2.03192 18.2849C1.92382 18.2401 1.83142 18.1643 1.7664 18.067C1.70139 17.9697 1.66668 17.8553 1.66667 17.7383V4.16667C1.66667 3.72464 1.84226 3.30072 2.15482 2.98816C2.46738 2.67559 2.89131 2.5 3.33333 2.5H16.6667C17.1087 2.5 17.5326 2.67559 17.8452 2.98816C18.1577 3.30072 18.3333 3.72464 18.3333 4.16667V14.1667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>

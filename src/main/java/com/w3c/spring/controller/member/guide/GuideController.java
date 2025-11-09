@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class GuideController {
 
-    @GetMapping("/procedure.bo")
+    @GetMapping("/procedure")
     public String procedure() {
         return "homePage/homePageGuide/procedure";
     }
 
-    @GetMapping("/guide.bo")
+    @GetMapping("/guide")
     public String guide() {
         return "homePage/homePageGuide/guide";
     }

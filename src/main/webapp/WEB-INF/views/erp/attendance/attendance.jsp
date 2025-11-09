@@ -39,7 +39,7 @@
         <div class="page-header">
             <h1>근태 관리</h1>
             <div class="page-actions">
-                <a href="${pageContext.request.contextPath}/attendance/dashboard.at" class="btn btn-secondary">
+                <a href="${pageContext.request.contextPath}/erp/attendance/dashboard" class="btn btn-secondary">
                     <span>전체 근태 현황</span>
                 </a>
                 <button type="button" class="btn btn-secondary">

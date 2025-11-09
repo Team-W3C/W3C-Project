@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/attendance") // "/attendance"로 시작하는 URL 요청을 이 컨트롤러가 담당
+@RequestMapping("/erp/attendance") // "/attendance"로 시작하는 URL 요청을 이 컨트롤러가 담당
 public class AttendanceController {
 
     /**
      * 근태 관리 메인 페이지 (나의 근태 현황 / 나의 신청 내역 탭이 있는 페이지)
-     * URL: /attendance/main.at
+     * URL: /attendance/main
      * * @return "attendance/attendance"
      * (ViewResolver가 /WEB-INF/views/attendance/attendance.jsp 경로로 변환)
      */
-    @GetMapping("/main.at")
+    @GetMapping("/main")
     public String showAttendancePage() {
         // 기능 구현 없이 JSP 페이지만 반환합니다.
         // JSP 파일 내의 JSTL 탭 로직(${param.tab})은 이 설정과 관계없이
@@ -22,7 +22,7 @@ public class AttendanceController {
         return "erp/attendance/attendance";
     }
 
-    @GetMapping("/dashboard.at")
+    @GetMapping("/dashboard")
     public String showAttendanceDashboardPage() {
         return "erp/attendance/attendance-dashboard";
     }
