@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SettingController {
-    @GetMapping("/setting.me")
+    @GetMapping("/erp/setting")
     public String setting() {
         return "erp/setting";
     }

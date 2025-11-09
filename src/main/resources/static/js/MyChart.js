@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (passwordInput.value) {
 
-                window.location.href = contextPath + '/member/info.me';
+                window.location.href = contextPath + '/member/info';
 
             } else {
                 alert('비밀번호를 입력해주세요.');

@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/erpReservation")
+@RequestMapping("/erp/erpReservation")
 public class ErpPatientReservationController {
 
-    @GetMapping("/reservation.erp")
+    @GetMapping("/reservation")
     public String enterErp() {
         System.out.println("patientReservation");
         return "erp/patientReservation/reservation";

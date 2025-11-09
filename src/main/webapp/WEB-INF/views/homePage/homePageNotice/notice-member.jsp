@@ -63,7 +63,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr onclick="location.href='${pageContext.request.contextPath}/member/notice-detail.bo'">
+      <tr onclick="location.href='${pageContext.request.contextPath}/member/notice-detail'">
         <td>15</td>
         <td>시스템</td>
         <td><a href="#">EMR 시스템 정기 점검 안내 (2025년 1월)</a></td>

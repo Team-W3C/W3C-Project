@@ -70,7 +70,7 @@
 
     <!-- 탭 네비게이션 -->
     <nav class="inquiry-tabs">
-        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erpNotice/notice.erp'">공지사항</button>
+        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/notice'">공지사항</button>
         <button class="tab-btn tab-btn-active">문의사항</button>
     </nav>
 

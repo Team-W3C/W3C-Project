@@ -122,7 +122,7 @@
                         <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
                         <div class="reservation-card-actions">
                             <a
-                                    href="${pageContext.request.contextPath}/member/reservation/detail.re"
+                                    href="${pageContext.request.contextPath}/member/reservation/detail"
                                     class="btn-primary"
                             >본인 예약하기</a
                             >
@@ -180,7 +180,7 @@
                             홈페이지에서 쉽고 빠르게 예약을 할 수 있습니다.
                         </p>
                         <div class="reservation-card-actions">
-                            <a href="${pageContext.request.contextPath}/member/reservation/systemReservation.re" class="btn-primary">시설 예약하기</a>
+                            <a href="${pageContext.request.contextPath}/member/reservation/systemReservation" class="btn-primary">시설 예약하기</a>
                         </div>
                     </div>
                 </article>
@@ -195,7 +195,7 @@
         <nav class="reservation-quick-nav">
             <ul>
                 <li>
-                    <a href="${pageContext.request.contextPath}/member/signUpPage.me">
+                    <a href="${pageContext.request.contextPath}/member/signUpPage">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-signup.png"
                                 alt=""
@@ -204,7 +204,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/member/loginPage.me">
+                    <a href="${pageContext.request.contextPath}/member/loginPage">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-login.png"
                                 alt=""
@@ -223,7 +223,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/member/mychart.me">
+                    <a href="${pageContext.request.contextPath}/member/mychart">
                         <img
                                 src="${pageContext.request.contextPath}/img/icon-chart.png"
                                 alt=""

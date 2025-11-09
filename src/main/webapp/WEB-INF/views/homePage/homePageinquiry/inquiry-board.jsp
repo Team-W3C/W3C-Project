@@ -67,7 +67,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail.bo'">
+      <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail'">
         <td>15</td>
         <td>진료 전</td>
         <td>예약된 진료 외에 다른 진료도 당일에 추가로 받을 수 있나요?</td>
@@ -152,7 +152,7 @@
   </section>
   <div class="inquiry-form-header">
 
-    <button class="inquiry-form-view-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-insert.bo'">문의 하기</button>
+    <button class="inquiry-form-view-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-insert'">문의 하기</button>
   </div>
   <!-- 페이지네이션 -->
   <nav class="inquiry-pagination" aria-label="페이지네이션">
