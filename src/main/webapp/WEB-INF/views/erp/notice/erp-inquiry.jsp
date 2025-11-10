@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-inquiry.css">
 </head>
 <body>
-<%-- 수정: 헤더 및 사이드바 include 활성화 --%>
-<c:import url="/WEB-INF/views/common/erp/header.jsp"/>
-<c:import url="/WEB-INF/views/common/erp/sidebar.jsp"/>
+<!-- Header Include -->
+<jsp:include page="/WEB-INF/views/common/erp/header.jsp"/>
+
+<!-- sidebar Include -->
+<jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp"/>
 
 <!-- 병원 ERP 시스템 > 커뮤니티 문의사항 페이지 -->
 <main class="inquiry-main">
