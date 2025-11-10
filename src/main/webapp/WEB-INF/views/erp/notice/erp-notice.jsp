@@ -245,7 +245,18 @@
                     </select>
                 </div>
             </div>
-
+            <div class="form-group form-group-title">
+                <label class="form-label">
+                    <span class="label-text">제목</span>
+                </label>
+                <input type="text" class="form-input" placeholder="제목을 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label class="form-label">
+                    <span class="label-text">내용</span>
+                </label>
+                <textarea class="form-textarea" placeholder="내용을 입력하세요." rows="8"></textarea>
+            </div>
             <button type="submit" class="btn-submit">공지사항 등록</button>
         </form>
     </div>
