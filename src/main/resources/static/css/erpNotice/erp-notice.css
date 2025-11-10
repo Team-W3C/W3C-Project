@@ -153,12 +153,12 @@ body {
 }
 
 .tab-btn-active {
-    color: #00897b;
-    border-bottom-color: #00897b;
+    color: #0E787C;
+    border-bottom-color: #0E787C;
 }
 
 .tab-btn:hover {
-    color: #00897b;
+    color: #0E787C;
 }
 
 /* 검색 영역 */
@@ -179,7 +179,7 @@ body {
 
 .search-input:focus {
     outline: none;
-    border-color: #00897b;
+    border-color: #0E787C;
 }
 
 .search-input::placeholder {
@@ -546,7 +546,7 @@ body {
 .form-select:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: #00897b;
+    border-color: #0E787C;
 }
 
 .form-input::placeholder,
@@ -573,7 +573,7 @@ body {
 .btn-submit {
     width: 100%;
     padding: 16px 24px;
-    background-color: #00897b;
+    background-color: #0E787C;
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -585,7 +585,7 @@ body {
 }
 
 .btn-submit:hover {
-    background-color: #00796b;
+    background-color: #0A5F62;
 }
 
 @keyframes fadeIn {

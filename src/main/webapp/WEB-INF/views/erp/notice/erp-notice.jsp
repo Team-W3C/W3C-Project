@@ -132,8 +132,8 @@
         <div class="modal-header">
             <div class="modal-title-section">
                 <svg class="modal-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" stroke="#00897b" stroke-width="2"/>
-                    <path d="M10 6v4M10 14h.01" stroke="#00897b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" stroke="#0E787C" stroke-width="2"/>
+                    <path d="M10 6v4M10 14h.01" stroke="#0E787C" stroke-width="2" stroke-linecap="round"/>
                 </svg>
                 <h2 class="modal-title">공지사항</h2>
             </div>
@@ -184,8 +184,8 @@
         <div class="modal-header">
             <div class="modal-title-section">
                 <svg class="modal-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" stroke="#00897b" stroke-width="2"/>
-                    <path d="M10 6v4M10 14h.01" stroke="#00897b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" stroke="#0E787C" stroke-width="2"/>
+                    <path d="M10 6v4M10 14h.01" stroke="#0E787C" stroke-width="2" stroke-linecap="round"/>
                 </svg>
                 <h2 class="modal-title">공지사항 작성</h2>
             </div>

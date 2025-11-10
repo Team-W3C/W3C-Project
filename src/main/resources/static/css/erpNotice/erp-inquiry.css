@@ -159,12 +159,12 @@ body {
 }
 
 .tab-btn-active {
-    color: #00897b;
-    border-bottom-color: #00897b;
+    color: #0E787C;
+    border-bottom-color: #0E787C;
 }
 
 .tab-btn:hover {
-    color: #00897b;
+    color: #0E787C;
 }
 
 /* 필터 탭 */
