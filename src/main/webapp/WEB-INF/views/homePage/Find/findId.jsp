@@ -58,7 +58,7 @@
 
         <div class="form-links">
             <%-- 비밀번호 찾기 페이지로 이동하는 링크 --%>
-            <a href="${contextPath}/findPwd.me">비밀번호 찾기</a>
+            <a href="${contextPath}/member/findPwd">비밀번호 찾기</a>
             <span>|</span>
             <%-- 로그인 페이지로 이동하는 링크 --%>
             <a href="${pageContext.request.contextPath}/member/loginPage">로그인</a>
