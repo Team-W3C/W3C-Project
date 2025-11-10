@@ -619,7 +619,3 @@ body {
 .stat-card {
     min-width: 250px;
 }
-
-.form-row {
-    flex-direction: column;
-}
