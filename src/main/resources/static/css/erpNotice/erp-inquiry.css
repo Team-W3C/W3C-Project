@@ -159,12 +159,12 @@ body {
 }
 
 .tab-btn-active {
-    color: #00897b;
-    border-bottom-color: #00897b;
+    color: #0E787C;
+    border-bottom-color: #0E787C;
 }
 
 .tab-btn:hover {
-    color: #00897b;
+    color: #0E787C;
 }
 
 /* 필터 탭 */
@@ -188,7 +188,7 @@ body {
 }
 
 .filter-tab-active {
-    background-color: #00897b;
+    background: #0E787C;
     color: #ffffff;
 }
 
@@ -209,10 +209,6 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: box-shadow 0.2s;
-}
-
-.inquiry-item:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* 문의사항 헤더 */
@@ -344,7 +340,7 @@ body {
 /* 상세보기 버튼 */
 .btn-view-inquiry {
     padding: 12px 24px;
-    background-color: #00897b;
+    background: #0E787C;
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -355,7 +351,7 @@ body {
 }
 
 .btn-view-inquiry:hover {
-    background-color: #00796b;
+    background: #0A5F62;
 }
 
 /* 반응형: 태블릿 (1024px 이하) */
