@@ -4,7 +4,9 @@
     margin: 0 auto;
     padding: 0 80px;
 }
-
+a{
+    text-decoration: none !important;
+}
 /* ===== Hero Section ===== */
 .hero {
     text-align: left;
@@ -71,6 +73,12 @@
     min-height: 186px;
     border-right: 1px solid #ddd;
     transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+
+}
+.service-card:visited {
+    color: inherit;
 }
 
 .service-card:hover {
@@ -100,6 +108,7 @@
     color: #444;
     text-align: center;
     line-height: 27px;
+    text-decoration: none !important;
 }
 
 /* ===== Announcements Section ===== */

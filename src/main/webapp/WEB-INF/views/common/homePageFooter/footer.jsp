@@ -6,7 +6,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3 class="footer-title">고객센터 ></h3>
-                    <p class="footer-phone">1111-1111</p>
+                    <p class="footer-phone">1588-0724</p>
                     <p class="footer-hours">09:00~18:00</p>
                 </div>
 
@@ -14,7 +14,7 @@
                     <ul>
                         <li><p class="footer-address">월 ~ 일 : 전체 문의 상담</p></li>
                     </ul>
-                    <button class="footer-button">문의 사항</button>
+                    <button class="footer-button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board'">문의 사항</button>
                 </div>
 
                 <div class="footer-links">
@@ -44,7 +44,7 @@
                     </div>
                     <div class="footer-column">
                         <h4>최승호</h4>
-                        <p>조회<br>Management</p>
+                        <p>조장<br>Management</p>
                     </div>
                 </div>
             </div>

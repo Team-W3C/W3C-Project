@@ -46,7 +46,7 @@
 
     <div class="booking-sidebar-contact">
         <span class="booking-sidebar-contact-label">예약문의</span>
-        <span class="booking-sidebar-contact-phone">1111-1111</span>
+        <span class="booking-sidebar-contact-phone">1588-0724</span>
     </div>
 </main>
 </body>
