@@ -32,6 +32,11 @@ public class MemberController {
         return "index";
     }
 
+    @GetMapping("/findId")
+    public String showFindIdPage() {
+        return "homePage/Find/findId";
+    }
+
     @PostMapping("/signUp.me")
     public String signUp(Member member) {
         System.out.println(member);

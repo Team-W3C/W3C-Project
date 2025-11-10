@@ -50,7 +50,7 @@
             <!-- Additional Links -->
             <div class="additional-links">
                 <p class="links"><a href="">비밀번호 찾기</a></p> |
-                <p class="links"><a href="">아이디 찾기</a></p> |
+                <p class="links"><a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a></p> |
                 <p class="links"><a href="${pageContext.request.contextPath}/member/signUpPage">회원가입</a></p>
             </div>
         </div>
