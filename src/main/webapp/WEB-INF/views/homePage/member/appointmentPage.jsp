@@ -94,15 +94,15 @@
                     </div>
                     <div class="reservation-card-body">
                         <p>
-                            연락처를 남겨 주시면 상담 간호사가 전화를 드려 예약을
+                            비회원 예약이 어려우신 경우 아래의 번호로 전화를 하시면 상담 간호사가 예약을
                             도와드립니다.
                         </p>
                         <div class="reservation-card-actions">
-                            <a href="#" class="btn-primary">첫방문 고객 예약하기</a>
+                            <a href="${pageContext.request.contextPath}/member/procedure" class="btn-primary">예약방법</a>
                         </div>
                         <div class="reservation-card-info info-box-phone">
                             <span class="info-label">첫방문 고객<br/>예약번호 안내</span>
-                            <span class="info-number">02-1111-1111</span>
+                            <span class="info-number">02-0724-0303</span>
                         </div>
                     </div>
                 </article>
@@ -115,7 +115,7 @@
                                     alt=""
                                     class="icon-small"
                             />
-                            회원이 본인 예약을 할 경우
+                            회원이 예약을 할 경우
                         </h2>
                     </div>
                     <div class="reservation-card-body">
@@ -124,9 +124,9 @@
                             <a
                                     href="${pageContext.request.contextPath}/member/reservation/detail"
                                     class="btn-primary"
-                            >본인 예약하기</a
+                            >예약하기</a
                             >
-                            <a href="#" class="btn-primary">본인 예약 조회하기</a>
+                            <a href="${pageContext.request.contextPath}/member/mychart" class="btn-primary">본인 예약 조회하기</a>
                         </div>
                     </div>
                 </article>
@@ -172,15 +172,15 @@
                                     alt=""
                                     class="icon-small"
                             />
-                            시설 예약을 하는 경우
+                            시설 예약현황을 확인 하는 경우
                         </h2>
                     </div>
                     <div class="reservation-card-body">
                         <p>
-                            홈페이지에서 쉽고 빠르게 예약을 할 수 있습니다.
+                            홈페이지에서 시설 예약 현황을 확인하세요.
                         </p>
                         <div class="reservation-card-actions">
-                            <a href="${pageContext.request.contextPath}/member/reservation/systemReservation" class="btn-primary">시설 예약하기</a>
+                            <a href="${pageContext.request.contextPath}/member/reservation/systemReservation" class="btn-primary">시설 예약현황</a>
                         </div>
                     </div>
                 </article>
@@ -188,7 +188,7 @@
         </section>
 
         <section class="reservation-phone-banner">
-            <div class="phone-number">전화문의 1111-1111</div>
+            <div class="phone-number">전화문의 1588-0724</div>
             <div class="phone-notice"></div>
         </section>
 

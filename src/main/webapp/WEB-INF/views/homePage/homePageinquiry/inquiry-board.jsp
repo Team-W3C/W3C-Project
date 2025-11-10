@@ -69,7 +69,7 @@
       <tbody>
       <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail'">
         <td>15</td>
-        <td>진료 전</td>
+        <td>진료</td>
         <td>예약된 진료 외에 다른 진료도 당일에 추가로 받을 수 있나요?</td>
         <td><span class="inquiry-privacy-badge public">무</span></td>
         <td>정보시스템팀</td>
@@ -77,7 +77,7 @@
       </tr>
       <tr>
         <td>14</td>
-        <td>진료 전</td>
+        <td>진료</td>
         <td>진료 전 (검사 때문에) 금식이나 특별히 준비해야 할 사항이 있나요?</td>
         <td><span class="inquiry-privacy-badge private">유</span></td>
         <td>정보시스템팀</td>
@@ -85,7 +85,7 @@
       </tr>
       <tr>
         <td>13</td>
-        <td>방문 및 대기</td>
+        <td>예약</td>
         <td>예약 없이 급하게 방문하면 진료를 받을 수 있나요?</td>
         <td><span class="inquiry-privacy-badge public">무</span></td>
         <td>진료지원팀</td>
@@ -109,7 +109,7 @@
       </tr>
       <tr>
         <td>10</td>
-        <td>접근성 및 편의</td>
+        <td>기타</td>
         <td>주차장이 따로 마련되어 있나요?</td>
         <td><span class="inquiry-privacy-badge public">무</span></td>
         <td>원무팀</td>
@@ -117,7 +117,7 @@
       </tr>
       <tr>
         <td>9</td>
-        <td>검사 및 결과</td>
+        <td>진료</td>
         <td>검사 결과는 언제쯤 나오며, 결과를 어떻게 확인할 수 있나요?</td>
         <td><span class="inquiry-privacy-badge private">유</span></td>
         <td>원무팀</td>
@@ -125,7 +125,7 @@
       </tr>
       <tr>
         <td>8</td>
-        <td>기록 및 서류</td>
+        <td>결제 및 비용</td>
         <td>진료 기록 사본이나 진단서를 발급받으려면 어떤 절차가 필요하고 비용은 얼마인가요?</td>
         <td><span class="inquiry-privacy-badge public">무</span></td>
         <td>응급의학과</td>
@@ -133,7 +133,7 @@
       </tr>
       <tr>
         <td>7</td>
-        <td>재진 및 재예약</td>
+        <td>예약</td>
         <td>기존에 처방받은 약을 추가로 받거나 재진 예약을 하려면 어떻게 해야 하나요?</td>
         <td><span class="inquiry-privacy-badge private">유</span></td>
         <td>정보시스템팀</td>
@@ -141,7 +141,7 @@
       </tr>
       <tr>
         <td>6</td>
-        <td>당일 절차</td>
+        <td>진료</td>
         <td>병원에 도착해서 가장 먼저 해야 할 접수 절차가 궁금합니다</td>
         <td><span class="inquiry-privacy-badge public">무</span></td>
         <td>정보시스템팀</td>

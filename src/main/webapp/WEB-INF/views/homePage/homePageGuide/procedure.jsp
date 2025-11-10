@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- 진료절차 페이지 - Main Content -->
+<!-- 예약절차 페이지 - Main Content -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>진료절차 - MediFlow</title>
+    <title>예약절차 - MediFlow</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/procedure/procedure.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,16 +28,9 @@
     <main class="procedure-main">
         <!-- 페이지 헤더 -->
         <header class="procedure-header">
-            <h1 class="page-title">진료절차</h1>
+            <h1 class="page-title">예약절차</h1>
         </header>
 
-        <!-- 탭 메뉴 -->
-        <nav class="procedure-tabs">
-            <button class="tab-button active">진료안내</button>
-            <button class="tab-button">외래예약/안내</button>
-            <button class="tab-button">치료 및 입원(입원)</button>
-            <button class="tab-button">퇴원/원무 업무</button>
-        </nav>
 
         <!-- 진료시간 안내 -->
         <section class="schedule-section">

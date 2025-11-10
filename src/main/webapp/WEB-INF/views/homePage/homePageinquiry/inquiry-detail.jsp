@@ -47,7 +47,7 @@
         <header class="inquiry-card-header">
             <div class="inquiry-card-title-section">
                 <h2 class="inquiry-card-title">예약된 진료 외에 다른 진료도 당일에 추가로 받을 수 있나요?</h2>
-                <span class="inquiry-card-category">진료 전</span>
+                <span class="inquiry-card-category">진료</span>
             </div>
             <div class="inquiry-card-badges">
                 <span class="inquiry-badge-complete" aria-label="답변 상태">답변 완료</span>
