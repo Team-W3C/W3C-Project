@@ -16,7 +16,7 @@
 
     <div class="member-sidebar__user">
         <h2 class="member-sidebar__user-name">홍길동님</h2>
-        <p class="member-sidebar__user-id">병원등록번호 : 11111111</p>
+        <p class="member-sidebar__user-id">병원등록번호 : 11258411</p>
     </div>
 
     <nav class="member-sidebar__nav-group">

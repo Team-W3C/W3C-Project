@@ -40,7 +40,7 @@
             <section class="services">
                 <h2 class="services-title">주요 서비스</h2>
                 <div class="services-grid">
-                    <article class="service-card">
+                    <a class="service-card" href="${pageContext.request.contextPath}/detail">
                         <div class="service-icon">
                             <svg width="80" height="80" viewBox="0 0 80 80">
                                 <rect x="20" y="20" width="40" height="40" rx="3" fill="none" stroke="#0e787c" stroke-width="2.5"/>
@@ -48,34 +48,30 @@
                                 <circle cx="32" cy="44" r="6" fill="#0e787c"/>
                             </svg>
                         </div>
-                        <h3 class="service-name">진료과 찾기</h3>
-                    </article>
+                        <h3 class="service-name">메디 플로우</h3>
+                    </a>
+                    <a class="service-card" href="${pageContext.request.contextPath}/member/reservation/main">
 
-                    <article class="service-card">
-                        <a href="${pageContext.request.contextPath}/member/reservation/main">
-                            <div class="service-icon">
-                                <svg width="80" height="80" viewBox="0 0 80 80">
-                                    <circle cx="40" cy="35" r="12" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                    <path d="M40 47 Q25 55 25 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                    <path d="M40 47 Q55 55 55 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
-                                </svg>
-                            </div>
-                            <h3 class="service-name">진료예약</h3>
-                        </a>
-                    </article>
+                                <div class="service-icon">
+                                    <svg width="80" height="80" viewBox="0 0 80 80">
+                                        <circle cx="40" cy="35" r="12" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                        <path d="M40 47 Q25 55 25 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                        <path d="M40 47 Q55 55 55 70" fill="none" stroke="#0e787c" stroke-width="2.5"/>
+                                    </svg>
+                                </div>
+                                <h3 class="service-name">진료예약</h3>
+                    </a>
 
-                    <article class="service-card">
+                    <a class="service-card" href="${pageContext.request.contextPath}/member/guide">
                         <div class="service-icon">
                             <svg width="80" height="80" viewBox="0 0 80 80">
                                 <circle cx="40" cy="32" r="14" fill="none" stroke="#0e787c" stroke-width="2.5"/>
                                 <path d="M20 65 Q20 48 40 48 Q60 48 60 65" fill="none" stroke="#0e787c" stroke-width="2.5"/>
                             </svg>
                         </div>
-                        <h3 class="service-name">첫방문 고객 예약 상담</h3>
-                    </article>
-
-                    <article class="service-card">
-                        <a href="${pageContext.request.contextPath}/member/mychart">
+                        <h3 class="service-name">첫방문 고객 진료 방법</h3>
+                    </a>
+                    <a class="service-card"href="${pageContext.request.contextPath}/member/mychart" >
                             <div class="service-icon">
                                 <svg width="80" height="80" viewBox="0 0 80 80">
                                     <rect x="22" y="18" width="36" height="44" rx="2" fill="none" stroke="#0e787c" stroke-width="2.5"/>
@@ -85,8 +81,8 @@
                                 </svg>
                             </div>
                             <h3 class="service-name">나의차트</h3>
-                        </a>
-                    </article>
+                    </a>
+
                 </div>
             </section>
 

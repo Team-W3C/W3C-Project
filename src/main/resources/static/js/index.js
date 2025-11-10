@@ -77,6 +77,7 @@ function handleCtaClick() {
 // 서비스 카드 클릭 핸들러
 function handleServiceCardClick() {
     const serviceName = this.querySelector('.service-name').textContent;
+
     console.log(`${serviceName} 서비스 선택됨`);
     alert(`${serviceName} 서비스 페이지로 이동합니다.`);
     // 실제 구현: window.location.href = '/service/' + serviceId;
