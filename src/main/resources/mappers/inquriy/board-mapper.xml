@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.inquiry.BoardMapper">
+
+    <resultMap id="boardResultMap" type="Board">
+
+        <result column="BOARD_ID" property="boardId"/>
+        <result column="BOARD_TYPE" property="boardType"/>
+        <result column="BOARD_TITLE" property="boardTitle"/>
+        <result column="BOARD_SECRET_TYPE" property="boardSecretType"/>
+        <result column="QUESTION_CONTENT" property="questionContent"/>
+        <result column="QUESTION_DATE" property="questionDate"/>
+        <result column="PATIENT_NAME" property="patientName"/>
+        <result column="BOARD_STATUS" property="boardStatus"/>
+        <result column="DEPARTMENT_NAME" property="departmentName"/>
+        <result column="ANSWER_NO" property="answerNo"/>
+        <result column="ANSWER_CONTENT" property="answerContent"/>
+        <result column="STAFF_NAME" property="staffName"/>
+        <result column="ANSWER_DATE" property="answerDate"/>
+
+    </resultMap>
+
+    <select id="selectBoardList" resultMap="boardResultMap">
+        SELECT
+        BOARD_ID,
+        BOARD_TYPE,
+        BOARD_TITLE,
+        BOARD_SECRET_TYPE,
+        BOARD_STATUS,
+        DEPARTMENT_NAME,
+        QUESTION_DATE
+        FROM V_BOARD_QA
+        ORDER BY BOARD_ID DESC
+    </select>
+    <select id="selectBoardListCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM V_BOARD_QA
+    </select>
+</mapper>

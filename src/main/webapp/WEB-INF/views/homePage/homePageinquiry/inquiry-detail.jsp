@@ -34,7 +34,7 @@
     <!-- 목록으로 버튼 -->
     <div class="inquiry-detail-actions">
         <button class="inquiry-detail-back-btn" type="button" aria-label="목록으로 돌아가기"
-                onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board'">
+                onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board?cpage=1'">
             <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -176,7 +176,7 @@
     </article>
 
     <!-- 하단 목록으로 버튼 -->
-    <button class="inquiry-detail-footer-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board'">
+    <button class="inquiry-detail-footer-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board?cpage=1'">
         목록으로 돌아가기
     </button>
 

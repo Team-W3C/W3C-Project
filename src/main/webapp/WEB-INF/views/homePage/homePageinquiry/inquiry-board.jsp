@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -67,93 +69,97 @@
       </tr>
       </thead>
       <tbody>
-      <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail'">
-        <td>15</td>
-        <td>진료</td>
-        <td>예약된 진료 외에 다른 진료도 당일에 추가로 받을 수 있나요?</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>정보시스템팀</td>
-        <td><time datetime="2025-01-15">2025-01-15</time></td>
+    <c:forEach var="b" items="${list}">
+      <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail?bno=${b.boardId}'">
+        <td>${b.boardId}</td>
+        <td>${b.boardType}</td>
+        <td>${b.boardTitle}</td>
+        <td><span class="inquiry-privacy-badge public">${b.boardSecretType}</span></td>
+        <td>${b.departmentName}</td>
+        <td><time datetime="${b.questionDate}">2025-01-15</time></td>
       </tr>
-      <tr>
-        <td>14</td>
-        <td>진료</td>
-        <td>진료 전 (검사 때문에) 금식이나 특별히 준비해야 할 사항이 있나요?</td>
-        <td><span class="inquiry-privacy-badge private">유</span></td>
-        <td>정보시스템팀</td>
-        <td><time datetime="2025-01-10">2025-01-10</time></td>
-      </tr>
-      <tr>
-        <td>13</td>
-        <td>예약</td>
-        <td>예약 없이 급하게 방문하면 진료를 받을 수 있나요?</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>진료지원팀</td>
-        <td><time datetime="2025-01-05">2025-01-05</time></td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td>결제 및 비용</td>
-        <td>진료비는 현장에서 바로 결제해야 하나요?</td>
-        <td><span class="inquiry-privacy-badge private">유</span></td>
-        <td>원무팀</td>
-        <td><time datetime="2024-12-28">2024-12-28</time></td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td>결제 및 비용</td>
-        <td>실손 보험금 청구를 위해 필요한 서류는 무엇이며, 어디서 발급받나요?</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>원무팀</td>
-        <td><time datetime="2024-12-20">2024-12-20</time></td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>기타</td>
-        <td>주차장이 따로 마련되어 있나요?</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>원무팀</td>
-        <td><time datetime="2024-12-15">2024-12-15</time></td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td>진료</td>
-        <td>검사 결과는 언제쯤 나오며, 결과를 어떻게 확인할 수 있나요?</td>
-        <td><span class="inquiry-privacy-badge private">유</span></td>
-        <td>원무팀</td>
-        <td><time datetime="2024-12-10">2024-12-10</time></td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td>결제 및 비용</td>
-        <td>진료 기록 사본이나 진단서를 발급받으려면 어떤 절차가 필요하고 비용은 얼마인가요?</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>응급의학과</td>
-        <td><time datetime="2024-12-01">2024-12-01</time></td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>예약</td>
-        <td>기존에 처방받은 약을 추가로 받거나 재진 예약을 하려면 어떻게 해야 하나요?</td>
-        <td><span class="inquiry-privacy-badge private">유</span></td>
-        <td>정보시스템팀</td>
-        <td><time datetime="2024-11-25">2024-11-25</time></td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>진료</td>
-        <td>병원에 도착해서 가장 먼저 해야 할 접수 절차가 궁금합니다</td>
-        <td><span class="inquiry-privacy-badge public">무</span></td>
-        <td>정보시스템팀</td>
-        <td><time datetime="2024-11-20">2024-11-20</time></td>
-      </tr>
+    </c:forEach>
+<%--      <tr>--%>
+<%--        <td>14</td>--%>
+<%--        <td>진료</td>--%>
+<%--        <td>진료 전 (검사 때문에) 금식이나 특별히 준비해야 할 사항이 있나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
+<%--        <td>정보시스템팀</td>--%>
+<%--        <td><time datetime="2025-01-10">2025-01-10</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>13</td>--%>
+<%--        <td>예약</td>--%>
+<%--        <td>예약 없이 급하게 방문하면 진료를 받을 수 있나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
+<%--        <td>진료지원팀</td>--%>
+<%--        <td><time datetime="2025-01-05">2025-01-05</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>12</td>--%>
+<%--        <td>결제 및 비용</td>--%>
+<%--        <td>진료비는 현장에서 바로 결제해야 하나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
+<%--        <td>원무팀</td>--%>
+<%--        <td><time datetime="2024-12-28">2024-12-28</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>11</td>--%>
+<%--        <td>결제 및 비용</td>--%>
+<%--        <td>실손 보험금 청구를 위해 필요한 서류는 무엇이며, 어디서 발급받나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
+<%--        <td>원무팀</td>--%>
+<%--        <td><time datetime="2024-12-20">2024-12-20</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>10</td>--%>
+<%--        <td>기타</td>--%>
+<%--        <td>주차장이 따로 마련되어 있나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
+<%--        <td>원무팀</td>--%>
+<%--        <td><time datetime="2024-12-15">2024-12-15</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>9</td>--%>
+<%--        <td>진료</td>--%>
+<%--        <td>검사 결과는 언제쯤 나오며, 결과를 어떻게 확인할 수 있나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
+<%--        <td>원무팀</td>--%>
+<%--        <td><time datetime="2024-12-10">2024-12-10</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>8</td>--%>
+<%--        <td>결제 및 비용</td>--%>
+<%--        <td>진료 기록 사본이나 진단서를 발급받으려면 어떤 절차가 필요하고 비용은 얼마인가요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
+<%--        <td>응급의학과</td>--%>
+<%--        <td><time datetime="2024-12-01">2024-12-01</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>7</td>--%>
+<%--        <td>예약</td>--%>
+<%--        <td>기존에 처방받은 약을 추가로 받거나 재진 예약을 하려면 어떻게 해야 하나요?</td>--%>
+<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
+<%--        <td>정보시스템팀</td>--%>
+<%--        <td><time datetime="2024-11-25">2024-11-25</time></td>--%>
+<%--      </tr>--%>
+<%--      <tr>--%>
+<%--        <td>6</td>--%>
+<%--        <td>진료</td>--%>
+<%--        <td>병원에 도착해서 가장 먼저 해야 할 접수 절차가 궁금합니다</td>--%>
+<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
+<%--        <td>정보시스템팀</td>--%>
+<%--        <td><time datetime="2024-11-20">2024-11-20</time></td>--%>
+<%--      </tr>--%>
       </tbody>
     </table>
   </section>
   <div class="inquiry-form-header">
+      <c:if test="${not empty loginMember}">
 
-    <button class="inquiry-form-view-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-insert'">문의 하기</button>
-  </div>
+        <button class="inquiry-form-view-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-insert'">문의 하기</button>
+    </c:if>
+   </div>
   <!-- 페이지네이션 -->
   <nav class="inquiry-pagination" aria-label="페이지네이션">
     <a href="#" class="prev" aria-label="이전 페이지">
@@ -165,11 +171,12 @@
       Next →
     </a>
   </nav>
-
+    <c:if test="${pi>=0}">
   <!-- 총 개수 -->
   <div class="inquiry-count">
-    총 15개의 문의사항
+    총 ${pi.currentPage}개의 문의사항
   </div>
+    </c:if>
 
 </main>
 <jsp:include page="../../common/homePageFooter/footer.jsp" />
