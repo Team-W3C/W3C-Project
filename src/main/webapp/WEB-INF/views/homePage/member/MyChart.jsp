@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -12,28 +13,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/MyChart.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <style>
-        /* 비밀번호 모달(.modal-overlay)을 기본적으로 숨김 */
         .modal-overlay {
-
-
             display: none;
         }
-
-        /* .is-open 클래스가 추가되면 모달을 표시 */
         .modal-overlay.is-open {
             display: flex;
         }
-
-        /* 회원정보 제목에 클릭 가능하도록 커서 변경 */
         #open-password-modal {
             cursor: pointer;
         }
-
-        /* 모달이 열렸을 때 배경 스크롤 방지 */
         body.modal-open {
             overflow: hidden;
         }
@@ -59,178 +50,116 @@
                 <div class="status-title">
                     <h2>예약 현황</h2>
                 </div>
-                <span class="status-badge">총 3건</span>
+                <span class="status-badge">총 ${fn:length(reservationList)}건</span>
             </div>
 
-            <article class="reservation-card">
-                <div class="card-header">
-                    <div class="card-status">
-                        <div class="status-badge-inline confirmed">
-                            <div class="status-icon check"></div>
-                            <span class="status-text confirmed">예약 확정</span>
-                        </div>
-                        <span class="reservation-type">본인예약</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-secondary">변경</button>
-                        <button class="btn btn-outline">취소</button>
-                    </div>
-                </div>
+            <c:choose>
+                <%-- 1. 예약 목록이 비어있을 때 (empty) --%>
+                <c:when test="${empty reservationList}">
+                    <article class="reservation-card">
+                        <p style="text-align: center; padding: 20px;">예약 현황이 없습니다.</p>
+                    </article>
+                </c:when>
 
-                <div class="card-details">
-                    <div class="detail-item">
-                        <div class="detail-icon teal">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67"/>
-                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료과</h4>
-                            <p>내과</p>
-                        </div>
-                    </div>
+                <%-- 2. 예약 목록이 있을 때 (otherwise) --%>
+                <c:otherwise>
+                    <c:forEach var="reservation" items="${reservationList}">
+                        <article class="reservation-card">
+                            <div class="card-header">
+                                <div class="card-status">
+                                        <%-- JSTL choose 태그로 예약 상태(status)에 따라 분기 --%>
+                                    <c:choose>
+                                        <c:when test="${reservation.status == 'CONFIRMED'}">
+                                            <div class="status-badge-inline confirmed">
+                                                <div class="status-icon check"></div>
+                                                <span class="status-text confirmed">예약 확정</span>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${reservation.status == 'PENDING'}">
+                                            <div class="status-badge-inline pending">
+                                                <div class="status-icon warning"></div>
+                                                <span class="status-text pending">예약 대기</span>
+                                            </div>
+                                        </c:when>
+                                        <%-- 다른 상태가 있다면 c:when 추가 --%>
+                                    </c:choose>
+                                    <span class="reservation-type">${reservation.type}</span>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-secondary">변경</button>
+                                    <button class="btn btn-outline">취소</button>
+                                </div>
+                            </div>
 
-                    <div class="detail-item">
-                        <div class="detail-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect x="3" y="4" width="14" height="14" rx="2" stroke="#155DFC"
-                                      stroke-width="1.67"/>
-                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료 날짜</h4>
-                            <p>2025-11-05</p>
-                        </div>
-                    </div>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <div class="detail-icon teal">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67"/>
+                                            <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67"/>
+                                        </svg>
+                                    </div>
+                                    <div class="detail-info">
+                                        <h4>진료과</h4>
+                                        <p>${reservation.departmentName}</p>
+                                    </div>
+                                </div>
 
-                    <div class="detail-item">
-                        <div class="detail-icon teal">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67"/>
-                                <path d="M5 17C5 13.5 7 11 10 11C13 11 15 13.5 15 17" stroke="#0E787C"
-                                      stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>담당의사</h4>
-                            <p>김철수 교수</p>
-                        </div>
-                    </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon blue">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <rect x="3" y="4" width="14" height="14" rx="2" stroke="#155DFC" stroke-width="1.67"/>
+                                            <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67"/>
+                                        </svg>
+                                    </div>
+                                    <div class="detail-info">
+                                        <h4>진료 날짜</h4>
+                                        <p>${reservation.date}</p>
+                                    </div>
+                                </div>
 
-                    <div class="detail-item">
-                        <div class="detail-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67"/>
-                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료 시간</h4>
-                            <p>10:00</p>
-                        </div>
-                    </div>
-                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon teal">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67"/>
+                                            <path d="M5 17C5 13.5 7 11 10 11C13 11 15 13.5 15 17" stroke="#0E787C" stroke-width="1.67"/>
+                                        </svg>
+                                    </div>
+                                    <div class="detail-info">
+                                        <h4>담당의사</h4>
+                                        <p>${reservation.doctorName}</p>
+                                    </div>
+                                </div>
 
-                <div class="location-info">
-                    <svg class="location-icon" viewBox="0 0 20 20" fill="none">
-                        <path
-                                d="M10 2C6.5 2 3.5 5 3.5 8.5C3.5 13 10 18 10 18C10 18 16.5 13 16.5 8.5C16.5 5 13.5 2 10 2Z"
-                                stroke="#0E787C" stroke-width="1.67"/>
-                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67"/>
-                    </svg>
-                    <div class="location-text">
-                        <h4>진료실 위치</h4>
-                        <p>본관 3층 301호</p>
-                    </div>
-                </div>
-            </article>
+                                <div class="detail-item">
+                                    <div class="detail-icon blue">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67"/>
+                                            <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67"/>
+                                        </svg>
+                                    </div>
+                                    <div class="detail-info">
+                                        <h4>진료 시간</h4>
+                                        <p>${reservation.time}</p>
+                                    </div>
+                                </div>
+                            </div>
 
-            <article class="reservation-card">
-                <div class="card-header">
-                    <div class="card-status">
-                        <div class="status-badge-inline pending">
-                            <div class="status-icon warning"></div>
-                            <span class="status-text pending">예약 대기</span>
-                        </div>
-                        <span class="reservation-type">본인예약</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-secondary">변경</button>
-                        <button class="btn btn-outline">취소</button>
-                    </div>
-                </div>
+                            <div class="location-info">
+                                <svg class="location-icon" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 2C6.5 2 3.5 5 3.5 8.5C3.5 13 10 18 10 18C10 18 16.5 13 16.5 8.5C16.5 5 13.5 2 10 2Z" stroke="#0E787C" stroke-width="1.67"/>
+                                    <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67"/>
+                                </svg>
+                                <div class="location-text">
+                                    <h4>진료실 위치</h4>
+                                    <p>${reservation.location}</p>
+                                </div>
+                            </div>
+                        </article>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
 
-                <div class="card-details">
-                    <div class="detail-item">
-                        <div class="detail-icon teal">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2L2 7L10 12L18 7L10 2Z" stroke="#0E787C" stroke-width="1.67"/>
-                                <path d="M2 12L10 17L18 12" stroke="#0E787C" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료과</h4>
-                            <p>치과</p>
-                        </div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="detail-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect x="3" y="4" width="14" height="14" rx="2" stroke="#155DFC"
-                                      stroke-width="1.67"/>
-                                <path d="M7 2V6M13 2V6" stroke="#155DFC" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료 날짜</h4>
-                            <p>2025-11-12</p>
-                        </div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="detail-icon teal">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67"/>
-                                <path d="M5 17C5 13.5 7 11 10 11C13 11 15 13.5 15 17" stroke="#0E787C"
-                                      stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>담당의사</h4>
-                            <p>박민수 교수</p>
-                        </div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="detail-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" stroke="#155DFC" stroke-width="1.67"/>
-                                <path d="M10 6V10L13 13" stroke="#155DFC" stroke-width="1.67"/>
-                            </svg>
-                        </div>
-                        <div class="detail-info">
-                            <h4>진료 시간</h4>
-                            <p>09:00</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="location-info">
-                    <svg class="location-icon" viewBox="0 0 20 20" fill="none">
-                        <path
-                                d="M10 2C6.5 2 3.5 5 3.5 8.5C3.5 13 10 18 10 18C10 18 16.5 13 16.5 8.5C16.5 5 13.5 2 10 2Z"
-                                stroke="#0E787C" stroke-width="1.67"/>
-                        <circle cx="10" cy="8.5" r="2.5" stroke="#0E787C" stroke-width="1.67"/>
-                    </svg>
-                    <div class="location-text">
-                        <h4>진료실 위치</h4>
-                        <p>별관 1층 102호</p>
-                    </div>
-                </div>
-            </article>
         </section>
 
         <section class="verification-section">
@@ -304,14 +233,14 @@
                 <div class="field-box">
                     <div class="field-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C"
-                                  stroke-width="1.67"/>
+                            <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"/>
                             <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/>
                         </svg>
                     </div>
                     <div class="field-info">
                         <div class="field-label">성함</div>
-                        <div class="field-value">홍길동</div>
+                        <%-- EL을 사용하여 세션에 저장된 로그인 멤버의 이름 표시 --%>
+                        <div class="field-value">${sessionScope.loginMember.memberName}</div>
                     </div>
                 </div>
 
@@ -327,12 +256,11 @@
         </footer>
     </div>
 </div>
-<!-- Footer Include -->
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
 <script>
     // JSP가 렌더링한 contextPath 값을
     // "contextPath"라는 이름의 JavaScript 전역 변수에 저장합니다.
-    const contextPath = "${pageContext.request.contextPath}";
+        const contextPath = "${pageContext.request.contextPath}";
 </script>
 <script src="${pageContext.request.contextPath}/js/MyChart.js" defer></script>
 
