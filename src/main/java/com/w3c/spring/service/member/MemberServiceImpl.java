@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService {
         System.out.println(memberId);
         return memberMapper.getMemberById(memberId);
     }
+
+    @Override
+    public int signUpMember(Member member) {
+        return memberMapper.signUpMember(member);
+    }
 }

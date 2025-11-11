@@ -121,17 +121,22 @@ body {
     padding-bottom: 12px;
 }
 
-.blood-ssn-container {
+.name-blood-container {
     display: flex;
     gap: 32px;
 }
 
-.phone-address-container {
+.ssn-phone-container {
     display: flex;
     justify-content: space-between;
 }
 
-.email-notes-container {
+.address-email-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notes-container {
     display: flex;
     justify-content: space-between;
 }
