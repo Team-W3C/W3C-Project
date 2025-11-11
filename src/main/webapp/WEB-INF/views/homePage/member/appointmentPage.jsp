@@ -159,7 +159,7 @@
                         </div>
                         <div class="reservation-card-info">
                             회원가입을 하실 경우 『나의차트』에서 진료 및
-                            <strong>투약내역, 복약상담, 진단검사결과</strong> 등 개인화
+                            <strong> 진단검사결과</strong> 등 개인화
                             서비스를 이용하실 수 있습니다.
                         </div>
                     </div>
@@ -188,7 +188,7 @@
         </section>
 
         <section class="reservation-phone-banner">
-            <div class="phone-number">전화문의 1588-0724</div>
+            <div class="phone-number">전화문의 1111-1111</div>
             <div class="phone-notice"></div>
         </section>
 

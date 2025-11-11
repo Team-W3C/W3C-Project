@@ -29,16 +29,7 @@
                 <a href="#" class="member-sidebar__nav-link">진료내역</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">알레르기 이력</a>
-            </li>
-            <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">투약내역</a>
-            </li>
-            <li class="member-sidebar__nav-item">
                 <a href="#" class="member-sidebar__nav-link">진단검사결과</a>
-            </li>
-            <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">건강검진결과</a>
             </li>
         </ul>
     </nav>

@@ -24,7 +24,9 @@ public class LoginController {
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam("memberId") String memberId,
-                        ModelAndView mv, HttpSession session) {
+                              // 1. redirectURL 파라미터를 받도록 추가 (필수 아님)
+                              @RequestParam(value = "redirectURL", required = false) String redirectURL,
+                              ModelAndView mv, HttpSession session) {
 
         Member loginMember = memberService.getMemberById(memberId);
         System.out.println(loginMember);
@@ -38,7 +40,15 @@ public class LoginController {
 //            mv.setViewName("common/error");
         } else {//로그인 성공
             session.setAttribute("loginMember", loginMember);
-            mv.setViewName("redirect:/");
+
+            // 2. redirectURL 값에 따라 분기 처리
+            if (redirectURL != null && !redirectURL.isEmpty()) {
+                // redirectURL이 있으면, 그곳으로 다시 리다이렉트
+                mv.setViewName("redirect:" + redirectURL);
+            } else {
+                // 없으면, 기존처럼 메인 페이지("/")로 리다이렉트
+                mv.setViewName("redirect:/");
+            }
         }
         return mv;
     }
