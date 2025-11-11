@@ -354,12 +354,10 @@ img {
    Calendar Component (FullCalendar 수정)
    =================================== */
 
-/* [수정] 캘린더 감싸는 div (원본 디자인과 동일) */
-#calendar-wrapper {
+.calendar-wrapper {
     background-color: var(--background);
     border-radius: 8px;
     padding: 15px;
-    /* 원본 디자인의 크기(280px)보다 조금 키움 */
     max-width: 450px;
     margin: 0 auto;
 }
@@ -367,27 +365,25 @@ img {
     width: 100%;
 }
 
-/* [수정] 캘린더 헤더 (월/년, 버튼) */
 .fc .fc-toolbar {
     margin-bottom: 5px !important;
     display: flex;
     justify-content: space-between;
 }
 .fc .fc-toolbar-title {
-    font-size: 14px; /* 원본 디자인 크기 */
+    font-size: 14px;
     font-weight: 400;
     color: var(--text-primary);
-    line-height: 2.5; /* 버튼과 높이 맞춤 */
+    line-height: 2.5;
 }
 .fc .fc-prev-button,
 .fc .fc-next-button {
     background: none !important;
     border: none !important;
     padding: 0 !important;
-    width: 35px; /* 원본 디자인 크기 */
+    width: 35px;
     height: 35px;
 }
-/* (FullCalendar 기본 아이콘 사용) */
 .fc .fc-prev-button .fc-icon,
 .fc .fc-next-button .fc-icon {
     color: var(--primary-color);
@@ -397,78 +393,72 @@ img {
     background-color: var(--primary-light) !important;
 }
 
-
-/* [수정] 요일 (일,월,화...) */
 .fc .fc-col-header-cell {
     background: none;
     height: 24px;
 }
 .fc .fc-col-header-cell-cushion {
-    font-size: 12.8px; /* 원본 디자인 크기 */
+    font-size: 12.8px;
     color: var(--text-tertiary);
-    text-decoration: none; /* 밑줄 제거 */
+    text-decoration: none;
     padding: 5px 0;
 }
 
-/* [수정] 날짜 셀 (가장 중요) */
 .fc .fc-daygrid-day-frame {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 40px; /* 원본 디자인 높이 */
-    border-radius: 8px; /* 원본 디자인 */
+    min-height: 40px;
+    border-radius: 8px;
     transition: all 0.2s;
     background-color: transparent;
 }
 .fc .fc-daygrid-day {
-    padding: 2px; /* 셀 사이 간격 */
-    border: none !important; /* FC 기본 테두리 제거 */
+    padding: 2px;
+    border: none !important;
 }
 .fc .fc-daygrid-day-number {
-    font-size: 14px; /* 원본 디자인 */
+    font-size: 14px;
     color: var(--text-primary);
     padding: 0;
     position: static;
 }
-.fc-scrollgrid { /* 캘린더 전체 테두리 제거 */
+.fc-scrollgrid {
     border: none !important;
 }
 
-
-/* [수정] 오늘 날짜 */
 .fc .fc-day-today .fc-daygrid-day-frame {
-    background-color: var(--primary-bg); /* 선택 안 된 오늘 날짜 */
+    background-color: var(--primary-bg);
 }
 
-/* [수정] 과거 날짜 (비활성화) */
-.fc .fc-day-past .fc-daygrid-day-frame,
-.fc .fc-day-disabled .fc-daygrid-day-frame { /* fc-day-disabled가 더 정확함 */
+.fc .fc-day-past .fc-daygrid-day-frame {
     opacity: 0.5;
     background-color: var(--background-light);
     cursor: not-allowed;
 }
-.fc .fc-day-past .fc-daygrid-day-number,
-.fc .fc-day-disabled .fc-daygrid-day-number {
+.fc .fc-day-past .fc-daygrid-day-number {
     color: var(--text-tertiary);
 }
 
-/* [핵심] 1. 예약 가능 날짜 (초록색) */
-.fc-daygrid-day.available-date .fc-daygrid-day-frame {
-    background-color: var(--primary-light); /* 원본의 'available' 색상 */
-    cursor: pointer;
-}
-.fc-daygrid-day.available-date:hover .fc-daygrid-day-frame {
-    background-color: #d1ebeb; /* 더 진한 초록 */
-}
-
-/* [핵심] 2. 예약 불가능 날짜 (빨간색) */
 .fc-daygrid-day.unavailable-date .fc-daygrid-day-frame {
-    background-color: #fcebeb; /* 연한 빨강 */
+    background-color: #fcebeb;
     opacity: 0.7;
     cursor: not-allowed;
 }
 
-/* [핵심] 3. FullCalendar가 생성하는 이벤트 텍스트 숨기기 (배경색만 필요) */
+.fc-daygrid-day.available:not(.fc-day-past):not(.unavailable-date):not(.selected):hover .fc-daygrid-day-frame {
+    background-color: var(--primary-light);
+    cursor: pointer;
+}
+
+.fc-daygrid-day.selected .fc-daygrid-day-frame {
+    background-color: var(--primary-color) !important;
+}
+.fc-daygrid-day.selected .fc-daygrid-day-number {
+    color: var(--background) !important;
+    font-weight: 600;
+}
+
 .fc .fc-daygrid-event {
     display: none;
 }
@@ -508,8 +498,6 @@ img {
     background-color: var(--primary-bg);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-sm);
-    /* (수정) check-icon이 보이도록 padding-bottom 제거 */
-    /* padding-bottom: 44px; */
 }
 
 .department-icon {
@@ -532,8 +520,11 @@ img {
     height: 20px;
     position: absolute;
     bottom: 16px;
-    /* (수정) JS로 제어하기 위해 display: none; */
     display: none;
+}
+
+.department-btn.selected .check-icon {
+    display: block;
 }
 
 /* ===================================
@@ -602,6 +593,12 @@ img {
 .timeslot-card.available:hover {
     border-color: var(--primary-color);
     box-shadow: var(--shadow-md);
+}
+
+.timeslot-card.selected {
+    border-color: var(--primary-color);
+    background-color: var(--primary-bg);
+    box-shadow: var(--shadow-sm);
 }
 
 .timeslot-card.unavailable {
@@ -712,7 +709,7 @@ img {
         padding: 10px 20px;
     }
 
-    .nav-link,
+    .link,
     .nav-sublink {
         text-align: left;
         padding-left: 20px;
@@ -742,8 +739,7 @@ img {
         grid-template-columns: 1fr;
     }
 
-    /* 반응형 캘린더 */
-    #calendar-wrapper {
+    .calendar-wrapper {
         max-width: 100%;
     }
 
@@ -764,7 +760,6 @@ button:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
-/* FullCalendar 포커스 스타일 */
 .fc .fc-prev-button:focus-visible,
 .fc .fc-next-button:focus-visible,
 .fc .fc-daygrid-day:focus-visible {
@@ -862,4 +857,78 @@ button:focus-visible {
     .footer-link {
         text-align: center;
     }
+}
+
+/* ===================================
+   [신규] Step 3: 증상 입력
+   =================================== */
+.notes-card .card-body {
+    padding: 20px 26px; /* 패딩 줄임 */
+}
+
+.notes-body {
+    /* [수정] flex-direction이 column이 아니므로 (기본값 row) 100%로 설정 */
+    width: 100%;
+}
+
+.notes-textarea {
+    width: 100%;
+    height: 120px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Noto Sans KR', 'Arial', sans-serif;
+    font-size: 15px;
+    color: var(--text-primary);
+    resize: vertical; /* 세로 크기 조절만 허용 */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.notes-textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+.notes-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(14, 120, 124, 0.1);
+}
+
+/* ===================================
+   [수정] 예약하기 버튼
+   =================================== */
+.reservation-submit-area {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--background);
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #0a5f62; /* primary-color-dark */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }

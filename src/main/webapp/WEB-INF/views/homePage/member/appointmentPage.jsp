@@ -121,12 +121,47 @@
                     <div class="reservation-card-body">
                         <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
                         <div class="reservation-card-actions">
-                            <a
-                                    href="${pageContext.request.contextPath}/member/reservation/detail"
-                                    class="btn-primary"
-                            >예약하기</a
-                            >
-                            <a href="${pageContext.request.contextPath}/member/mychart" class="btn-primary">본인 예약 조회하기</a>
+                            <%-- ▼▼▼▼▼ [수정됨] 로그인 상태 체크 ▼▼▼▼▼ --%>
+                            <c:choose>
+                                <%-- 1. 세션에 'loginMember' 정보가 없는 경우 (로그아웃 상태) --%>
+                                <c:when test="${empty sessionScope.loginMember}">
+                                    <a
+                                            href="${pageContext.request.contextPath}/member/loginPage"
+                                            class="btn-primary"
+                                    >예약하기</a
+                                    >
+                                </c:when>
+                                <%-- 2. 세션에 'loginMember' 정보가 있는 경우 (로그인 상태) --%>
+                                <c:otherwise>
+                                    <a
+                                            href="${pageContext.request.contextPath}/member/reservation/detail"
+                                            class="btn-primary"
+                                    >예약하기</a
+                                    >
+                                </c:otherwise>
+                            </c:choose>
+                            <%-- ▲▲▲▲▲ [수정됨] 로그인 상태 체크 ▲▲▲▲▲ --%>
+
+                            <%-- ▼▼▼▼▼ [수정] 본인 예약 조회하기 버튼에도 로그인 체크 적용 ▼▼▼▼▼ --%>
+                            <c:choose>
+                                <%-- 1. 세션에 'loginMember' 정보가 없는 경우 (로그아웃 상태) --%>
+                                <c:when test="${empty sessionScope.loginMember}">
+                                    <a
+                                            href="${pageContext.request.contextPath}/member/loginPage"
+                                            class="btn-primary"
+                                    >본인 예약 조회하기</a
+                                    >
+                                </c:when>
+                                <%-- 2. 세션에 'loginMember' 정보가 있는 경우 (로그인 상태) --%>
+                                <c:otherwise>
+                                    <a
+                                            href="${pageContext.request.contextPath}/member/mychart"
+                                            class="btn-primary"
+                                    >본인 예약 조회하기</a
+                                    >
+                                </c:otherwise>
+                            </c:choose>
+                            <%-- ▲▲▲▲▲ [수정] 본인 예약 조회하기 버튼에도 로그인 체크 적용 ▲▲▲▲▲ --%>
                         </div>
                     </div>
                 </article>
@@ -427,7 +462,6 @@
         </div>
     </main>
 </div>
-<!-- Footer Include -->
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
 
 <script

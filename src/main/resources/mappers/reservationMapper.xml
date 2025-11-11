@@ -1,54 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.ReservationMapper">
 
-    <resultMap id="scheduleResultMap" type="com.w3c.spring.model.vo.ScheduleVO">
-        <result property="scheduleStartTime" column="schedule_start_time" />
-        <result property="scheduleEndTime" column="schedule_end_time" />
-        <result property="status" column="status" />
+    <resultMap id="ReservationDetailMap" type="com.w3c.spring.model.vo.ReservationDetailVO">
+        <id     property="reservationNo"   column="RESERVATION_NO" />
+        <result property="status"          column="STATUS" />
+        <result property="type"            column="TYPE" />
+        <result property="departmentName"  column="DEPARTMENT_NAME" />
+        <result property="doctorName"      column="DOCTOR_NAME" />
+        <result property="date"            column="RESERVATION_DATE" />
+        <result property="time"            column="RESERVATION_TIME" />
+        <result property="location"        column="LOCATION" />
     </resultMap>
 
-    <select id="selectScheduleAfterToday" resultMap="scheduleResultMap">
+    <resultMap id="ReservationUpdateMap" type="com.w3c.spring.model.vo.ReservationUpdateVO">
+        <id     property="reservationNo"   column="RESERVATION_NO" />
+        <result property="departmentNo"    column="DEPARTMENT_NO" />
+        <result property="departmentName"  column="DEPARTMENT_NAME" />
+        <result property="reservationNotes" column="RESERVATION_NOTES" />
+        <result property="doctorName"       column="DOCTOR_NAME" />
+        <result property="treatmentDate"    column="TREATMENT_DATE" />
+    </resultMap>
+
+
+    <select id="findApprovedAbsences" resultType="com.w3c.spring.model.vo.AbsenceVO">
         SELECT
-            schedule_start_time,
-            schedule_end_time,
-            status
+            absence_start_date AS absenceStartDate,
+            absence_end_date AS absenceEndDate
         FROM
-            SCHEDULE
+            ABSENCE_APPLICATION_DETAIL
         WHERE
-            schedule_end_time >= TRUNC(SYSDATE)
+            isApproved = 'T'
+          AND absence_end_date >= TRUNC(SYSDATE)
     </select>
 
-    <select id="findAvailableTimes" parameterType="map" resultType="com.w3c.spring.model.vo.TimeSlotVO">
+    <select id="findWorkingDoctorsByDeptOnDate"
+            parameterType="map"
+            resultType="com.w3c.spring.model.vo.WorkingDoctorVO">
         SELECT
-            TO_CHAR(S.schedule_start_time, 'HH24:MI') || '~' || TO_CHAR(S.schedule_end_time, 'HH24:MI') AS "time",
-            M.member_name AS "doctorName",
-            DEPT.department_location AS "location"
+            D.staff_no AS staffNo,
+            M.member_name AS memberName,
+            DEPT.department_location AS departmentLocation
         FROM
-            SCHEDULE S
-                JOIN STAFF ST ON S.staff_no = ST.staff_no
-                JOIN DOCTOR D ON ST.staff_no = D.staff_no
-                JOIN MEMBER M ON ST.member_no = M.member_no
+            DOCTOR D
+                JOIN STAFF S ON D.staff_no = S.staff_no
+                JOIN MEMBER M ON S.member_no = M.member_no
                 JOIN DEPARTMENT DEPT ON D.department_no = DEPT.department_no
         WHERE
             D.department_no = #{departmentId}
-          AND S.status = '근무 중'
-          AND TRUNC(S.schedule_start_time) = TO_DATE(#{date}, 'YYYY-MM-DD')
-        ORDER BY
-            S.schedule_start_time
+          AND D.staff_no NOT IN (
+            SELECT staff_no
+            FROM ABSENCE_APPLICATION_DETAIL
+            WHERE
+                isApproved = 'T'
+              AND TO_DATE(#{date}, 'YYYY-MM-DD')
+                BETWEEN TRUNC(absence_start_date) AND TRUNC(absence_end_date)
+        )
     </select>
 
-
-    <select id="findAllDepartmentsWithDoctors" resultType="com.w3c.spring.model.vo.DepartmentVO">
-        SELECT DISTINCT
-            D.department_no AS "departmentNo",
-            D.department_name AS "departmentName"
+    <select id="findBookedTimeCountsByDeptOnDate" parameterType="map" resultType="java.util.Map">
+        SELECT
+            TO_CHAR(treatment_date, 'HH24:MI') AS "HOUR",
+            COUNT(*) AS "COUNT"
         FROM
-            DEPARTMENT D
-                JOIN DOCTOR DR ON D.department_no = DR.department_no
-        ORDER BY
-            D.department_no
+            RESERVATION
+        WHERE
+            department_no = #{departmentId}
+          AND TRUNC(treatment_date) = TO_DATE(#{date}, 'YYYY-MM-DD')
+          AND reservation_status IN ('확정', '대기')
+        GROUP BY
+            TO_CHAR(treatment_date, 'HH24:MI')
     </select>
 
+    <select id="findDepartmentsWithDoctors" resultType="com.w3c.spring.model.vo.DepartmentVO">
+        SELECT
+            DISTINCT DEPT.department_no AS departmentNo,
+                     DEPT.department_name AS departmentName,
+                     CASE DEPT.department_name
+                         WHEN '내과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container.svg'
+                         WHEN '외과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-7.svg'
+                         WHEN '정형외과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-6.svg'
+                         WHEN '소아과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-2.svg'
+                         WHEN '피부과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-3.svg'
+                         WHEN '안과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-1.svg'
+                         WHEN '치과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-4.svg'
+                         WHEN '심장내과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-5.svg'
+                         ELSE 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container.svg'
+                         END AS iconUrl
+        FROM
+            DEPARTMENT DEPT
+                JOIN DOCTOR D ON DEPT.department_no = D.department_no
+        ORDER BY
+            DEPT.department_name
+    </select>
+
+    <insert id="insertReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
+        INSERT INTO RESERVATION (
+            reservation_no,
+            reservation_status,
+            reservation_notes,  reservation_memo,   member_no,
+            department_no,
+            treatment_date
+        ) VALUES (
+                     RESERVATION_SEQ.NEXTVAL,
+                     '확정',
+                     #{reservationNotes},
+                     '담당의: ' || #{doctorName}, #{memberNo},
+                     #{departmentNo},
+                     TO_TIMESTAMP(#{treatmentDate}, 'YYYY-MM-DD HH24:MI')
+                 )
+    </insert>
+
+
+    <select id="selectReservationsByMemberNo" parameterType="_int" resultMap="ReservationDetailMap">
+        SELECT
+            R.RESERVATION_NO        AS RESERVATION_NO,
+            CASE R.RESERVATION_STATUS
+                WHEN '확정' THEN 'CONFIRMED'
+                WHEN '대기' THEN 'PENDING'
+                WHEN '완료' THEN 'COMPLETED'
+                WHEN '취소' THEN 'CANCELLED'
+                ELSE R.RESERVATION_STATUS
+                END AS STATUS,
+            R.RESERVATION_NOTES     AS TYPE,
+            D.department_name       AS DEPARTMENT_NAME,
+            R.RESERVATION_MEMO      AS DOCTOR_NAME,
+            TO_CHAR(R.TREATMENT_DATE, 'YYYY-MM-DD') AS RESERVATION_DATE,
+            TO_CHAR(R.TREATMENT_DATE, 'HH24:MI')    AS RESERVATION_TIME,
+            D.DEPARTMENT_LOCATION   AS LOCATION
+        FROM
+            RESERVATION R
+                LEFT JOIN
+            DEPARTMENT D ON R.department_no = D.department_no
+        WHERE
+            R.MEMBER_NO = #{memberNo}
+        ORDER BY
+            R.TREATMENT_DATE DESC
+    </select>
+
+    <update id="updateReservationStatus">
+        UPDATE RESERVATION
+        SET
+            RESERVATION_STATUS = #{status}
+        WHERE
+            RESERVATION_NO = #{reservationNo}
+          AND MEMBER_NO = #{memberNo}
+          AND RESERVATION_STATUS IN ('확정', '대기')
+    </update>
+
+    <select id="selectReservationForUpdate" resultMap="ReservationUpdateMap" parameterType="map">
+        SELECT
+            R.RESERVATION_NO    AS RESERVATION_NO,
+            R.DEPARTMENT_NO     AS DEPARTMENT_NO,
+            D.DEPARTMENT_NAME   AS DEPARTMENT_NAME,
+            R.RESERVATION_NOTES AS RESERVATION_NOTES,
+            R.RESERVATION_MEMO  AS DOCTOR_NAME,
+            TO_CHAR(R.TREATMENT_DATE, 'YYYY-MM-DD HH24:MI') AS TREATMENT_DATE
+        FROM
+            RESERVATION R
+                JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE
+            R.RESERVATION_NO = #{reservationNo}
+          AND R.MEMBER_NO = #{memberNo}
+          AND R.RESERVATION_STATUS IN ('확정', '대기')
+    </select>
+    <update id="updateReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
+        UPDATE RESERVATION
+        SET
+            DEPARTMENT_NO = #{departmentNo},
+            TREATMENT_DATE = TO_TIMESTAMP(#{treatmentDate}, 'YYYY-MM-DD HH24:MI'),
+            RESERVATION_NOTES = #{reservationNotes},
+            RESERVATION_MEMO = '담당의: ' || #{doctorName},
+            RESERVATION_STATUS = '확정'
+        WHERE
+            RESERVATION_NO = #{reservationNo}
+          AND MEMBER_NO = #{memberNo}
+          AND RESERVATION_STATUS IN ('확정', '대기')
+    </update>
 </mapper>

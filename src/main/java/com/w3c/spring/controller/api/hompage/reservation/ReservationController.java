@@ -1,27 +1,24 @@
 package com.w3c.spring.controller.api.hompage.reservation;
 
-// (필요한 임포트 목록)
-import com.w3c.spring.model.vo.DepartmentVO;
-import com.w3c.spring.model.vo.FullCalendarEventVO;
-import com.w3c.spring.model.vo.TimeSlotVO;
-import com.w3c.spring.service.reservation.ReservationService; // (Service 임포트 확인)
+import com.w3c.spring.model.vo.*;
+import com.w3c.spring.service.reservation.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus; // [추가]
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/member/reservation") // (1) 클래스 전체에 공통 URL 적용
+@RequestMapping("/member/reservation")
 public class ReservationController {
 
-    // (2) Service 주입 (생성자 주입 방식 권장)
     private final ReservationService reservationService;
 
     @Autowired
@@ -29,97 +26,129 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    /**
-     * 예약 메인 페이지
-     * (URL: /member/reservation/main)
-     */
     @GetMapping("/main")
     public String showReservationMain() {
         return "homePage/member/appointmentPage";
     }
 
-    /**
-     * 예약 상세 페이지 (로그인 체크)
-     * (URL: /member/reservation/detail)
-     */
+    // [수정] '변경' 기능이 이 메소드에서 분리되어, 신규 예약 전용 페이지가 됨
     @GetMapping("/detail")
-    public String showReservationDetail(HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String showReservationDetail(HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) { // Model 추가
 
         Object loginMember = session.getAttribute("loginMember");
 
-        if (loginMember != null) {
-            // (로그인 O) -> 예약 상세 JSP (FullCalendar 있는 곳)
-            return "homePage/member/detailReservation";
-
-        } else {
-            // (로그인 X) -> 로그인 페이지로 리다이렉트
+        if (loginMember == null) {
             String originalURL = request.getRequestURI();
-            String queryString = request.getQueryString();
-            if (queryString != null) {
-                originalURL += "?" + queryString;
+            redirectAttributes.addAttribute("redirectURL", originalURL);
+            return "redirect:/member/loginPage";
+        }
+
+        // [수정] 신규 예약이므로 빈 객체와 신규 제목 전달
+        model.addAttribute("reservationData", null);
+        model.addAttribute("pageTitle", "진료 예약");
+
+        return "homePage/member/detailReservation";
+    }
+
+    @GetMapping("/available-dates")
+    @ResponseBody
+    public List<FullCalendarEventVO> getAvailableDates() {
+        return reservationService.getReservationSchedule();
+    }
+
+    @GetMapping("/available-times")
+    @ResponseBody
+    public List<TimeSlotVO> getAvailableTimes(
+            @RequestParam("date") String date,
+            @RequestParam("departmentId") int departmentId) {
+        return reservationService.getAvailableTimes(date, departmentId);
+    }
+
+    @GetMapping("/departments")
+    @ResponseBody
+    public List<DepartmentVO> getDepartments() {
+        return reservationService.getDepartments();
+    }
+
+    // [유지] '신규'와 '변경' 저장 시 이 API를 공통으로 사용
+    @PostMapping("/submit")
+    @ResponseBody
+    public ResponseEntity<?> submitReservation(
+            @RequestBody ReservationRequestVO reservationData,
+            @RequestParam(value = "reservationNo", required = false) Integer reservationNo,
+            HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return ResponseEntity.status(401)
+                    .body(Map.of("success", false, "message", "로그인이 필요합니다."));
+        }
+
+        try {
+            boolean success;
+            String message;
+
+            if (reservationNo == null) {
+                // 1. 신규 등록
+                success = reservationService.submitReservation(reservationData, loginMember.getMemberNo());
+                message = success ? "예약이 성공적으로 완료되었습니다." : "예약 등록에 실패했습니다.";
+            } else {
+                // 2. 수정 (reservationData에 reservationNo가 세팅되어 있어야 함)
+                success = reservationService.updateReservation(reservationData, reservationNo, loginMember.getMemberNo());
+                message = success ? "예약이 성공적으로 변경되었습니다." : "예약 변경에 실패했습니다.";
             }
 
-            redirectAttributes.addAttribute("redirectURL", originalURL);
-            return "redirect:/api/member/loginPage"; // (LoginController가 받을 주소)
+            if (success) {
+                return ResponseEntity.ok(Map.of("success", true, "message", message));
+            } else {
+                return ResponseEntity.status(500).body(Map.of("success", false, "message", message));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("success", false, "message", "서버 오류: " + e.getMessage()));
         }
     }
 
-    /**
-     * [AJAX] FullCalendar가 호출할 스케줄(예약 가능/휴무일) 데이터
-     * (URL: /member/reservation/available-dates)
-     */
-    @GetMapping("/available-dates")
-    @ResponseBody // (3) JSON 데이터 반환을 위해 @ResponseBody 추가
-    public List<FullCalendarEventVO> getAvailableDates() {
+    // ▼▼▼▼▼ [신규 추가] '변경' 모달에 데이터를 채우기 위한 API ▼▼▼▼▼
+    @GetMapping("/detail-json/{reservationNo}")
+    @ResponseBody
+    public ResponseEntity<?> getReservationDetailForEdit(
+            @PathVariable("reservationNo") int reservationNo,
+            HttpSession session) {
 
-        // Service를 호출하여 스케줄 데이터를 가져옵니다.
-        List<FullCalendarEventVO> scheduleList = reservationService.getReservationSchedule();
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
 
-        return scheduleList;
+        try {
+            ReservationUpdateVO data = reservationService.getReservationForUpdate(reservationNo, loginMember.getMemberNo());
+            if (data == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약 정보를 찾을 수 없거나 권한이 없습니다.");
+            }
+            // (참고) doctorName에 '담당의: ' 접두사가 있다면 Service/Mapper에서 제거하는 것이 좋습니다.
+            // 여기서는 JS에서 처리하도록 그대로 반환합니다.
+            return ResponseEntity.ok(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 조회 중 오류 발생");
+        }
     }
+    // ▲▲▲▲▲ [신규 추가] ▲▲▲▲▲
 
 
-        @GetMapping("/available-times")
-        @ResponseBody
-        public List<TimeSlotVO> getAvailableTimes(
-                @RequestParam("date") String date,
-                @RequestParam("departmentId") int departmentId) {
-
-            return reservationService.getAvailableTimes(date, departmentId);
-
-    }
-
-        /**
-         * [AJAX] 예약 가능한 진료과 목록 조회
-         * (URL: /member/reservation/departments)
-         */
-        @GetMapping("/departments")
-        @ResponseBody
-        public List<DepartmentVO> getDepartments() {
-            return reservationService.getDepartments();
-    }
-    /**
-     * 비회원 환자 예약 페이지
-     * (URL: /member/reservation/guest)
-     */
+    // --- (기존 /guest, /guestCheck, /systemReservation 메소드 유지) ---
     @GetMapping("/guest")
     public String showGuestReservation() {
         return "homePage/member/guestPatientReservation";
     }
 
-    /**
-     * 비회원 예약 확인 페이지
-     * (URL: /member/reservation/guestCheck)
-     */
     @GetMapping("/guestCheck")
     public String showGuestCheck() {
         return "homePage/member/guestReservationCheck";
     }
 
-    /**
-     * 시스템 예약 페이지
-     * (URL: /member/reservation/systemReservation)
-     */
     @GetMapping("/systemReservation")
     public String ShowSystemReservation() {
         return "homePage/systemReservation/systemReservation";
