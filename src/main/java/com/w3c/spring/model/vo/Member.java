@@ -10,6 +10,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
+    private String memberNo;
     private String memberId;
     private String memberPwd;
     private String memberName;
@@ -22,4 +23,7 @@ public class Member {
     private String memberBloodType;
     private String memberChronicDisease;
     private String memberAllergy;
+    
+    //참조를 위한 직원 번호
+    private String staff_no;
 }
