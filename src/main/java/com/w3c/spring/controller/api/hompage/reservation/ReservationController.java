@@ -1,6 +1,7 @@
 package com.w3c.spring.controller.api.hompage.reservation;
 
 // (필요한 임포트 목록)
+import com.w3c.spring.model.vo.DepartmentVO;
 import com.w3c.spring.model.vo.FullCalendarEventVO;
 import com.w3c.spring.model.vo.TimeSlotVO;
 import com.w3c.spring.service.reservation.ReservationService; // (Service 임포트 확인)
@@ -86,6 +87,16 @@ public class ReservationController {
 
             return reservationService.getAvailableTimes(date, departmentId);
 
+    }
+
+        /**
+         * [AJAX] 예약 가능한 진료과 목록 조회
+         * (URL: /member/reservation/departments)
+         */
+        @GetMapping("/departments")
+        @ResponseBody
+        public List<DepartmentVO> getDepartments() {
+            return reservationService.getDepartments();
     }
     /**
      * 비회원 환자 예약 페이지
