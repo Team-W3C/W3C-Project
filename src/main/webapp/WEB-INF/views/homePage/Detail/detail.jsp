@@ -29,7 +29,7 @@
 <body>
 
 <%-- 1. Header (공통) --%>
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 
 <%--
   전체 레이아웃 (사이드바 + 메인 콘텐츠)

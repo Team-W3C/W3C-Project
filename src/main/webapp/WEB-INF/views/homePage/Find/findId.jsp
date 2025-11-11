@@ -29,7 +29,7 @@
   (예: 로그아웃 상태의 헤더)
   경로는 프로젝트 구조에 맞게 수정하세요.
 --%>
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 
 <%-- 메인 콘텐츠: 아이디 찾기 폼 --%>
 <main class="form-wrapper">

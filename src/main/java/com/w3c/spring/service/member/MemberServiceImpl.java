@@ -26,4 +26,9 @@ public class MemberServiceImpl implements MemberService {
     public int signUpMember(Member member) {
         return memberMapper.signUpMember(member);
     }
+
+    @Override
+    public int getMemberCountById(String memberId) {
+        return memberMapper.getMemberCountById(memberId);
+    }
 }

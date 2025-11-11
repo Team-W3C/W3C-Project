@@ -21,7 +21,7 @@
 <body>
 
 <!--헤더-->
-<jsp:include page="../../common/homePageMember/header_member.jsp" />
+<jsp:include page="../../common/homePageMember/header.jsp" />
 
 <!-- 메인 컨텐츠 영역 -->
 <main class="inquiry-main">

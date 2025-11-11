@@ -80,4 +80,10 @@
             'T'
         )
     </insert>
+
+    <select id="getMemberCountById" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
 </mapper>

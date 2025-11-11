@@ -33,7 +33,7 @@
 </head>
 
 <body>
-<jsp:include page="../../common/homePageMember/header_member.jsp"/>
+<jsp:include page="../../common/homePageMember/header.jsp"/>
 
 <main class="mypage-container">
     <jsp:include page="../../common/homePageMember/member-sidebar.jsp"/>

@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/member")
@@ -52,5 +50,16 @@ public class SignUpController {
             model.addAttribute("errorMsg", "회원가입에 실패하였습니다.");
             return "common/error";
         }
+    }
+
+    @GetMapping("/idDuplicateCheck")
+    @ResponseBody
+    public String idDuplicateCheck(@RequestParam String checkId) {
+
+        System.out.println("checkId: " + checkId);
+
+        int count = memberService.getMemberCountById(checkId);
+
+        return count == 1 ? "F" : "T";
     }
 }
