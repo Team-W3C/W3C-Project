@@ -16,6 +16,7 @@
                         <a href="${pageContext.request.contextPath}/member/loginPage" class="nav-link nav-link-primary">로그인</a>
                     </c:when>
                     <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/member/mychart" class="nav-link">나의차트</a>
                         <a href="${pageContext.request.contextPath}/api/member/logOut" class="nav-link nav-link-primary">로그아웃</a>
                     </c:otherwise>
                 </c:choose>

@@ -30,7 +30,7 @@
         <div class="signup-container">
             <h1 class="signup-title">회원가입</h1>
             
-            <form class="signup-form" method="post" action="${pageContext.request.contextPath}/member/signUp">
+            <form class="signup-form" method="post" action="${pageContext.request.contextPath}/api/member/signUp">
                 <!-- 아이디 -->
                 <div class="signup-field-row">
                     <div class="signup-field-group">
@@ -43,7 +43,7 @@
                 <!-- 비밀번호 -->
                 <div class="signup-field-group">
                     <label for="password" class="signup-label">비밀번호</label>
-                    <input type="password" id="password" class="signup-input signup-input-full" placeholder="비밀번호">
+                    <input type="password" id="password" name="memberPwd" class="signup-input signup-input-full" placeholder="비밀번호">
                 </div>
 
                 <!-- 비밀번호 확인 -->
@@ -52,57 +52,63 @@
                     <input type="password" id="passwordConfirm" class="signup-input signup-input-short" placeholder="비밀번호 확인">
                 </div>
 
-                <!-- 이름 -->
-                <div class="signup-field-group">
-                    <label for="userName" class="signup-label">이름</label>
-                    <input type="text" id="userName" class="signup-input signup-input-short" placeholder="이름">
-                </div>
-                
-                <div class="blood-ssn-container">
-                    <!-- 주민등록번호 -->
-                    <div class="signup-field-ssn">
-                        <div class="signup-field-group">
-                            <label for="ssnFront" class="signup-label">주민등록번호</label>
-                            <input type="text" id="ssnFront" class="signup-input signup-input-ssn" placeholder="주민등록번호" maxlength="6">
-                        </div>
-                        <span class="signup-ssn-dash">-</span>
-                        <input type="password" id="ssnBack" class="signup-input signup-input-ssn" placeholder="뒷자리" maxlength="7">
+                <div class="name-blood-container">
+                    <!-- 이름 -->
+                    <div class="signup-field-group">
+                        <label for="userName" class="signup-label">이름</label>
+                        <input type="text" id="userName" name="memberName" class="signup-input signup-input-short" placeholder="이름">
                     </div>
-
                     <!-- 혈액형 -->
                     <div class="signup-field-row signup-field-blood">
                         <div class="signup-field-group">
                             <label for="bloodType" class="signup-label">혈액형</label>
-                            <input type="text" id="bloodType" class="signup-input signup-input-blood" placeholder="혈액형">
+                            <input type="text" id="bloodType" name="memberBloodType" class="signup-input signup-input-blood" placeholder="혈액형">
                         </div>
                     </div>
                 </div>
 
-                <div class="phone-address-container">
+                <div class="ssn-phone-container">
+                    <!-- 주민등록번호 -->
+                    <div class="signup-field-ssn">
+                        <div class="signup-field-group">
+                            <label for="ssnFront" class="signup-label">주민등록번호</label>
+                            <input type="text" id="ssnFront" name="memberSsnFront" class="signup-input signup-input-ssn" placeholder="주민등록번호" maxlength="6">
+                        </div>
+                        <span class="signup-ssn-dash">-</span>
+                        <input type="password" id="ssnBack" name="memberSsnBack" class="signup-input signup-input-ssn" placeholder="뒷자리" maxlength="7">
+                    </div>
+
                     <!-- 전화번호 -->
                     <div class="signup-field-group">
                         <label for="phone" class="signup-label">전화번호</label>
-                        <input type="tel" id="phone" class="signup-input signup-input-short" placeholder="전화번호">
-                    </div>
-
-                    <!-- 주소 -->
-                    <div class="signup-field-group signup-field-address">
-                        <label for="address" class="signup-label">주소</label>
-                        <input type="text" id="address" class="signup-input signup-input-short" placeholder="주소">
+                        <input type="tel" id="phone" name="memberPhone" class="signup-input signup-input-short" placeholder="전화번호">
                     </div>
                 </div>
 
-                <div class="email-notes-container">
+                <div class="address-email-container">
+                    <!-- 주소 -->
+                    <div class="signup-field-group signup-field-address">
+                        <label for="address" class="signup-label">주소</label>
+                        <input type="text" id="address" name="memberAddress" class="signup-input signup-input-short" placeholder="주소">
+                    </div>
+
                     <!-- 이메일 -->
                     <div class="signup-field-group">
                         <label for="email" class="signup-label">이메일</label>
-                        <input type="email" id="email" class="signup-input signup-input-short" placeholder="이메일">
+                        <input type="email" id="email" name="memberEmail" class="signup-input signup-input-short" placeholder="이메일">
                     </div>
+                </div>
 
-                    <!-- 특이사항 -->
+                <div class="notes-container">
+                    <!-- 기저질환 -->
                     <div class="signup-field-group signup-field-notes">
-                        <label for="notes" class="signup-label">특이사항(기저질환, 알레르기)</label>
-                        <input type="text" id="notes" class="signup-input signup-input-short" placeholder="특이사항">
+                        <label for="notes" class="signup-label">기저질환</label>
+                        <input type="text" id="note-underlying-disease" name="memberChronicDisease" class="signup-input signup-input-short" placeholder="기저질환">
+                    </div>
+                    <!-- 알레르기 -->
+                    <div class="signup-field-group signup-field-notes">
+                        <label for="notes" class="signup-label">알레르기</label>
+                        <input type="text" id="note-allergy" name="memberAllergy" class="signup-input signup-input-short" placeholder="알레르기">
                     </div>
                 </div>
 
