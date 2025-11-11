@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -18,8 +19,25 @@
     -->
 </head>
 <body>
-    <!-- Header Include -->
-    <jsp:include page="header_member.jsp" />
+
+    <c:choose>
+        <c:when test="${empty sessionScope.loginMember}">
+            <!-- Not Login Member Header Include -->
+            <jsp:include page="header_member.jsp" />
+        </c:when>
+        <c:when test="${not empty sessionScope.loginMember}">
+            <c:choose>
+                <c:when test="${sessionScope.loginMember.memberId.equals('root')}">
+                    <!-- Login Admin Header Include -->
+                    <jsp:include page="../homePageAdmin/header_admin.jsp" />
+                </c:when>
+                <c:otherwise>
+                    <!-- Login Member Header Include -->
+                    <jsp:include page="header_member.jsp" />
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+    </c:choose>
 
     <!-- Main Content -->
     <main class="main-content">
