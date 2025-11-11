@@ -15,8 +15,8 @@
 <aside class="member-sidebar">
 
     <div class="member-sidebar__user">
-        <h2 class="member-sidebar__user-name">홍길동님</h2>
-        <p class="member-sidebar__user-id">병원등록번호 : 11258411</p>
+        <h2 class="member-sidebar__user-name">${sessionScope.loginMember.memberName}님</h2>
+        <p class="member-sidebar__user-id">병원등록번호 : ${sessionScope.loginMember.memberNo}</p>
     </div>
 
     <nav class="member-sidebar__nav-group">
@@ -29,16 +29,7 @@
                 <a href="#" class="member-sidebar__nav-link">진료내역</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">알레르기 이력</a>
-            </li>
-            <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">투약내역</a>
-            </li>
-            <li class="member-sidebar__nav-item">
                 <a href="#" class="member-sidebar__nav-link">진단검사결과</a>
-            </li>
-            <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">건강검진결과</a>
             </li>
         </ul>
     </nav>

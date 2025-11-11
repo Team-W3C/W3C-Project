@@ -28,6 +28,86 @@
         body.modal-open {
             overflow: hidden;
         }
+
+        /* 상태 배지 스타일 (완료, 취소) */
+        .status-badge-inline.completed {
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+        }
+        .status-text.completed {
+            color: #757575;
+        }
+
+        .status-badge-inline.cancelled {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+        }
+        .status-text.cancelled {
+            color: #d32f2f;
+        }
+        /* ▲▲▲ 상태 배지 ▲▲▲ */
+
+
+        /* ▼▼▼ [예약 변경] 모달 폼 스타일 - 레이아웃 수정 ▼▼▼ */
+        .edit-modal .modal-body {
+            /* 모달 헤더와 푸터가 본문과 겹치지 않도록 패딩 조정 */
+            padding: 10px 30px;
+            max-height: 70vh; /* 모달 본문 최대 높이 지정 */
+            overflow-y: auto; /* 내용이 많아지면 스크롤 가능하도록 */
+        }
+        .edit-form-group {
+            margin-bottom: 20px;
+        }
+        .edit-form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .edit-form-group select,
+        .edit-form-group input,
+        .edit-form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            box-sizing: border-box;
+        }
+        .edit-form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .edit-modal .modal-footer {
+            /* ▼▼▼ [핵심 수정] 푸터를 명확히 분리 ▼▼▼ */
+            padding: 15px 30px;
+            border-top: 1px solid #eee;
+            justify-content: flex-end; /* 버튼을 오른쪽으로 배치 */
+            gap: 10px; /* 버튼 사이 간격 */
+            position: sticky; /* 스크롤 되어도 푸터는 고정 (선택 사항) */
+            bottom: 0;
+            background-color: white;
+            z-index: 10;
+        }
+        .edit-modal .modal-footer .btn-cancel {
+            margin-right: 10px;
+        }
+        /* 로딩 스피너 */
+        .modal-body .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+        .modal-body.is-loading .loading-spinner {
+            display: block;
+        }
+        .modal-body.is-loading .edit-form {
+            display: none;
+        }
+        /* ▲▲▲ 모달 스타일 ▲▲▲ */
+
     </style>
 
 </head>
@@ -64,10 +144,10 @@
                 <%-- 2. 예약 목록이 있을 때 (otherwise) --%>
                 <c:otherwise>
                     <c:forEach var="reservation" items="${reservationList}">
-                        <article class="reservation-card">
+
+                        <article class="reservation-card" data-reservation-no="${reservation.reservationNo}">
                             <div class="card-header">
                                 <div class="card-status">
-                                        <%-- JSTL choose 태그로 예약 상태(status)에 따라 분기 --%>
                                     <c:choose>
                                         <c:when test="${reservation.status == 'CONFIRMED'}">
                                             <div class="status-badge-inline confirmed">
@@ -81,13 +161,27 @@
                                                 <span class="status-text pending">예약 대기</span>
                                             </div>
                                         </c:when>
-                                        <%-- 다른 상태가 있다면 c:when 추가 --%>
+                                        <c:when test="${reservation.status == 'COMPLETED'}">
+                                            <div class="status-badge-inline completed">
+                                                <div class="status-icon check"></div>
+                                                <span class="status-text completed">진료 완료</span>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${reservation.status == 'CANCELLED'}">
+                                            <div class="status-badge-inline cancelled">
+                                                <div class="status-icon warning"></div>
+                                                <span class="status-text cancelled">예약 취소</span>
+                                            </div>
+                                        </c:when>
                                     </c:choose>
                                     <span class="reservation-type">${reservation.type}</span>
                                 </div>
+
                                 <div class="card-actions">
-                                    <button class="btn btn-secondary">변경</button>
-                                    <button class="btn btn-outline">취소</button>
+                                    <c:if test="${reservation.status == 'CONFIRMED' || reservation.status == 'PENDING'}">
+                                        <button class="btn btn-secondary btn-edit">변경</button>
+                                        <button class="btn btn-outline btn-cancel">취소</button>
+                                    </c:if>
                                 </div>
                             </div>
 
@@ -160,46 +254,34 @@
                 </c:otherwise>
             </c:choose>
 
-        </section>
+        </section> <section class="verification-section">
+        <div class="verification-header">
+            <h3>본인인증을 하시면 더 많은 정보를 볼 수 있습니다.</h3>
+            <button class="btn-primary">본인인증하기</button>
+        </div>
 
-        <section class="verification-section">
-            <div class="verification-header">
-                <h3>본인인증을 하시면 더 많은 정보를 볼 수 있습니다.</h3>
-                <button class="btn-primary">본인인증하기</button>
+        <div class="verification-items">
+            <div class="verification-item">
+                <div class="verification-icon">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                        <rect x="10" y="15" width="40" height="35" rx="3" stroke="#0E787C" stroke-width="2"/>
+                        <path d="M20 10V20M40 10V20" stroke="#0E787C" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h4>진료내역</h4>
             </div>
 
-            <div class="verification-items">
-                <div class="verification-item">
-                    <div class="verification-icon">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <rect x="10" y="15" width="40" height="35" rx="3" stroke="#0E787C" stroke-width="2"/>
-                            <path d="M20 10V20M40 10V20" stroke="#0E787C" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h4>진료내역</h4>
+            <div class="verification-item">
+                <div class="verification-icon">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="20" stroke="#0E787C" stroke-width="2"/>
+                        <circle cx="30" cy="30" r="10" stroke="#0E787C" stroke-width="2"/>
+                    </svg>
                 </div>
-
-                <div class="verification-item">
-                    <div class="verification-icon">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <ellipse cx="30" cy="25" rx="15" ry="20" stroke="#0E787C" stroke-width="2"/>
-                            <rect x="20" y="35" width="20" height="15" rx="3" stroke="#0E787C" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h4>투약내역</h4>
-                </div>
-
-                <div class="verification-item">
-                    <div class="verification-icon">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                            <circle cx="30" cy="30" r="20" stroke="#0E787C" stroke-width="2"/>
-                            <circle cx="30" cy="30" r="10" stroke="#0E787C" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h4>진단검사결과</h4>
-                </div>
+                <h4>진단검사결과</h4>
             </div>
-        </section>
+        </div>
+    </section>
 
         <section class="password-section">
             <p>
@@ -209,8 +291,7 @@
             <button class="btn-primary">비밀번호 변경</button>
         </section>
 
-    </section>
-</main>
+    </section> </main>
 
 <div class="modal-overlay password-modal-overlay">
     <div class="password-modal">
@@ -239,7 +320,6 @@
                     </div>
                     <div class="field-info">
                         <div class="field-label">성함</div>
-                        <%-- EL을 사용하여 세션에 저장된 로그인 멤버의 이름 표시 --%>
                         <div class="field-value">${sessionScope.loginMember.memberName}</div>
                     </div>
                 </div>
@@ -256,14 +336,64 @@
         </footer>
     </div>
 </div>
+
+
+<div class="modal-overlay edit-modal-overlay" data-current-rno="">
+    <div class="password-modal edit-modal">
+        <button type="button" class="modal-close" aria-label="닫기">
+            ×
+        </button>
+
+        <header class="modal-header">
+            <h2 class="modal-title">예약 변경</h2>
+            <p class="modal-subtitle">예약 정보를 수정 후 '저장' 버튼을 눌러주세요.</p>
+        </header>
+
+        <div class="modal-body">
+            <div class="loading-spinner">
+                <p>예약 정보를 불러오는 중입니다...</p>
+            </div>
+
+            <form class="edit-form" id="edit-reservation-form">
+
+                <input type="hidden" id="edit-reservation-no" name="reservationNo">
+
+                <div class="edit-form-group">
+                    <label for="edit-dept">진료과</label>
+                    <select id="edit-dept" name="departmentNo" required>
+                        <option value="">진료과를 선택하세요</option>
+                    </select>
+                </div>
+
+                <div class="edit-form-group">
+                    <label for="edit-datetime">예약 일시</label>
+                    <input type="datetime-local" id="edit-datetime" name="treatmentDate" required>
+                </div>
+
+                <div class="edit-form-group">
+                    <label for="edit-doctor">담당의</label>
+                    <input type="text" id="edit-doctor" name="doctorName" placeholder="담당의 이름을 입력하세요">
+                </div>
+
+                <div class="edit-form-group">
+                    <label for="edit-notes">증상</label>
+                    <textarea id="edit-notes" name="reservationNotes" placeholder="증상을 입력해주세요."></textarea>
+                </div>
+
+            </form>
+        </div>
+
+        <footer class="modal-footer">
+            <button type="button" class="btn-cancel">취소</button>
+            <button type="submit" form="edit-reservation-form" class="btn-confirm btn-primary">저장</button>
+        </footer>
+    </div>
+</div>
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
 <script>
-    // JSP가 렌더링한 contextPath 값을
-    // "contextPath"라는 이름의 JavaScript 전역 변수에 저장합니다.
-        const contextPath = "${pageContext.request.contextPath}";
+    const contextPath = "${pageContext.request.contextPath}";
 </script>
 <script src="${pageContext.request.contextPath}/js/MyChart.js" defer></script>
 
 </body>
-
 </html>
