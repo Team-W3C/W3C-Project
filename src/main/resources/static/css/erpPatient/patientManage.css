@@ -43,11 +43,11 @@ body {
    메인 레이아웃
    ======================================== */
 .patient-main {
-    padding: 32px 286px;
+    padding: 32px;
     background-color: #f9fafb;
     min-height: 100vh;
     margin-top: 60px;
-    margin-left : 100px;
+    margin-left : 256px;
 }
 
 /* ========================================
