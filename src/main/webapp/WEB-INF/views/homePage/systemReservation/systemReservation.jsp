@@ -16,7 +16,7 @@
 
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 <main class="reservation-container">
 
     <section class="reservation-header">

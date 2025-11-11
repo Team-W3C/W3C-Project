@@ -23,7 +23,7 @@
     <c:choose>
         <c:when test="${empty sessionScope.loginMember}">
             <!-- Not Login Member Header Include -->
-            <jsp:include page="header_member.jsp" />
+            <jsp:include page="header.jsp" />
         </c:when>
         <c:when test="${not empty sessionScope.loginMember}">
             <c:choose>
@@ -33,7 +33,7 @@
                 </c:when>
                 <c:otherwise>
                     <!-- Login Member Header Include -->
-                    <jsp:include page="header_member.jsp" />
+                    <jsp:include page="header.jsp" />
                 </c:otherwise>
             </c:choose>
         </c:when>

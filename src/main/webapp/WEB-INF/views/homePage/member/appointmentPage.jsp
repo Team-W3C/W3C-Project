@@ -72,7 +72,7 @@
 </head>
 
 <body>
-<jsp:include page="../../common/homePageMember/header_member.jsp"/>
+<jsp:include page="../../common/homePageMember/header.jsp"/>
 <div class="main-container">
     <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 

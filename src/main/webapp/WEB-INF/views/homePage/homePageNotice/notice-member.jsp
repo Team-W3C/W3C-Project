@@ -17,7 +17,7 @@
 </head>
 <body>
 <!-- Header Include -->
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 <!-- 메인 컨텐츠 영역 -->
 <main class="notice-main">
 

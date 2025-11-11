@@ -43,7 +43,7 @@
 <jsp:useBean id="now" class="java.util.Date"/>
 <fmt:setLocale value="ko_KR"/>
 
-<jsp:include page="../../common/homePageMember/header_member.jsp"/>
+<jsp:include page="../../common/homePageMember/header.jsp"/>
 
 <div class="member-info-wrap">
     <main class="member-info-container">
