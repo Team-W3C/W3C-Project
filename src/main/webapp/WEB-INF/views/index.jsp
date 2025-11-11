@@ -22,7 +22,7 @@
 </head>
 <body>
     <!-- Header Include -->
-    <jsp:include page="common/homePageAdmin/header_admin.jsp" />
+    <jsp:include page="common/homePageMember/header_member.jsp" />
 
     <!-- Main Content -->
     <main class="main">

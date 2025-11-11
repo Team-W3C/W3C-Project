@@ -30,12 +30,12 @@
         <div class="signup-container">
             <h1 class="signup-title">회원가입</h1>
             
-            <form class="signup-form">
+            <form class="signup-form" method="post" action="${pageContext.request.contextPath}/member/signUp">
                 <!-- 아이디 -->
                 <div class="signup-field-row">
                     <div class="signup-field-group">
                         <label for="userId" class="signup-label">아이디</label>
-                        <input type="text" id="userId" class="signup-input signup-input-short" placeholder="아이디">
+                        <input type="text" id="userId" name="memberId" class="signup-input signup-input-short" placeholder="아이디">
                     </div>
                     <button type="button" class="signup-btn-check">아이디 중복확인</button>
                 </div>
@@ -119,6 +119,7 @@
     <jsp:include page="../homePageFooter/footer.jsp" />
 
     <!-- script -->
-    <script src="${pageContext.request.contextPath}/mainView/js/index.js"></script>
+    <script src="${pageContext.request.contextPath}/js/index.js"></script>
+
 </body>
 </html>

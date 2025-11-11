@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
+    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
+    <resultMap id="memberResultMap" type="Member">
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="MEMBER_PWD" property="memberPwd"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_GENDER" property="memberGender"/>
+        <result column="MEMBER_RRN" property="memberRrn"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_ADDRESS" property="memberAddress"/>
+        <result column="MEMBER_JOIN_DATE" property="memberJoinDate"/>
+        <result column="MEMBER_BLOOD_TYPE" property="memberBloodType"/>
+        <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
+        <result column="MEMBER_ALLERGY" property="memberAllergy"/>
+        <result column="STAFF_NO" property="staff_no"/>
+    </resultMap>
+
+    <select id="loginMember" resultType="_int" parameterType="string">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+</mapper>

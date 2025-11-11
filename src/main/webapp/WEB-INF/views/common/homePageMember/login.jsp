@@ -30,7 +30,7 @@
 
         <!-- Login Form -->
         <div class="form-container">
-            <form id="loginForm" method="post" action="${pageContext.request.contextPath}/member/login.me">
+            <form id="loginForm" method="post" action="${pageContext.request.contextPath}/api/member/login">
                 <!-- Username Input -->
                 <div class="input-group">
                     <label for="username">아이디</label>
