@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/api/member")
@@ -25,11 +24,10 @@ public class LoginController {
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam("memberId") String memberId,
-                              // 1. redirectURL 파라미터를 받도록 추가 (필수 아님)
-                              @RequestParam(value = "redirectURL", required = false) String redirectURL,
+                              @RequestParam("memberPwd") String memberPwd,
                               ModelAndView mv, HttpSession session) {
 
-        Member loginMember = memberService.getMemberById(memberId);
+        Member loginMember = memberService.getMemberById(memberId, memberPwd);
         System.out.println(loginMember);
 
         if(loginMember == null) { //ID가 잘못된 상태
@@ -41,30 +39,9 @@ public class LoginController {
 //            mv.setViewName("common/error");
         } else {//로그인 성공
             session.setAttribute("loginMember", loginMember);
-
-            // 2. redirectURL 값에 따라 분기 처리
-            if (redirectURL != null && !redirectURL.isEmpty()) {
-                // redirectURL이 있으면, 그곳으로 다시 리다이렉트
-                mv.setViewName("redirect:" + redirectURL);
-            } else {
-                // 없으면, 기존처럼 메인 페이지("/")로 리다이렉트
-                mv.setViewName("redirect:/");
-            }
+            mv.setViewName("redirect:/");
         }
         return mv;
-    }
-
-    @GetMapping("loginPage")
-    public String showLoginPage(@RequestParam(value = "redirectURL", required = false) String redirectURL,
-                                Model model) { // <-- 이 부분을 그냥 추가하세요!
-
-        // 'redirectURL' 파라미터가 존재하면 (즉, 다른 곳에서 리다이렉트 되었다면)
-        if (redirectURL != null) {
-            // model 객체에 "redirectURL"이라는 이름으로 값을 담습니다.
-            model.addAttribute("redirectURL", redirectURL);
-        }
-
-        return "common/homePageMember/login";
     }
 
     @GetMapping("logOut")

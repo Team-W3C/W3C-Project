@@ -121,17 +121,22 @@ body {
     padding-bottom: 12px;
 }
 
-.blood-ssn-container {
+.name-blood-container {
     display: flex;
     gap: 32px;
 }
 
-.phone-address-container {
+.ssn-phone-container {
     display: flex;
     justify-content: space-between;
 }
 
-.email-notes-container {
+.address-email-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notes-container {
     display: flex;
     justify-content: space-between;
 }
@@ -247,12 +252,6 @@ body {
         width: 100%;
     }
 
-    .blood-ssn-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 8px;
-    }
-
     .signup-field-ssn {
         margin-left: 0;
         display: flex;
@@ -322,4 +321,8 @@ body {
         text-align: center;
         margin-top: 40px;
     }
+}
+
+@media (max-width: 768px) {
+
 }

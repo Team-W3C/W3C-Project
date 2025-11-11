@@ -18,7 +18,7 @@
 </head>
 <body>
 <!-- Header Include -->
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 <div class="guide-wrapper">
 <!-- sidebar include -->
 <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>

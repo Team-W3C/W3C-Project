@@ -7,5 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Mapper
 public interface MemberMapper {
-    Member getMemberById(@Param("memberId") String memberId);
+    Member getMemberById(@Param("memberId") String memberId, @Param("memberPwd") String memberPwd);
+    int signUpMember(Member member);
+    int getMemberCountById(@Param("memberId") String memberId);
 }
