@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.ReservationMapper">
+
+    <resultMap id="scheduleResultMap" type="com.w3c.spring.model.vo.ScheduleVO">
+        <result property="scheduleStartTime" column="schedule_start_time" />
+        <result property="scheduleEndTime" column="schedule_end_time" /> <result property="status" column="status" />
+    </resultMap>
+
+    <select id="selectScheduleAfterToday" resultMap="scheduleResultMap">
+        SELECT
+            schedule_start_time,
+            schedule_end_time, status
+        FROM
+            SCHEDULE
+        WHERE
+            schedule_end_time >= TRUNC(SYSDATE) ORDER BY
+            schedule_start_time ASC
+    </select>
+        <select id="findAvailableTimes" parameterType="map" resultType="com.w3c.spring.model.vo.TimeSlotVO">
+            SELECT
+                TO_CHAR(S.schedule_start_time, 'HH24:MI') || '~' || TO_CHAR(S.schedule_end_time, 'HH24:MI') AS "time",
+                M.member_name AS "doctorName",
+                DEPT.department_location AS "location"
+            FROM
+                SCHEDULE S
+                    JOIN STAFF ST ON S.staff_no = ST.staff_no
+                    JOIN DOCTOR D ON ST.staff_no = D.staff_no
+                    JOIN MEMBER M ON ST.member_no = M.member_no
+                    JOIN DEPARTMENT DEPT ON D.department_no = DEPT.department_no
+            WHERE
+                D.department_no = #{departmentId}
+              AND S.status = '근무 중'
+              AND TRUNC(S.schedule_start_time) = TO_DATE(#{date}, 'YYYY-MM-DD')
+
+            -- TODO: 이미 예약된 시간은 제외하는 로직 (RESERVATION 테이블과 조인)
+            -- AND NOT EXISTS (SELECT 1 FROM RESERVATION R
+            --                 WHERE R.treatment_date = S.schedule_start_time
+            --                 AND R.reservation_status != '취소')
+
+            ORDER BY
+                S.schedule_start_time
+        </select>
+</mapper>

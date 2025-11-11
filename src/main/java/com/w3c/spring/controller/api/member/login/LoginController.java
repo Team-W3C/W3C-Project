@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/api/member")
@@ -51,6 +52,19 @@ public class LoginController {
             }
         }
         return mv;
+    }
+
+    @GetMapping("loginPage")
+    public String showLoginPage(@RequestParam(value = "redirectURL", required = false) String redirectURL,
+                                Model model) { // <-- 이 부분을 그냥 추가하세요!
+
+        // 'redirectURL' 파라미터가 존재하면 (즉, 다른 곳에서 리다이렉트 되었다면)
+        if (redirectURL != null) {
+            // model 객체에 "redirectURL"이라는 이름으로 값을 담습니다.
+            model.addAttribute("redirectURL", redirectURL);
+        }
+
+        return "common/homePageMember/login";
     }
 
     @GetMapping("logOut")

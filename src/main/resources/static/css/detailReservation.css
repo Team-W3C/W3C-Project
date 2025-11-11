@@ -1,830 +1,865 @@
 :root {
-  --primary-color: #0e787c;
-  --primary-light: #e8f5f5;
-  --primary-bg: rgba(14, 120, 124, 0.05);
-  --border-color: #e5e7eb;
-  --border-light: #f2f4f6;
-  --text-primary: #0a0a0a;
-  --text-secondary: #495565;
-  --text-tertiary: #717182;
-  --text-muted: #697282;
-  --background: #ffffff;
-  --background-light: #f9fafb;
-  --disabled-bg: #f3f4f6;
-  --disabled-text: #828282;
-  --shadow-sm: 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --primary-color: #0e787c;
+    --primary-light: #e8f5f5;
+    --primary-bg: rgba(14, 120, 124, 0.05);
+    --border-color: #e5e7eb;
+    --border-light: #f2f4f6;
+    --text-primary: #0a0a0a;
+    --text-secondary: #495565;
+    --text-tertiary: #717182;
+    --text-muted: #697282;
+    --background: #ffffff;
+    --background-light: #f9fafb;
+    --disabled-bg: #f3f4f6;
+    --disabled-text: #828282;
+    --shadow-sm: 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Noto Sans KR', 'Arial', sans-serif;
-  color: var(--text-primary);
-  background-color: var(--background);
-  line-height: 1.6;
+    font-family: 'Noto Sans KR', 'Arial', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--background);
+    line-height: 1.6;
 }
 
 button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 img {
-  max-width: 100%;
-  display: block;
+    max-width: 100%;
+    display: block;
 }
 
 /* ===================================
    Top Navigation
    =================================== */
 .reservation {
-  width: 100%;
-  background-color: var(--background);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+    width: 100%;
+    background-color: var(--background);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .navigation {
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
 }
 
 .navigation .rectangle {
-  height: 50px;
-  width: auto;
+    height: 50px;
+    width: auto;
 }
 
 .items {
-  display: flex;
-  align-items: center;
-  gap: 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
 }
 
 .text-wrapper {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: color 0.2s;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
 .text-wrapper:hover {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .button {
-  padding: 10px 24px;
-  background-color: var(--primary-color);
-  border-radius: 8px;
-  transition: all 0.2s;
+    padding: 10px 24px;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    transition: all 0.2s;
 }
 
 .button:hover {
-  background-color: #0a5f62;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(14, 120, 124, 0.2);
+    background-color: #0a5f62;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(14, 120, 124, 0.2);
 }
 
 .button .div {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--background);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--background);
 }
 
 /* Main Layout */
 .reservation-main {
-  display: flex;
-  min-height: 100vh;
-  max-width: 1440px;
-  margin: 0 auto;
+    display: flex;
+    min-height: 100vh;
+    max-width: 1440px;
+    margin: 0 auto;
     margin-top: 40px;
+}
 
 /* ===================================
    Sidebar
    =================================== */
 .reservation-sidebar {
-  width: 218px;
-  padding: 108px 0 40px 0;
-  background-color: var(--background);
-  flex-shrink: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+    width: 218px;
+    padding: 108px 0 40px 0;
+    background-color: var(--background);
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-header {
-  padding: 16px 20px;
-  text-align: center;
-  border-bottom: 2px solid var(--primary-color);
-  margin-bottom: 0;
+    padding: 16px 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: 0;
 }
 
 .sidebar-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.4;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.4;
 }
 
 /* Navigation */
 .nav-list {
-  list-style: none;
+    list-style: none;
 }
 
 .nav-item {
-  border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .link {
-  display: block;
-  padding: 20px 20px;
-  text-align: center;
-  font-size: 16px;
-  color: var(--text-primary);
-  text-decoration: none;
-  line-height: 1.4;
-  background-color: #f5f5f5;
-  transition: all 0.2s;
+    display: block;
+    padding: 20px 20px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    line-height: 1.4;
+    background-color: #f5f5f5;
+    transition: all 0.2s;
 }
 
 .link:hover {
-  background-color: #e8f5f5;
+    background-color: #e8f5f5;
 }
 
 .nav-item.active > .link {
-  background-color: var(--primary-color);
-  color: var(--background);
-  font-weight: 500;
+    background-color: var(--primary-color);
+    color: var(--background);
+    font-weight: 500;
 }
 
 /* Sub Navigation */
 .nav-sublist {
-  list-style: none;
-  background-color: #f9f9f9;
-  padding: 0;
-  border-top: 1px solid var(--border-color);
+    list-style: none;
+    background-color: #f9f9f9;
+    padding: 0;
+    border-top: 1px solid var(--border-color);
 }
 
 .nav-subitem {
-  border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .nav-subitem:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .nav-sublink {
-  display: block;
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.4;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 16px 20px;
-  transition: all 0.2s;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 16px 20px;
+    transition: all 0.2s;
 }
 
 .nav-sublink:hover {
-  background-color: #f0f0f0;
-  color: var(--text-primary);
+    background-color: #f0f0f0;
+    color: var(--text-primary);
 }
 
 .nav-subitem.active .nav-sublink {
-  color: var(--primary-color);
-  font-weight: 600;
-  background-color: #ffffff;
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: #ffffff;
 }
 
 /* Sidebar Contact */
 .sidebar-contact {
-  margin-top: auto;
-  padding: 20px;
-  border: 1px solid var(--border-color);
-  text-align: center;
-  background-color: #ffffff;
-  margin: 40px 20px 20px 20px;
+    margin-top: auto;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    background-color: #ffffff;
+    margin: 40px 20px 20px 20px;
 }
 
 .contact-label {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 8px;
-  color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    color: var(--text-primary);
 }
 
 .contact-number {
-  font-size: 18px;
-  line-height: 1.4;
-  font-weight: 700;
-  color: var(--primary-color);
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--primary-color);
 }
 
 /* ===================================
    Content Area
    =================================== */
 .reservation-content {
-  flex: 1;
-  padding: 141px 80px 40px 151px;
-  overflow-x: hidden;
+    flex: 1;
+    padding: 141px 80px 40px 151px;
+    overflow-x: hidden;
 }
 
 /* Page Header */
 .reservation-header {
-  margin-bottom: 29px;
+    margin-bottom: 29px;
 }
 
 .page-title {
-  font-size: 30px;
-  font-weight: 700;
-  color: var(--primary-color);
-  line-height: 1.2;
-  margin-bottom: 8px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+    margin-bottom: 8px;
 }
 
 .page-subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.5;
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.5;
 }
 
 /* ===================================
    Card Component
    =================================== */
 .reservation-card {
-  background-color: var(--background);
-  border: 1.78px solid var(--border-light);
-  border-radius: 14px;
-  margin-bottom: 22px;
-  overflow: hidden;
+    background-color: var(--background);
+    border: 1.78px solid var(--border-light);
+    border-radius: 14px;
+    margin-bottom: 22px;
+    overflow: hidden;
 }
 
 .card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  background: linear-gradient(90deg, rgba(14, 120, 124, 0.05) 0%, rgba(239, 246, 255, 0.3) 100%);
-  border-bottom: 0.89px solid var(--border-light);
-  position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px;
+    background: linear-gradient(90deg, rgba(14, 120, 124, 0.05) 0%, rgba(239, 246, 255, 0.3) 100%);
+    border-bottom: 0.89px solid var(--border-light);
+    position: relative;
 }
 
 .step-badge {
-  width: 32px;
-  height: 32px;
-  background-color: var(--primary-color);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .step-number {
-  font-size: 16px;
-  color: var(--background);
-  font-weight: 400;
-  line-height: 1.5;
+    font-size: 16px;
+    color: var(--background);
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .card-title {
-  font-size: 16px;
-  color: var(--primary-color);
-  font-weight: 400;
-  line-height: 1;
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 400;
+    line-height: 1;
 }
 
 .legend {
-  display: flex;
-  gap: 16px;
-  margin-left: auto;
+    display: flex;
+    gap: 16px;
+    margin-left: auto;
 }
 
 .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
 }
 
 .legend-item img {
-  width: 16px;
-  height: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .card-body {
-  padding: 40px 26px;
-  display: flex;
-  gap: 26px;
-  width: 100%;
+    padding: 40px 26px;
+    display: flex;
+    gap: 26px;
+    width: 100%;
 }
 
 /* ===================================
    Selection Sections
    =================================== */
 .selection-section {
-  flex: 1;
+    flex: 1;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 400;
-  color: #354152;
-  line-height: 1.5;
-  margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #354152;
+    line-height: 1.5;
+    margin-bottom: 16px;
 }
 
 /* ===================================
-   Calendar Component
+   Calendar Component (FullCalendar 수정)
    =================================== */
-.calendar-wrapper {
-  background-color: var(--background);
-  border-radius: 8px;
-  padding: 15px;
+
+/* [수정] 캘린더 감싸는 div (원본 디자인과 동일) */
+#calendar-wrapper {
+    background-color: var(--background);
+    border-radius: 8px;
+    padding: 15px;
+    /* 원본 디자인의 크기(280px)보다 조금 키움 */
+    max-width: 450px;
+    margin: 0 auto;
+}
+#calendar {
+    width: 100%;
 }
 
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  padding: 0 5px;
+/* [수정] 캘린더 헤더 (월/년, 버튼) */
+.fc .fc-toolbar {
+    margin-bottom: 5px !important;
+    display: flex;
+    justify-content: space-between;
+}
+.fc .fc-toolbar-title {
+    font-size: 14px; /* 원본 디자인 크기 */
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 2.5; /* 버튼과 높이 맞춤 */
+}
+.fc .fc-prev-button,
+.fc .fc-next-button {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 35px; /* 원본 디자인 크기 */
+    height: 35px;
+}
+/* (FullCalendar 기본 아이콘 사용) */
+.fc .fc-prev-button .fc-icon,
+.fc .fc-next-button .fc-icon {
+    color: var(--primary-color);
+}
+.fc .fc-prev-button:hover,
+.fc .fc-next-button:hover {
+    background-color: var(--primary-light) !important;
 }
 
-.calendar-nav-btn {
-  width: 35px;
-  height: 35px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+/* [수정] 요일 (일,월,화...) */
+.fc .fc-col-header-cell {
+    background: none;
+    height: 24px;
+}
+.fc .fc-col-header-cell-cushion {
+    font-size: 12.8px; /* 원본 디자인 크기 */
+    color: var(--text-tertiary);
+    text-decoration: none; /* 밑줄 제거 */
+    padding: 5px 0;
 }
 
-.calendar-month {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-primary);
+/* [수정] 날짜 셀 (가장 중요) */
+.fc .fc-daygrid-day-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px; /* 원본 디자인 높이 */
+    border-radius: 8px; /* 원본 디자인 */
+    transition: all 0.2s;
+    background-color: transparent;
+}
+.fc .fc-daygrid-day {
+    padding: 2px; /* 셀 사이 간격 */
+    border: none !important; /* FC 기본 테두리 제거 */
+}
+.fc .fc-daygrid-day-number {
+    font-size: 14px; /* 원본 디자인 */
+    color: var(--text-primary);
+    padding: 0;
+    position: static;
+}
+.fc-scrollgrid { /* 캘린더 전체 테두리 제거 */
+    border: none !important;
 }
 
-.calendar {
-  width: 280px;
-  margin: 0 auto;
+
+/* [수정] 오늘 날짜 */
+.fc .fc-day-today .fc-daygrid-day-frame {
+    background-color: var(--primary-bg); /* 선택 안 된 오늘 날짜 */
 }
 
-.calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 40px);
-  gap: 0;
-  margin-bottom: 10px;
+/* [수정] 과거 날짜 (비활성화) */
+.fc .fc-day-past .fc-daygrid-day-frame,
+.fc .fc-day-disabled .fc-daygrid-day-frame { /* fc-day-disabled가 더 정확함 */
+    opacity: 0.5;
+    background-color: var(--background-light);
+    cursor: not-allowed;
+}
+.fc .fc-day-past .fc-daygrid-day-number,
+.fc .fc-day-disabled .fc-daygrid-day-number {
+    color: var(--text-tertiary);
 }
 
-.calendar-weekdays span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 24px;
-  font-size: 12.8px;
-  color: var(--text-tertiary);
-  line-height: 1.5;
+/* [핵심] 1. 예약 가능 날짜 (초록색) */
+.fc-daygrid-day.available-date .fc-daygrid-day-frame {
+    background-color: var(--primary-light); /* 원본의 'available' 색상 */
+    cursor: pointer;
+}
+.fc-daygrid-day.available-date:hover .fc-daygrid-day-frame {
+    background-color: #d1ebeb; /* 더 진한 초록 */
 }
 
-.calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, 40px);
-  gap: 10px 0;
+/* [핵심] 2. 예약 불가능 날짜 (빨간색) */
+.fc-daygrid-day.unavailable-date .fc-daygrid-day-frame {
+    background-color: #fcebeb; /* 연한 빨강 */
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
-.calendar-day {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  font-size: 14px;
-  color: var(--text-primary);
-  transition: all 0.2s;
+/* [핵심] 3. FullCalendar가 생성하는 이벤트 텍스트 숨기기 (배경색만 필요) */
+.fc .fc-daygrid-event {
+    display: none;
 }
-
-.calendar-day:hover:not(.disabled):not(.selected) {
-  background-color: var(--border-light);
-}
-
-.calendar-day.disabled {
-  opacity: 0.5;
-  color: var(--text-tertiary);
-  cursor: not-allowed;
-}
-
-.calendar-day.available {
-  background-color: var(--primary-light);
-  opacity: 0.5;
-}
-
-.calendar-day.selected {
-  background-color: var(--primary-color);
-  color: var(--background);
+.fc .fc-event {
+    background-color: transparent !important;
 }
 
 /* ===================================
    Department Grid
    =================================== */
 .department-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 214px);
-  gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 214px);
+    gap: 12px;
 }
 
 .department-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px;
-  border: 1.78px solid var(--border-color);
-  border-radius: 14px;
-  background-color: var(--background);
-  transition: all 0.2s;
-  position: relative;
-  min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    border: 1.78px solid var(--border-color);
+    border-radius: 14px;
+    background-color: var(--background);
+    transition: all 0.2s;
+    position: relative;
+    min-height: 112px;
 }
 
 .department-btn:hover:not(.selected) {
-  border-color: var(--primary-color);
-  background-color: rgba(14, 120, 124, 0.02);
+    border-color: var(--primary-color);
+    background-color: rgba(14, 120, 124, 0.02);
 }
 
 .department-btn.selected {
-  background-color: var(--primary-bg);
-  border-color: var(--primary-color);
-  box-shadow: var(--shadow-sm);
-  padding-bottom: 44px;
+    background-color: var(--primary-bg);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    /* (수정) check-icon이 보이도록 padding-bottom 제거 */
+    /* padding-bottom: 44px; */
 }
 
 .department-icon {
-  width: 48px;
-  height: 48px;
+    width: 48px;
+    height: 48px;
 }
 
 .department-btn span {
-  font-size: 14px;
-  color: #354152;
-  line-height: 1.43;
+    font-size: 14px;
+    color: #354152;
+    line-height: 1.43;
 }
 
 .department-btn.selected span {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .check-icon {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  bottom: 16px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 16px;
+    /* (수정) JS로 제어하기 위해 display: none; */
+    display: none;
 }
 
 /* ===================================
    Selection Summary
    =================================== */
 .selection-summary {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 16px;
-  background-color: #e9f3f4;
-  border-radius: 14px;
-  margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px;
+    background-color: #e9f3f4;
+    border-radius: 14px;
+    margin-bottom: 22px;
 }
 
 .summary-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .summary-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary-color);
-  border-radius: 50%;
-  flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .summary-label {
-  font-size: 16px;
-  color: #101727;
-  line-height: 1.5;
+    font-size: 16px;
+    color: #101727;
+    line-height: 1.5;
 }
 
 .summary-value {
-  font-size: 16px;
-  color: #101727;
-  font-weight: 400;
-  line-height: 1.5;
+    font-size: 16px;
+    color: #101727;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 /* ===================================
    Timeslot Grid
    =================================== */
 .timeslot-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
 }
 
 .timeslot-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 17.78px;
-  border: 1.78px solid var(--border-color);
-  border-radius: 10px;
-  background-color: var(--background);
-  transition: all 0.2s;
-  text-align: left;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 17.78px;
+    border: 1.78px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--background);
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
 }
 
 .timeslot-card.available:hover {
-  border-color: var(--primary-color);
-  box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
 }
 
 .timeslot-card.unavailable {
-  background-color: var(--background-light);
-  border-color: var(--border-light);
-  opacity: 0.6;
-  cursor: not-allowed;
+    background-color: var(--background-light);
+    border-color: var(--border-light);
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .timeslot-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .timeslot-time {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .timeslot-time img {
-  width: 16px;
-  height: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .timeslot-time span {
-  font-size: 16px;
-  color: #101727;
-  line-height: 1.5;
+    font-size: 16px;
+    color: #101727;
+    line-height: 1.5;
 }
 
 .timeslot-card.unavailable .timeslot-time span {
-  color: var(--text-muted);
+    color: var(--text-muted);
 }
 
 .status-icon {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 .timeslot-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .doctor-info,
 .location-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.43;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.43;
 }
 
 .doctor-info img,
 .location-info img {
-  width: 14px;
-  height: 14px;
+    width: 14px;
+    height: 14px;
 }
 
 .unavailable-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  background-color: var(--disabled-bg);
-  border: 0.89px solid #d0d5db;
-  border-radius: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.33;
-  margin-top: -2px;
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: var(--disabled-bg);
+    border: 0.89px solid #d0d5db;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.33;
+    margin-top: -2px;
 }
 
 /* ===================================
    Responsive Design (Tablet)
    =================================== */
 @media (max-width: 1024px) {
-  .reservation-main {
-    flex-direction: column;
-  }
+    .reservation-main {
+        flex-direction: column;
+    }
 
-  .navigation {
-    padding: 15px 20px;
-  }
+    .navigation {
+        padding: 15px 20px;
+    }
 
-  .items {
-    gap: 20px;
-  }
+    .items {
+        gap: 20px;
+    }
 
-  .text-wrapper {
-    font-size: 14px;
-  }
+    .text-wrapper {
+        font-size: 14px;
+    }
 
-  .button {
-    padding: 8px 16px;
-  }
+    .button {
+        padding: 8px 16px;
+    }
 
-  .reservation-sidebar {
-    width: 100%;
-    padding: 20px;
-    position: static;
-  }
+    .reservation-sidebar {
+        width: 100%;
+        padding: 20px;
+        position: static;
+    }
 
-  .sidebar-header {
-    text-align: left;
-    padding: 10px 20px;
-  }
+    .sidebar-header {
+        text-align: left;
+        padding: 10px 20px;
+    }
 
-  .nav-link,
-  .nav-sublink {
-    text-align: left;
-    padding-left: 20px;
-  }
+    .nav-link,
+    .nav-sublink {
+        text-align: left;
+        padding-left: 20px;
+    }
 
-  .sidebar-contact {
-    position: static;
-    margin-top: 20px;
-    text-align: left;
-    right: auto;
-  }
+    .sidebar-contact {
+        position: static;
+        margin-top: 20px;
+        text-align: left;
+        right: auto;
+    }
 
-  .reservation-content {
-    padding: 40px 20px;
-  }
+    .reservation-content {
+        padding: 40px 20px;
+    }
 
-  .card-body {
-    flex-direction: column;
-    padding: 20px;
-  }
+    .card-body {
+        flex-direction: column;
+        padding: 20px;
+    }
 
-  .department-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .department-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-  .timeslot-grid {
-    grid-template-columns: 1fr;
-  }
+    .timeslot-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .calendar {
-    width: 100%;
-  }
+    /* 반응형 캘린더 */
+    #calendar-wrapper {
+        max-width: 100%;
+    }
 
-  .calendar-weekdays,
-  .calendar-days {
-    grid-template-columns: repeat(7, 1fr);
-  }
+    .selection-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 
-  .calendar-day {
-    width: 100%;
-  }
-
-  .selection-summary {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .legend {
-    flex-direction: column;
-    gap: 8px;
-  }
-}
-
-/* 추가 공통 스타일 */
-.card-header.highlighted {
-  background-color: #e9f3f4;
+    .legend {
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
 /* Accessibility */
-button:focus-visible,
-.calendar-day:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+button:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
+/* FullCalendar 포커스 스타일 */
+.fc .fc-prev-button:focus-visible,
+.fc .fc-next-button:focus-visible,
+.fc .fc-daygrid-day:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 
 /* ===================================
    Footer
    =================================== */
 .navigation-footer {
-  background-color: #2c3e50;
-  color: #ffffff;
-  padding: 40px 80px;
-  margin-top: auto;
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 40px 80px;
+    margin-top: auto;
 }
 
 .footer-content {
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
 }
 
 .footer-logo img {
-  height: 50px;
-  width: auto;
+    height: 50px;
+    width: auto;
 }
 
 .footer-info {
-  flex: 1;
+    flex: 1;
 }
 
 .footer-info p {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #e0e0e0;
-  margin: 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin: 0;
 }
 
 .footer-address {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .footer-contact {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .footer-copyright {
-  font-size: 13px;
-  color: #b0b0b0;
-  margin-top: 10px;
+    font-size: 13px;
+    color: #b0b0b0;
+    margin-top: 10px;
 }
 
 .footer-links {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .footer-link {
-  font-size: 14px;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  transition: all 0.2s;
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: all 0.2s;
 }
 
 .footer-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 1024px) {
-  .navigation-footer {
-    padding: 30px 20px;
-  }
+    .navigation-footer {
+        padding: 30px 20px;
+    }
 
-  .footer-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
 
-  .footer-links {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-  }
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
 
-  .footer-link {
-    text-align: center;
-  }
+    .footer-link {
+        text-align: center;
+    }
 }
