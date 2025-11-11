@@ -113,7 +113,8 @@ body {
     gap: var(--spacing-lg);
     padding: var(--spacing-xl); /* 32px의 콘텐츠 내부 여백 */
     max-width: 1440px;
-    margin: 0 auto;
+    margin-top: 60px;
+    margin-left : 256px;
 }
 
 /* ========================================
