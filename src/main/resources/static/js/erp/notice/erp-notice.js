@@ -4,7 +4,6 @@ const noticeData = {
         title: '10월 정기 시스템 점검 안내',
         author: '관리자',
         date: '2025-10-25',
-        views: 245,
         content: `
           <p class="notice-greeting">안녕하세요, 시설 예약팀입니다.</p>
           
@@ -37,7 +36,6 @@ const noticeData = {
         title: '신규 MRI 장비 도입 안내',
         author: '시설관리팀',
         date: '2025-10-22',
-        views: 182,
         content: `
           <p class="notice-greeting">안녕하세요, 시설관리팀입니다.</p>
           
@@ -68,7 +66,6 @@ const noticeData = {
         title: '직원 시간 변경 안내 (2차수정내)',
         author: '인사총무팀',
         date: '2025-10-20',
-        views: 319,
         content: `
           <p class="notice-greeting">안녕하세요, 인사총무팀입니다.</p>
           
@@ -127,7 +124,6 @@ function openDetailModal(noticeId) {
     document.getElementById('modalTitle').textContent = notice.title;
     document.getElementById('modalAuthor').textContent = notice.author;
     document.getElementById('modalDate').textContent = notice.date;
-    document.getElementById('modalViews').textContent = notice.views;
     document.getElementById('modalContent').innerHTML = notice.content;
 
     openModal(detailModal);
