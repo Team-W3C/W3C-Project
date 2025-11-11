@@ -24,9 +24,10 @@ public class LoginController {
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam("memberId") String memberId,
-                        ModelAndView mv, HttpSession session) {
+                              @RequestParam("memberPwd") String memberPwd,
+                              ModelAndView mv, HttpSession session) {
 
-        Member loginMember = memberService.getMemberById(memberId);
+        Member loginMember = memberService.getMemberById(memberId, memberPwd);
         System.out.println(loginMember);
 
         if(loginMember == null) { //ID가 잘못된 상태

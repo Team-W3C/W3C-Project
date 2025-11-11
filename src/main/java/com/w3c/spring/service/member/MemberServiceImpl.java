@@ -16,10 +16,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member getMemberById(String memberId) {
+    public Member getMemberById(String memberId, String memberPwd) {
         System.out.println("=============");
         System.out.println(memberId);
-        return memberMapper.getMemberById(memberId);
+        return memberMapper.getMemberById(memberId, memberPwd);
     }
 
     @Override
