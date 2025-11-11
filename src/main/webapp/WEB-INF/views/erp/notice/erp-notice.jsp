@@ -70,7 +70,7 @@
     </section>
 
     <nav class="community-tabs">
-        <button class="tab-btn tab-btn-active">공지사항</>
+        <button class="tab-btn tab-btn-active">공지사항</button>
         <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/inquiry'">문의사항</button>
     </nav>
 
@@ -87,7 +87,6 @@
             <div class="notice-header">
                 <span class="notice-badge notice-badge-urgent">중요</span>
                 <span class="notice-badge notice-badge-system">시스템</span>
-                <span class="notice-views">조회 245</span>
             </div>
             <h3 class="notice-title">10월 정기 시스템 점검 안내</h3>
             <p class="notice-description">10월 30일 02:00 - 06:00 시스템 점검이 진행됩니다.</p>
@@ -100,7 +99,6 @@
         <article class="notice-item" data-notice-id="2">
             <div class="notice-header">
                 <span class="notice-badge notice-badge-general">소식</span>
-                <span class="notice-views">조회 182</span>
             </div>
             <h3 class="notice-title">신규 MRI 장비 도입 안내</h3>
             <p class="notice-description">11월부터 최신 MRI 장비가 도입되어 더 나은 서비스를 제공합니다.</p>
@@ -114,7 +112,6 @@
             <div class="notice-header">
                 <span class="notice-badge notice-badge-urgent">중요</span>
                 <span class="notice-badge notice-badge-event">이벤트</span>
-                <span class="notice-views">조회 319</span>
             </div>
             <h3 class="notice-title">직원 시간 변경 안내 (2차수정내)</h3>
             <p class="notice-description">명절일의 이슈로 일시적 업무 시간이 변경됩니다.</p>
@@ -146,7 +143,6 @@
 
         <div class="modal-content">
             <nav class="modal-tabs">
-                <button class="modal-tab modal-tab-active">중요</button>
                 <button class="modal-tab">시스템</button>
             </nav>
 
@@ -161,10 +157,6 @@
                     <div class="meta-item">
                         <span class="meta-label">등록일:</span>
                         <span class="meta-value" id="modalDate"></span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">조회수:</span>
-                        <span class="meta-value" id="modalViews"></span>
                     </div>
                 </div>
 
@@ -218,18 +210,6 @@
                         <option value="">부서2</option>
                         <option value="">부서3</option>
                         <option value="">부서4</option>
-                    </select>
-                </div>
-
-                <div class="form-group form-group-priority">
-                    <label class="form-label">
-                        <span class="label-text">중요도</span>
-                    </label>
-                    <select class="form-select">
-                        <option value="">중요도</option>
-                        <option value="high">높음</option>
-                        <option value="medium">보통</option>
-                        <option value="low">낮음</option>
                     </select>
                 </div>
 
