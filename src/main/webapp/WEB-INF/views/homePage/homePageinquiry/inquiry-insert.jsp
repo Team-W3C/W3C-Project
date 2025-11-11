@@ -11,7 +11,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAQ</title>
+  <title>문의사항 작성</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-insert.css">
 <%--    헤더푸터 css--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">

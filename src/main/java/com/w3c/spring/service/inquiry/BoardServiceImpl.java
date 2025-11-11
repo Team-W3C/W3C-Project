@@ -30,6 +30,20 @@ public class BoardServiceImpl implements BoardService{
 
         ArrayList<Board> list = (ArrayList)boardMapper.selectBoardList(rowBounds);
 
+        for (Board b : list) {
+            switch (b.getBoardType()){
+                case 1: b.setBoardTypeName("결재"); break;
+                case 2: b.setBoardTypeName("진료"); break;
+                case 3: b.setBoardTypeName("기타"); break;
+                default : b.setBoardTypeName("알수없음"); break;
+            }
+            if(b.getBoardSecretType().equals("T")){
+                b.setBoardSecretTypeName("비밀");
+            }else {
+                b.setBoardSecretTypeName("공개");
+            }
+
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("list", list);
         map.put("pi", pi);

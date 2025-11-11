@@ -12,7 +12,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>inquery-board</title>
+  <title>문의사항</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePageinquiry/inquiry-board.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/signUp.css">
@@ -72,11 +72,11 @@
     <c:forEach var="b" items="${list}">
       <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail?bno=${b.boardId}'">
         <td>${b.boardId}</td>
-        <td>${b.boardType}</td>
+        <td>${b.boardTypeName}</td>
         <td>${b.boardTitle}</td>
-        <td><span class="inquiry-privacy-badge public">${b.boardSecretType}</span></td>
+        <td><span class="inquiry-privacy-badge public">${b.boardSecretTypeName}</span></td>
         <td>${b.departmentName}</td>
-        <td><time datetime="${b.questionDate}">2025-01-15</time></td>
+        <td><time datetime="${b.questionDate}">${b.questionDate}</time></td>
       </tr>
     </c:forEach>
 <%--      <tr>--%>
@@ -171,7 +171,7 @@
       Next →
     </a>
   </nav>
-    <c:if test="${pi>=0}">
+    <c:if test="${pi!= null}">
   <!-- 총 개수 -->
   <div class="inquiry-count">
     총 ${pi.currentPage}개의 문의사항

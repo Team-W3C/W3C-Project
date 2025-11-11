@@ -23,5 +23,8 @@ public class Board {
     private Integer answerNo;      // 답변 번호 (nullable)
     private String answerContent;  // 답변 내용
     private String staffName;      // 답변자 이름
-    private Date answerDate;    // 답변 날짜 (현재 NUMBER로 지정)
+    private String answerDate;    // 답변 날짜 (현재 NUMBER로 지정)
+
+    private String boardTypeName;     // 게시글 유형명
+    private String boardSecretTypeName; // 비밀 여부명
 }
