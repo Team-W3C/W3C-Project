@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Param;
 public interface MemberService {
     Member getMemberById(String memberId);
     int signUpMember(Member member);
+    int getMemberCountById(String memberId);
 }

@@ -17,7 +17,7 @@ prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <!-- Top Navigation -->
-    <jsp:include page="../../common/homePageMember/header_member.jsp" />
+    <jsp:include page="../../common/homePageMember/header.jsp" />
     <div class="reservation">
     <main class="reservation-main">
       <!-- Sidebar Navigation -->

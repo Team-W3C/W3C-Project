@@ -17,7 +17,7 @@
 </head>
 <body>
 <!-- Header Include -->
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 <main class="notice-detail-main">
     <div class="notice-detail-container">
 
