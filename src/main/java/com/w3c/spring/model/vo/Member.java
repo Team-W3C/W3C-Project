@@ -23,6 +23,7 @@ public class Member {
     private String memberBloodType;
     private String memberChronicDisease;
     private String memberAllergy;
+    private String memberStatus;
     
     //참조를 위한 직원 번호
     private String staff_no;

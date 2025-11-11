@@ -1,6 +1,7 @@
 package com.w3c.spring.service.member;
 
 import com.w3c.spring.model.mapper.MemberMapper;
+import com.w3c.spring.model.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int loginMember(String memberId) {
+    public Member getMemberById(String memberId) {
         System.out.println("=============");
         System.out.println(memberId);
-        return memberMapper.loginMember(memberId);
+        return memberMapper.getMemberById(memberId);
     }
 }
