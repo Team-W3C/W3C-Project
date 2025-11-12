@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.GuestReservationMapper">
+
+    <insert id="insertReservationForGuest"
+            useGeneratedKeys="true"
+            keyProperty="vo.reservationNo">
+
+        <selectKey keyProperty="vo.reservationNo" resultType="long" order="BEFORE">
+            SELECT RESERVATION_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO RESERVATION (
+        reservation_no,
+        reservation_status,
+        reservation_notes,
+        member_no,         department_no,     treatment_date,    reservation_memo
+        ) VALUES (
+        #{vo.reservationNo},
+        '대기',
+        #{vo.notes},
+        #{memberNo},
+        #{vo.departmentNo},
+        TO_DATE(#{vo.treatmentDateString}, 'YYYY-MM-DD HH24:MI'),
+        NULL
+        )
+    </insert>
+
+    <select id="selectGuestReservationDetails"
+            parameterType="long"
+            resultType="com.w3c.spring.model.vo.GuestReservationVO">
+        SELECT
+            R.reservation_no AS reservationNo,
+            R.treatment_date AS treatmentDateString,
+            R.reservation_status AS reservationStatus,
+            R.reservation_notes AS notes,
+            M.member_name AS name,
+            M.member_phone AS phone,
+            M.member_rrn AS ssn,
+            M.member_email AS email,
+            M.member_address AS address
+        FROM RESERVATION R
+                 JOIN MEMBER M ON R.member_no = M.member_no
+        WHERE R.reservation_no = #{reservationNo}
+    </select>
+</mapper>

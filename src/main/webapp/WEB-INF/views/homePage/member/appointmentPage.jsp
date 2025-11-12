@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
 
     <style>
+        /* ... 기존 스타일 유지 ... */
         .guest-modal-overlay,
         .guest-check-modal-overlay {
             position: fixed;
@@ -121,7 +122,6 @@
                     <div class="reservation-card-body">
                         <p>로그인 후 본인의 진료예약 및 조회를 하실 수 있습니다.</p>
                         <div class="reservation-card-actions">
-                            <%-- ▼▼▼▼▼ [수정됨] 로그인 상태 체크 ▼▼▼▼▼ --%>
                             <c:choose>
                                 <%-- 1. 세션에 'loginMember' 정보가 없는 경우 (로그아웃 상태) --%>
                                 <c:when test="${empty sessionScope.loginMember}">
@@ -140,9 +140,7 @@
                                     >
                                 </c:otherwise>
                             </c:choose>
-                            <%-- ▲▲▲▲▲ [수정됨] 로그인 상태 체크 ▲▲▲▲▲ --%>
 
-                            <%-- ▼▼▼▼▼ [수정] 본인 예약 조회하기 버튼에도 로그인 체크 적용 ▼▼▼▼▼ --%>
                             <c:choose>
                                 <%-- 1. 세션에 'loginMember' 정보가 없는 경우 (로그아웃 상태) --%>
                                 <c:when test="${empty sessionScope.loginMember}">
@@ -161,7 +159,6 @@
                                     >
                                 </c:otherwise>
                             </c:choose>
-                            <%-- ▲▲▲▲▲ [수정] 본인 예약 조회하기 버튼에도 로그인 체크 적용 ▲▲▲▲▲ --%>
                         </div>
                     </div>
                 </article>
@@ -307,7 +304,46 @@
             </div>
         </header>
         <div class="patient-content">
-            <form class="patient-form">
+            <form class="patient-form" id="guestReservationForm"
+                  action="${pageContext.request.contextPath}/guest/reserve" method="post">
+
+                <h3 style="margin-top: 0; margin-bottom: 10px; color: #0e787c;">예약 정보 선택</h3>
+
+                <div class="form-field">
+                    <label for="departmentName">진료과 이름</label>
+                    <select id="departmentName" name="departmentName" required>
+                        <option value="">진료과 선택</option>
+                        <option value="정형외과">정형외과</option>
+                        <option value="내과">내과</option>
+                        <option value="피부과">피부과</option>
+                        <option value="응급의학과">응급의학과</option>
+                        <option value="안과">안과</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="treatmentDate">날짜</label>
+                        <select id="treatmentDate" name="treatmentDate" required>
+                            <option value="">날짜 선택</option>
+                            <option value="2025-11-13">2025-11-13 (목)</option>
+                            <option value="2025-11-14">2025-11-14 (금)</option>
+                            <option value="2025-11-17">2025-11-17 (월)</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="treatmentTime">시간</label>
+                        <select id="treatmentTime" name="treatmentTime" required>
+                            <option value="">시간 선택</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="14:00">14:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px; color: #0e787c;">환자 정보 입력</h3>
+
                 <div class="form-field">
                     <label for="patient-name">성함</label>
                     <input
@@ -320,22 +356,22 @@
                 </div>
                 <div class="form-row">
                     <div class="form-field">
-                        <label for="birth-date">주민등록번호</label>
+                        <label for="birth-date">주민등록번호 (앞 6자리)</label>
                         <input
                                 type="text"
                                 id="birth-date"
-                                name="birth-date"
+                                name="birthDate"
                                 placeholder="생년월일 6자리"
                                 maxlength="6"
                                 required
                         />
                     </div>
                     <div class="form-field">
-                        <label for="birth-suffix">뒷자리</label>
+                        <label for="birth-suffix">뒷자리 (첫 글자)</label>
                         <input
                                 type="password"
                                 id="birth-suffix"
-                                name="birth-suffix"
+                                name="birthSuffix"
                                 placeholder="뒷자리"
                                 maxlength="7"
                                 required
@@ -371,14 +407,15 @@
                     />
                 </div>
                 <div class="form-field">
-                    <label for="notes">특이사항(기저질환, 알레르기)</label>
+                    <label for="notes">특이사항 (증상, 기저질환, 알레르기)</label>
                     <input
                             type="text"
                             id="notes"
                             name="notes"
-                            placeholder="특이사항"
+                            placeholder="예: 허리 통증, 고혈압, 견과류 알레르기"
                     />
                 </div>
+
                 <button type="submit" class="btn-submit">예약하기</button>
             </form>
         </div>
@@ -386,81 +423,6 @@
 </div>
 <div class="guest-check-modal-overlay">
     <div class="guest-modal-backdrop"></div>
-
-    <main class="modal-container">
-        <div class="modal-content">
-            <button type="button" class="modal-close" aria-label="닫기">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                    <path
-                            d="M4 4L12 12M12 4L4 12"
-                            stroke="currentColor"
-                            stroke-width="1.33"
-                            stroke-linecap="round"
-                    />
-                </svg>
-            </button>
-
-            <header class="modal-header">
-                <h2 class="modal-title">비회원 예약내역</h2>
-                <p class="modal-subtitle">
-                    비회원 예약내역을 위해 번호를 입력하여 주세요
-                </p>
-            </header>
-
-            <form class="reservation-form">
-                <section class="info-section">
-                    <div class="section-header">
-                        <h3 class="section-title">회원 정보</h3>
-                        <p class="section-description">
-                            회원 정보를 보시려면 번호를 입력하여 주세요
-                        </p>
-                    </div>
-                </section>
-
-                <section class="info-card">
-                    <div class="info-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20">
-                            <circle
-                                    cx="10"
-                                    cy="7"
-                                    r="3"
-                                    stroke="#0E787C"
-                                    stroke-width="1.67"
-                                    fill="none"
-                            />
-                            <path
-                                    d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17"
-                                    stroke="#0E787C"
-                                    stroke-width="1.67"
-                                    fill="none"
-                            />
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <span class="info-label">성함</span>
-                        <span class="info-value">홍길동</span>
-                    </div>
-                </section>
-
-                <div class="input-group">
-                    <label for="phone-number" class="input-label">번호</label>
-                    <div class="input-wrapper">
-                        <input
-                                type="tel"
-                                id="phone-number"
-                                name="phone-number"
-                                class="input-field"
-                                placeholder="번호를 입력하세요"
-                                required
-                        />
-
-                        <button type="button" class="btn-cancel">취소</button>
-                        <button type="submit" class="btn-confirm">확인</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </main>
 </div>
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
 

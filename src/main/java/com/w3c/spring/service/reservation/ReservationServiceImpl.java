@@ -15,6 +15,19 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationMapper reservationMapper;
 
+    // 아이콘 매핑을 위한 상수 맵 정의 (하드코딩된 URL 대신 사용)
+    private static final Map<String, String> ICON_MAP = Map.of(
+            "내과", "/img/icons/medicine.png",
+            "외과", "/img/icons/surgery.png", // 추가된 항목
+            "정형외과", "/img/icons/orthopedics.png",
+            "소아과", "/img/icons/pediatrics.jpg", // 추가된 항목
+            "피부과", "/img/icons/dermatology.jpg", // 추가된 항목
+            "안과", "/img/icons/ophthalmology.png", // 추가된 항목
+            "치과", "/img/icons/dentistry.png", // 추가된 항목
+            "심장내과", "/img/icons/Cardiology.png", // 추가된 항목
+            "DEFAULT", "/img/icons/default.png" // 기본값
+    );
+
     @Autowired
     public ReservationServiceImpl(ReservationMapper reservationMapper) {
         this.reservationMapper = reservationMapper;
@@ -77,7 +90,13 @@ public class ReservationServiceImpl implements ReservationService {
         for (String hour : WORK_HOURS) {
             long currentBooked = bookedCountsMap.getOrDefault(hour, 0L);
             boolean isAvailable = (currentBooked < totalCapacity);
-            WorkingDoctorVO assignedDoctor = workingDoctors.get(doctorIndex % totalCapacity);
+
+            // totalCapacity가 0이 아님을 이미 위에서 검사했지만, 안전을 위해 List.size() 검사 추가
+            if (workingDoctors.isEmpty()) {
+                break; // 혹시 모를 에러 방지
+            }
+
+            WorkingDoctorVO assignedDoctor = workingDoctors.get(doctorIndex % workingDoctors.size());
             doctorIndex++;
 
             finalTimeSlots.add(new TimeSlotVO(
@@ -91,9 +110,25 @@ public class ReservationServiceImpl implements ReservationService {
         return finalTimeSlots;
     }
 
+    /**
+     * 의사가 배정된 진료과 목록을 조회하고, 각 진료과에 아이콘 URL을 매핑하여 반환합니다.
+     */
     @Override
     public List<DepartmentVO> getDepartments() {
-        return reservationMapper.findDepartmentsWithDoctors();
+        // 1. DB에서 진료과 데이터 조회 (SQL에서는 departmentName, departmentNo만 가져옴)
+        List<DepartmentVO> departmentList = reservationMapper.findDepartmentsWithDoctors();
+
+        // 2. Service에서 아이콘 URL 매칭 로직 처리
+        for (DepartmentVO dept : departmentList) {
+            String iconPath = ICON_MAP.getOrDefault(
+                    dept.getDepartmentName(),
+                    ICON_MAP.get("DEFAULT")
+            );
+            // DepartmentVO의 iconUrl 필드에 설정
+            dept.setIconUrl(iconPath);
+        }
+
+        return departmentList;
     }
 
     @Override
@@ -116,7 +151,6 @@ public class ReservationServiceImpl implements ReservationService {
         return result == 1;
     }
 
-    // ▼▼▼▼▼ [수정] Map을 사용하여 Mapper 호출 ▼▼▼▼▼
     @Override
     public ReservationUpdateVO getReservationForUpdate(int reservationNo, int memberNo) {
         // XML 쿼리가 Map 타입을 기대하므로, Map으로 변환하여 전달합니다.
@@ -124,10 +158,9 @@ public class ReservationServiceImpl implements ReservationService {
         params.put("reservationNo", reservationNo);
         params.put("memberNo", memberNo);
 
-        // Map을 받는 selectReservationForUpdate 메소드 호출 (Mapper.xml과 일치)
+        // Map을 받는 selectReservationForUpdate 메소드 호출
         return reservationMapper.selectReservationForUpdate(params);
     }
-    // ▲▲▲▲▲ [수정] ▲▲▲▲▲
 
     @Override
     @Transactional

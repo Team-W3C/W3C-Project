@@ -116,7 +116,6 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/js/index.global.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/ko.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/detailReservation.js"></script>
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.DepartmentMapper">
+
+    <select id="selectDepartmentNoByName" resultType="long">
+        SELECT DEPARTMENT_NO
+        FROM DEPARTMENT
+        WHERE DEPARTMENT_NAME = #{departmentName}
+    </select>
+
+    <select id="selectAllDepartments" resultType="com.w3c.spring.model.vo.DepartmentVO">
+        SELECT
+            DEPARTMENT_NO AS departmentNo,
+            DEPARTMENT_NAME AS departmentName
+        FROM DEPARTMENT
+    </select>
+</mapper>
