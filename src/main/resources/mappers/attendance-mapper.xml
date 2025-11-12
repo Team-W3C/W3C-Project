@@ -58,14 +58,16 @@
         isApproved,
         staff_no,
         absence_start_date,
-        absence_end_date
+        absence_end_date,
+        ABSENCE_TYPE
         ) VALUES (
         ABSENCE_APP_DETAIL_SEQ.NEXTVAL,
         #{detailedReason},
         'F',
         #{staffNo},
         #{absenceStartDate},
-        #{absenceEndDate}
+        #{absenceEndDate},
+        #{absenceType}
         )
     </insert>
 

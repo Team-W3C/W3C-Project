@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +39,6 @@ public class AttendanceController {
         long staffNo = (loginMember.getStaffNo() != null) ? loginMember.getStaffNo().longValue() : 0L;
 
         boolean isAdmin = "admin".equals(loginMember.getMemberId());
-
-        // --- 3. 'else' 블록 (하드코딩 부분) 제거 ---
 
         // 4. Service를 호출하여 페이지에 필요한 모든 데이터를 Map으로 받음
         Map<String, Object> pageData = attendanceService.getAttendanceMainPageData(staffNo, isAdmin);
@@ -76,13 +75,18 @@ public class AttendanceController {
     @PostMapping("/apply")
     public String submitApplication(
             @RequestParam("applicationType") String applicationType,
-            @RequestParam("reason") String reason,
+
+            @RequestParam(value = "outingReason", required = false) String outingReason,
+            @RequestParam(value = "leaveReason", required = false) String leaveReason,
+            @RequestParam(value = "overnightReason", required = false) String overnightReason,
+
             @RequestParam(value = "outingStartTime", required = false) String outingStartTime,
             @RequestParam(value = "outingEndTime", required = false) String outingEndTime,
-            @RequestParam(value = "startDate", required = false) String startDate,
-            @RequestParam(value = "endDate", required = false) String endDate,
-            @RequestParam(value = "leave-type", required = false) String leaveType,
-            @RequestParam(value = "overnight-type", required = false) String overnightType,
+            @RequestParam(value = "leaveStartDate", required = false) String leaveStartDate,
+            @RequestParam(value = "leaveEndDate", required = false) String leaveEndDate,
+            @RequestParam(value = "overnightStartDate", required = false) String overnightStartDate,
+            @RequestParam(value = "overnightEndDate", required = false) String overnightEndDate,
+
             @SessionAttribute(value = "loginMember", required = false) Member loginMember,
             RedirectAttributes rttr) {
 
@@ -101,47 +105,80 @@ public class AttendanceController {
 
             // 2. 어떤 탭의 신청서인지(applicationType)에 따라 VO 데이터 조립
             String reasonToSave;
+            String selectedReason = "";
 
             if ("outing".equals(applicationType)) {
-                // "외출" 탭: 날짜는 오늘 날짜로, 사유는 "외출: [사유]"
+                if (outingStartTime == null || outingStartTime.isEmpty() || outingEndTime == null || outingEndTime.isEmpty()) {
+                    rttr.addFlashAttribute("errorMessage", "외출 시간을 올바르게 입력해주세요.");
+                    return "redirect:/erp/attendance/main?tab=list";
+                }
+
+                selectedReason = outingReason;
+
+                application.setAbsenceType(1);
                 application.setAbsenceStartDate(LocalDate.now());
                 application.setAbsenceEndDate(LocalDate.now());
-                reasonToSave = String.format("외출 (%s ~ %s): %s", outingStartTime, outingEndTime, reason);
+
+                // "시간|사유" 형식으로 저장
+                reasonToSave = String.format("%s ~ %s|%s", outingStartTime, outingEndTime, selectedReason);
                 application.setDetailedReason(reasonToSave);
 
             } else if ("leave".equals(applicationType)) {
-                // "휴가" 탭: 선택한 날짜, 사유는 "[휴가종류]: [사유]"
-                application.setAbsenceStartDate(LocalDate.parse(startDate));
-                application.setAbsenceEndDate(LocalDate.parse(endDate));
-                // (예) "annual: [사유]"
-                reasonToSave = String.format("%s: %s", leaveType, reason);
+                // [!!] 휴가 유효성 검사
+                if (leaveStartDate == null || leaveStartDate.isEmpty() || leaveEndDate == null || leaveEndDate.isEmpty()) {
+                    rttr.addFlashAttribute("errorMessage", "휴가 기간을 올바르게 입력해주세요.");
+                    return "redirect:/erp/attendance/main?tab=list";
+                }
+
+                selectedReason = leaveReason;
+
+                application.setAbsenceType(2);
+                application.setAbsenceStartDate(LocalDate.parse(leaveStartDate));
+                application.setAbsenceEndDate(LocalDate.parse(leaveEndDate));
+
+                reasonToSave = selectedReason;
                 application.setDetailedReason(reasonToSave);
 
             } else if ("overnight".equals(applicationType)) {
-                // "외박" 탭: 선택한 날짜, 사유는 "[외박종류]: [사유]"
-                application.setAbsenceStartDate(LocalDate.parse(startDate));
-                application.setAbsenceEndDate(LocalDate.parse(endDate));
-                // (예) "regular: [사유]"
-                reasonToSave = String.format("%s: %s", overnightType, reason);
+                // [!!] 외박 유효성 검사
+                if (overnightStartDate == null || overnightStartDate.isEmpty() || overnightEndDate == null || overnightEndDate.isEmpty()) {
+                    rttr.addFlashAttribute("errorMessage", "외박 기간을 올바르게 입력해주세요.");
+                    return "redirect:/erp/attendance/main?tab=list";
+                }
+
+                selectedReason = overnightReason;
+
+                application.setAbsenceType(3);
+                application.setAbsenceStartDate(LocalDate.parse(overnightStartDate));
+                application.setAbsenceEndDate(LocalDate.parse(overnightEndDate));
+
+                reasonToSave = selectedReason;
                 application.setDetailedReason(reasonToSave);
+            }
+
+            if (selectedReason == null || selectedReason.trim().isEmpty()) {
+                rttr.addFlashAttribute("errorMessage", "사유를 입력해주세요.");
+                return "redirect:/erp/attendance/main?tab=list";
             }
 
             // 3. 서비스 호출
             attendanceService.submitApplication(application);
             rttr.addFlashAttribute("message", "신청서가 성공적으로 제출되었습니다.");
 
+        } catch (DateTimeParseException e) {
+            e.printStackTrace(); // 날짜 변환 실패
+            rttr.addFlashAttribute("errorMessage", "날짜 형식이 올바르지 않습니다.");
         } catch (Exception e) {
             e.printStackTrace(); // 콘솔에 에러 로그 출력
-            rttr.addFlashAttribute("errorMessage", "신청서 제출에 실패했습니다. (입력값 확인)");
+            rttr.addFlashAttribute("errorMessage", "신청서 제출에 실패했습니다. (서버 오류)");
         }
 
         // '나의 신청 내역' 탭으로 리다이렉트
         return "redirect:/erp/attendance/main?tab=list";
     }
 
-
     /**
-     *  관리자 승인/반려 처리
+     * 관리자 승인/반려 처리
      */
     @PostMapping("/admin/updateStatus")
     public String updateApplicationStatus(@RequestParam long addNo,
