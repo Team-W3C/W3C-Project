@@ -3,6 +3,7 @@ package com.w3c.spring.controller.api.erp.employeeManagement;
 import com.w3c.spring.model.dto.EmployeeCount;
 import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.service.member.erp.employeeManagement.EmployeeManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class EmployeeManagementController {
     private final ConcurrentLinkedQueue<DeferredResult<EmployeeCount>> waitingClients = new ConcurrentLinkedQueue<>();
 
     // (생성자 주입)
+    @Autowired
     public EmployeeManagementController(EmployeeManagementService employeeManagementService) {
         this.employeeManagementService = employeeManagementService;
     }
@@ -43,23 +45,6 @@ public class EmployeeManagementController {
         return stats;
     }
 
-    // --- 1. JSP 페이지 최초 로드 (EL 값 전달) ---
-    @GetMapping("/employeeCount")
-    public String showEmployeeManagePage(Model model) {
-
-        // 헬퍼 메서드를 호출하여 최신 통계 DTO를 가져옵니다.
-        EmployeeCount stats = this.getCurrentStats();
-
-        // Model에 각 값을 추가합니다. (JSP의 EL에서 사용)
-        model.addAttribute("totalCount", stats.getTotalCount());
-        model.addAttribute("workCount", stats.getWorkCount());
-        model.addAttribute("vacationCount", stats.getVacationCount());
-        model.addAttribute("resignCount", stats.getResignCount());
-
-        return "/erp/employee/employeeManagement"; // "직원관리.jsp" 뷰 이름
-    }
-
-
     // --- 2. 롱 폴링 API ---
 
     /**
@@ -69,7 +54,8 @@ public class EmployeeManagementController {
     @ResponseBody // @RestController가 아니므로 @ResponseBody 필요
     public DeferredResult<EmployeeCount> pollForStats() {
 
-        final DeferredResult<EmployeeCount> deferredResult = new DeferredResult<>(60000L); // 60초
+        // 5분 설정 (300,000 밀리초)
+        final DeferredResult<EmployeeCount> deferredResult = new DeferredResult<>(30000L);
 
         // 타임아웃 시 (데이터 변경이 없을 때)
         deferredResult.onTimeout(() -> {
@@ -118,6 +104,6 @@ public class EmployeeManagementController {
 
         // 3. [수정] 페이지 리다이렉트 (페이지 로드 URL인 /employeeCount로 이동)
         // (contextPath를 포함한 전체 경로로 리다이렉트하는 것이 안전합니다)
-        return "redirect:/api/employeeManagement/employeeCount";
+        return "redirect:/erp/employee/manage";
     }
 }

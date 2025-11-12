@@ -22,8 +22,8 @@ function startLongPolling() {
         url: '/api/employeeManagement/longPolling', // 예시 URL (서버 컨트롤러 경로와 일치해야 함)
         method: 'GET',
         dataType: 'json', // 서버가 JSON을 반환한다고 가정
-        timeout: 60000,   // 클라이언트가 서버로부터 어떠한 응답을 받지 못했을 경우.
-        // 60초 타임아웃 (서버의 DeferredResult 타임아웃과 맞춤)
+        timeout: 30100,   // 클라이언트가 서버로부터 어떠한 응답을 받지 못했을 경우.
+        // 5분 + 1분 타임아웃 (서버의 DeferredResult 타임아웃과 맞춤)
 
         success: function(data) {
             // 2-1. 성공 시 (서버가 데이터 변동을 감지하고 응답을 보냄)
