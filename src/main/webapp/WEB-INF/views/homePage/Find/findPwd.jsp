@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/common/homePageMember/header_member.jsp" />
+<jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 
 <main class="form-wrapper">
     <div class="form-container">

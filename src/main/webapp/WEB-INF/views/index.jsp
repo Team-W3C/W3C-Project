@@ -23,24 +23,7 @@
 </head>
 <body>
 
-    <c:choose>
-        <c:when test="${empty sessionScope.loginMember}">
-            <!-- Not Login Member Header Include -->
-            <jsp:include page="common/homePageMember/header_member.jsp" />
-        </c:when>
-        <c:when test="${not empty sessionScope.loginMember}">
-            <c:choose>
-                <c:when test="${sessionScope.loginMember.memberId eq 'admin.kim'}">
-                    <!-- Login Admin Header Include -->
-                    <jsp:include page="common/homePageAdmin/header_admin.jsp" />
-                </c:when>
-                <c:otherwise>
-                    <!-- Login Member Header Include -->
-                    <jsp:include page="common/homePageMember/header_member.jsp" />
-                </c:otherwise>
-            </c:choose>
-        </c:when>
-    </c:choose>
+    <jsp:include page="common/homePageMember/header.jsp" />
 
     <!-- Main Content -->
     <main class="main">
