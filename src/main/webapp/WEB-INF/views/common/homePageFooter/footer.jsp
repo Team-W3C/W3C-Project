@@ -14,7 +14,7 @@
                     <ul>
                         <li><p class="footer-address">월 ~ 일 : 전체 문의 상담</p></li>
                     </ul>
-                    <button class="footer-button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board'">문의 사항</button>
+                    <button class="footer-button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-board?cpage=1'">문의 사항</button>
                 </div>
 
                 <div class="footer-links">
