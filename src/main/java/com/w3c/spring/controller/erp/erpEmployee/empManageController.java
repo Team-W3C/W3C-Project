@@ -10,6 +10,7 @@ public class empManageController {
 
     @GetMapping("/manage") // GET 요청이 /manage/employee 경로로 오면 이 메서드가 처리
     public String showEmployeeMange(){
+
         return "erp/employee/employeeManagement";
     }
 }

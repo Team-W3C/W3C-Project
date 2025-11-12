@@ -7,7 +7,7 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpSidebar.css">
-
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 <body>
     <!-- Sidebar 컴포넌트 -->
@@ -19,7 +19,7 @@
             </a>
         </div>
 
-        <nav class="sidebar__nav">
+        <nav class="sidebar__nav" id="sidebar__nav">
             <a href="${pageContext.request.contextPath}/erp/dashBoard/enterErp" class="sidebar__link sidebar__link--active">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M7.5 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V9.16667C2.5 9.6269 2.8731 10 3.33333 10H7.5C7.96024 10 8.33333 9.6269 8.33333 9.16667V3.33333C8.33333 2.8731 7.96024 2.5 7.5 2.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -45,7 +45,7 @@
                 <span class="sidebar__text">검사실 관리</span>
             </a>
             
-            <a href="${pageContext.request.contextPath}/erp/employee/manage" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/api/employeeManagement/employeeCount" class="sidebar__link" id="employee-manage-polling">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M13.3333 17.5V15.8333C13.3333 14.9493 12.9821 14.1014 12.357 13.4763C11.7319 12.8512 10.8841 12.5 10 12.5H5C4.11595 12.5 3.2681 12.8512 2.64298 13.4763C2.01786 14.1014 1.66667 14.9493 1.66667 15.8333V17.5M13.3333 2.60666C14.0481 2.79197 14.6812 3.20938 15.1331 3.79338C15.585 4.37738 15.8302 5.0949 15.8302 5.83333C15.8302 6.57175 15.585 7.28927 15.1331 7.87327C14.6812 8.45727 14.0481 8.87468 13.3333 9.05999M18.3333 17.5V15.8333C18.3328 15.0948 18.087 14.3773 17.6345 13.7936C17.182 13.2099 16.5484 12.793 15.8333 12.6083M7.5 9.16667C9.34095 9.16667 10.8333 7.67428 10.8333 5.83333C10.8333 3.99238 9.34095 2.5 7.5 2.5C5.65905 2.5 4.16667 3.99238 4.16667 5.83333C4.16667 7.67428 5.65905 9.16667 7.5 9.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>
@@ -95,6 +95,9 @@
             <p class="sidebar__copyright">© 2025 병원 ERP</p>
         </div>
     </aside>
+
+    <!-- script -->
+    <script src="${pageContext.request.contextPath}/js/erp/common/erpCommon.js"></script>
 
 </body>
 </html>
