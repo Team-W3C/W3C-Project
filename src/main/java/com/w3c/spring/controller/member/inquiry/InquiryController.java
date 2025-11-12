@@ -1,6 +1,9 @@
 package com.w3c.spring.controller.member.inquiry;
 
+import com.w3c.spring.model.vo.Member;
+import com.w3c.spring.model.vo.inquiry.Board;
 import com.w3c.spring.service.inquiry.BoardService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,12 +37,19 @@ public class InquiryController {
         return "homePage/homePageinquiry/inquiry-board";
     }
     @GetMapping("/inquiry-detail")
-    public String homePageinquiryDetail() {
+    public String homePageinquiryDetail(@RequestParam("bno") int boardId, Model model) {
         System.out.println("inquiry-detail");
+        Map<String,Object> boardDetail= boardService.getBoardById(boardId);
+        model.addAttribute("board", boardDetail.get("boardDetail"));
+
         return "homePage/homePageinquiry/inquiry-detail";
     }
     @GetMapping("/inquiry-insert")
-    public String homePageinquiryInsert() {
+    public String homePageinquiryInsert(HttpSession session, Model model) {
+        if(session.getAttribute("loginMember") != null) {
+            Member member = (Member) session.getAttribute("loginMember");
+            model.addAttribute("memberName", member.getMemberName());
+        }
         System.out.println("inquiry-insert");
         return "homePage/homePageinquiry/inquiry-insert";
     }

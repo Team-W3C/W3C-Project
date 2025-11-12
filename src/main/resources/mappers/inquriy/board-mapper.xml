@@ -23,6 +23,7 @@
 
     </resultMap>
 
+
     <select id="selectBoardList" resultMap="boardResultMap">
         SELECT
         BOARD_ID,
@@ -39,4 +40,52 @@
         SELECT COUNT(*)
         FROM V_BOARD_QA
     </select>
+
+    <select id="getBoardById" parameterType="_int" resultMap="boardResultMap">
+        SELECT
+        BOARD_ID,
+        BOARD_TYPE,
+        BOARD_TITLE,
+        BOARD_SECRET_TYPE,
+        QUESTION_CONTENT,
+        TO_CHAR(QUESTION_DATE, 'YYYY-MM-DD') AS QUESTION_DATE,
+        PATIENT_NAME,
+        BOARD_STATUS,
+        DEPARTMENT_NAME,
+        ANSWER_NO,
+        ANSWER_CONTENT,
+        STAFF_NAME,
+        TO_CHAR(ANSWER_DATE, 'YYYY-MM-DD') AS ANSWER_DATE
+        FROM V_BOARD_QA
+        WHERE BOARD_ID = #{boardId}
+    </select>
+
+    <insert id="insertBoard" parameterType="com.w3c.spring.model.vo.inquiry.BoardInsert">
+        INSERT INTO BOARD (
+        BOARD_ID,
+        BOARD_TYPE,
+        BOARD_TITLE,
+        BOARD_CONTENT,
+        BOARD_DATE,
+        BOARD_PRIORITY,
+        BOARD_STATUS,
+        MEMBER_NO,
+        DEPARTMENT_NO,
+        BOARD_SECRET_TYPE,
+        BOARD_DELETE_TYPE
+        )
+        VALUES (
+        BOARD_SEQ.NEXTVAL,
+        #{boardType},
+        #{boardTitle},
+        #{boardContent},
+        SYSDATE,
+        1,
+        '대기중',
+        #{memberNo},
+        1,
+        #{boardSecretType},
+        'F'
+        )
+    </insert>
 </mapper>

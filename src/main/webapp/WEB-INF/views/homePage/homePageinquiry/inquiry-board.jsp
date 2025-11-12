@@ -64,7 +64,7 @@
         <th scope="col">구분</th>
         <th scope="col">제목</th>
         <th scope="col">비밀 여부</th>
-        <th scope="col">담당 부서</th>
+        <th scope="col">처리 현황</th>
         <th scope="col">등록일</th>
       </tr>
       </thead>
@@ -74,8 +74,14 @@
         <td>${b.boardId}</td>
         <td>${b.boardTypeName}</td>
         <td>${b.boardTitle}</td>
-        <td><span class="inquiry-privacy-badge public">${b.boardSecretTypeName}</span></td>
-        <td>${b.departmentName}</td>
+        <c:if test="${b.boardSecretTypeName =='비밀'}">
+        <td><span class="inquiry-privacy-badge private">${b.boardSecretTypeName}</span></td>
+        </c:if>
+        <c:if test="${b.boardSecretTypeName =='공개'}">
+          <td><span class="inquiry-privacy-badge public">${b.boardSecretTypeName}</span></td>
+        </c:if>
+
+        <td>${b.boardStatus}</td>
         <td><time datetime="${b.questionDate}">${b.questionDate}</time></td>
       </tr>
     </c:forEach>
@@ -158,6 +164,9 @@
       <c:if test="${not empty loginMember}">
 
         <button class="inquiry-form-view-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/inquiry-insert'">문의 하기</button>
+    </c:if>
+    <c:if test="${ empty loginMember}">
+      문의 하시려면 로그인을 하시거나 고객센터에 전화주세요.
     </c:if>
    </div>
   <!-- 페이지네이션 -->

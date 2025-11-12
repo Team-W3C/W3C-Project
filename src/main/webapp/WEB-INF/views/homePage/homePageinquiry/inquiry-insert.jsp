@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +43,7 @@
       <article class="faq-item">
         <h3 class="faq-item-question">Q1. 예약 후 확정 메시지를 받을 수 있나요?</h3>
         <p class="faq-item-answer">
-          A1. 네, 예약이 확정되는 즉시 환자분께 자동 알림 메시지(SMS/카카오톡)가 발송됩니다. 예약 내역은 [마이 대시보드]에서도 언제든지 확인하실 수 있습니다.
+          A1. 네, 예약이 확정되는 즉시 환자분께 자동 알림 메시지(SMS)가 발송됩니다. 예약 내역은 [마이 대시보드]에서도 언제든지 확인하실 수 있습니다.
         </p>
       </article>
 
@@ -55,7 +57,7 @@
       <article class="faq-item">
         <h3 class="faq-item-question">Q3. 예약 당일 잊지 않도록 알림을 받을 수 있나요?</h3>
         <p class="faq-item-answer">
-          A3. 네, 예약하신 날짜 하루 전에 리마인더 알림 메시지가 자동으로 발송됩니다. 알림 설정은 [마이 대시보드]에서 관리하실 수 있습니다.
+          A3. 네, 예약하신 날짜 하루 전에 리마인더 알림 메시지가 자동으로 발송됩니다. 알림 설정은 [마이 차트]에서 관리하실 수 있습니다.
         </p>
       </article>
     </section>
@@ -65,7 +67,7 @@
 
       <h2>문의사항</h2>
       <br><br>
-      <form class="inquiry-form" method="post" action="#">
+      <form class="inquiry-form" method="post" action="${pageContext.request.contextPath}/api/member/inquiry/insert">
 
         <!-- 성함 -->
         <div class="inquiry-form-group half-width">
@@ -73,11 +75,9 @@
           <input
                   type="text"
                   id="inquiry-name"
-                  name="name"
                   class="inquiry-form-input"
-                  placeholder="홍길동"
-                  required
-                  aria-required="true"
+                  value="${memberName}"
+                  disabled
           >
         </div>
 
@@ -86,14 +86,14 @@
           <label for="inquiry-privacy" class="inquiry-form-label">비밀 여부</label>
           <select
                   id="inquiry-privacy"
-                  name="privacy"
+                  name="boardSecretType"
                   class="inquiry-form-select"
                   required
                   aria-required="true"
           >
             <option value="">선택</option>
-            <option value="public">공개</option>
-            <option value="private">비공개</option>
+            <option value="F">공개</option>
+            <option value="T">비공개</option>
           </select>
         </div>
 
@@ -102,28 +102,29 @@
           <label for="inquiry-category" class="inquiry-form-label">구분</label>
           <select
                   id="inquiry-category"
-                  name="category"
+                  name="boardType"
                   class="inquiry-form-select"
                   required
                   aria-required="true"
           >
             <option value="">선택</option>
-            <option value="reservation">예약</option>
-            <option value="system">시스템</option>
-            <option value="medical">진료</option>
-            <option value="etc">기타</option>
+            <option value="1">결제</option>
+<%--            <option value="5">예약</option>--%>
+<%--            <option value="4">시스템</option>--%>
+            <option value="2">진료</option>
+            <option value="3">기타</option>
           </select>
         </div>
 
         <!-- 이메일 주소 -->
         <div class="inquiry-form-group full-width">
-          <label for="inquiry-email" class="inquiry-form-label">이메일 주소</label>
+          <label for="inquiry-email" class="inquiry-form-label">제목</label>
           <input
-                  type="email"
+                  type="text"
                   id="inquiry-email"
-                  name="email"
+                  name="boardTitle"
                   class="inquiry-form-input"
-                  placeholder="email@janesfakedomain.net"
+                  placeholder="제목을 작성해주세요"
                   required
                   aria-required="true"
           >
@@ -134,7 +135,7 @@
           <label for="inquiry-message" class="inquiry-form-label">메시지</label>
           <textarea
                   id="inquiry-message"
-                  name="message"
+                  name="boardContent"
                   class="inquiry-form-textarea"
                   placeholder="질문이나 메시지를 입력하세요"
                   required
