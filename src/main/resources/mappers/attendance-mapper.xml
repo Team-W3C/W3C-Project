@@ -50,6 +50,10 @@
         WHERE
         staff_no = #{staffNo}
         ORDER BY
+        CASE
+        WHEN ISAPPROVED = 'F' THEN 1
+        ELSE 2
+        END,
         ABSENCE_APPLICATION_DATE DESC
     </select>
 
