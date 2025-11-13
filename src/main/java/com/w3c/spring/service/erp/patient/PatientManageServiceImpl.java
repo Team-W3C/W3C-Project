@@ -1,6 +1,7 @@
 package com.w3c.spring.service.erp.patient;
 
 import com.w3c.spring.model.mapper.erp.patient.PatientMapper;
+import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.model.vo.erp.patient.PatientListVO;
 import com.w3c.spring.model.vo.inquiry.PageInfo;
 import org.apache.ibatis.session.RowBounds;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 
 @Service
@@ -66,5 +68,22 @@ public class PatientManageServiceImpl implements PatientManageService {
         stats.put("vipCount", vipCount);
 
         return stats;
+    }
+
+    //신규 환자 등록
+    @Override
+    public int registerPatient(Member member) {
+        // 1. 가입일: 현재 날짜 (SYSDATE)
+        member.setMemberJoinDate(new Date());
+
+        // 2. 환자 상태: 'T' (정상)
+        member.setMemberStatus("T");
+
+        // 3. (참고)
+        // memberName, memberRrn, memberGender, memberPhone 등은
+        // JavaScript에서 이미 가공되어 넘어올 것입니다.
+
+        // Mapper 호출
+        return patientMapper.insertPatient(member);
     }
 }

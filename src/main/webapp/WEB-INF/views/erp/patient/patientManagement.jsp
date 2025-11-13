@@ -3,14 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <head>
-    <title>Title</title>
-    <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/erpPatient/patientDetail.css"
-    />
-    <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/erpPatient/patientManage.css"
-    />
-      <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
+    <title>환자관리</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpPatient/patientDetail.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpPatient/patientManage.css"/>
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpPatient/patientRegistration.css"/>
+    <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
 
       <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
@@ -21,7 +18,7 @@
       <!-- 페이지 헤더 -->
       <section class="patient-header">
         <h1 class="patient-title">환자 관리</h1>
-        <button class="patient-btn-add">
+        <button class="patient-btn-add" id="openRegisterModalBtn">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
@@ -219,6 +216,7 @@
           </div>
       </section>
     </main>
+
     <div class="modal-patient-detail">
       <div class="modal-overlay">
         <!-- 모달 헤더 -->
@@ -425,6 +423,72 @@
         </footer>
       </div>
     </div>
+
+  <div class="patient-modal-overlay" id="registerModalOverlay">
+      <div class="patient-modal">
+      <header class="patient-header">
+          <div class="header-content">
+              <div class="header-title">
+                  <svg class="icon-user" width="15" height="15" viewBox="0 0 15 15">
+                      <circle cx="7.5" cy="4.5" r="2.5" stroke="#0E787C" stroke-width="1.33" fill="none" />
+                      <path d="M3.5 11.5C3.5 9 5 7.5 7.5 7.5C10 7.5 11.5 9 11.5 11.5" stroke="#0E787C"
+                            stroke-width="1.33" fill="none" />
+                  </svg>
+                  <h1>신규 환자 등록</h1>
+              </div>
+              <button type="button" class="btn-close-header" id="closeRegisterModalBtn" aria-label="닫기">
+                  <svg width="19" height="19" viewBox="0 0 19 19">
+                      <path d="M5 5L14 14M14 5L5 14" stroke="#6B7280" stroke-width="1.66" stroke-linecap="round" />
+                  </svg>
+              </button>
+          </div>
+      </header>
+
+      <div class="patient-content">
+          <form class="patient-form">
+              <div class="form-field">
+                  <label for="patient-name">성함</label>
+                  <input type="text" id="patient-name" name="name" placeholder="성함" required />
+              </div>
+
+              <div class="form-row">
+                  <div class="form-field">
+                      <label for="birth-date">주민등록번호</label>
+                      <input type="text" id="birth-date" name="birth-date" placeholder="생년월일 6자리" maxlength="6"
+                             required />
+                  </div>
+                  <div class="form-field">
+                      <label for="birth-suffix">뒷자리</label>
+                      <input type="password" id="birth-suffix" name="birth-suffix" placeholder="뒷자리" maxlength="7"
+                             required />
+                  </div>
+              </div>
+
+              <div class="form-field">
+                  <label for="phone">전화번호</label>
+                  <input type="tel" id="phone" name="phone" placeholder="전화번호" required />
+              </div>
+
+              <div class="form-field">
+                  <label for="address">주소</label>
+                  <input type="text" id="address" name="address" placeholder="주소" />
+              </div>
+
+              <div class="form-field">
+                  <label for="email">이메일</label>
+                  <input type="email" id="email" name="email" placeholder="이메일" />
+              </div>
+
+              <div class="form-field">
+                  <label for="notes">특이사항(기저질환, 알레르기)</label>
+                  <input type="text" id="notes" name="notes" placeholder="특이사항" />
+              </div>
+
+              <button type="submit" class="btn-submit">예약하기</button>
+          </form>
+      </div>
+      </div>
+  </div>
           <script>
               const globalContextPath = "${pageContext.request.contextPath}";
           </script>

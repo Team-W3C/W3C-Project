@@ -1,5 +1,6 @@
 package com.w3c.spring.model.mapper.erp.patient;
 
+import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.model.vo.erp.patient.PatientListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -16,4 +17,5 @@ public interface PatientMapper {
     int selectTodayVisitCount(); //오늘 방문 환자수
     int selectNewPatientCountThisMonth();
     int selectVipCount();//이번 달 신규 환자 수
+    int insertPatient(Member member);
 }
