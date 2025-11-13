@@ -1,5 +1,6 @@
 package com.w3c.spring.service.inquiry;
 
+import com.w3c.spring.model.vo.inquiry.Board;
 import com.w3c.spring.model.vo.inquiry.BoardInsert;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,5 @@ public interface BoardService {
     Map<String, Object> getBoardById(int boardId);
 
     int insertBoard(BoardInsert boardInsert);
+    Board selectInquiryDetail(int boardNo);
 }

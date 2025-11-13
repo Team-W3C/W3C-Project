@@ -71,7 +71,7 @@
 
     <nav class="community-tabs">
         <button class="tab-btn tab-btn-active">공지사항</button>
-        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/inquiry'">문의사항</button>
+        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/inquiry?cpage=1'">문의사항</button>
     </nav>
 
     <div class="community-search">

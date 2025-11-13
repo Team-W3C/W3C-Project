@@ -70,6 +70,11 @@ public class BoardServiceImpl implements BoardService{
         return result;
     }
 
+    @Override
+    public Board selectInquiryDetail(int boardNo) {
+        return boardMapper.selectInquiryDetail(boardNo);
+    }
+
     private void enrichBoard(Board b) {
         switch (b.getBoardType()) {
             case 1 : b.setBoardTypeName("결제"); break;

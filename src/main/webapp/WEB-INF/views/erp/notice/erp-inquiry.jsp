@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>병원 ERP 시스템 - 커뮤니티</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-inquiry.css">
+    <script>
+        const contextPath = "${pageContext.request.contextPath}";
+    </script>
 </head>
 <body>
 <!-- Header Include -->
@@ -85,6 +88,8 @@
 
     <!-- 문의사항 목록 -->
     <section class="inquiry-list">
+        <c:forEach var="b" items="${list}">
+
         <!-- 문의사항 아이템 1 -->
         <article class="inquiry-item">
             <div class="inquiry-header">
@@ -113,133 +118,204 @@
             <h3 class="inquiry-title">MRI 예약 변경 문의</h3>
             <p class="inquiry-description">10월 30일 예약된 MRI 검사 시간을 변경하고 싶습니다.</p>
 
-            <button class="btn-view-inquiry">상세보기</button>
+            <button class="btn-view-inquiry" data-board-no="${b.boardId}">상세보기</button>
         </article>
+        </c:forEach>
 
-        <!-- 문의사항 아이템 2 -->
-        <article class="inquiry-item">
-            <div class="inquiry-header">
-                <div class="inquiry-badges">
-                    <span class="inquiry-badge inquiry-badge-status-progress">진행중</span>
-                    <span class="inquiry-badge inquiry-badge-category">시설</span>
-                    <span class="inquiry-badge inquiry-badge-normal">일반</span>
-                </div>
-                <span class="inquiry-date">2025-10-27 14:22</span>
-            </div>
+<%--        <!-- 문의사항 아이템 2 -->--%>
+<%--        <article class="inquiry-item">--%>
+<%--            <div class="inquiry-header">--%>
+<%--                <div class="inquiry-badges">--%>
+<%--                    <span class="inquiry-badge inquiry-badge-status-progress">진행중</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-category">시설</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-normal">일반</span>--%>
+<%--                </div>--%>
+<%--                <span class="inquiry-date">2025-10-27 14:22</span>--%>
+<%--            </div>--%>
 
-            <div class="inquiry-user">
-                <div class="user-avatar">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>
-                        <circle cx="10" cy="8" r="3" fill="#757575"/>
-                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>
-                    </svg>
-                </div>
-                <div class="user-info">
-                    <span class="user-name">이현희</span>
-                    <span class="user-id">ID#47</span>
-                </div>
-            </div>
+<%--            <div class="inquiry-user">--%>
+<%--                <div class="user-avatar">--%>
+<%--                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">--%>
+<%--                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>--%>
+<%--                        <circle cx="10" cy="8" r="3" fill="#757575"/>--%>
+<%--                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+<%--                <div class="user-info">--%>
+<%--                    <span class="user-name">이현희</span>--%>
+<%--                    <span class="user-id">ID#47</span>--%>
+<%--                </div>--%>
+<%--            </div>--%>
 
-            <h3 class="inquiry-title">수술 예약승인 문의</h3>
-            <p class="inquiry-description">10월 30일 요청한 수술 예약승인을 확인하고 싶습니다.</p>
+<%--            <h3 class="inquiry-title">수술 예약승인 문의</h3>--%>
+<%--            <p class="inquiry-description">10월 30일 요청한 수술 예약승인을 확인하고 싶습니다.</p>--%>
 
-            <button class="btn-view-inquiry">상세보기</button>
-        </article>
+<%--            <button class="btn-view-inquiry">상세보기</button>--%>
+<%--        </article>--%>
 
-        <!-- 문의사항 아이템 3 -->
-        <article class="inquiry-item">
-            <div class="inquiry-header">
-                <div class="inquiry-badges">
-                    <span class="inquiry-badge inquiry-badge-status-reject">반려</span>
-                    <span class="inquiry-badge inquiry-badge-category-general">일반</span>
-                    <span class="inquiry-badge inquiry-badge-normal">일반</span>
-                </div>
-                <span class="inquiry-date">2025-10-26 11:13</span>
-            </div>
+<%--        <!-- 문의사항 아이템 3 -->--%>
+<%--        <article class="inquiry-item">--%>
+<%--            <div class="inquiry-header">--%>
+<%--                <div class="inquiry-badges">--%>
+<%--                    <span class="inquiry-badge inquiry-badge-status-reject">반려</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-category-general">일반</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-normal">일반</span>--%>
+<%--                </div>--%>
+<%--                <span class="inquiry-date">2025-10-26 11:13</span>--%>
+<%--            </div>--%>
 
-            <div class="inquiry-user">
-                <div class="user-avatar">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>
-                        <circle cx="10" cy="8" r="3" fill="#757575"/>
-                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>
-                    </svg>
-                </div>
-                <div class="user-info">
-                    <span class="user-name">박동수</span>
-                    <span class="user-id">ID#09</span>
-                </div>
-            </div>
+<%--            <div class="inquiry-user">--%>
+<%--                <div class="user-avatar">--%>
+<%--                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">--%>
+<%--                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>--%>
+<%--                        <circle cx="10" cy="8" r="3" fill="#757575"/>--%>
+<%--                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+<%--                <div class="user-info">--%>
+<%--                    <span class="user-name">박동수</span>--%>
+<%--                    <span class="user-id">ID#09</span>--%>
+<%--                </div>--%>
+<%--            </div>--%>
 
-            <h3 class="inquiry-title">진료 기록 복사 신청</h3>
-            <p class="inquiry-description">지난 6개월간 진료 기록을 복사하려 합니다.</p>
+<%--            <h3 class="inquiry-title">진료 기록 복사 신청</h3>--%>
+<%--            <p class="inquiry-description">지난 6개월간 진료 기록을 복사하려 합니다.</p>--%>
 
-            <button class="btn-view-inquiry">상세보기</button>
-        </article>
+<%--            <button class="btn-view-inquiry">상세보기</button>--%>
+<%--        </article>--%>
 
-        <!-- 문의사항 아이템 4 -->
-        <article class="inquiry-item">
-            <div class="inquiry-header">
-                <div class="inquiry-badges">
-                    <span class="inquiry-badge inquiry-badge-status">대기중</span>
-                    <span class="inquiry-badge inquiry-badge-category">시설</span>
-                    <span class="inquiry-badge inquiry-badge-normal">일반</span>
-                </div>
-                <span class="inquiry-date">2025-10-24 06:45</span>
-            </div>
+<%--        <!-- 문의사항 아이템 4 -->--%>
+<%--        <article class="inquiry-item">--%>
+<%--            <div class="inquiry-header">--%>
+<%--                <div class="inquiry-badges">--%>
+<%--                    <span class="inquiry-badge inquiry-badge-status">대기중</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-category">시설</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-normal">일반</span>--%>
+<%--                </div>--%>
+<%--                <span class="inquiry-date">2025-10-24 06:45</span>--%>
+<%--            </div>--%>
 
-            <div class="inquiry-user">
-                <div class="user-avatar">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>
-                        <circle cx="10" cy="8" r="3" fill="#757575"/>
-                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>
-                    </svg>
-                </div>
-                <div class="user-info">
-                    <span class="user-name">최하윤</span>
-                    <span class="user-id">ID#83</span>
-                </div>
-            </div>
+<%--            <div class="inquiry-user">--%>
+<%--                <div class="user-avatar">--%>
+<%--                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">--%>
+<%--                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>--%>
+<%--                        <circle cx="10" cy="8" r="3" fill="#757575"/>--%>
+<%--                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+<%--                <div class="user-info">--%>
+<%--                    <span class="user-name">최하윤</span>--%>
+<%--                    <span class="user-id">ID#83</span>--%>
+<%--                </div>--%>
+<%--            </div>--%>
 
-            <h3 class="inquiry-title">주차 공간 문의 신청</h3>
-            <p class="inquiry-description">앞으로 주차공간 현황을 알고싶어 문의합니다.</p>
+<%--            <h3 class="inquiry-title">주차 공간 문의 신청</h3>--%>
+<%--            <p class="inquiry-description">앞으로 주차공간 현황을 알고싶어 문의합니다.</p>--%>
 
-            <button class="btn-view-inquiry">상세보기</button>
-        </article>
+<%--            <button class="btn-view-inquiry">상세보기</button>--%>
+<%--        </article>--%>
 
-        <!-- 문의사항 아이템 5 -->
-        <article class="inquiry-item">
-            <div class="inquiry-header">
-                <div class="inquiry-badges">
-                    <span class="inquiry-badge inquiry-badge-status-complete">완료</span>
-                    <span class="inquiry-badge inquiry-badge-category-system">시스템</span>
-                </div>
-                <span class="inquiry-date">2025-10-27 16:50</span>
-            </div>
+<%--        <!-- 문의사항 아이템 5 -->--%>
+<%--        <article class="inquiry-item">--%>
+<%--            <div class="inquiry-header">--%>
+<%--                <div class="inquiry-badges">--%>
+<%--                    <span class="inquiry-badge inquiry-badge-status-complete">완료</span>--%>
+<%--                    <span class="inquiry-badge inquiry-badge-category-system">시스템</span>--%>
+<%--                </div>--%>
+<%--                <span class="inquiry-date">2025-10-27 16:50</span>--%>
+<%--            </div>--%>
 
-            <div class="inquiry-user">
-                <div class="user-avatar">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>
-                        <circle cx="10" cy="8" r="3" fill="#757575"/>
-                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>
-                    </svg>
-                </div>
-                <div class="user-info">
-                    <span class="user-name">안정민</span>
-                    <span class="user-id">ID#96</span>
-                </div>
-            </div>
+<%--            <div class="inquiry-user">--%>
+<%--                <div class="user-avatar">--%>
+<%--                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">--%>
+<%--                        <circle cx="10" cy="10" r="8" fill="#e0e0e0"/>--%>
+<%--                        <circle cx="10" cy="8" r="3" fill="#757575"/>--%>
+<%--                        <path d="M4 16c0-3 2.5-5 6-5s6 2 6 5" fill="#757575"/>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+<%--                <div class="user-info">--%>
+<%--                    <span class="user-name">안정민</span>--%>
+<%--                    <span class="user-id">ID#96</span>--%>
+<%--                </div>--%>
+<%--            </div>--%>
 
-            <h3 class="inquiry-title">대기 시간 개선 신청</h3>
-            <p class="inquiry-description">예약 시스템 대기 시간이 너무 길어 신청합니다.</p>
+<%--            <h3 class="inquiry-title">대기 시간 개선 신청</h3>--%>
+<%--            <p class="inquiry-description">예약 시스템 대기 시간이 너무 길어 신청합니다.</p>--%>
 
-            <button class="btn-view-inquiry">상세보기</button>
-        </article>
+<%--            <button class="btn-view-inquiry">상세보기</button>--%>
+<%--        </article>--%>
     </section>
 </main>
+<!-- 문의사항 상세보기 모달 -->
+<div class="modal-overlay" id="inquiryDetailModal">
+    <div class="inquiry-detail-modal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <svg class="modal-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <rect x="3" y="4" width="14" height="12" rx="2" stroke="#00897b" stroke-width="2"/>
+                    <path d="M3 8h14M7 4v4M13 4v4" stroke="#00897b" stroke-width="2"/>
+                </svg>
+                <h2 class="modal-title">문의사항 상세</h2>
+            </div>
+            <button class="modal-close-btn" id="closeDetailModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6 6 18M6 6l12 12" stroke="#757575" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-content">
+            <section class="inquiry-user-section">
+                <div class="user-profile">
+                    <div class="user-avatar-large" id="modalUserAvatar">이</div>
+                    <div class="user-details">
+                        <h3 class="user-name-large" id="modalUserName">이영희</h3>
+                        <span class="user-department" id="modalUserDept">안과/의사_#0002</span>
+                    </div>
+                </div>
+                <div class="user-badges">
+                    <span class="badge badge-department">안과</span>
+                    <span class="badge badge-role">의사</span>
+                </div>
+            </section>
+
+            <section class="inquiry-contact-section">
+                <div class="contact-item">
+                    <span class="contact-label">연락처:</span>
+                    <span class="contact-value" id="modalPhone">010-2345-6789</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">이메일:</span>
+                    <span class="contact-value" id="modalEmail">yhlee@email.com</span>
+                </div>
+            </section>
+
+            <div class="inquiry-datetime">
+                <span class="datetime-label">일시</span>
+                <span class="datetime-value" id="modalDatetime">2025-10-27 14:20</span>
+            </div>
+
+            <div class="inquiry-title-section">
+                <h3 class="inquiry-subject" id="modalSubject">수술 예약승인 재발급 요청</h3>
+            </div>
+
+            <div class="inquiry-content-section">
+                <h4 class="content-label">문의 내용</h4>
+                <div class="inquiry-content" id="modalContentText">
+                    <p>안녕하세요.</p>
+                    <p>지난 10월 20일에 발급한 예약 건을 분실하여 수술승인을 재발급 요청합니다.</p>
+                    <p>요청일: 2025년 10월 20일</p>
+                    <p>요청 사항: 수술 안전 재기 발급 예방승인 요청</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" id="cancelDetailModal">취소</button>
+            <button class="btn-primary" id="answerInquiry">답변 등록</button>
+        </div>
+    </div>
+</div>
 <script src="${pageContext.request.contextPath}/js/erp/notice/erp-inquiry.js"></script>
 </body>
 </html>

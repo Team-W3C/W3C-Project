@@ -88,4 +88,18 @@
         'F'
         )
     </insert>
+
+    <select id="selectInquiryDetail" parameterType="_int" resultType="com.w3c.spring.model.vo.inquiry.Board">
+        SELECT
+        BOARD_NO as boardNo,
+        BOARD_TITLE as boardTitle,
+        BOARD_CONTENT as boardContent,
+        WRITER_ID as writerId,
+        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI') as createDate,
+        STATUS as status
+        FROM
+        INQUIRY_BOARD
+        WHERE
+        BOARD_NO = #{boardNo}
+    </select>
 </mapper>

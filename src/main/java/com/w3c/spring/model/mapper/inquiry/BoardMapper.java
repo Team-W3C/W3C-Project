@@ -14,4 +14,6 @@ public interface BoardMapper {
     Board getBoardById(int boardId);
 
     int insertBoard(BoardInsert boardInsert);
+
+    Board selectInquiryDetail(int boardNo);
 }
