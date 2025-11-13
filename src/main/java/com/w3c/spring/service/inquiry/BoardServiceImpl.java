@@ -72,7 +72,9 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Board selectInquiryDetail(int boardNo) {
-        return boardMapper.selectInquiryDetail(boardNo);
+        Board board = boardMapper.getBoardById(boardNo);
+        enrichBoard(board);
+        return board;
     }
 
     private void enrichBoard(Board b) {

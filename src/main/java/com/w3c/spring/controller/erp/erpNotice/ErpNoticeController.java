@@ -27,7 +27,7 @@ public class ErpNoticeController {
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
-
+        System.out.println(result.get("list"));
 
         return "erp/notice/erp-inquiry";
     }
