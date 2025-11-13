@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping; // RequestMapping 임포트 추가
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller // 이 클래스가 컨트롤러임을 명시
 @RequestMapping("/erp/employee") // 이 컨트롤러의 모든 메서드에 대해 기본 경로를 "/manage"로 설정
@@ -20,34 +24,35 @@ public class empManageController {
         this.employeeManagementService = employeeManagementService;
     }
 
-    private EmployeeCount getCurrentStats() {
-        // 1. DTO 객체 생성
-        EmployeeCount stats = new EmployeeCount();
-
-        // 2. 서비스의 각 메서드를 호출하여 DTO에 값 설정
-        stats.setTotalCount(employeeManagementService.getCountEmployeeAll());
-        stats.setWorkCount(employeeManagementService.getCountEmployeeWork());
-        stats.setVacationCount(employeeManagementService.getCountEmployeeVacation());
-        stats.setResignCount(employeeManagementService.getCountEmployeeResign());
-
-        // 3. 값이 채워진 DTO 반환
-        return stats;
-    }
-
-    // --- 1. JSP 페이지 최초 로드 (EL 값 전달) ---
+    // --- 1. JSP 페이지 최초 로드 (EL 값 전달) -
     // GET 요청이 /manage/employee 경로로 오면 이 메서드가 처리
     @GetMapping("/manage")
-    public String showEmployeeManagePage(Model model) {
+    public String showEmployeeManagePage(Model model, @RequestParam(value = "empPage", defaultValue = "1") int currentPage) {
 
-        // 헬퍼 메서드를 호출하여 최신 통계 DTO를 가져옵니다.
-        EmployeeCount stats = this.getCurrentStats();
+        // 통계 정보 조회
+        EmployeeCount stats = employeeManagementService.getCurrentStats();
 
-        // Model에 각 값을 추가합니다. (JSP의 EL에서 사용)
+        // 직원 목록 조회
+        Map<String, Object> result = employeeManagementService.getStaffList(currentPage);
+
+        // ✅ 리스트 추출
+        List<?> list = (List<?>) result.get("list");
+
+        System.out.println("조회된 리스트: " + list);
+        System.out.println("리스트 크기: " + list.size());
+
+        // Model에 각 값을 추가
         model.addAttribute("totalCount", stats.getTotalCount());
         model.addAttribute("workCount", stats.getWorkCount());
         model.addAttribute("vacationCount", stats.getVacationCount());
         model.addAttribute("resignCount", stats.getResignCount());
 
-        return "/erp/employee/employeeManagement"; // "직원관리.jsp" 뷰 이름
+        model.addAttribute("list", list);
+        model.addAttribute("pi", result.get("pi"));
+
+        // ✅ currentListSize 추가
+        model.addAttribute("currentListSize", list.size());
+
+        return "/erp/employee/employeeManagement";
     }
 }

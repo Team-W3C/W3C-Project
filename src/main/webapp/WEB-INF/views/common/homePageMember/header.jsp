@@ -30,7 +30,7 @@
                 <c:otherwise>
                     <c:choose>
                         <%-- 2-A. 관리자(admin.kim) 상태: 대시보드 메뉴 추가 --%>
-                        <c:when test="${sessionScope.loginMember.memberId eq 'admin'}">
+                        <c:when test="${sessionScope.loginMember.memberId eq 'admin.kim'}">
                             <a href="${pageContext.request.contextPath}/erp/dashBoard/enterErp" class="nav-link">대시보드</a>
                         </c:when>
 

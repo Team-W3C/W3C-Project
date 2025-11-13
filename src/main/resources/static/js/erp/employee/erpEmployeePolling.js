@@ -22,33 +22,39 @@ function startLongPolling() {
         url: '/api/employeeManagement/longPolling', // 예시 URL (서버 컨트롤러 경로와 일치해야 함)
         method: 'GET',
         dataType: 'json', // 서버가 JSON을 반환한다고 가정
-        timeout: 30100,   // 클라이언트가 서버로부터 어떠한 응답을 받지 못했을 경우.
+        timeout: 301000,   // 클라이언트가 서버로부터 어떠한 응답을 받지 못했을 경우.
         // 5분 + 1분 타임아웃 (서버의 DeferredResult 타임아웃과 맞춤)
 
         success: function(data) {
             // 2-1. 성공 시 (서버가 데이터 변동을 감지하고 응답을 보냄)
             console.log('롱 폴링 데이터 수신:', data);
 
-            // TODO: 수신한 데이터(data)로 HTML 화면을 갱신하는 로직
-            // 예: $('#staff-count-display').text(data.currentCount);
-
             // 2-2. 성공 응답을 받았으므로, 즉시 다음 롱 폴링 요청을 시작 (재귀)
             startLongPolling();
         },
 
         error: function(xhr, status, error) {
-            // 2-3. 오류 발생 시
+            // 1. 중단 상태 처리 (사용자나 안전장치에 의해 의도적으로 취소됨)
             if (status === 'abort') {
-                // 사용자가 의도적으로 중단한 경우 (다른 메뉴 클릭, 페이지 이탈)
                 console.log('롱 폴링이 중단되었습니다.');
                 return; // 재귀 호출 중단
             }
 
-            // 2-4. 타임아웃 또는 서버 오류 시
-            console.error('롱 폴링 오류:', status, error);
+            // 2. 타임아웃 상태 확인
+            if (status === 'timeout') {
+                console.warn('⚠️ 롱 폴링 오류: [타임아웃] - 서버가 5분 내에 응답하지 않았습니다. 재시도합니다.');
 
-            // 5초 후 재시도 (재귀)
-            setTimeout(startLongPolling, 5000);
+                // 5초 후 재시도 (재귀)
+                setTimeout(startLongPolling, 5000);
+                return;
+            }
+
+            // 3. 일반적인 서버 오류 처리 (4xx, 5xx 에러 또는 네트워크 문제)
+            // 서버 오류(500), 권한 오류(403), URL 오류(404) 등
+            console.error('🚨 롱 폴링 오류: [서버/네트워크 오류]', status, error);
+
+            // 30초 후 재시도 (재귀)
+            setTimeout(startLongPolling, 30000);
         }
     });
 }

@@ -1,124 +1,101 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>직원 관리 - 병원 ERP</title>
-    <link
-            rel="stylesheet"
-            href="${pageContext.request.contextPath}/css/erpEmployee/employeeManage.css"
-    />
-    <link
-            rel="stylesheet"
-            href="${pageContext.request.contextPath}/css/erpEmployee/employeeDetail.css"
-    />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpEmployee/employeeManage.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpEmployee/employeeDetail.css" />
     <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
 </head>
 <body>
 
-    <%-- ERP 공통 컴포넌트 --%>
     <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
     <jsp:include page="/WEB-INF/views/common/erp/header.jsp" />
 
     <main class="employee-main">
 
-        <%-- 1. 페이지 헤더 및 버튼 영역 --%>
+        <%-- 1. 페이지 헤더 --%>
         <section class="employee-header">
             <h1 class="employee-title">직원 관리</h1>
             <div class="employee-header-buttons">
                 <button class="employee-btn-secondary">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                                d="M8 3.33337V12.6667M3.33333 8H12.6667"
-                                stroke="#0e787c"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                        />
+                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="#0e787c" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                     부재 관리
                 </button>
                 <button class="employee-btn-add">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                                d="M8 3.33337V12.6667M3.33333 8H12.6667"
-                                stroke="white"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                        />
+                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                     직원 추가
                 </button>
             </div>
         </section>
 
-        <%-- 2. 통계 카드 영역 --%>
-            <section class="employee-stats">
-                <div class="employee-stat-card">
-                    <p class="employee-stat-label">전체 직원</p>
-                    <p class="employee-stat-value" id="total-count-display">${totalCount}명</p>
-                </div>
-                <div class="employee-stat-card">
-                    <p class="employee-stat-label">근무 중</p>
-                    <p class="employee-stat-value" id="work-count-display">${workCount}명</p>
-                </div>
-                <div class="employee-stat-card">
-                    <p class="employee-stat-label">휴가 중</p>
-                    <p class="employee-stat-value" id="vacation-count-display">${vacationCount}명</p>
-                </div>
-                <div class="employee-stat-card">
-                    <p class="employee-stat-label">퇴사</p>
-                    <p class="employee-stat-value" id="resign-count-display">${resignCount}명</p>
-                </div>
-            </section>
-
-        <%-- 3. 검색 및 필터 영역 --%>
-        <section class="employee-search-section">
-            <div class="employee-search-wrapper">
-                <div class="employee-search-box">
-                    <svg
-                            class="employee-search-icon"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                    >
-                        <circle
-                                cx="9"
-                                cy="9"
-                                r="5.5"
-                                stroke="#9CA3AF"
-                                stroke-width="1.5"
-                        />
-                        <path
-                                d="M13 13L16 16"
-                                stroke="#9CA3AF"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                        />
-                    </svg>
-                    <input
-                            type="text"
-                            class="employee-search-input"
-                            placeholder="직원명, 직급, 부서명으로 검색..."
-                    />
-                </div>
-
-                <button class="employee-btn-search" onclick="searchStaff()">검색</button>
-                <button class="employee-btn-filter">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                                d="M2 4H14M4 8H12M6 12H10"
-                                stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                        />
-                    </svg>
-                    필터
-                </button>
+        <%-- 2. 통계 카드 --%>
+        <section class="employee-stats">
+            <div class="employee-stat-card">
+                <p class="employee-stat-label">전체 직원</p>
+                <p class="employee-stat-value" id="total-count-display">${totalCount}명</p>
+            </div>
+            <div class="employee-stat-card">
+                <p class="employee-stat-label">근무 중</p>
+                <p class="employee-stat-value" id="work-count-display">${workCount}명</p>
+            </div>
+            <div class="employee-stat-card">
+                <p class="employee-stat-label">휴가 중</p>
+                <p class="employee-stat-value" id="vacation-count-display">${vacationCount}명</p>
+            </div>
+            <div class="employee-stat-card">
+                <p class="employee-stat-label">퇴사</p>
+                <p class="employee-stat-value" id="resign-count-display">${resignCount}명</p>
             </div>
         </section>
 
-        <%-- 4. 직원 목록 테이블 영역 --%>
+        <%-- 3. 검색 영역 --%>
+        <section class="employee-search-section">
+            <form class="employee-search-wrapper" action="${pageContext.request.contextPath}/api/employeeManagement/listEmployee">
+                <%-- 필터 선택 --%>
+                <div class="employee-filter-group">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 4H14M4 8H12M6 12H10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <select name="condition" class="employee-filter-select">
+                        <option value="name" ${condition == 'name' ? 'selected' : ''}>이름</option>
+                        <option value="position" ${condition == 'position' ? 'selected' : ''}>직급</option>
+                        <option value="department" ${condition == 'department' ? 'selected' : ''}>부서</option>
+                    </select>
+                </div>
+
+                <%-- 검색 입력 --%>
+                <div class="employee-search-box">
+                    <svg class="employee-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="9" cy="9" r="5.5" stroke="#9CA3AF" stroke-width="1.5"/>
+                        <path d="M13 13L16 16" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text"
+                           class="employee-search-input"
+                           name="keyword"
+                           value="${keyword}"
+                           placeholder="검색어를 입력하세요..." />
+                </div>
+
+                <%-- 검색 버튼 --%>
+                <button class="employee-btn-search" type="submit">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="5.5" stroke="white" stroke-width="1.5"/>
+                        <path d="M12 12L14 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    검색
+                </button>
+            </form>
+        </section>
+
+        <%-- 4. 직원 목록 테이블 --%>
         <section class="employee-table-section">
             <div class="employee-table-wrapper">
                 <table class="employee-table">
@@ -136,121 +113,123 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%-- 직원 데이터 행 1~5 (동적 생성 필요) --%>
-                    <tr>
-                        <td>S001</td>
-                        <td>
-                            <div class="employee-name-cell">
-                                <div class="employee-avatar">이</div>
-                                <span>이은호</span>
-                            </div>
-                        </td>
-                        <td>역사</td>
-                        <td>안경원과</td>
-                        <td>junho.lee@hospital.com</td>
-                        <td>010-1111-2222</td>
-                        <td>월~금<br />09:00-18:00</td>
-                        <td>
-                            <span class="employee-badge employee-badge-working">근무 중</span>
-                        </td>
-                        <td>
-                            <button class="employee-btn-detail">상세보기</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>S002</td>
-                        <td>
-                            <div class="employee-name-cell">
-                                <div class="employee-avatar">김</div>
-                                <span>김서연</span>
-                            </div>
-                        </td>
-                        <td>역사</td>
-                        <td>내과</td>
-                        <td>seoyeon.kim@hospital.com</td>
-                        <td>010-2222-3333</td>
-                        <td>월~토<br />09:00-17:00</td>
-                        <td>
-                            <span class="employee-badge employee-badge-working">근무 중</span>
-                        </td>
-                        <td>
-                            <button class="employee-btn-detail">상세보기</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>S003</td>
-                        <td>
-                            <div class="employee-name-cell">
-                                <div class="employee-avatar">박</div>
-                                <span>박민준</span>
-                            </div>
-                        </td>
-                        <td>역사</td>
-                        <td>안경원과</td>
-                        <td>minjun.park@hospital.com</td>
-                        <td>010-3333-4444</td>
-                        <td>화~금<br />10:00-19:00</td>
-                        <td>
-                            <span class="employee-badge employee-badge-vacation">휴가 중</span>
-                        </td>
-                        <td>
-                            <button class="employee-btn-detail">상세보기</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>S004</td>
-                        <td>
-                            <div class="employee-name-cell">
-                                <div class="employee-avatar">최</div>
-                                <span>최수진</span>
-                            </div>
-                        </td>
-                        <td>역사</td>
-                        <td>피부과</td>
-                        <td>sujin.choi@hospital.com</td>
-                        <td>010-4444-5555</td>
-                        <td>월~금<br />09:00-18:00</td>
-                        <td>
-                            <span class="employee-badge employee-badge-working">근무 중</span>
-                        </td>
-                        <td>
-                            <button class="employee-btn-detail">상세보기</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>S005</td>
-                        <td>
-                            <div class="employee-name-cell">
-                                <div class="employee-avatar">정</div>
-                                <span>정은지</span>
-                            </div>
-                        </td>
-                        <td>간호사</td>
-                        <td>응급실</td>
-                        <td>eunji.jung@hospital.com</td>
-                        <td>010-5555-6666</td>
-                        <td>3교대 근무</td>
-                        <td>
-                            <span class="employee-badge employee-badge-working">근무 중</span>
-                        </td>
-                        <td>
-                            <button class="employee-btn-detail">상세보기</button>
-                        </td>
-                    </tr>
-                    <%-- // 직원 데이터 행 끝 --%>
+                    <%-- ✅ 데이터 없을 때 처리 추가 --%>
+                    <c:choose>
+                        <c:when test="${empty list}">
+                            <tr>
+                                <td colspan="9" style="text-align: center; padding: 40px;">
+                                    등록된 직원이 없습니다.
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="emp" items="${list}">
+                                <tr>
+                                    <td>${emp.staffNo}</td>
+                                    <td>${emp.staffName}</td>
+                                    <td>${emp.staffPosition}</td>
+                                    <td>${emp.department}</td>
+                                    <td>${emp.staffEmail}</td>
+                                    <td>${emp.staffPhone}</td>
+                                    <td>${emp.scheduleDay}</td>
+                                    <td>
+                                        <span class="status-badge ${emp.staffStatus == 'Working' ? 'status-active' : 'status-inactive'}">
+                                                ${emp.staffStatus == 'Working' ? '근무중' : '휴직'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="employee-btn-detail" onclick="detailEmployee(${emp.staffNo})">
+                                            상세보기
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                     </tbody>
                 </table>
             </div>
 
             <%-- 페이지네이션 --%>
             <div class="employee-pagination">
-                <p class="employee-pagination-info">총 ${totalCount}명 중 5명 표시</p>
+                <%-- Controller에서 넘겨준 값 사용 --%>
+                <p class="employee-pagination-info">
+                    총 ${pi.listCount}명 중 ${currentListSize}명 표시
+                </p>
                 <div class="employee-pagination-buttons">
-                    <button class="employee-page-btn">이전</button>
-                    <button class="employee-page-btn employee-page-active">1</button>
-                    <button class="employee-page-btn">2</button>
-                    <button class="employee-page-btn">3</button>
-                    <button class="employee-page-btn">다음</button>
+                    <c:choose>
+                        <%-- 일반 목록 조회 (검색 조건 없음) --%>
+                        <c:when test="${empty condition}">
+                            <%-- 이전 버튼 --%>
+                            <c:if test="${pi.currentPage > 1}">
+                                <button class="employee-page-btn"
+                                        onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${pi.currentPage - 1}'">
+                                    &lt; 이전
+                                </button>
+                            </c:if>
+
+                            <%-- 페이지 번호 --%>
+                            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+                                <c:choose>
+                                    <c:when test="${i == pi.currentPage}">
+                                        <button class="employee-page-btn employee-page-active" disabled>
+                                                ${i}
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button class="employee-page-btn"
+                                                onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${i}'">
+                                                ${i}
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                            <%-- 다음 버튼 --%>
+                            <c:if test="${pi.currentPage < pi.maxPage}">
+                                <button class="employee-page-btn"
+                                        onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${pi.currentPage + 1}'">
+                                    다음 &gt;
+                                </button>
+                            </c:if>
+                        </c:when>
+
+                        <%-- 검색 결과 조회 (검색 조건 있음) --%>
+                        <c:otherwise>
+                            <%-- 이전 버튼 --%>
+                            <c:if test="${pi.currentPage > 1}">
+                                <button class="employee-page-btn"
+                                        onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${pi.currentPage - 1}&condition=${condition}&keyword=${keyword}'">
+                                    &lt; 이전
+                                </button>
+                            </c:if>
+
+                            <%-- 페이지 번호 --%>
+                            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+                                <c:choose>
+                                    <c:when test="${i == pi.currentPage}">
+                                        <button class="employee-page-btn employee-page-active" disabled>
+                                                ${i}
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button class="employee-page-btn"
+                                                onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${i}&condition=${condition}&keyword=${keyword}'">
+                                                ${i}
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                            <%-- 다음 버튼 --%>
+                            <c:if test="${pi.currentPage < pi.maxPage}">
+                                <button class="employee-page-btn"
+                                        onclick="location.href='${pageContext.request.contextPath}/api/employeeManagement/listEmployee?page=${pi.currentPage + 1}&condition=${condition}&keyword=${keyword}'">
+                                    다음 &gt;
+                                </button>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </section>
@@ -341,166 +320,112 @@
             <main class="employee-detail">
                 <header class="employee-detail-header">
                     <div class="employee-detail-profile">
-                        <div class="employee-detail-avatar">이</div>
+                        <div class="employee-detail-avatar" id="modal-avatar">-</div>
                         <div class="employee-detail-info">
-                            <h1 class="employee-detail-name">이준호</h1>
+                            <h1 class="employee-detail-name" id="modal-name">직원명</h1>
                             <div class="employee-detail-meta">
-                                <span class="employee-detail-position">의사 • 정형외과</span>
-                                <span
-                                        class="employee-detail-status employee-detail-status-active"
-                                >근무 중</span
-                                >
+                                <span class="employee-detail-position" id="modal-position-dept">직급 • 부서</span>
+                                <span class="employee-detail-status employee-detail-status-active" id="modal-status">근무 중</span>
                             </div>
                         </div>
                     </div>
                     <button class="employee-detail-close-btn" aria-label="닫기">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path
-                                    d="M15 5L5 15M5 5L15 15"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                            />
+                            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>
                 </header>
 
-                <%-- 모달 콘텐츠 --%>
                 <div class="employee-detail-content">
+                    <%-- 기본 정보 --%>
                     <section class="employee-detail-section">
                         <h2 class="employee-detail-section-title">기본 정보</h2>
                         <div class="employee-detail-grid employee-detail-grid-basic">
                             <div class="employee-detail-field">
                                 <label>직원번호</label>
-                                <span>S001</span>
+                                <span id="modal-staff-no">-</span>
                             </div>
                             <div class="employee-detail-field">
                                 <label>이메일</label>
-                                <span>junho.lee@hospital.com</span>
+                                <span id="modal-email">-</span>
                             </div>
                             <div class="employee-detail-field">
                                 <label>연락처</label>
-                                <span>010-1111-2222</span>
+                                <span id="modal-phone">-</span>
                             </div>
                             <div class="employee-detail-field">
                                 <label>입사일</label>
-                                <span>2018.03.15</span>
+                                <span id="modal-join-date">-</span>
                             </div>
-                            <div class="employee-detail-field employee-detail-field-wide">
+                            <div class="employee-detail-field" style="grid-column: 1 / -1;">
                                 <label>근무 일정</label>
-                                <span>월-금 09:00-18:00</span>
+                                <div id="modal-schedule" style="margin-top: 12px;">
+                                    <%-- JavaScript로 동적 생성 --%>
+                                </div>
                             </div>
                         </div>
                     </section>
 
+                    <%-- 근태 현황 --%>
                     <section class="employee-detail-section">
                         <h2 class="employee-detail-section-title">10월 근태 현황</h2>
                         <div class="employee-detail-grid employee-detail-grid-attendance">
-                            <div
-                                    class="employee-detail-stat employee-detail-stat-attendance"
-                            >
-                                <label>출근일</label><strong>22일</strong>
+                            <div class="employee-detail-stat employee-detail-stat-attendance">
+                                <label>출근일</label>
+                                <strong id="modal-attendance-days">0일</strong>
                             </div>
                             <div class="employee-detail-stat employee-detail-stat-late">
-                                <label>지각</label><strong>0회</strong>
+                                <label>지각</label>
+                                <strong id="modal-late-count">0회</strong>
                             </div>
                             <div class="employee-detail-stat employee-detail-stat-absent">
-                                <label>결근</label><strong>0일</strong>
+                                <label>결근</label>
+                                <strong id="modal-absent-count">0일</strong>
                             </div>
                             <div class="employee-detail-stat employee-detail-stat-vacation">
-                                <label>휴가</label><strong>1일</strong>
+                                <label>휴가</label>
+                                <strong id="modal-vacation-days">0일</strong>
                             </div>
                         </div>
                     </section>
+
+                    <%-- 자격증 및 면허 --%>
                     <section class="employee-detail-section">
-                        <h2 class="employe-detail-section-title">자격증 및 면허</h2>
-                        <ul class="employee-detail-license-list">
-                            <li class="employee-detail-license-item">
-                                <span class="employee-detail-license-dot"></span>
-                                의사면허
-                            </li>
-                            <li class="employee-detail-license-item">
-                                <span class="employee-detail-license-dot"></span>
-                                정형외과 전문의
-                            </li>
-                            <li class="employee-detail-license-item">
-                                <span class="employee-detail-license-dot"></span>
-                                척추 전문의
-                            </li>
+                        <h2 class="employee-detail-section-title">자격증 및 면허</h2>
+                        <ul class="employee-detail-license-list" id="modal-licenses">
+                            <li class="employee-detail-license-item">자격증 정보 없음</li>
                         </ul>
                     </section>
 
-                    <section class="employe-detail-section">
-                        <h2 class="title">연차 정보</h2>
+                    <%-- 연차 정보 --%>
+                    <section class="employee-detail-section">
+                        <h2 class="employee-detail-section-title">연차 정보</h2>
                         <div class="employee-detail-vacation">
                             <div class="employee-detail-vacation-info">
-                    <span class="employee-detail-vacation-used"
-                    >총 15일 중 3일 사용</span
-                    >
-                                <span class="employee-detail-vacation-remain">잔여 12일</span>
+                                <span class="employee-detail-vacation-used" id="modal-vacation-info">총 0일 중 0일 사용</span>
+                                <span class="employee-detail-vacation-remain" id="modal-vacation-remain">잔여 0일</span>
                             </div>
                             <div class="employee-detail-vacation-bar">
-                                <div
-                                        class="employee-detail-vacation-progress"
-                                        style="width: 20%"
-                                ></div>
+                                <div class="employee-detail-vacation-progress" id="modal-vacation-progress" style="width: 0%"></div>
                             </div>
                         </div>
                     </section>
                 </div>
 
-                <%-- 모달 푸터 --%>
                 <footer class="employee-detail-footer">
-                    <button
-                            class="employee-detail-btn employee-detail-btn-secondary modal-close"
-                    >
-                        닫기
-                    </button>
+                    <button class="employee-detail-btn employee-detail-btn-secondary modal-close">닫기</button>
                     <div class="employee-detail-actions">
-                        <button class="employee-detail-btn employee-detail-btn-outline">
-                            정보 수정
-                        </button>
-                        <button class="employee-detail-btn employee-detail-btn-primary">
-                            근무표 확인
-                        </button>
+                        <button class="employee-detail-btn employee-detail-btn-outline">정보 수정</button>
+                        <button class="employee-detail-btn employee-detail-btn-primary">근무표 확인</button>
                     </div>
                 </footer>
             </main>
         </div>
     </div>
 
-    <%-- 7. JavaScript (모달 제어) --%>
-    <script>
-        // 모달 열기 함수
-        document.querySelectorAll(".employee-btn-detail").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                document.getElementById("employeeModal").classList.add("active");
-            });
-        });
-
-        // 모달 닫기 함수 (X 버튼, 닫기 버튼)
-        document
-            .querySelectorAll(".employee-detail-close-btn, .modal-close")
-            .forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    document.getElementById("employeeModal").classList.remove("active");
-                });
-            });
-
-        // 모달 밖 (오버레이) 클릭 시 닫기
-        document
-            .getElementById("employeeModal")
-            .addEventListener("click", (e) => {
-                // 클릭된 요소가 정확히 오버레이 클래스를 포함할 때만 닫기
-                if (e.target.classList.contains("modal-overlay")) {
-                    e.target.classList.remove("active");
-                }
-            });
-
-    </script>
-
     <!-- script -->
     <script src="${pageContext.request.contextPath}/js/erp/employee/erpEmployeePolling.js"></script>
+    <script src="${pageContext.request.contextPath}/js/erp/employee/erpEmployeeDetail.js"></script>
 
 </body>
 </html>
