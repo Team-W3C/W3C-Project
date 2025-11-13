@@ -61,35 +61,36 @@
     <insert id="signUpMember" parameterType="Member">
         INSERT INTO MEMBER
         (
-        MEMBER_NO,
-        MEMBER_ID,
-        MEMBER_PWD,
-        MEMBER_NAME,
-        MEMBER_GENDER,
-        MEMBER_RRN,
-        MEMBER_PHONE,
-        MEMBER_EMAIL,
-        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,
-        MEMBER_BLOOD_TYPE,
-        MEMBER_CHRONIC_DISEASE,
-        MEMBER_ALLERGY,
-        MEMBER_STATUS
+            MEMBER_NO,
+            MEMBER_ID,
+            MEMBER_PWD,
+            MEMBER_NAME,
+            MEMBER_GENDER,
+            MEMBER_RRN,
+            MEMBER_PHONE,
+            MEMBER_EMAIL,
+            MEMBER_ADDRESS,
+            MEMBER_JOIN_DATE,
+            MEMBER_BLOOD_TYPE,
+            MEMBER_CHRONIC_DISEASE,
+            MEMBER_ALLERGY,
+            MEMBER_STATUS
         )
         VALUES(
-        MEMBER_SEQ.NEXTVAL,
-        #{memberId},
-        #{memberPwd},
-        #{memberName}, #{memberGender},
-        #{memberRrn},
-        #{memberPhone},
-        #{memberEmail},
-        #{memberAddress},
-        SYSDATE,
-        #{memberBloodType},
-        #{memberChronicDisease},
-        #{memberAllergy},
-        'T'
+            MEMBER_SEQ.NEXTVAL,
+            #{memberId},
+            #{memberPwd},
+            #{memberName},
+            #{memberGender},
+            #{memberRrn},
+            #{memberPhone},
+            #{memberEmail},
+            #{memberAddress},
+            SYSDATE,
+            #{memberBloodType},
+            #{memberChronicDisease},
+            #{memberAllergy},
+            'T'
         )
     </insert>
 
