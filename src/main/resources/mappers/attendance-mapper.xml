@@ -11,7 +11,8 @@
         absence_date AS absenceDate,
         absence_start AS absenceStart,
         absence_end AS absenceEnd,
-        absence_status AS absenceStatus
+        absence_status AS absenceStatus,
+        staff_no AS staffNo
         FROM
         ABSENCE
         WHERE
@@ -70,6 +71,47 @@
         #{absenceType}
         )
     </insert>
+
+    <insert id="insertClockIn" parameterType="AttendanceVO">
+        INSERT INTO ABSENCE (
+        absence_no,
+        staff_no,
+        absence_date,
+        absence_start,
+        absence_status
+        ) VALUES (
+        ABSENCE_SEQ.NEXTVAL,
+        #{staffNo},
+        #{absenceDate},
+        #{absenceStart},
+        #{absenceStatus}
+        )
+    </insert>
+
+    <update id="updateClockOut" parameterType="AttendanceVO">
+        UPDATE
+        ABSENCE
+        SET
+        absence_end = #{absenceEnd},
+        absence_status = #{absenceStatus}
+        WHERE
+        absence_no = #{absenceNo}
+    </update>
+
+
+    <select id="findScheduleStartTimeByStaffNoAndDay" parameterType="map" resultType="string">
+        SELECT
+        schedule_start_time
+        FROM
+        SCHEDULE
+        WHERE
+        staff_no = #{staffNo}
+        AND
+        schedule_day = #{dayOfWeek}
+        AND
+        ROWNUM = 1
+    </select>
+
 
     <select id="findAllPendingApplications" resultType="AttendanceVO">
         SELECT

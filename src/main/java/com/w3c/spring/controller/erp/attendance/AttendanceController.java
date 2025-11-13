@@ -33,12 +33,13 @@ public class AttendanceController {
             // 세션이 없으면 로그인 페이지로 리다이렉트
             return "redirect:/member/loginPage";
         }
-        // ---------------------------------
 
         // --- 2. 세션 정보에서 staffNo 및 관리자 여부 추출 ---
         long staffNo = (loginMember.getStaffNo() != null) ? loginMember.getStaffNo().longValue() : 0L;
-
-        boolean isAdmin = "admin".equals(loginMember.getMemberId());
+        if(staffNo == 0L){
+            return "redirect:/member/loginPage";
+        }
+        boolean isAdmin = "admin.kim".equals(loginMember.getMemberId());
 
         // 4. Service를 호출하여 페이지에 필요한 모든 데이터를 Map으로 받음
         Map<String, Object> pageData = attendanceService.getAttendanceMainPageData(staffNo, isAdmin);
@@ -46,7 +47,7 @@ public class AttendanceController {
         // 5. Model에 Map의 모든 데이터를 한 번에 추가
         model.addAllAttributes(pageData);
 
-        // 6. [수정] JSP에서 사용할 수 있도록 loginUser와 isAdmin 플래그를 모델에 추가
+        // 6. JSP에서 사용할 수 있도록 loginUser와 isAdmin 플래그를 모델에 추가
         model.addAttribute("loginUser", loginMember); // 모달용
         model.addAttribute("isAdmin", isAdmin);      // JSP 탭 제어용
 
@@ -60,7 +61,6 @@ public class AttendanceController {
     public String showAttendanceDashboardPage(Model model,
                                               @RequestParam(required = false) String searchTerm) {
 
-        // 1. Service를 호출하여 대시보드 데이터 조회
         List<AttendanceVO> employeeList = attendanceService.getDashboardData(searchTerm);
 
         // 2. Model에 데이터 추가
@@ -96,7 +96,6 @@ public class AttendanceController {
             return "redirect:/member/loginPage";
         }
         long staffNo = (loginMember.getStaffNo() != null) ? loginMember.getStaffNo().longValue() : 0L;
-        // -----------------------------------------------------------
 
         try {
             // 1. DB에 저장할 VO 객체 생성
@@ -124,7 +123,6 @@ public class AttendanceController {
                 application.setDetailedReason(reasonToSave);
 
             } else if ("leave".equals(applicationType)) {
-                // [!!] 휴가 유효성 검사
                 if (leaveStartDate == null || leaveStartDate.isEmpty() || leaveEndDate == null || leaveEndDate.isEmpty()) {
                     rttr.addFlashAttribute("errorMessage", "휴가 기간을 올바르게 입력해주세요.");
                     return "redirect:/erp/attendance/main?tab=list";
@@ -140,7 +138,6 @@ public class AttendanceController {
                 application.setDetailedReason(reasonToSave);
 
             } else if ("overnight".equals(applicationType)) {
-                // [!!] 외박 유효성 검사
                 if (overnightStartDate == null || overnightStartDate.isEmpty() || overnightEndDate == null || overnightEndDate.isEmpty()) {
                     rttr.addFlashAttribute("errorMessage", "외박 기간을 올바르게 입력해주세요.");
                     return "redirect:/erp/attendance/main?tab=list";
@@ -161,7 +158,6 @@ public class AttendanceController {
                 return "redirect:/erp/attendance/main?tab=list";
             }
 
-            // 3. 서비스 호출
             attendanceService.submitApplication(application);
             rttr.addFlashAttribute("message", "신청서가 성공적으로 제출되었습니다.");
 
@@ -169,7 +165,7 @@ public class AttendanceController {
             e.printStackTrace(); // 날짜 변환 실패
             rttr.addFlashAttribute("errorMessage", "날짜 형식이 올바르지 않습니다.");
         } catch (Exception e) {
-            e.printStackTrace(); // 콘솔에 에러 로그 출력
+            e.printStackTrace();
             rttr.addFlashAttribute("errorMessage", "신청서 제출에 실패했습니다. (서버 오류)");
         }
 
@@ -194,5 +190,51 @@ public class AttendanceController {
 
         // '승인 관리' 탭으로 리다이렉트
         return "redirect:/erp/attendance/main?tab=admin";
+    }
+
+    /**
+     * 출근 처리
+     */
+    @PostMapping("/clock-in")
+    public String clockIn(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+                          RedirectAttributes rttr) {
+
+        if (loginMember == null || loginMember.getStaffNo() == null) {
+            return "redirect:/member/loginPage";
+        }
+        long staffNo = loginMember.getStaffNo().longValue();
+
+        try {
+            attendanceService.clockIn(staffNo);
+            rttr.addFlashAttribute("message", "출근 처리되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("errorMessage", e.getMessage()); // 서비스단에서 발생시킨 예외 메시지
+        }
+
+        return "redirect:/erp/attendance/main";
+    }
+
+    /**
+     *  퇴근 처리
+     */
+    @PostMapping("/clock-out")
+    public String clockOut(@RequestParam("absenceNo") long absenceNo,
+                           @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+                           RedirectAttributes rttr) {
+
+        if (loginMember == null || loginMember.getStaffNo() == null) {
+            return "redirect:/member/loginPage";
+        }
+        long staffNo = loginMember.getStaffNo().longValue();
+
+        try {
+            attendanceService.clockOut(absenceNo, staffNo);
+            rttr.addFlashAttribute("message", "퇴근 처리되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("errorMessage", e.getMessage()); // 서비스단에서 발생시킨 예외 메시지
+        }
+        return "redirect:/erp/attendance/main";
     }
 }
