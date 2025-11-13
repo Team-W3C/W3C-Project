@@ -28,6 +28,4 @@ public class ReservationRequestVO {
      * 예약을 요청한 회원 번호 (PK)
      */
     private int memberNo;
-
-    // ▲▲▲ [오류 수정] ▲▲▲
 }

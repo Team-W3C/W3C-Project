@@ -20,5 +20,4 @@ public class ReservationUpdateVO {
     private String reservationNotes;  // 증상 (textarea)
     private String doctorName;        // 담당의 (input)
 
-    // (필요에 따라 다른 필드 추가)
 }
