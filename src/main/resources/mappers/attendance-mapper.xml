@@ -50,7 +50,7 @@
         WHERE
         staff_no = #{staffNo}
         ORDER BY
-        absence_start_date DESC
+        ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <insert id="insertApplication" parameterType="AttendanceVO">
@@ -137,7 +137,7 @@
         WHERE
         A.isApproved = 'F'
         ORDER BY
-        A.absence_start_date ASC
+        A.ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <select id="findAllCompletedApplications" resultType="AttendanceVO">
@@ -164,7 +164,7 @@
         WHERE
         A.isApproved != 'F'
         ORDER BY
-        A.absence_start_date DESC
+        A.ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <update id="updateApplicationStatus" parameterType="map">
