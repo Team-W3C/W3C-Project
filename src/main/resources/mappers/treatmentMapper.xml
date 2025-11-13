@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.w3c.spring.model.mapper.PatientReservationMapper">
+<mapper namespace="com.w3c.spring.model.mapper.TreatmentMapper">
     <resultMap id="reservationResultMap" type="com.w3c.spring.model.vo.PatientReservation">
         <result column="reservationNo" property="reservationNo" />
         <result column="reservationTime" property="reservationTime" />
@@ -72,7 +72,7 @@
                     ), '오더 없음')
                 ) AS diagnosisContent,
             NVL(
-                    '처방명: ' || P.prescription_name ||
+                    P.prescription_name ||
                     CASE WHEN P.content IS NOT NULL
                              THEN CHR(10) || '상세: ' || P.content
                          ELSE '' END,

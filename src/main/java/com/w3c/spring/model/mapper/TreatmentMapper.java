@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface PatientReservationMapper {
+public interface TreatmentMapper {
     List<PatientReservation> selectTodayPatients(String searchToday);
     List<MedicalRecord> selectTreatmentDetails(String today);
 }
