@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.TreatmentMapper">
+    <resultMap id="reservationResultMap" type="com.w3c.spring.model.vo.PatientReservation">
+        <result column="reservationNo" property="reservationNo" />
+        <result column="reservationTime" property="reservationTime" />
+        <result column="reservationPurpose" property="reservationPurpose"/>
+        <result column="reservationStatus" property="reservationStatus"/>
+        <result column="patientCode" property="patientCode"/>
+        <result column="patientName" property="patientName"/>
+        <result column="chronicDisease" property="chronicDisease"/>
+        <result column="allergy" property="allergy"/>
+        <result column="gradeStatus" property="gradeStatus"/>
+        <result column="departmentName" property="departmentName"/>
+        <result column="treatmentWaiting" property="treatmentWaiting"/>
+        <result column="treatmentOngoing" property="treatmentOngoing"/>
+        <result column="treatmentComplete" property="treatmentComplete"/>
+    </resultMap>
+
+    <select id="selectTodayPatients" resultMap="reservationResultMap">
+        SELECT
+            R.reservation_no AS reservationNo,
+            TO_CHAR(R.treatment_date, 'HH24:MI') AS reservationTime,
+            R.reservation_notes AS reservationPurpose,
+            R.reservation_status AS reservationStatus,
+            'P' || TO_CHAR(R.patient_no, 'FM000') AS patientCode,
+            R.patient_name AS patientName,
+            COALESCE(PD.member_chronic_disease, '특이사항 없음') AS chronicDisease,
+            PD.member_allergy AS allergy,
+            PD.grade_status AS gradeStatus,
+            R.department_name AS departmentName,
+            PD.treatment_waiting AS treatmentWaiting,
+            PD.treatment_ongoing AS treatmentOngoing,
+            PD.treatment_complete AS treatmentComplete
+        FROM
+            V_RESERVATION_DETAILS R
+                LEFT JOIN
+            V_PATIENT_DETAILS PD
+            ON
+                R.patient_no = PD.member_no
+        WHERE
+            TRUNC(R.treatment_date) = TO_DATE(#{searchToday}, 'YYYYMMDD')
+        ORDER BY
+            R.treatment_date ASC
+    </select>
+
+    <resultMap id="medicalRecordResultMap" type="com.w3c.spring.model.vo.MedicalRecord">
+        <result column="patientCode" property="patientCode"/>
+        <result column="recordDate" property="recordDate"/>
+        <result column="departmentName" property="departmentName"/>
+        <result column="diagnosisContent" property="diagnosisContent"/>
+        <result column="prescription" property="prescription"/>
+    </resultMap>
+
+    <select id="selectTreatmentDetails" resultMap="medicalRecordResultMap">
+        SELECT
+            'P' || TO_CHAR(VMR.patient_no, 'FM000') AS patientCode,
+            TO_CHAR(VMR.record_date, 'YYYY.MM.DD') AS recordDate,
+            NVL(DPT.department_name, '진료과 정보 없음') AS departmentName,
+            (
+                '주진단: ' || NVL(DG.diagnosis_name, '진단 기록 없음') ||
+                CASE WHEN DG.diagnosis_code IS NOT NULL
+                         THEN ' (' || DG.diagnosis_code || ')'
+                     ELSE '' END ||
+                CHR(10) || '소견: ' || NVL(VMR.chief_complaint, '소견 없음') ||
+                CHR(10) || '오더: ' || COALESCE((
+                                                  SELECT LISTAGG(MO.order_description, ', ') WITHIN GROUP (ORDER BY MO.order_no)
+                                              FROM medical_order MO
+                                              WHERE MO.medical_record_no = MR.medical_record_no
+                    ), '오더 없음')
+                ) AS diagnosisContent,
+            NVL(
+                    P.prescription_name ||
+                    CASE WHEN P.content IS NOT NULL
+                             THEN CHR(10) || '상세: ' || P.content
+                         ELSE '' END,
+                    '처방 기록 없음'
+            ) AS prescription
+        FROM
+            v_medical_records VMR
+                LEFT JOIN visit V ON VMR.visit_no = V.visit_no
+                LEFT JOIN reservation R ON V.reservation_no = R.reservation_no
+                LEFT JOIN department DPT ON R.department_no = DPT.department_no
+                LEFT JOIN medical_record MR ON VMR.medical_no = MR.medical_record_no
+                LEFT JOIN diagnosis DG ON MR.diagnosis_no = DG.diagnosis_no
+                LEFT JOIN prescription P ON MR.prescription_no = P.prescription_no
+        WHERE
+            TRUNC(VMR.record_date) = TO_DATE(#{today}, 'YYYYMMDD')
+        ORDER BY
+            VMR.patient_no, VMR.record_date DESC
+    </select>
+</mapper>
