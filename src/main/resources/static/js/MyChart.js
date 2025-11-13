@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.ok) throw new Error('진료과 목록 로드 실패');
 
                 const departments = await response.json();
-
+                console.log(departments);
                 editDeptSelect.innerHTML = '<option value="">진료과를 선택하세요</option>';
 
                 departments.forEach(dept => {
