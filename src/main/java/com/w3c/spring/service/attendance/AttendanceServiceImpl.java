@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +56,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         historyList.forEach(vo -> {
             formatAttendanceTimes(vo); // 시간 포매팅
             calculateWorkHours(vo); // 근무 시간 계산 (기존 로직)
+            formatAbsenceApplicationDate(vo);
         });
         pageData.put("historyList", historyList);
 
@@ -203,6 +205,13 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         if (vo.getAbsenceEnd() != null) {
             vo.setAbsenceEndTime(vo.getAbsenceEnd().format(TIME_FORMATTER));
+        }
+    } private void formatAbsenceApplicationDate(AttendanceVO vo) {
+        if (vo == null) {
+            return;
+        }
+        if (vo.getAbsenceApplicationDate() != null) {
+            vo.setAbsenceApplicationDate(LocalDate.parse(vo.getAbsenceApplicationDate().format(TIME_FORMATTER)));
         }
     }
 }

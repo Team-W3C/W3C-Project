@@ -43,7 +43,8 @@
         isApproved AS isApproved,
         absence_start_date AS absenceStartDate,
         absence_end_date AS absenceEndDate,
-        ABSENCE_TYPE AS absenceType
+        ABSENCE_TYPE AS absenceType,
+        ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL
         WHERE
@@ -122,7 +123,8 @@
         A.staff_no AS staffNo,
         A.ABSENCE_TYPE AS absenceType,
         V_STAFF.employeeName,
-        V_STAFF.departmentName
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL A
         JOIN (
@@ -148,7 +150,8 @@
         A.staff_no AS staffNo,
         A.ABSENCE_TYPE AS absenceType,
         V_STAFF.employeeName,
-        V_STAFF.departmentName
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL A
         JOIN (
