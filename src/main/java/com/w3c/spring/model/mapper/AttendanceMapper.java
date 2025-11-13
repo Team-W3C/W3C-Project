@@ -16,4 +16,7 @@ public interface AttendanceMapper {
     List<AttendanceVO> findAllCompletedApplications();
     int updateApplicationStatus(Map<String, Object> params);
     List<AttendanceVO> findAllEmployeeStatus(String searchTerm);
+    int insertClockIn(AttendanceVO attendance);
+    int updateClockOut(AttendanceVO attendance);
+    String findScheduleStartTimeByStaffNoAndDay(Map<String, Object> params);
 }

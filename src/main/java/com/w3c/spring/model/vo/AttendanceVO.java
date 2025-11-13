@@ -31,4 +31,7 @@ public class AttendanceVO {
     private String workSchedule;
     private String email;
     private String phone;
+
+    private String absenceStartTime;
+    private String absenceEndTime;
 }
