@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
+
     <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
     <resultMap id="memberResultMap" type="Member">
         <result column="MEMBER_NO" property="memberNo"/>
@@ -23,70 +24,74 @@
         <result column="STAFF_NO" property="staff_no"/>
     </resultMap>
 
+    <!-- ✅ 회원 ID + 비밀번호로 로그인용 조회 -->
     <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
         SELECT
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_PWD,
-            MEMBER_NAME,
-            MEMBER_GENDER,
-            MEMBER_RRN,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_ADDRESS,
-            MEMBER_JOIN_DATE,
-            MEMBER_BLOOD_TYPE,
-            MEMBER_CHRONIC_DISEASE,
-            MEMBER_ALLERGY,
-            MEMBER_STATUS,
-            STAFF_NO
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS,
+        STAFF_NO
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
         AND MEMBER_PWD = #{memberPwd}
         AND MEMBER_STATUS = 'T'
     </select>
 
+    <!-- 회원가입 -->
     <insert id="signUpMember" parameterType="Member">
-        INSERT INTO MEMBER
-        (
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_PWD,
-            MEMBER_NAME,
-            MEMBER_GENDER,
-            MEMBER_RRN,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_ADDRESS,
-            MEMBER_JOIN_DATE,
-            MEMBER_BLOOD_TYPE,
-            MEMBER_CHRONIC_DISEASE,
-            MEMBER_ALLERGY,
-            MEMBER_STATUS
+        INSERT INTO MEMBER (
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS
         )
-        VALUES(
-            MEMBER_SEQ.NEXTVAL,
-            #{memberId},
-            #{memberPwd},
-            #{memberName},
-            #{memberGender},
-            #{memberRrn},
-            #{memberPhone},
-            #{memberEmail},
-            #{memberAddress},
-            SYSDATE,
-            #{memberBloodType},
-            #{memberChronicDisease},
-            #{memberAllergy},
-            'T'
+        VALUES (
+        MEMBER_SEQ.NEXTVAL,
+        #{memberId},
+        #{memberPwd},
+        #{memberName},
+        #{memberGender},
+        #{memberRrn},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        SYSDATE,
+        #{memberBloodType},
+        #{memberChronicDisease},
+        #{memberAllergy},
+        'T'
         )
     </insert>
 
+    <!-- ID 중복 체크 -->
     <select id="getMemberCountById" resultType="_int">
         SELECT COUNT(*)
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
     </select>
+
+    <!-- 비회원 등록 -->
     <insert id="insertGuestMember"
             parameterType="com.w3c.spring.model.vo.Member"
             useGeneratedKeys="true"
@@ -100,15 +105,52 @@
         member_no, member_name, member_gender, member_rrn, member_phone,
         member_email, member_address, member_blood_type,
         member_chronic_disease, member_status,
-
-        -- 비회원이므로 NULL 허용 필드들은 제외하거나 NULL로 명시
         member_id, member_pwd, member_join_date, staff_no
         ) VALUES (
         #{memberNo}, #{memberName}, #{memberGender}, #{memberRrn}, #{memberPhone},
         #{memberEmail}, #{memberAddress}, #{memberBloodType},
         #{memberChronicDisease}, #{memberStatus},
-
         NULL, NULL, SYSDATE, NULL
         )
     </insert>
+
+    <!-- 회원 ID로 회원 정보 조회 -->
+    <select id="selectMemberById" parameterType="string" resultMap="memberResultMap">
+        SELECT
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS,
+        STAFF_NO
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+        AND MEMBER_STATUS = 'T'
+    </select>
+
+    <!-- ✅ 회원 정보 수정 -->
+    <update id="updateMemberInfo" parameterType="Member">
+        UPDATE MEMBER
+        SET MEMBER_NAME = #{memberName},
+        MEMBER_PHONE = #{memberPhone},
+        MEMBER_EMAIL = #{memberEmail},
+        MEMBER_ADDRESS = #{memberAddress}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <select id="getMemberByNo" resultType="com.w3c.spring.model.vo.Member">
+        SELECT *
+        FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
 </mapper>

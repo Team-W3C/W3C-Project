@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,5 +125,30 @@ public class MemberController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류로 인해 취소에 실패했습니다.");
         }
+    }
+
+    @PostMapping("/updateInfo")
+    @ResponseBody
+    public Map<String, Object> updateMemberInfo(@RequestBody Member member, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            int result = memberService.updateMemberInfo(member);
+
+            if (result > 0) {
+                // 세션의 loginMember 정보 갱신
+                Member updatedMember = memberService.getMemberByNo(member.getMemberNo());
+                session.setAttribute("loginMember", updatedMember);
+
+                response.put("success", true);
+            } else {
+                response.put("success", false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+        }
+
+        return response;
     }
 }

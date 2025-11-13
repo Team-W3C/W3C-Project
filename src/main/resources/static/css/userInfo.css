@@ -319,40 +319,54 @@ button {
     gap: 8px;
     /* 두 개의 주소 박스 사이 간격 */
 }
-
-
-/* ========================================
-   2. 계정 관리 섹션
-   ======================================== */
-.account-management .info-section-header.danger-zone {
-    background: #FEF2F2;
-    /* 붉은색 계열 배경 */
-    border-bottom-color: #FEE2E2;
+.update-info-modal-overlay {
+    /* 기존 .modal-overlay의 스타일을 따릅니다. */
+    z-index: 10000; /* 비밀번호 모달보다 높은 Z-index */
 }
 
-.account-management .info-section-header.danger-zone h3 {
-    color: #B91C1C;
-    /* 붉은색 텍스트 */
+.update-info-modal {
+    max-width: 600px;
 }
 
-.account-management .info-section-body {
-    padding: 24px;
-    /* 계정 관리는 내부 패딩이 있음 */
+.update-info-modal .field-box {
+    display: block; /* 필드 레이아웃 변경 */
+    padding: 12px 0;
+    border: none;
+    background: none;
 }
 
-.account-management .info-section-body h4 {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1F2937;
+.update-info-modal .field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
     margin-bottom: 8px;
 }
 
-.account-management .info-section-body .description {
-    font-size: 14px;
-    color: #4B5563;
-    line-height: 1.6;
-    margin-bottom: 16px;
+.update-info-modal .form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
 }
+
+.update-info-modal .address-group {
+    display: flex;
+    gap: 8px;
+}
+
+.update-info-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.update-info-modal .update-save-btn {
+    /* 기존 .btn-confirm 스타일 재사용 */
+}
+
 
 /* ========================================
    3. 개인정보 보호 안내
