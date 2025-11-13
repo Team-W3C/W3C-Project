@@ -1,18 +1,18 @@
-<%-- Created by IntelliJ IDEA. User: suk Date: 2025-11-07 Time: 오전 10:00 To
-change this template use File | Settings | File Templates. --%> <%@ page
-contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <head>
     <title>Title</title>
-    <link
-      rel="stylesheet"
+    <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/erpPatient/patientDetail.css"
     />
-    <link
-      rel="stylesheet"
+    <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/erpPatient/patientManage.css"
     />
       <link href="${pageContext.request.contextPath}/css/dashBoard/erpDashBoard.css" rel="stylesheet"/>
+
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
   <body>
   <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
@@ -23,12 +23,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <h1 class="patient-title">환자 관리</h1>
         <button class="patient-btn-add">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M8 3.33337V12.6667M3.33333 8H12.6667"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
+            <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
           신규 환자 등록
         </button>
@@ -37,19 +32,19 @@ contentType="text/html;charset=UTF-8" language="java" %>
       <section class="patient-stats">
         <div class="patient-stat-card">
           <p class="patient-stat-label">전체 환자</p>
-          <p class="patient-stat-value">1,248명</p>
+          <p class="patient-stat-value">${stats.totalCount}명</p>
         </div>
         <div class="patient-stat-card">
           <p class="patient-stat-label">오늘 방문</p>
-          <p class="patient-stat-value">32명</p>
+          <p class="patient-stat-value">${stats.todayCount}명</p>
         </div>
         <div class="patient-stat-card">
           <p class="patient-stat-label">신규 환자 (이번 달)</p>
-          <p class="patient-stat-value">48명</p>
+          <p class="patient-stat-value">${stats.newCount}명</p>
         </div>
         <div class="patient-stat-card">
           <p class="patient-stat-label">VIP 환자</p>
-          <p class="patient-stat-value">187명</p>
+          <p class="patient-stat-value">${stats.vipCount}명</p>
         </div>
       </section>
       <!-- 검색 및 필터 -->
@@ -63,48 +58,23 @@ contentType="text/html;charset=UTF-8" language="java" %>
               viewBox="0 0 20 20"
               fill="none"
             >
-              <circle
-                cx="9"
-                cy="9"
-                r="5.5"
-                stroke="#9CA3AF"
-                stroke-width="1.5"
-              />
-              <path
-                d="M13 13L16 16"
-                stroke="#9CA3AF"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
+              <circle cx="9" cy="9" r="5.5" stroke="#9CA3AF" stroke-width="1.5"/>
+              <path d="M13 13L16 16" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            <input
-              type="text"
-              class="patient-search-input"
-              placeholder="환자명, 환자번호, 연락처로 검색..."
-            />
+            <input type="text" class="patient-search-input" id="searchKeyword" placeholder="환자명, 환자번호, 연락처로 검색..." value="${keyword}"/>
           </div>
 
           <div class="patient-filter-group">
-            <select class="patient-select">
-              <option>모든 등급</option>
-              <option>일반</option>
-              <option>우선예약</option>
-              <option>VIP</option>
-            </select>
-            <button class="patient-btn-filter">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M2 4H14M4 8H12M6 12H10"
-                  stroke="#6B7280"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-              필터
-            </button>
+              <select class="patient-select" id="searchGrade"> <%-- [id 추가] --%>
+                  <%-- [c:if를 이용해 컨트롤러에서 받은 grade 값으로 'selected' 처리] --%>
+                  <option value="" <c:if test="${empty grade}">selected</c:if>>모든 등급</option>
+                  <option value="일반" <c:if test="${grade == '일반'}">selected</c:if>>일반</option>
+                  <option value="우선예약" <c:if test="${grade == '우선예약'}">selected</c:if>>우선예약</option>
+                  <option value="VIP" <c:if test="${grade == 'VIP'}">selected</c:if>>VIP</option>
+              </select>
           </div>
 
-          <button class="patient-btn-search">검색</button>
+          <button class="patient-btn-search" id="searchBtn">검색</button>
         </div>
       </section>
 
@@ -125,120 +95,128 @@ contentType="text/html;charset=UTF-8" language="java" %>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>P001</td>
+            <c:forEach var="p" items="${list}">
+                <tr>
+                <td>${p.memberNo}</td>
+                <td>${p.memberName}</td>
+                <td>${p.age} /
+                    <c:choose>
+                    <c:when test="${p.memberGender == 'M'}">
+                        남
+                    </c:when>
+                    <c:when test="${p.memberGender == 'F'}">
+                        여
+                    </c:when>
+                    </c:choose>
+                        </td>
+                <td>${p.memberPhone}</td>
+                <td>${p.lastVisitDate}</td>
+                <td>${p.visitCount}</td>
                 <td>
-                  <div class="patient-name-cell">
-                    <div class="patient-avatar">김</div>
-                    <span>김민수</span>
-                  </div>
-                </td>
-                <td>45세 / 남</td>
-                <td>010-1234-5678</td>
-                <td>2025-10-25</td>
-                <td>12회</td>
-                <td>
-                  <span class="patient-badge patient-badge-normal">일반</span>
-                </td>
-                <td>
-                  <button class="patient-btn-detail">상세보기</button>
-                </td>
-              </tr>
-              <tr>
-                <td>P002</td>
-                <td>
-                  <div class="patient-name-cell">
-                    <div class="patient-avatar">이</div>
-                    <span>이영희</span>
-                  </div>
-                </td>
-                <td>38세 / 여</td>
-                <td>010-2345-6789</td>
-                <td>2025-10-27</td>
-                <td>8회</td>
-                <td>
-                  <span class="patient-badge patient-badge-priority"
-                    >우선예약</span
-                  >
+                    <c:choose>
+                        <c:when test="${p.grade == 'VIP'}">
+                            <span class="patient-badge patient-badge-vip">VIP</span>
+                        </c:when>
+                        <c:when test="${p.grade == '우선예약'}">
+                            <span class="patient-badge patient-badge-priority">우선예약</span>
+                        </c:when>
+                        <c:when test="${p.grade == '일반'}">
+                            <span class="patient-badge patient-badge-normal">일반</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="patient-badge patient-badge-normal">등급없음</span>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
                 <td>
                   <button class="patient-btn-detail">상세보기</button>
                 </td>
               </tr>
-              <tr>
-                <td>P003</td>
-                <td>
-                  <div class="patient-name-cell">
-                    <div class="patient-avatar">박</div>
-                    <span>박철수</span>
-                  </div>
-                </td>
-                <td>52세 / 남</td>
-                <td>010-3456-7890</td>
-                <td>2025-10-20</td>
-                <td>24회</td>
-                <td>
-                  <span class="patient-badge patient-badge-vip">VIP</span>
-                </td>
-                <td>
-                  <button class="patient-btn-detail">상세보기</button>
-                </td>
-              </tr>
-              <tr>
-                <td>P004</td>
-                <td>
-                  <div class="patient-name-cell">
-                    <div class="patient-avatar">정</div>
-                    <span>정수연</span>
-                  </div>
-                </td>
-                <td>29세 / 여</td>
-                <td>010-4567-8901</td>
-                <td>2025-10-28</td>
-                <td>5회</td>
-                <td>
-                  <span class="patient-badge patient-badge-normal">일반</span>
-                </td>
-                <td>
-                  <button class="patient-btn-detail">상세보기</button>
-                </td>
-              </tr>
-              <tr>
-                <td>P005</td>
-                <td>
-                  <div class="patient-name-cell">
-                    <div class="patient-avatar">한</div>
-                    <span>한지민</span>
-                  </div>
-                </td>
-                <td>41세 / 여</td>
-                <td>010-5678-9012</td>
-                <td>2025-10-22</td>
-                <td>15회</td>
-                <td>
-                  <span class="patient-badge patient-badge-priority"
-                    >우선예약</span
-                  >
-                </td>
-                <td>
-                  <button class="patient-btn-detail">상세보기</button>
-                </td>
-              </tr>
+            </c:forEach>
+            <%-- 만약 리스트가 비어있을 경우 --%>
+            <c:if test="${empty list}">
+                <tr>
+                    <td colspan="6">조회된 환자 정보가 없습니다.</td>
+                </tr>
+            </c:if>
             </tbody>
           </table>
         </div>
 
-        <!-- 페이지네이션 -->
-        <div class="patient-pagination">
-          <p class="patient-pagination-info">총 1,248명 중 1-5명 표시</p>
-          <div class="patient-pagination-buttons">
-            <button class="patient-page-btn">이전</button>
-            <button class="patient-page-btn patient-page-active">1</button>
-            <button class="patient-page-btn">2</button>
-            <button class="patient-page-btn">3</button>
-            <button class="patient-page-btn">다음</button>
+          <!-- 페이지네이션 -->
+          <div class="patient-pagination">
+              <div class="patient-pagination-buttons">
+                  <%--
+          컨트롤러에서 받은 keyword와 grade를 사용
+          test 조건: 검색어(keyword)와 등급(grade)이 모두 비어있는가?
+        --%>
+                  <c:choose>
+                      <%-- 1. 검색어가 없는 경우 (기본 목록) --%>
+                      <c:when test="${empty keyword and empty grade}">
+                          <%-- '이전' --%>
+                          <c:if test="${pi.currentPage > 1}">
+                              <button class="patient-page-btn"
+                                      onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${pi.currentPage - 1}'">
+                                  이전
+                              </button>
+                          </c:if>
+                          <%-- 페이지 번호 --%>
+                          <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+                              <c:choose>
+                                  <c:when test="${i == pi.currentPage}">
+                                      <button class="patient-page-btn patient-page-active" disabled>${i}</button>
+                                  </c:when>
+                                  <c:otherwise>
+                                      <button class="patient-page-btn"
+                                              onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${i}'">
+                                              ${i}
+                                      </button>
+                                  </c:otherwise>
+                              </c:choose>
+                          </c:forEach>
+                          <%-- '다음' --%>
+                          <c:if test="${pi.currentPage < pi.maxPage}">
+                              <button class="patient-page-btn"
+                                      onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${pi.currentPage + 1}'">
+                                  다음
+                              </button>
+                          </c:if>
+                      </c:when>
+
+                      <%-- 2. 검색어가 있는 경우 (검색 결과 목록) --%>
+                      <c:otherwise>
+                          <%-- '이전' (keyword와 grade 파라미터 포함) --%>
+                          <c:if test="${pi.currentPage > 1}">
+                              <button class="patient-page-btn"
+                                      onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${pi.currentPage - 1}&keyword=${keyword}&grade=${grade}'">
+                                  이전
+                              </button>
+                          </c:if>
+                          <%-- 페이지 번호 (keyword와 grade 파라미터 포함) --%>
+                          <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+                              <c:choose>
+                                  <c:when test="${i == pi.currentPage}">
+                                      <button class="patient-page-btn patient-page-active" disabled>${i}</button>
+                                  </c:when>
+                                  <c:otherwise>
+                                      <button class="patient-page-btn"
+                                              onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${i}&keyword=${keyword}&grade=${grade}'">
+                                              ${i}
+                                      </button>
+                                  </c:otherwise>
+                              </c:choose>
+                          </c:forEach>
+                          <%-- '다음' (keyword와 grade 파라미터 포함) --%>
+                          <c:if test="${pi.currentPage < pi.maxPage}">
+                              <button class="patient-page-btn"
+                                      onclick="location.href='${pageContext.request.contextPath}/api/erp/patientList?cpage=${pi.currentPage + 1}&keyword=${keyword}&grade=${grade}'">
+                                  다음
+                              </button>
+                          </c:if>
+                      </c:otherwise>
+                  </c:choose>
+              </div>
           </div>
-        </div>
       </section>
     </main>
     <div class="modal-patient-detail">
@@ -260,10 +238,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           </div>
           <button class="modal-btn-menu" aria-label="메뉴">
             <svg width="20" height="20" viewBox="0 0 20 20">
-              <path
-                d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z"
-                fill="currentColor"
-              />
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" fill="currentColor"/>
             </svg>
           </button>
         </header>
@@ -273,12 +248,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <!-- 기본 정보 -->
           <section class="modal-section">
             <h2 class="modal-section-title">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                class="modal-section-icon"
-              >
+              <svg width="16" height="16" viewBox="0 0 16 16" class="modal-section-icon">
                 <rect x="3" y="10" width="10" height="4" fill="currentColor" />
                 <circle cx="8" cy="5" r="3" fill="currentColor" />
               </svg>
@@ -309,10 +279,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     viewBox="0 0 12 12"
                     class="modal-label-icon"
                   >
-                    <path
-                      d="M6 0C3.243 0 1 2.243 1 5c0 3.188 4.5 7 5 7s5-3.812 5-7c0-2.757-2.243-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z"
-                      fill="currentColor"
-                    />
+                    <path d="M6 0C3.243 0 1 2.243 1 5c0 3.188 4.5 7 5 7s5-3.812 5-7c0-2.757-2.243-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="currentColor"/>
                   </svg>
                   주소
                 </span>
@@ -330,10 +297,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 viewBox="0 0 16 16"
                 class="modal-section-icon"
               >
-                <path
-                  d="M13.5 2.5h-11A1.5 1.5 0 001 4v9.5A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5V4a1.5 1.5 0 00-1.5-1.5z"
-                  fill="currentColor"
-                />
+                <path d="M13.5 2.5h-11A1.5 1.5 0 001 4v9.5A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5V4a1.5 1.5 0 00-1.5-1.5z" fill="currentColor"/>
               </svg>
               의료 정보
             </h2>
@@ -371,16 +335,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <!-- 10월 진료 기록 -->
           <section class="modal-section">
             <h2 class="modal-section-title">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                class="modal-section-icon"
-              >
-                <path
-                  d="M14 2h-2V1a1 1 0 00-2 0v1H6V1a1 1 0 00-2 0v1H2a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zM2 6h12v8H2V6z"
-                  fill="currentColor"
-                />
+              <svg width="16" height="16" viewBox="0 0 16 16" class="modal-section-icon">
+                <path d="M14 2h-2V1a1 1 0 00-2 0v1H6V1a1 1 0 00-2 0v1H2a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zM2 6h12v8H2V6z" fill="currentColor"/>
               </svg>
               10월 진료 기록
             </h2>
@@ -440,16 +396,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <!-- 예정된 예약 -->
           <section class="modal-section">
             <h2 class="modal-section-title">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                class="modal-section-icon"
-              >
-                <path
-                  d="M8 0a8 8 0 100 16A8 8 0 008 0zm1 9H7V4h2v5z"
-                  fill="currentColor"
-                />
+              <svg width="16" height="16" viewBox="0 0 16 16" class="modal-section-icon">
+                <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm1 9H7V4h2v5z" fill="currentColor"/>
               </svg>
               예정된 예약
             </h2>
@@ -477,35 +425,9 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </footer>
       </div>
     </div>
-    <script>
-      // 상세보기 버튼 클릭 → 모달 열기
-      document.querySelectorAll(".patient-btn-detail").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document.querySelector(".modal-overlay").classList.add("active");
-          document
-            .querySelector(".modal-patient-detail")
-            .classList.add("active");
-        });
-      });
-
-      // 닫기 버튼 or 오버레이 클릭 → 모달 닫기
-      document
-        .querySelectorAll(".modal-btn-secondary, .modal-overlay")
-        .forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            if (
-              e.target.classList.contains("modal-overlay") ||
-              e.target.classList.contains("modal-btn-secondary")
-            ) {
-              document
-                .querySelector(".modal-overlay")
-                .classList.remove("active");
-              document
-                .querySelector(".modal-patient-detail")
-                .classList.remove("active");
-            }
-          });
-        });
-    </script>
+          <script>
+              const globalContextPath = "${pageContext.request.contextPath}";
+          </script>
+    <script src="${pageContext.request.contextPath}/js/erp/patientManagement/erp-patient-manage.js"></script>
   </body>
 </html>
