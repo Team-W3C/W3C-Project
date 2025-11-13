@@ -13,10 +13,11 @@ body {
 }
 
 /* ========== 메인 컨텐츠 ========== */
+
 .medical-main {
     padding: 32px;
     max-width: 1280px;
-    margin-left: 256px;
+    margin: 0 auto;
 }
 
 /* 페이지 제목 */
@@ -152,6 +153,7 @@ body {
 }
 
 /* ========== 진단 그리드 ========== */
+/* ========== 진단 그리드 ========== */
 .diagnosis-list {
     display: flex;
     flex-direction: column;
@@ -159,7 +161,7 @@ body {
 
 .diagnosis-header {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr 2fr;
+    grid-template-columns: 80px 100px 100px 2fr 2fr;
     gap: 16px;
     padding: 12px 24px;
     background-color: #f9fafb;
@@ -171,7 +173,7 @@ body {
 
 .diagnosis-item {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr 2fr;
+    grid-template-columns: 80px 100px 100px 2fr 2fr;
     gap: 16px;
     padding: 16px 24px;
     border-top: 1px solid #e5e7eb;
@@ -185,10 +187,52 @@ body {
 .diagnosis-text {
     font-size: 12px;
     line-height: 1.6;
-    white-space: pre-line;
+    white-space: normal;
     color: #4b5563;
+    word-break: break-word;
+    hyphens: auto;
+    overflow-wrap: break-word;
 }
 
+#diagnosis-panel .medical-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#diagnosis-panel .medical-table th:nth-child(1),
+#diagnosis-panel .medical-table td:nth-child(1) {
+    width: 100px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(2),
+#diagnosis-panel .medical-table td:nth-child(2) {
+    width: 120px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(3),
+#diagnosis-panel .medical-table td:nth-child(3) {
+    width: 120px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(4),
+#diagnosis-panel .medical-table td:nth-child(4) {
+    width: 35%;
+}
+
+#diagnosis-panel .medical-table th:nth-child(5),
+#diagnosis-panel .medical-table td:nth-child(5) {
+    width: 35%;
+}
+
+#diagnosis-panel .medical-table td:nth-child(4),
+#diagnosis-panel .medical-table td:nth-child(5) {
+    white-space: pre-line;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.7;
+    vertical-align: top;
+    font-size: 13px;
+}
 /* ========== 페이지네이션 ========== */
 .medical-pagination {
     display: flex;
@@ -256,6 +300,10 @@ body {
         min-width: 800px;
     }
 
+    .medical-table td {
+        white-space: normal !important;
+        word-break: break-word;
+    }
     .medical-table th,
     .medical-table td {
         padding: 12px 16px;

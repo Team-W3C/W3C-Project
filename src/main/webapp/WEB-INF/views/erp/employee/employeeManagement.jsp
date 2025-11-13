@@ -422,6 +422,12 @@
             </main>
         </div>
     </div>
+    <script>
+      document.querySelectorAll(".employee-btn-detail").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.getElementById("employeeModal").classList.add("active");
+        });
+      });
 
     <!-- script -->
     <script src="${pageContext.request.contextPath}/js/erp/employee/erpEmployeePolling.js"></script>

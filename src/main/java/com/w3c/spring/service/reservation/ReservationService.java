@@ -22,4 +22,5 @@ public interface ReservationService {
     ReservationUpdateVO getReservationForUpdate(int reservationNo, int memberNo);
 
     boolean updateReservation(ReservationRequestVO reservationData, int reservationNo, int memberNo);
+
 }
