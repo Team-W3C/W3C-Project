@@ -87,4 +87,28 @@
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
     </select>
+    <insert id="insertGuestMember"
+            parameterType="com.w3c.spring.model.vo.Member"
+            useGeneratedKeys="true"
+            keyProperty="memberNo">
+
+        <selectKey keyProperty="memberNo" resultType="long" order="BEFORE">
+            SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO MEMBER (
+        member_no, member_name, member_gender, member_rrn, member_phone,
+        member_email, member_address, member_blood_type,
+        member_chronic_disease, member_status,
+
+        -- 비회원이므로 NULL 허용 필드들은 제외하거나 NULL로 명시
+        member_id, member_pwd, member_join_date, staff_no
+        ) VALUES (
+        #{memberNo}, #{memberName}, #{memberGender}, #{memberRrn}, #{memberPhone},
+        #{memberEmail}, #{memberAddress}, #{memberBloodType},
+        #{memberChronicDisease}, #{memberStatus},
+
+        NULL, NULL, SYSDATE, NULL
+        )
+    </insert>
 </mapper>

@@ -1,7 +1,7 @@
 package com.w3c.spring.model.vo;
 
 import lombok.*;
-import java.util.Date; // [수정] java.sql.Date -> java.util.Date
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -10,7 +10,7 @@ import java.util.Date; // [수정] java.sql.Date -> java.util.Date
 @AllArgsConstructor
 public class Member {
 
-    private int memberNo; // [수정] String -> int (DB의 NUMBER 타입과 일치)
+    private int memberNo; // DB NUMBER에 대응, Java int 사용
     private String memberId;
     private String memberPwd;
     private String memberName;
@@ -19,12 +19,13 @@ public class Member {
     private String memberPhone;
     private String memberEmail;
     private String memberAddress;
-    private Date memberJoinDate; // [수정] java.sql.Date -> java.util.Date
+    private Date memberJoinDate;
     private String memberBloodType;
     private String memberChronicDisease;
     private String memberAllergy;
     private String memberStatus;
 
-    // [수정] DB 스키마에 맞게 staff_no -> staffNo, String -> Integer
+    // staff_no는 DB에서 NUMBER이므로 Java에서는 Integer(NULL 허용) 또는 int(NULL 불허)
+    // DDL에서 NULL 허용이므로 Integer가 적절합니다.
     private Integer staffNo;
 }

@@ -10,4 +10,5 @@ public interface MemberMapper {
     Member getMemberById(@Param("memberId") String memberId, @Param("memberPwd") String memberPwd);
     int signUpMember(Member member);
     int getMemberCountById(@Param("memberId") String memberId);
+    int insertGuestMember(Member member);
 }
