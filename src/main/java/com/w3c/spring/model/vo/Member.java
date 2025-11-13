@@ -1,7 +1,7 @@
 package com.w3c.spring.model.vo;
 
 import lombok.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Getter
 @Setter

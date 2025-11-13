@@ -13,6 +13,10 @@
         <result property="date"            column="RESERVATION_DATE" />
         <result property="time"            column="RESERVATION_TIME" />
         <result property="location"        column="LOCATION" />
+        <result property="age" column="AGE" />
+        <result property="gender" column="GENDER" />
+        <result property="symptoms" column="SYMPTOMS" />
+        <result property="memo" column="MEMO" />
     </resultMap>
 
     <resultMap id="ReservationUpdateMap" type="com.w3c.spring.model.vo.ReservationUpdateVO">
@@ -23,6 +27,7 @@
         <result property="doctorName"       column="DOCTOR_NAME" />
         <result property="treatmentDate"    column="TREATMENT_DATE" />
     </resultMap>
+
 
 
     <select id="findApprovedAbsences" resultType="com.w3c.spring.model.vo.AbsenceVO">
@@ -168,4 +173,77 @@
           AND MEMBER_NO = #{memberNo}
           AND RESERVATION_STATUS IN ('확정', '대기')
     </update>
+
+    <select id="selectReservationDetailByDate" resultMap="ReservationDetailMap">
+        SELECT
+            M.member_name AS patientName,
+            TRUNC(
+                    MONTHS_BETWEEN(
+                            SYSDATE,
+                            TO_DATE(
+                                    CASE
+                                        WHEN SUBSTR(M.member_rrn, 8, 1) IN ('1', '2') THEN '19' || SUBSTR(M.member_rrn, 1, 6)
+                                        WHEN SUBSTR(M.member_rrn, 8, 1) IN ('3', '4') THEN '20' || SUBSTR(M.member_rrn, 1, 6)
+                                        END,
+                                    'YYYYMMDD'
+                            )
+                    ) / 12
+            ) || '세' AS age,
+            CASE M.member_gender
+                WHEN 'M' THEN '남'
+                WHEN 'F' THEN '여'
+                END AS gender,
+            R.reservation_notes AS symptoms,
+            D.department_name AS department_name,
+            R.reservation_status AS status,
+            TO_CHAR(R.treatment_date, 'YYYY-MM-DD') AS reservationDate,
+            TO_CHAR(R.treatment_date, 'HH24:MI') AS reservationTime,
+            R.reservation_memo AS memo,
+            R.reservation_no AS reservation_no
+        FROM RESERVATION R
+                 JOIN MEMBER M ON R.member_no = M.member_no
+                 JOIN DEPARTMENT D ON R.department_no = D.department_no
+        WHERE M.staff_no IS NULL AND TRUNC(R.treatment_date) = TO_DATE(#{selectedDate},'YYYY-MM-DD')
+        ORDER BY reservationDate, reservationTime
+    </select>
+
+    <update id="updateRvtnStatus" parameterType="map">
+        UPDATE RESERVATION
+        SET reservation_status = #{status}
+        WHERE reservation_no = #{reservationNo}
+    </update>
+
+    <select id="selectRvtnDetail" resultMap="ReservationDetailMap">
+        SELECT
+            M.member_name AS patientName,
+            'P' || TO_CHAR(M.member_no, 'FM000') AS patientCode,
+            TRUNC(
+                    MONTHS_BETWEEN(
+                            SYSDATE,
+                            TO_DATE(
+                                    CASE
+                                        WHEN SUBSTR(M.member_rrn, 8, 1) IN ('1', '2') THEN '19' || SUBSTR(M.member_rrn, 1, 6)
+                                        WHEN SUBSTR(M.member_rrn, 8, 1) IN ('3', '4') THEN '20' || SUBSTR(M.member_rrn, 1, 6)
+                                        END,
+                                    'YYYYMMDD'
+                            )
+                    ) / 12
+            ) || '세' AS age,
+            CASE M.member_gender
+                WHEN 'M' THEN '남'
+                WHEN 'F' THEN '여'
+                END AS gender,
+            M.MEMBER_PHONE AS phone,
+            R.RESERVATION_NO AS reservation_no,
+            R.RESERVATION_NOTES AS symptoms,
+            D.department_name AS departmentName,
+            SUBSTR(RESERVATION_MEMO, 6, 8) AS doctor_name,
+            TO_CHAR(R.TREATMENT_DATE, 'YYYY-MM-DD') AS reservationDate,
+            TO_CHAR(R.TREATMENT_DATE, 'HH24:MI')    AS reservationTime
+        FROM RESERVATION R
+                 LEFT JOIN DEPARTMENT D ON R.department_no = D.department_no
+                 LEFT JOIN MEMBER M ON R.member_no = M.member_no
+        WHERE R.RESERVATION_NO = #{reservationNo}
+        ORDER BY R.TREATMENT_DATE DESC
+    </select>
 </mapper>

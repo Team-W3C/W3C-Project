@@ -1,24 +1,21 @@
 package com.w3c.spring.controller.api.hompage.inquiry;
 
 import com.w3c.spring.model.vo.Member;
-import com.w3c.spring.model.vo.inquiry.Board;
 import com.w3c.spring.model.vo.inquiry.BoardInsert;
 import com.w3c.spring.service.inquiry.BoardService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/member")
-public class InquiryApiController {
+public class InquirymemApiController {
 
     private final BoardService boardService;
 
-    public InquiryApiController(BoardService boardService) {
+    public InquirymemApiController(BoardService boardService) {
         this.boardService = boardService;
     }
 
