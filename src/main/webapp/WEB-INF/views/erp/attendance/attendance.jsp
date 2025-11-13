@@ -431,7 +431,7 @@
                                                     </dl>
                                                     <dl>
                                                         <dt>신청 일시</dt>
-                                                        <dd>${item.absenceStartDate}</dd>
+                                                        <dd>${item.absenceApplicationDate}</dd>
                                                     </dl>
                                                     <dl class="full-width">
 
