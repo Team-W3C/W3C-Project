@@ -23,19 +23,19 @@
         <h3 class="member-sidebar__nav-title">진료서비스</h3>
         <ul class="member-sidebar__nav-list">
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link member-sidebar__nav-link--active">본인예약현황</a>
+                <a href="${pageContext.request.contextPath}/member/mychart" class="member-sidebar__nav-link member-sidebar__nav-link--active">본인예약현황</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">진료내역</a>
+                <a href="${pageContext.request.contextPath}/mychart/history" class="member-sidebar__nav-link">진료내역</a>
             </li>
             <li class="member-sidebar__nav-item">
-                <a href="#" class="member-sidebar__nav-link">진단검사결과</a>
+                <a href="${pageContext.request.contextPath}/mychart/results" class="member-sidebar__nav-link">진단검사결과</a>
             </li>
         </ul>
     </nav>
 
     <nav class="member-sidebar__nav-group">
-        <h3 class="sidebar-menu-title">
+        <h3 class="member-sidebar__nav-title">
             회원정보
         </h3>
         <ul class="member-sidebar__nav-list">

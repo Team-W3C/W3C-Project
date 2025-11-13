@@ -69,7 +69,6 @@ public class MemberController {
 
 
     /**
-     * [404 오류 해결]
      * GET /member/appointmentPage 요청을 받아서
      * /WEB-INF/views/homePage/member/appointment.jsp 파일을 보여줍니다.
      */
