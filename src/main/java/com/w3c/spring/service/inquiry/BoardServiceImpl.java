@@ -1,6 +1,7 @@
 package com.w3c.spring.service.inquiry;
 
 import com.w3c.spring.model.mapper.inquiry.BoardMapper;
+import com.w3c.spring.model.vo.inquiry.Answer;
 import com.w3c.spring.model.vo.inquiry.Board;
 import com.w3c.spring.model.vo.inquiry.BoardInsert;
 import com.w3c.spring.model.vo.inquiry.PageInfo;
@@ -77,6 +78,19 @@ public class BoardServiceImpl implements BoardService{
         return board;
     }
 
+    @Override
+    public int registerAnswer(int boardId, int staffNo, String answerContent) {
+        Answer answer = new Answer();
+        answer.setBoardId(boardId);
+        answer.setStaffNo(staffNo);
+        answer.setAnswerContent(answerContent);
+
+        int result = boardMapper.insertAnswer(answer);
+        if (result > 0) {
+            boardMapper.updateBoardStatus(boardId, "완료"); // 정책에 따라 상태 변경
+        }
+        return result;
+    }
     private void enrichBoard(Board b) {
         switch (b.getBoardType()) {
             case 1 : b.setBoardTypeName("결제"); break;

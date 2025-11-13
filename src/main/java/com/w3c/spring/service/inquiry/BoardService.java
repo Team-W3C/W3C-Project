@@ -14,4 +14,5 @@ public interface BoardService {
 
     int insertBoard(BoardInsert boardInsert);
     Board selectInquiryDetail(int boardNo);
+    int registerAnswer(int boardId, int staffNo, String answerContent);
 }

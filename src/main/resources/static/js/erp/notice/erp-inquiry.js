@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryBadge.textContent = inquiryData.boardTypeName || '일반';
         }
 
-        // 4. 연락처 정보 (Board VO에 phone, email 필드가 없으므로 기본값 표시)
-        document.getElementById('modalPhone').textContent = inquiryData.phone || '정보 없음';
-        document.getElementById('modalEmail').textContent = inquiryData.email || '정보 없음';
+        // 4. 연락처 정보
+        document.getElementById('modalPhone').textContent = inquiryData.memberPhone || '정보 없음';
+        document.getElementById('modalEmail').textContent = inquiryData.memberEmail || '정보 없음';
 
         // 5. 문의 정보
         document.getElementById('modalDatetime').textContent = inquiryData.questionDate || inquiryData.createDate || '정보 없음';
@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 답변이 있는 경우: 답변 섹션 표시, 작성 폼 숨김
             replySection.style.display = 'block';
             replyFormSection.style.display = 'none';
+            answerInquiryBtn.style.display ='none';
 
             // 답변 내용 채우기
             const staffName = inquiryData.staffName || '관리자';
@@ -174,23 +175,31 @@ document.addEventListener('DOMContentLoaded', function() {
         answerInquiryBtn.addEventListener('click', () => {
             const replyTextarea = document.getElementById('replyTextarea');
             const replyText = replyTextarea ? replyTextarea.value.trim() : '';
-            
+
             if (!replyText) {
                 alert('답변 내용을 입력해주세요.');
                 return;
             }
-
             if (!currentBoardNo) {
                 alert('문의 번호를 찾을 수 없습니다.');
                 return;
             }
 
-            // TODO: 실제 서버에 답변 전송하는 API 호출
-            alert('답변이 등록되었습니다.');
-            if (replyTextarea) {
-                replyTextarea.value = '';
-            }
-            closeModal(detailModal);
+            fetch(`${contextPath}/api/erp/inquiry/${currentBoardNo}/reply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answerContent: replyText })
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error();
+                    return response.json();
+                })
+                .then(() => {
+                    alert('답변이 등록되었습니다.');
+                    closeModal(detailModal);
+                    // 필요 시 목록 갱신 또는 상세 재조회
+                })
+                .catch(() => alert('답변 등록 중 오류가 발생했습니다.'));
         });
     }
 

@@ -85,10 +85,34 @@
         1,
         '대기중',
         #{memberNo},
-        1,
+        6,
         #{boardSecretType},
         'F'
         )
     </insert>
 
+    <!-- 신규 INSERT -->
+    <insert id="insertAnswer" parameterType="com.w3c.spring.model.vo.inquiry.Answer">
+        INSERT INTO ANSWER (
+        ANSWER_NO,
+        BOARD_ID,
+        STAFF_NO,
+        ANSWER_CONTENT,
+        ANSWER_DATE
+        )
+        VALUES (
+        ANSWER_SEQ.NEXTVAL,
+        #{boardId},
+        #{staffNo},
+        #{answerContent},
+        SYSDATE
+        )
+    </insert>
+
+    <!-- 필요 시 게시글 상태 갱신 -->
+    <update id="updateBoardStatus">
+        UPDATE BOARD
+        SET BOARD_STATUS = #{boardStatus}
+        WHERE BOARD_ID = #{boardId}
+    </update>
 </mapper>
