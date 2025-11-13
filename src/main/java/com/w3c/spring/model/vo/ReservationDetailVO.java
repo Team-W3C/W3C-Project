@@ -16,10 +16,19 @@ public class ReservationDetailVO {
     // JSP에서 사용하는 필드명을 그대로 선언
     private String status;           // 예약 상태 (CONFIRMED, PENDING 등)
     private String type;             // 예약 타입 (진료, 검사 등)
-    private String departmentName;   // 진료과 이름
+    private String departmentName;
     private String date;             // 진료 날짜 (YYYY-MM-DD)
     private String doctorName;       // 담당의사 이름
     private String time;             // 진료 시간 (HH24:MI)
     private String location;         // 진료실 위치
 
+    private String patientName;
+    private String age;
+    private String gender;
+    private String symptoms;
+    private String memo;
+    private String reservationDate;
+    private String reservationTime;
+    private String patientCode;
+    private String phone;
 }

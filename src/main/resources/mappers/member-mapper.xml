@@ -123,4 +123,21 @@
         NULL, NULL, SYSDATE, NULL
         )
     </insert>
+
+    <resultMap id="boardMemberSelectMap" type="com.w3c.spring.model.vo.inquiry.BoardMemberSelect">
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+    </resultMap>
+    <select id="selectMemberByBoardId" parameterType="_int"  resultMap="boardMemberSelectMap">
+        SELECT
+        MEMBER_NO,
+        MEMBER_NAME,
+        MEMBER_EMAIL,
+        MEMBER_PHONE
+        FROM MEMBER
+        JOIN BOARD  USING(MEMBER_NO)
+        WHERE BOARD_ID = #{boardId}
+    </select>
 </mapper>

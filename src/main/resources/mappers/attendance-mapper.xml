@@ -43,13 +43,18 @@
         isApproved AS isApproved,
         absence_start_date AS absenceStartDate,
         absence_end_date AS absenceEndDate,
-        ABSENCE_TYPE AS absenceType
+        ABSENCE_TYPE AS absenceType,
+        ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL
         WHERE
         staff_no = #{staffNo}
         ORDER BY
-        absence_start_date DESC
+        CASE
+        WHEN ISAPPROVED = 'F' THEN 1
+        ELSE 2
+        END,
+        ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <insert id="insertApplication" parameterType="AttendanceVO">
@@ -122,7 +127,8 @@
         A.staff_no AS staffNo,
         A.ABSENCE_TYPE AS absenceType,
         V_STAFF.employeeName,
-        V_STAFF.departmentName
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL A
         JOIN (
@@ -135,7 +141,7 @@
         WHERE
         A.isApproved = 'F'
         ORDER BY
-        A.absence_start_date ASC
+        A.ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <select id="findAllCompletedApplications" resultType="AttendanceVO">
@@ -148,7 +154,8 @@
         A.staff_no AS staffNo,
         A.ABSENCE_TYPE AS absenceType,
         V_STAFF.employeeName,
-        V_STAFF.departmentName
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
         FROM
         ABSENCE_APPLICATION_DETAIL A
         JOIN (
@@ -161,7 +168,7 @@
         WHERE
         A.isApproved != 'F'
         ORDER BY
-        A.absence_start_date DESC
+        A.ABSENCE_APPLICATION_DATE DESC
     </select>
 
     <update id="updateApplicationStatus" parameterType="map">
