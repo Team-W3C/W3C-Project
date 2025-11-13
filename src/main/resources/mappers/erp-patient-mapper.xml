@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.erp.patient.PatientMapper">
+    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
+    <resultMap id="patientResultMap" type="PatientListVO">
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_GENDER" property="memberGender"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+        <result column="LAST_VISIT_DATE" property="lastVisitDate"/>
+        <result column="VISIT_COUNT" property="visitCount"/>
+        <result column="AGE" property="age"/>
+        <result column="GRADE_STATUS" property="grade"/>
+    </resultMap>
+
+    <select id="selectPatientList" resultMap="patientResultMap">
+        SELECT
+            MEMBER_NO,
+            MEMBER_NAME,
+            MEMBER_GENDER,
+            MEMBER_PHONE,
+            MAX(V.VISIT_DATE) AS LAST_VISIT_DATE,
+            COUNT(V.VISIT_DATE) AS VISIT_COUNT,
+            GRADE_STATUS,
+        TO_NUMBER
+        (TO_CHAR(SYSDATE, 'YYYY')) - ((CASE
+        WHEN SUBSTR(M.MEMBER_RRN, 8, 1) IN ('1', '2', '9', '0') THEN 1900
+        ELSE 2000
+        END) + TO_NUMBER(SUBSTR(M.MEMBER_RRN, 1, 2))
+        )
+        + 1 AS AGE
+        FROM MEMBER M
+        LEFT JOIN VISIT V USING (MEMBER_NO)
+        LEFT JOIN GRADE G USING (MEMBER_NO)
+        <where>
+            M.MEMBER_STATUS = 'T'
+            <if test="keyword != null and keyword != ''">
+                AND (
+                MEMBER_NAME LIKE '%' || #{keyword} || '%'
+                OR MEMBER_NO LIKE '%' || #{keyword} || '%'
+                OR MEMBER_PHONE LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+            <if test="grade != null and grade != ''">
+                AND GRADE_STATUS = #{grade}
+            </if>
+        </where>
+        GROUP BY
+        MEMBER_NO, MEMBER_NAME, MEMBER_GENDER, MEMBER_PHONE, M.MEMBER_RRN, GRADE_STATUS
+        ORDER BY MEMBER_NO
+    </select>
+
+    <select id="selectTotalPatientCount" resultType="_int">
+        SELECT COUNT(MEMBER_NO)
+        FROM MEMBER M
+        WHERE M.MEMBER_STATUS = 'T'
+    </select>
+
+    <select id="selectPatientListCount" parameterType="map" resultType="_int">
+        SELECT COUNT(DISTINCT MEMBER_NO)
+        FROM MEMBER M
+        LEFT JOIN GRADE G USING (MEMBER_NO)
+        <where>
+            M.MEMBER_STATUS = 'T'
+            <if test="keyword != null and keyword != ''">
+                AND (
+                MEMBER_NAME LIKE '%' || #{keyword} || '%'
+                OR MEMBER_NO LIKE '%' || #{keyword} || '%'
+                OR MEMBER_PHONE LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+            <if test="grade != null and grade != ''">
+                AND GRADE_STATUS = #{grade}
+            </if>
+        </where>
+    </select>
+
+    <!-- 오늘 방문 환자 수 -->
+    <select id="selectTodayVisitCount" resultType="_int">
+        SELECT COUNT(DISTINCT MEMBER_NO)
+        FROM VISIT
+        WHERE TRUNC(VISIT_DATE) = TRUNC(SYSDATE)
+    </select>
+
+    <!-- 이번 달 신규 환자 수 -->
+    <select id="selectNewPatientCountThisMonth" resultType="_int">
+        SELECT COUNT(MEMBER_NO)
+        FROM MEMBER
+        WHERE TO_CHAR(MEMBER_JOIN_DATE, 'YYYYMM') = TO_CHAR(SYSDATE, 'YYYYMM')
+        AND MEMBER_STATUS = 'T'
+    </select>
+
+    <!-- VIP 환자 수 -->
+    <select id="selectVipCount" resultType="_int">
+        SELECT COUNT(MEMBER_NO)
+        FROM GRADE
+        WHERE GRADE_STATUS = 'VIP'
+    </select>
+
+    <insert id="insertPatient" parameterType="Member">
+        INSERT INTO MEMBER (
+        MEMBER_NO,
+        MEMBER_NAME,         MEMBER_GENDER,       MEMBER_RRN,
+        MEMBER_PHONE,        MEMBER_EMAIL,        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,    MEMBER_STATUS,
+        MEMBER_CHRONIC_DISEASE
+        /* (혈액형, 알러지 등 필요시 컬럼 추가) */
+        ) VALUES (
+        MEMBER_SEQ.NEXTVAL,   /* 1. 시퀀스 사용 */
+        #{memberId},             /* 2. ID (JS에서 설정) */
+        #{memberPwd},            /* 3. PWD (JS에서 설정) */
+        #{memberName},
+        #{memberGender},         /* 4. 성별 (JS에서 계산) */
+        #{memberRrn},            /* 5. RRN (JS에서 조합) */
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        #{memberJoinDate},       /* 6. (Service에서 설정) */
+        #{memberStatus},         /* 7. (Service에서 설정) */
+        #{memberChronicDisease}  /* 8. "특이사항" 매핑 */
+        )
+    </insert>
+</mapper>

@@ -57,4 +57,8 @@ public interface ReservationMapper {
     List<AbsenceVO> findApprovedAbsences();
     List<WorkingDoctorVO> findWorkingDoctorsByDeptOnDate(Map<String, Object> params);
     List<Map<String, Object>> findBookedTimeCountsByDeptOnDate(Map<String, Object> params);
+
+    List<ReservationDetailVO> selectReservationDetailByDate(@Param("selectedDate") String selectedDate);
+    int updateRvtnStatus(Map<String, Object> params);
+    ReservationDetailVO selectRvtnDetail(@Param("reservationNo") int reservationNo);
 }
