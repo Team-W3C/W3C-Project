@@ -2,6 +2,7 @@ package com.w3c.spring.service.member;
 
 import com.w3c.spring.model.mapper.MemberMapper;
 import com.w3c.spring.model.vo.Member;
+import com.w3c.spring.model.vo.inquiry.BoardMemberSelect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +32,12 @@ public class MemberServiceImpl implements MemberService {
     public int getMemberCountById(String memberId) {
         return memberMapper.getMemberCountById(memberId);
     }
+
+    @Override
+    public BoardMemberSelect selectMemberByBoardId(int boardId) {
+
+        BoardMemberSelect  selectMemberByBoardId = memberMapper.selectMemberByBoardId(boardId);
+        return selectMemberByBoardId;
+    }
+
 }

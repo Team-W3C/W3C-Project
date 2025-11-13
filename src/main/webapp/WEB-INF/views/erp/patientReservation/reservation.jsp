@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>병원 ERP 시스템 - 예약관리</title>
@@ -13,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="app">
         <!-- Header Include -->
@@ -47,58 +49,8 @@
                         <h3>날짜 선택</h3>
                     </div>
 
-                    <div class="calendar">
-                        <div class="calendar__header">
-                            <button class="calendar__nav">‹</button>
-                            <span class="calendar__month">October 2025</span>
-                            <button class="calendar__nav">›</button>
-                        </div>
-                        
-                        <div class="calendar__grid">
-                            <div class="calendar__day-label">Su</div>
-                            <div class="calendar__day-label">Mo</div>
-                            <div class="calendar__day-label">Tu</div>
-                            <div class="calendar__day-label">We</div>
-                            <div class="calendar__day-label">Th</div>
-                            <div class="calendar__day-label">Fr</div>
-                            <div class="calendar__day-label">Sa</div>
-                            
-                            <button class="calendar__day calendar__day--inactive">28</button>
-                            <button class="calendar__day calendar__day--inactive">29</button>
-                            <button class="calendar__day calendar__day--inactive">30</button>
-                            <button class="calendar__day">1</button>
-                            <button class="calendar__day">2</button>
-                            <button class="calendar__day">3</button>
-                            <button class="calendar__day">4</button>
-                            <button class="calendar__day">5</button>
-                            <button class="calendar__day">6</button>
-                            <button class="calendar__day">7</button>
-                            <button class="calendar__day">8</button>
-                            <button class="calendar__day">9</button>
-                            <button class="calendar__day">10</button>
-                            <button class="calendar__day">11</button>
-                            <button class="calendar__day">12</button>
-                            <button class="calendar__day">13</button>
-                            <button class="calendar__day">14</button>
-                            <button class="calendar__day">15</button>
-                            <button class="calendar__day">16</button>
-                            <button class="calendar__day">17</button>
-                            <button class="calendar__day">18</button>
-                            <button class="calendar__day">19</button>
-                            <button class="calendar__day">20</button>
-                            <button class="calendar__day">21</button>
-                            <button class="calendar__day">22</button>
-                            <button class="calendar__day">23</button>
-                            <button class="calendar__day">24</button>
-                            <button class="calendar__day">25</button>
-                            <button class="calendar__day">26</button>
-                            <button class="calendar__day">27</button>
-                            <button class="calendar__day calendar__day--active">28</button>
-                            <button class="calendar__day calendar__day--today">29</button>
-                            <button class="calendar__day">30</button>
-                            <button class="calendar__day">31</button>
-                            <button class="calendar__day calendar__day--inactive">1</button>
-                        </div>
+                    <div class="calendar-wrapper">
+                        <div id="calendar"></div>
                     </div>
 
                     <div class="calendar__selected">
@@ -496,6 +448,7 @@
         </div>
     </div>
 
+    <script src="${pageContext.request.contextPath}/js/index.global.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/erp/patientReservation/reservation.js"></script>
 </body>
 </html>

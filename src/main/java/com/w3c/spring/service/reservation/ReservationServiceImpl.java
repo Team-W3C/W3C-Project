@@ -182,4 +182,40 @@ public class ReservationServiceImpl implements ReservationService {
         int result = reservationMapper.updateReservation(reservationData);
         return result == 1;
     }
+
+    public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate){
+        List<ReservationDetailVO> Reservations = reservationMapper.selectReservationDetailByDate(selectedDate);
+        System.out.println(Reservations);
+        Map<String, List<ReservationDetailVO>> result = new HashMap<>();
+        result.put("waiting", new ArrayList<>());
+        result.put("inProgress", new ArrayList<>());
+        result.put("completed", new ArrayList<>());
+
+        for (ReservationDetailVO reservation : Reservations){
+            String status = reservation.getStatus();
+            if("대기".equals(status)){
+                result.get("waiting").add(reservation);
+            }else if("진행중".equals(status)){
+                result.get("inProgress").add(reservation);
+            }else if("완료".equals(status)){
+                result.get("completed").add(reservation);
+            }
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public int updateRvtnStatus(String status, int reservationNo ){
+        Map<String, Object> reservations = new HashMap<>();
+        reservations.put("status", status);
+        reservations.put("reservationNo", reservationNo);
+        return reservationMapper.updateRvtnStatus(reservations);
+    }
+
+    public ReservationDetailVO selectRvtnDetail(int reservationNo){
+        ReservationDetailVO result = reservationMapper.selectRvtnDetail(reservationNo);
+        System.out.println("Service 결과: " + result);
+        return result;
+    }
 }

@@ -21,12 +21,12 @@
         <section class="employee-header">
             <h1 class="employee-title">직원 관리</h1>
             <div class="employee-header-buttons">
-                <button class="employee-btn-secondary">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="#0e787c" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    부재 관리
-                </button>
+<%--                <button class="employee-btn-secondary">--%>
+<%--                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">--%>
+<%--                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="#0e787c" stroke-width="1.5" stroke-linecap="round"/>--%>
+<%--                    </svg>--%>
+<%--                    부재 관리--%>
+<%--                </button>--%>
                 <button class="employee-btn-add">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
@@ -102,7 +102,7 @@
                     <thead>
                     <tr>
                         <th>직원번호</th>
-                        <th>이름</th>
+                        <th class="th-name">이름</th>
                         <th>직급</th>
                         <th>부서</th>
                         <th>이메일</th>
@@ -113,7 +113,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%-- ✅ 데이터 없을 때 처리 추가 --%>
+
                     <c:choose>
                         <c:when test="${empty list}">
                             <tr>
@@ -126,7 +126,7 @@
                             <c:forEach var="emp" items="${list}">
                                 <tr>
                                     <td>${emp.staffNo}</td>
-                                    <td>${emp.staffName}</td>
+                                    <td class="employee-name-cell"><div class="employee-avatar">${emp.staffName.charAt(0)}</div>${emp.staffName}</td>
                                     <td>${emp.staffPosition}</td>
                                     <td>${emp.department}</td>
                                     <td>${emp.staffEmail}</td>
@@ -134,7 +134,7 @@
                                     <td>${emp.scheduleDay}</td>
                                     <td>
                                         <span class="status-badge ${emp.staffStatus == 'Working' ? 'status-active' : 'status-inactive'}">
-                                                ${emp.staffStatus == 'Working' ? '근무중' : '휴직'}
+                                                ${emp.staffStatus == 'Working' ? '재직중' : '휴직중'}
                                         </span>
                                     </td>
                                     <td>
@@ -238,26 +238,26 @@
         <section class="employee-schedule-section">
             <div class="employee-schedule-header">
                 <h2 class="employee-schedule-title">이번 주 근무표</h2>
-                <button class="employee-btn-schedule">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <rect
-                                x="3"
-                                y="4"
-                                width="10"
-                                height="9"
-                                rx="1"
-                                stroke="#6B7280"
-                                stroke-width="1.5"
-                        />
-                        <path
-                                d="M3 7H13M6 3V5M10 3V5"
-                                stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                        />
-                    </svg>
-                    근무표 관리
-                </button>
+<%--                <button class="employee-btn-schedule">--%>
+<%--                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">--%>
+<%--                        <rect--%>
+<%--                                x="3"--%>
+<%--                                y="4"--%>
+<%--                                width="10"--%>
+<%--                                height="9"--%>
+<%--                                rx="1"--%>
+<%--                                stroke="#6B7280"--%>
+<%--                                stroke-width="1.5"--%>
+<%--                        />--%>
+<%--                        <path--%>
+<%--                                d="M3 7H13M6 3V5M10 3V5"--%>
+<%--                                stroke="#6B7280"--%>
+<%--                                stroke-width="1.5"--%>
+<%--                                stroke-linecap="round"--%>
+<%--                        />--%>
+<%--                    </svg>--%>
+<%--                    근무표 관리--%>
+<%--                </button>--%>
             </div>
 
             <div class="employee-schedule-grid">
@@ -416,7 +416,6 @@
                     <button class="employee-detail-btn employee-detail-btn-secondary modal-close">닫기</button>
                     <div class="employee-detail-actions">
                         <button class="employee-detail-btn employee-detail-btn-outline">정보 수정</button>
-                        <button class="employee-detail-btn employee-detail-btn-primary">근무표 확인</button>
                     </div>
                 </footer>
             </main>
