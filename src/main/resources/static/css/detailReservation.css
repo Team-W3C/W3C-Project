@@ -487,6 +487,10 @@ img {
     transition: all 0.2s;
     position: relative;
     min-height: 112px;
+    /* [수정] JS에서 span을 뺐으므로 버튼 자체에 스타일 적용 */
+    font-size: 14px;
+    color: #354152;
+    line-height: 1.43;
 }
 
 .department-btn:hover:not(.selected) {
@@ -498,6 +502,8 @@ img {
     background-color: var(--primary-bg);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-sm);
+    /* [수정] JS에서 span을 뺐으므로 버튼 자체에 스타일 적용 */
+    color: var(--primary-color);
 }
 
 .department-icon {
@@ -506,12 +512,15 @@ img {
 }
 
 .department-btn span {
+    /* [수정] 이 규칙은 JS에서 span을 제거했기 때문에 더 이상 적용되지 않습니다. */
+    /* (제거해도 되고, 만일을 위해 남겨둬도 됩니다.) */
     font-size: 14px;
     color: #354152;
     line-height: 1.43;
 }
 
 .department-btn.selected span {
+    /* [수정] 이 규칙도 더 이상 적용되지 않습니다. */
     color: var(--primary-color);
 }
 
@@ -523,9 +532,13 @@ img {
     display: none;
 }
 
+/* ▼▼▼ [수정된 부분] ▼▼▼ */
+/* '동그라미'(체크 아이콘)가 선택 시에도 보이지 않도록 'none'으로 유지합니다. */
 .department-btn.selected .check-icon {
-    display: block;
+    display: none; /* 'block' -> 'none' 으로 수정 */
 }
+/* ▲▲▲ [수정 완료] ▲▲▲ */
+
 
 /* ===================================
    Selection Summary

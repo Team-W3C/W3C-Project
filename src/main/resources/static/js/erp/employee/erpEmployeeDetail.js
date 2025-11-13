@@ -50,12 +50,12 @@ function updateModal(data) {
 
     // 2. 상태 배지
     const statusBadge = $("#modal-status");
-    if (data.working === 'Y') {
-        statusBadge.text("근무 중")
+    if (data.working === 1) {
+        statusBadge.text("ON")
             .removeClass("employee-detail-status-inactive")
             .addClass("employee-detail-status-active");
     } else {
-        statusBadge.text("휴직")
+        statusBadge.text("OFF")
             .removeClass("employee-detail-status-active")
             .addClass("employee-detail-status-inactive");
     }
