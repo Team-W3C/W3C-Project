@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class PatientReservationVO {
+public class PatientReservation {
     private int reservationNo;
     private String reservationTime;
     private String patientName;

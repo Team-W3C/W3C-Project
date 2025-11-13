@@ -78,7 +78,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="4" style="text-align:center; color:gray;">
+                                    <td colspan="5" style="text-align:center; color:gray;">
                                         오늘 예약된 환자가 없습니다.
                                     </td>
                                 </tr>
@@ -91,15 +91,45 @@
 
             <section class="medical-tab-pane" id="diagnosis-panel" role="tabpanel">
                 <div class="diagnosis-list">
-                    <p style="text-align:center; color:gray;">진단 내용 데이터는 준비 중입니다.</p>
+                    <c:choose>
+                        <c:when test="${not empty treatments}">
+                            <div class="medical-table-wrapper">
+                                <table class="medical-table">
+                                    <thead>
+                                    <tr>
+                                        <th>환자번호</th>
+                                        <th>진달 날짜</th>
+                                        <th>진료과</th>
+                                        <th>진단내용</th>
+                                        <th>처방</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="treatment" items="${treatments}">
+                                        <tr>
+                                            <td><c:out value="${treatment.patientCode}"/></td>
+                                            <td><c:out value="${treatment.recordDate}"/></td>
+                                            <td><c:out value="${treatment.departmentName}"/></td>
+                                            <td><c:out value="${treatment.diagnosisContent}"/></td>
+                                            <td><c:out value="${treatment.prescription}"/></td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="text-align:center; color:gray;">진단 내용 데이터가 없습니다.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </section>
+
         </div>
     </div>
 </main>
 
 <script>
-    // 탭 전환 기능
     const tabButtons = document.querySelectorAll('.medical-tab-btn');
     const tabPanes = document.querySelectorAll('.medical-tab-pane');
 
