@@ -21,64 +21,75 @@
         <result column="MEMBER_ALLERGY" property="memberAllergy"/>
         <result column="MEMBER_STATUS" property="memberStatus"/>
         <result column="STAFF_NO" property="staffNo"/>
-    </resultMap>
+        <result column="DEPARTMENT_NAME" property="departmentName"/> <result column="POSITION_NAME" property="positionName"/> </resultMap>
 
     <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
         SELECT
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_PWD,
-            MEMBER_NAME,
-            MEMBER_GENDER,
-            MEMBER_RRN,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_ADDRESS,
-            MEMBER_JOIN_DATE,
-            MEMBER_BLOOD_TYPE,
-            MEMBER_CHRONIC_DISEASE,
-            MEMBER_ALLERGY,
-            MEMBER_STATUS,
-            STAFF_NO
-        FROM MEMBER
-        WHERE MEMBER_ID = #{memberId}
-        AND MEMBER_PWD = #{memberPwd}
-        AND MEMBER_STATUS = 'T'
+        M.MEMBER_NO,
+        M.MEMBER_ID,
+        M.MEMBER_PWD,
+        M.MEMBER_NAME,
+        M.MEMBER_GENDER,
+        M.MEMBER_RRN,
+        M.MEMBER_PHONE,
+        M.MEMBER_EMAIL,
+        M.MEMBER_ADDRESS,
+        M.MEMBER_JOIN_DATE,
+        M.MEMBER_BLOOD_TYPE,
+        M.MEMBER_CHRONIC_DISEASE,
+        M.MEMBER_ALLERGY,
+        M.MEMBER_STATUS,
+        S.STAFF_NO,
+        D.DEPARTMENT_NAME,
+        COALESCE(DR.DOCTOR_POSITION, N.NURSE_POSITION) AS POSITION_NAME
+        FROM
+        MEMBER M
+        LEFT JOIN
+        STAFF S ON M.STAFF_NO = S.STAFF_NO
+        LEFT JOIN
+        DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
+        LEFT JOIN
+        NURSE N ON S.STAFF_NO = N.STAFF_NO
+        LEFT JOIN
+        DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE
+        M.MEMBER_ID = #{memberId}
+        AND M.MEMBER_PWD = #{memberPwd}
+        AND M.MEMBER_STATUS = 'T'
     </select>
 
     <insert id="signUpMember" parameterType="Member">
         INSERT INTO MEMBER
         (
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_PWD,
-            MEMBER_NAME,
-            MEMBER_GENDER,
-            MEMBER_RRN,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_ADDRESS,
-            MEMBER_JOIN_DATE,
-            MEMBER_BLOOD_TYPE,
-            MEMBER_CHRONIC_DISEASE,
-            MEMBER_ALLERGY,
-            MEMBER_STATUS
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS
         )
         VALUES(
-            MEMBER_SEQ.NEXTVAL,
-            #{memberId},
-            #{memberPwd},
-            #{memberName},
-            #{memberGender},
-            #{memberRrn},
-            #{memberPhone},
-            #{memberEmail},
-            #{memberAddress},
-            SYSDATE,
-            #{memberBloodType},
-            #{memberChronicDisease},
-            #{memberAllergy},
-            'T'
+        MEMBER_SEQ.NEXTVAL,
+        #{memberId},
+        #{memberPwd},
+        #{memberName}, #{memberGender},
+        #{memberRrn},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        SYSDATE,
+        #{memberBloodType},
+        #{memberChronicDisease},
+        #{memberAllergy},
+        'T'
         )
     </insert>
 
@@ -87,4 +98,28 @@
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
     </select>
+    <insert id="insertGuestMember"
+            parameterType="com.w3c.spring.model.vo.Member"
+            useGeneratedKeys="true"
+            keyProperty="memberNo">
+
+        <selectKey keyProperty="memberNo" resultType="long" order="BEFORE">
+            SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO MEMBER (
+        member_no, member_name, member_gender, member_rrn, member_phone,
+        member_email, member_address, member_blood_type,
+        member_chronic_disease, member_status,
+
+        -- 비회원이므로 NULL 허용 필드들은 제외하거나 NULL로 명시
+        member_id, member_pwd, member_join_date, staff_no
+        ) VALUES (
+        #{memberNo}, #{memberName}, #{memberGender}, #{memberRrn}, #{memberPhone},
+        #{memberEmail}, #{memberAddress}, #{memberBloodType},
+        #{memberChronicDisease}, #{memberStatus},
+
+        NULL, NULL, SYSDATE, NULL
+        )
+    </insert>
 </mapper>

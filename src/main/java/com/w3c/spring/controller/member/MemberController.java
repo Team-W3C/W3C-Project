@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -68,6 +67,17 @@ public class MemberController {
         return "homePage/member/userInfo";
     }
 
+
+    /**
+     * [404 오류 해결]
+     * GET /member/appointmentPage 요청을 받아서
+     * /WEB-INF/views/homePage/member/appointment.jsp 파일을 보여줍니다.
+     */
+    @GetMapping("/appointmentPage")
+    public String showAppointmentPage() {
+        return "member/reservation/main";
+    }
+
     @GetMapping("/mychart")
     public String myChartPage(HttpSession session, Model model) {
 
@@ -89,27 +99,24 @@ public class MemberController {
      * URL: /member/reservation/cancel
      */
     @PostMapping("/reservation/cancel")
-    @ResponseBody // 이 메소드는 뷰가 아닌 JSON/텍스트 데이터를 반환합니다.
+    @ResponseBody
     public ResponseEntity<String> cancelReservation(@RequestBody Map<String, Integer> payload, HttpSession session) {
 
-        // 1. 세션에서 로그인 회원 정보 확인
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        // 2. 전달된 예약 번호(reservationNo) 확인
         Integer reservationNo = payload.get("reservationNo");
         if (reservationNo == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("예약 번호가 누락되었습니다.");
         }
 
         try {
-            // 3. 서비스 호출 (본인 확인을 위해 memberNo도 함께 넘김)
             boolean success = reservationService.cancelReservation(reservationNo, loginMember.getMemberNo());
 
             if (success) {
-                return ResponseEntity.ok("success"); // 성공 시 "success" 텍스트 반환
+                return ResponseEntity.ok("success");
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("예약을 취소할 권한이 없거나 이미 완료/취소된 예약입니다.");
             }
