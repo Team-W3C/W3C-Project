@@ -15,25 +15,36 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationMapper reservationMapper;
 
-    // 아이콘 매핑을 위한 상수 맵 정의 (하드코딩된 URL 대신 사용)
-    private static final Map<String, String> ICON_MAP = Map.of(
-            "내과", "/img/icons/medicine.png",
-            "외과", "/img/icons/surgery.png", // 추가된 항목
-            "정형외과", "/img/icons/orthopedics.png",
-            "소아과", "/img/icons/pediatrics.jpg", // 추가된 항목
-            "피부과", "/img/icons/dermatology.jpg", // 추가된 항목
-            "안과", "/img/icons/ophthalmology.png", // 추가된 항목
-            "치과", "/img/icons/dentistry.png", // 추가된 항목
-            "심장내과", "/img/icons/Cardiology.png", // 추가된 항목
-            "DEFAULT", "/img/icons/default.png" // 기본값
-    );
+    // ▼▼▼ [수정된 부분] ▼▼▼
+    // 제공해주신 DB 스크립트(더미 데이터)의 진료과 목록에 맞게 수정했습니다.
+    private static final Map<String, String> ICON_MAP;
+    static {
+        Map<String, String> iconMap = new HashMap<>();
+
+        // (DB DML에 포함된 진료과)
+        iconMap.put("정형외과", "/img/icons/orthopedics.png");
+        iconMap.put("내과", "/img/icons/medicine.png");
+        iconMap.put("피부과", "/img/icons/dermatology.jpg");
+        iconMap.put("응급실", "/img/icons/emergency.png");
+        iconMap.put("안경원과", "/img/icons/ophthalmology.png"); // (안과 아이콘)
+        iconMap.put("응급의학과", "/img/icons/emergency.png"); // (응급실 아이콘)
+
+        // (DB DML에 없는 항목은 지도에서 제외함 - 예: 소아과, 외과, 치과 등)
+
+        // (기본값)
+        // (정보시스템팀, 원무팀 등은 이 아이콘이 표시됨)
+        iconMap.put("DEFAULT", "/img/icons/default.png");
+
+        ICON_MAP = Collections.unmodifiableMap(iconMap);
+    }
+    // ▲▲▲ [수정 완료] ▲▲▲
 
     @Autowired
     public ReservationServiceImpl(ReservationMapper reservationMapper) {
         this.reservationMapper = reservationMapper;
     }
 
-    // 병원 기본 운영 시간
+    // 병원 기본 운영 시간 (원본 유지)
     private static final List<String> WORK_HOURS = List.of(
             "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"
     );
@@ -91,9 +102,8 @@ public class ReservationServiceImpl implements ReservationService {
             long currentBooked = bookedCountsMap.getOrDefault(hour, 0L);
             boolean isAvailable = (currentBooked < totalCapacity);
 
-            // totalCapacity가 0이 아님을 이미 위에서 검사했지만, 안전을 위해 List.size() 검사 추가
             if (workingDoctors.isEmpty()) {
-                break; // 혹시 모를 에러 방지
+                break;
             }
 
             WorkingDoctorVO assignedDoctor = workingDoctors.get(doctorIndex % workingDoctors.size());
@@ -112,6 +122,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     /**
      * 의사가 배정된 진료과 목록을 조회하고, 각 진료과에 아이콘 URL을 매핑하여 반환합니다.
+     * (이 로직은 원본 그대로이며, 수정된 ICON_MAP을 사용합니다)
      */
     @Override
     public List<DepartmentVO> getDepartments() {

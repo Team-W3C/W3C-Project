@@ -117,6 +117,9 @@
 
 <script src="${pageContext.request.contextPath}/js/index.global.min.js"></script>
 
+<script>
+    const g_contextPath = "${pageContext.request.contextPath}";
+</script>
 <script src="${pageContext.request.contextPath}/js/detailReservation.js"></script>
 
 </body>

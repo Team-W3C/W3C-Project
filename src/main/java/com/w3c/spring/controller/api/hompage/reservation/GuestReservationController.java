@@ -1,72 +1,61 @@
 package com.w3c.spring.controller.api.hompage.reservation;
 
-import com.w3c.spring.model.vo.GuestReservationRequest;
-import com.w3c.spring.model.vo.GuestReservationVO;
 import com.w3c.spring.service.reservation.GuestReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model; // Model 추가
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/guest")
+@Controller
+@RequestMapping("/guest/reservation")
 public class GuestReservationController {
 
-    private final GuestReservationService reservationService;
-
     @Autowired
-    public GuestReservationController(GuestReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
-
-    @PostMapping("/reserve")
-    public ResponseEntity<?> reserveGuest(@RequestBody GuestReservationRequest request) {
-        try {
-            GuestReservationVO vo = convertToVO(request);
-            Long reservationNo = reservationService.saveReservation(vo);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("reservationNo", reservationNo);
-            response.put("message", "비회원 예약이 성공적으로 처리되었습니다.");
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("예약 처리 중 서버 오류가 발생했습니다: " + e.getMessage());
-        }
-    }
+    private GuestReservationService guestReservationService;
 
     /**
-     * DTO의 분리된 날짜/시간 및 진료과 이름을 VO로 변환합니다.
+     * 비회원 예약 등록 요청을 처리합니다.
+     * - 성공 시: 기존처럼 'redirect'
+     * - 실패 시: 'error/errorModal'로 'forward'
      */
-    private GuestReservationVO convertToVO(GuestReservationRequest request) {
-        GuestReservationVO vo = new GuestReservationVO();
+    @PostMapping("/new")
+    public String registerGuestReservation(
+            @RequestParam Map<String, String> formData,
+            RedirectAttributes ra,
+            Model model) { // <-- 1. Model 파라미터 추가
 
-        // 1. 개인 정보
-        vo.setName(request.getName());
-        String ssnCombined = request.getBirthDate() + request.getBirthSuffix();
-        vo.setSsn(ssnCombined);
-        vo.setPhone(request.getPhone());
-        vo.setAddress(request.getAddress());
-        vo.setEmail(request.getEmail());
-        vo.setNotes(request.getNotes());
+        try {
+            // 서비스 호출
+            int result = guestReservationService.registerGuestReservation(formData);
 
-        // 2. 예약 정보 처리
-        vo.setDepartmentName(request.getDepartmentName());
+            if (result > 0) {
+                // === 성공 로직 ===
+                ra.addFlashAttribute("message", "비회원 예약이 성공적으로 완료되었습니다.");
+                // 성공 시 예약 메인 페이지로 리다이렉트
+                return "redirect:/member/reservation/main";
+            } else {
+                // 서비스에서 0을 반환한 경우 (일반적으론 예외가 발생함)
+                throw new Exception("예약이 정상적으로 등록되지 않았습니다.");
+            }
 
-        // 날짜와 시간을 조합하여 DB가 요구하는 포맷(YYYY-MM-DD HH:MI)으로 만듭니다.
-        // 이 문자열은 Mapper에서 TO_DATE 함수를 통해 DATE 타입으로 변환됩니다.
-        String combinedDateTime = request.getTreatmentDate() + " " + request.getTreatmentTime();
-        vo.setTreatmentDateString(combinedDateTime);
+        } catch (Exception e) {
+            // === 실패 로직 (JSP 모달 띄우기) ===
+            e.printStackTrace();
 
-        return vo;
+            // 1. Model에 JSP가 필요로 하는 3가지 값 저장
+            model.addAttribute("modalTitle", "예약 실패");
+            model.addAttribute("modalMessage", "예약 처리 중 오류가 발생했습니다: " + e.getMessage());
+
+            // 2. '확인' 버튼 클릭 시 돌아갈 URL (컨텍스트 패스 불필요, JSP가 처리)
+            model.addAttribute("redirectUrl", "/member/reservation/main");
+
+            // 3. 에러 모달 페이지로 포워드
+            return "homePage/errorModal";
+        }
     }
 }

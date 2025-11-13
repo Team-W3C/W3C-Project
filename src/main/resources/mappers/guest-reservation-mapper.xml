@@ -4,45 +4,106 @@
 
 <mapper namespace="com.w3c.spring.model.mapper.GuestReservationMapper">
 
-    <insert id="insertReservationForGuest"
-            useGeneratedKeys="true"
-            keyProperty="vo.reservationNo">
+    <resultMap id="memberResultMap" type="com.w3c.spring.model.vo.Member">
+        <id property="memberNo" column="MEMBER_NO"/>
+        <result property="memberId" column="MEMBER_ID"/>
+        <result property="memberPwd" column="MEMBER_PWD"/>
+        <result property="memberName" column="MEMBER_NAME"/>
+        <result property="memberGender" column="MEMBER_GENDER"/>
+        <result property="memberRrn" column="MEMBER_RRN"/>
+        <result property="memberPhone" column="MEMBER_PHONE"/>
+        <result property="memberEmail" column="MEMBER_EMAIL"/>
+        <result property="memberAddress" column="MEMBER_ADDRESS"/>
+        <result property="memberJoinDate" column="MEMBER_JOIN_DATE"/>
+        <result property="memberBloodType" column="MEMBER_BLOOD_TYPE"/>
+        <result property="memberChronicDisease" column="MEMBER_CHRONIC_DISEASE"/>
+        <result property="memberAllergy" column="MEMBER_ALLERGY"/>
+        <result property="memberStatus" column="MEMBER_STATUS"/>
+        <result property="staffNo" column="STAFF_NO"/>
+    </resultMap>
 
-        <selectKey keyProperty="vo.reservationNo" resultType="long" order="BEFORE">
-            SELECT RESERVATION_SEQ.NEXTVAL FROM DUAL
+    <select id="findMemberByRrn" parameterType="string" resultMap="memberResultMap">
+        SELECT *
+        FROM MEMBER
+        WHERE MEMBER_RRN = #{rrn}
+    </select>
+
+    <select id="findMemberByPhone" parameterType="string" resultMap="memberResultMap">
+        SELECT *
+        FROM MEMBER
+        WHERE MEMBER_PHONE = #{phone}
+    </select>
+
+    <!-- useGeneratedKeys 방식으로 변경 (Oracle의 경우 selectKey 사용) -->
+    <insert id="insertGuestMember" parameterType="com.w3c.spring.model.vo.Member">
+        <selectKey keyProperty="memberNo" resultType="int" order="BEFORE">
+            SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
         </selectKey>
 
-        INSERT INTO RESERVATION (
-        reservation_no,
-        reservation_status,
-        reservation_notes,
-        member_no,         department_no,     treatment_date,    reservation_memo
+        INSERT INTO MEMBER (
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS,
+        STAFF_NO
         ) VALUES (
-        #{vo.reservationNo},
-        '대기',
-        #{vo.notes},
         #{memberNo},
-        #{vo.departmentNo},
-        TO_DATE(#{vo.treatmentDateString}, 'YYYY-MM-DD HH24:MI'),
+        NULL,
+        NULL,
+        #{memberName},
+        #{memberGender},
+        #{memberRrn},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        SYSDATE,
+        #{memberBloodType},
+        #{memberChronicDisease, jdbcType=VARCHAR},
+        #{memberAllergy, jdbcType=VARCHAR},
+        #{memberStatus},
         NULL
         )
     </insert>
 
-    <select id="selectGuestReservationDetails"
-            parameterType="long"
-            resultType="com.w3c.spring.model.vo.GuestReservationVO">
-        SELECT
-            R.reservation_no AS reservationNo,
-            R.treatment_date AS treatmentDateString,
-            R.reservation_status AS reservationStatus,
-            R.reservation_notes AS notes,
-            M.member_name AS name,
-            M.member_phone AS phone,
-            M.member_rrn AS ssn,
-            M.member_email AS email,
-            M.member_address AS address
-        FROM RESERVATION R
-                 JOIN MEMBER M ON R.member_no = M.member_no
-        WHERE R.reservation_no = #{reservationNo}
+    <insert id="insertGuestGrade" parameterType="int">
+        INSERT INTO GRADE (MEMBER_NO, GRADE_STATUS)
+        VALUES (#{memberNo}, '일반')
+    </insert>
+
+    <select id="findDepartmentNoByName" parameterType="string" resultType="java.lang.Integer">
+        SELECT DEPARTMENT_NO
+        FROM DEPARTMENT
+        WHERE DEPARTMENT_NAME = #{departmentName}
     </select>
+
+    <insert id="insertGuestReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
+        INSERT INTO RESERVATION (
+            RESERVATION_NO,
+            RESERVATION_STATUS,
+            RESERVATION_NOTES,
+            MEMBER_NO,
+            DEPARTMENT_NO,
+            TREATMENT_DATE,
+            RESERVATION_MEMO
+        ) VALUES (
+                     RESERVATION_SEQ.NEXTVAL,
+                     '확정',
+                     #{reservationNotes, jdbcType=VARCHAR},
+                     #{memberNo},
+                     #{departmentNo},
+                     TO_DATE(#{treatmentDate}, 'YYYY-MM-DD HH24:MI'),
+                     '비회원 예약'
+                 )
+    </insert>
+
 </mapper>
