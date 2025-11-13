@@ -34,4 +34,6 @@ public class AttendanceVO {
 
     private String absenceStartTime;
     private String absenceEndTime;
+
+    private LocalDate absenceApplicationDate;
 }
