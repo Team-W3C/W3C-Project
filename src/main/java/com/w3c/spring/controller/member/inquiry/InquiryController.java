@@ -29,9 +29,9 @@ public class InquiryController {
     public String SelecthomePageinquiryBoard(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage, Model model) {
         Map<String, Object> result = boardService.getBoardList(cuurentPage);
 
+
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
-
 
         System.out.println("inquiry-board");
         return "homePage/homePageinquiry/inquiry-board";
