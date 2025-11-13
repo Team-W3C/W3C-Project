@@ -34,7 +34,6 @@
         WHERE MEMBER_PHONE = #{phone}
     </select>
 
-    <!-- useGeneratedKeys 방식으로 변경 (Oracle의 경우 selectKey 사용) -->
     <insert id="insertGuestMember" parameterType="com.w3c.spring.model.vo.Member">
         <selectKey keyProperty="memberNo" resultType="int" order="BEFORE">
             SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
@@ -105,5 +104,23 @@
                      '비회원 예약'
                  )
     </insert>
+
+    <select id="findGuestReservationsMap"
+            resultType="java.util.HashMap">
+        SELECT
+            p.MEMBER_NAME      AS "patientName",
+            d.DEPARTMENT_NAME  AS "departmentName",
+            TO_CHAR(r.TREATMENT_DATE, 'YYYY-MM-DD') AS "treatmentDate",
+            TO_CHAR(r.TREATMENT_DATE, 'HH24:MI')    AS "treatmentTime",
+            r.RESERVATION_STATUS AS "status"
+        FROM RESERVATION r
+                 JOIN MEMBER p ON r.MEMBER_NO = p.MEMBER_NO
+                 JOIN DEPARTMENT d ON r.DEPARTMENT_NO = d.DEPARTMENT_NO
+        WHERE
+            p.MEMBER_NAME = #{name}
+          AND p.MEMBER_PHONE = #{phone}
+        ORDER BY
+            r.TREATMENT_DATE DESC
+    </select>
 
 </mapper>

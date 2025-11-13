@@ -14,18 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const openGuestReservationModalBtn = document.getElementById('open-guest-modal');
     const guestReservationModal = document.querySelector('.guest-modal-overlay');
 
-    //모달 내부 요소 선택
+    // [수정] 모달 내부 요소 선택
     const guestDeptGrid = document.getElementById('guest-dept-grid');
     const guestDateInput = document.getElementById('guest-treatment-date');
     const guestTimeslotGrid = document.getElementById('guest-timeslot-grid');
     const guestSubmitBtn = document.getElementById('guest-submit-btn');
 
-    //Hidden Input (폼 전송용)
+    // [수정] Hidden Input (폼 전송용)
     const hiddenDeptName = document.getElementById('guest-hidden-deptName');
     const hiddenDate = document.getElementById('guest-hidden-date');
     const hiddenTime = document.getElementById('guest-hidden-time');
 
-    // 선택 상태 변수
+    // [수정] 선택 상태 변수
     let selectedGuestDeptId = null;
     let selectedGuestDeptName = null;
     let selectedGuestDate = null;
@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
         guestEmailInput,
         guestBloodTypeInput
     ];
+    // ▲▲▲ [추가 완료] ▲▲▲
+
 
     if (openGuestReservationModalBtn && guestReservationModal) {
         const backdrop1 = guestReservationModal.querySelector('.guest-modal-backdrop');
@@ -62,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             guestReservationModal.classList.add('is-open');
             document.body.classList.add('modal-open');
 
+            // ▼▼▼ [수정된 부분] ▼▼▼
             // 오늘 날짜를 YYYY-MM-DD 형식으로 포맷
             const today = new Date();
             const year = today.getFullYear();
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 guestDateInput.setAttribute('min', yyyyMmDd);
                 guestDateInput.value = ""; // (선택) 모달을 열 때 날짜 필드를 비웁니다.
             }
+            // ▲▲▲ [수정 완료] ▲▲▲
 
             // [AJAX] 모달이 열릴 때 진료과 목록 로드
             loadGuestDepartments();
@@ -107,15 +111,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- [모달 2: 비회원 *조회*] ---
+    /*
+     * ==========================================
+     * [모달 2: 비회원 *조회*] (AJAX 기능으로 교체됨)
+     * ==========================================
+     */
     const openGuestCheckModalBtn = document.getElementById('open-guest-check-modal');
     const guestCheckModal = document.querySelector('.guest-check-modal-overlay');
 
     if (openGuestCheckModalBtn && guestCheckModal) {
         const backdrop2 = guestCheckModal.querySelector('.guest-modal-backdrop');
         const closeBtnHeader2 = guestCheckModal.querySelector('.modal-close');
-        const cancelBtn2 = guestCheckModal.querySelector('.btn-cancel');
-        const patientForm2 = guestCheckModal.querySelector('.reservation-form');
+
+        // ▼▼▼ [수정/추가] 조회 모달 폼 요소 선택 ▼▼▼
+        const checkForm = document.getElementById('guestCheckForm');
+        const nameInput = document.getElementById('guest-check-name');
+        const phoneInput = document.getElementById('guest-check-phone');
+        const submitBtn = document.getElementById('guest-check-submit-btn');
+        const cancelBtn = document.getElementById('guest-check-cancel-btn');
+        const resultsContainer = document.getElementById('guest-check-results');
+        const errorContainer = document.getElementById('guest-check-error');
+        // ▲▲▲ [추가 완료] ▲▲▲
 
         function openGuestCheckModal(e) {
             e.preventDefault();
@@ -126,9 +142,19 @@ document.addEventListener('DOMContentLoaded', function () {
         function closeGuestCheckModal() {
             guestCheckModal.classList.remove('is-open');
             document.body.classList.remove('modal-open');
-            if (patientForm2) {
-                patientForm2.reset();
+
+            // ▼▼▼ [수정] 모달 닫을 때 폼과 결과 영역 초기화 ▼▼▼
+            if (checkForm) {
+                checkForm.reset();
             }
+            if (resultsContainer) {
+                resultsContainer.innerHTML = `<p style="text-align: center; padding: 20px 0; color: #888;">성함과 전화번호를 입력 후 '확인' 버튼을 눌러주세요.</p>`;
+            }
+            if (errorContainer) {
+                errorContainer.textContent = '';
+                errorContainer.style.display = 'none';
+            }
+            // ▲▲▲ [수정 완료] ▲▲▲
         }
 
         openGuestCheckModalBtn.addEventListener('click', openGuestCheckModal);
@@ -139,17 +165,110 @@ document.addEventListener('DOMContentLoaded', function () {
         if (backdrop2) {
             backdrop2.addEventListener('click', closeGuestCheckModal);
         }
-        if (cancelBtn2) {
-            cancelBtn2.addEventListener('click', closeGuestCheckModal);
+        // ▼▼▼ [수정] 취소 버튼 이벤트 핸들러 명시적 추가 ▼▼▼
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', closeGuestCheckModal);
         }
-        if (patientForm2) {
-            patientForm2.addEventListener('submit', function (e) {
-                e.preventDefault();
-                alert('비회원 예약 조회를 요청합니다.');
-                closeGuestCheckModal();
+        // ▲▲▲ [수정 완료] ▲▲▲
+
+        // ▼▼▼ [수정] form submit 이벤트 리스너 (AJAX 로직) ▼▼▼
+        if (checkForm) {
+            checkForm.addEventListener('submit', async function (e) {
+                e.preventDefault(); // 폼 기본 제출 방지
+
+                const name = nameInput.value.trim();
+                const phone = phoneInput.value.trim();
+
+                if (!name || !phone) {
+                    showGuestCheckError('성함과 전화번호를 모두 입력해주세요.');
+                    return;
+                }
+
+                // 정규식: 010-1234-5678 형식
+                if (!/^\d{3}-\d{3,4}-\d{4}$/.test(phone)) {
+                    showGuestCheckError("전화번호를 '-' 포함하여 올바르게 입력해주세요. (예: 010-1234-5678)");
+                    return;
+                }
+
+                // 버튼 비활성화, 로딩 상태 표시
+                submitBtn.disabled = true;
+                submitBtn.textContent = '조회 중...';
+                resultsContainer.innerHTML = '<p style="text-align: center; padding: 20px 0;">예약 내역을 조회 중입니다...</p>';
+                errorContainer.style.display = 'none';
+
+                try {
+                    // [!!] 백엔드에 요청할 URL
+                    const checkUrl = `${g_contextPath}/guest/reservation/check`;
+
+                    const response = await fetch(`${checkUrl}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
+
+                    if (!response.ok) {
+                        throw new Error('서버 통신 중 오류가 발생했습니다.');
+                    }
+
+                    const reservations = await response.json();
+
+                    if (reservations.length === 0) {
+                        showGuestCheckError('일치하는 예약 내역이 없습니다.');
+                        resultsContainer.innerHTML = ''; // 결과창 비우기
+                    } else {
+                        renderGuestReservations(reservations);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    showGuestCheckError('조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    resultsContainer.innerHTML = ''; // 결과창 비우기
+                } finally {
+                    // 버튼 다시 활성화
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '확인';
+                }
             });
         }
+
+        // [함수] 조회 결과 오류 메시지 표시
+        function showGuestCheckError(message) {
+            if (errorContainer) {
+                errorContainer.textContent = message;
+                errorContainer.style.display = 'block';
+            }
+        }
+
+        // [함수] 조회된 예약 목록을 HTML로 렌더링
+        function renderGuestReservations(reservations) {
+            if (!resultsContainer) return;
+
+            // 결과 목록 HTML 생성 (JSP의 .info-card 스타일에 맞춤)
+            const html = reservations.map(res => `
+            <section class="info-card">
+                <div class="info-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none"/>
+                        <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="#0E787C" stroke-width="1.67" fill="none"/>
+                    </svg>
+                </div>
+                <div class="info-content">
+                    <span class="info-label">${res.patientName || '환자명'}</span>
+                    <span class="info-value" style="color: #0E787C; font-weight: bold;">
+                        ${res.status || '예약완료'}
+                    </span>
+                </div>
+                <div class="info-content" style="flex-basis: 100%; border-top: 1px dashed #eee; padding-top: 10px; margin-top: 10px;">
+                    <span class="info-label">진료과</span>
+                    <span class="info-value">${res.departmentName || '정보없음'}</span>
+                </div>
+                <div class="info-content">
+                    <span class="info-label">진료일시</span>
+                    <span class="info-value">${res.treatmentDate || '날짜정보없음'} ${res.treatmentTime || ''}</span>
+                </div>
+            </section>
+        `).join('');
+
+            resultsContainer.innerHTML = html;
+        }
     }
+
 
     /*
      * ==========================================
@@ -157,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * ==========================================
      */
 
-    // 필수 입력 필드에 이벤트 리스너 추가
+    // ▼▼▼ [추가] 필수 입력 필드에 이벤트 리스너 추가 ▼▼▼
     requiredGuestInputs.forEach(input => {
         if (input) {
             // 사용자가 입력할 때마다(input) 또는 선택을 변경할 때마다(change)
@@ -165,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
             input.addEventListener('change', checkGuestSubmitButtonState);
         }
     });
-    //
+    // ▲▲▲ [추가 완료] ▲▲▲
 
     // [AJAX 1] 진료과 목록 로드
     async function loadGuestDepartments() {
@@ -284,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // [수정] 예약하기 버튼 활성화 체크 (모든 조건 검사) ▼▼▼
+    // ▼▼▼ [수정] 예약하기 버튼 활성화 체크 (모든 조건 검사) ▼▼▼
     function checkGuestSubmitButtonState() {
         if (guestSubmitBtn) {
 
@@ -306,6 +425,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+    // ▲▲▲ [수정 완료] ▲▲▲
+
 
     /*
      * ==========================================
@@ -331,6 +452,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // 2. 환자 정보 (기본 input) 값 확인
+
+            // ▼▼▼ [수정/버그픽스] HTML id와 일치하도록 수정 (예: guest-name -> patient-name) ▼▼▼
             const name = document.getElementById('patient-name');
             const birthDate = document.getElementById('birth-date');
             const birthSuffix = document.getElementById('birth-suffix');
@@ -338,6 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const address = document.getElementById('address');
             const email = document.getElementById('email');
             const bloodType = document.getElementById('bloodType');
+            // ▲▲▲ [수정 완료] ▲▲▲
 
             // (trim() : 공백만 입력하는 것 방지)
             if (!name.value.trim()) {
@@ -363,6 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            // ▼▼▼ [수정] 전화번호 유효성 검사 (HTML placeholder와 일치) ▼▼▼
             // 정규식: 010-1234-5678 형식
             if (!/^\d{3}-\d{3,4}-\d{4}$/.test(phone.value)) {
                 alert("전화번호를 '-' 포함하여 올바르게 입력해주세요. (예: 010-1234-5678)");
@@ -370,7 +495,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 phone.focus();
                 return;
             }
+            // ▲▲▲ [수정 완료] ▲▲▲
 
+            // ▼▼▼ [추가] 주소, 혈액형 (required 필드) 유효성 검사 ▼▼▼
             if (!address.value.trim()) {
                 alert('주소를 입력해주세요.');
                 e.preventDefault();
@@ -384,6 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 bloodType.focus();
                 return;
             }
+            // ▲▲▲ [추가 완료] ▲▲▲
 
             // 정규식: 간단한 이메일 형식
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {

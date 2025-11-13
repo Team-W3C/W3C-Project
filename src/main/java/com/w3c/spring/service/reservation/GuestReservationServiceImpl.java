@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import java.util.List; // [추가]
+import java.util.Map; // [추가]
 
 @Service
 public class GuestReservationServiceImpl implements GuestReservationService {
@@ -15,6 +16,9 @@ public class GuestReservationServiceImpl implements GuestReservationService {
     @Autowired
     private GuestReservationMapper guestMapper;
 
+    /**
+     * 비회원 예약 등록
+     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int registerGuestReservation(Map<String, String> formData) throws Exception {
@@ -152,5 +156,14 @@ public class GuestReservationServiceImpl implements GuestReservationService {
         }
 
         return "M";
+    }
+
+    /**
+     * 비회원 예약 조회
+     */
+    @Override
+    public List<Map<String, Object>> findGuestReservationsByNameAndPhone(String name, String phone) {
+        // Mapper(DAO)를 호출하여 Map 리스트를 그대로 반환합니다.
+        return guestMapper.findGuestReservationsMap(name, phone);
     }
 }

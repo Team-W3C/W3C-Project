@@ -3,7 +3,10 @@ package com.w3c.spring.model.mapper; // (패키지 경로는 실제 프로젝트
 import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.model.vo.ReservationRequestVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param; // (전화번호 파라미터용)
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List; // [추가]
+import java.util.Map; // [추가]
 
 @Mapper
 public interface GuestReservationMapper {
@@ -37,4 +40,12 @@ public interface GuestReservationMapper {
      * 예약 정보를 RESERVATION 테이블에 삽입합니다.
      */
     int insertGuestReservation(ReservationRequestVO reservation);
+
+    /**
+     * 이름과 전화번호로 예약 내역을 조회합니다.
+     */
+    List<Map<String, Object>> findGuestReservationsMap(
+            @Param("name") String name,
+            @Param("phone") String phone
+    );
 }

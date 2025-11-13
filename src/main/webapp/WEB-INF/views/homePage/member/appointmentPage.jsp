@@ -228,6 +228,37 @@
         }
         /* ▲▲▲ [추가 완료] ▲▲▲ */
 
+        /* ▼▼▼ [추가] 비회원 조회 모달 카드 스타일 ▼▼▼ */
+        .info-card {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px; /* (renderGuestReservations 함수에서 사용) */
+        }
+        .info-icon {
+            flex-shrink: 0;
+            margin-right: 15px;
+        }
+        .info-content {
+            display: flex;
+            justify-content: space-between;
+            flex-grow: 1;
+            flex-basis: calc(50% - 30px); /* 아이콘 영역 제외 */
+        }
+        .info-label {
+            color: #555;
+            font-size: 14px;
+        }
+        .info-value {
+            color: #111;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        /* ▲▲▲ [추가 완료] ▲▲▲ */
     </style>
 </head>
 
@@ -442,6 +473,7 @@
     </main>
 </div>
 
+<%-- [비회원 예약] 모달 --%>
 <div class="guest-modal-overlay">
     <div class="guest-modal-backdrop"></div>
     <main class="patient-modal">
@@ -611,6 +643,7 @@
     </main>
 </div>
 
+<%-- [비회원 예약 조회] 모달 --%>
 <div class="guest-check-modal-overlay">
     <div class="guest-modal-backdrop"></div>
     <main class="modal-container">
@@ -629,62 +662,60 @@
             <header class="modal-header">
                 <h2 class="modal-title">비회원 예약내역</h2>
                 <p class="modal-subtitle">
-                    비회원 예약내역을 위해 번호를 입력하여 주세요
+                    예약 시 입력한 성함과 전화번호를 입력해 주세요.
                 </p>
             </header>
 
-            <form class="reservation-form">
-                <section class="info-section">
-                    <div class="section-header">
-                        <h3 class="section-title">회원 정보</h3>
-                        <p class="section-description">
-                            회원 정보를 보시려면 번호를 입력하여 주세요
-                        </p>
-                    </div>
-                </section>
-
-                <section class="info-card">
-                    <div class="info-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20">
-                            <circle
-                                    cx="10"
-                                    cy="7"
-                                    r="3"
-                                    stroke="#0E787C"
-                                    stroke-width="1.67"
-                                    fill="none"
-                            />
-                            <path
-                                    d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17"
-                                    stroke="#0E787C"
-                                    stroke-width="1.67"
-                                    fill="none"
-                            />
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <span class="info-label">성함</span>
-                        <span class="info-value">홍길동</span>
-                    </div>
-                </section>
+            <%-- ▼▼▼ [수정됨] form 구조 변경 ▼▼▼ --%>
+            <form class="reservation-form" id="guestCheckForm">
 
                 <div class="input-group">
-                    <label for="phone-number" class="input-label">번호</label>
+                    <label for="guest-check-name" class="input-label">성함</label>
+                    <input
+                            type="text"
+                            id="guest-check-name"
+                            class="input-field"
+                            placeholder="성함"
+                            required
+                    />
+                </div>
+
+                <div class="input-group">
+                    <label for="guest-check-phone" class="input-label">번호</label>
                     <div class="input-wrapper">
                         <input
                                 type="tel"
-                                id="phone-number"
-                                name="phone-number"
+                                id="guest-check-phone"
                                 class="input-field"
-                                placeholder="번호를 입력하세요"
+                                placeholder="'-' 포함하여 입력 (예: 010-1234-5678)"
                                 required
                         />
 
-                        <button type="button" class="btn-cancel">취소</button>
-                        <button type="submit" class="btn-confirm">확인</button>
+                        <%-- [수정] type="button" -> "submit" / id 추가 --%>
+                        <button type="button" class="btn-cancel" id="guest-check-cancel-btn">취소</button>
+                        <button type="submit" class="btn-confirm" id="guest-check-submit-btn">확인</button>
                     </div>
                 </div>
             </form>
+            <%-- ▲▲▲ [수정 완료] ▲▲▲ --%>
+
+            <section class="info-section">
+                <div class="section-header">
+                    <h3 class="section-title">조회된 예약 내역</h3>
+                </div>
+
+                <%-- ▼▼▼ [추가] 오류 메시지 영역 추가 ▼▼▼ --%>
+                <p id="guest-check-error" class="alert-danger" style="display:none; margin-top:10px;"></p>
+
+                <%-- ▼▼▼ [수정] 정적 카드 -> 동적 결과 표시 영역으로 변경 ▼▼▼ --%>
+                <div id="guest-check-results">
+                    <p style="text-align: center; padding: 20px 0; color: #888;">
+                        성함과 전화번호를 입력 후 '확인' 버튼을 눌러주세요.
+                    </p>
+                </div>
+                <%-- ▲▲▲ [수정 완료] ▲▲▲ --%>
+
+            </section>
         </div>
     </main>
 </div>

@@ -2,14 +2,18 @@ package com.w3c.spring.controller.api.hompage.reservation;
 
 import com.w3c.spring.service.reservation.GuestReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity; // [추가]
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model; // Model 추가
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping; // [추가]
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody; // [추가]
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
+import java.util.List; // [추가]
+import java.util.Map; // [추가]
 
 @Controller
 @RequestMapping("/guest/reservation")
@@ -20,7 +24,7 @@ public class GuestReservationController {
 
     /**
      * 비회원 예약 등록 요청을 처리합니다.
-     * - 성공 시: 기존처럼 'redirect'
+     * - 성공 시: 'redirect'
      * - 실패 시: 'error/errorModal'로 'forward'
      */
     @PostMapping("/new")
@@ -57,5 +61,24 @@ public class GuestReservationController {
             // 3. 에러 모달 페이지로 포워드
             return "homePage/errorModal";
         }
+    }
+
+    /**
+     * 비회원 예약 조회 (AJAX 응답용)
+     * @param name 환자명
+     * @param phone 전화번호
+     * @return 예약 목록 (JSON)
+     */
+    @GetMapping("/check")
+    @ResponseBody // <-- JSP 페이지가 아닌 JSON 데이터를 반환하라는 의미
+    public ResponseEntity<List<Map<String, Object>>> checkGuestReservation(
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone) {
+
+        // 1. Service를 호출하여 이름과 전화번호로 예약 내역 조회
+        List<Map<String, Object>> reservations = guestReservationService.findGuestReservationsByNameAndPhone(name, phone);
+
+        // 2. 조회된 목록을 ResponseEntity에 담아 반환
+        return ResponseEntity.ok(reservations);
     }
 }
