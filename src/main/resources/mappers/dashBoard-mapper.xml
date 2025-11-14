@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.DashBoardMapper">
+    <select id="getTodayReservationCount" resultType="int">
+        SELECT COUNT(*)
+        FROM RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="getStandbyPatient" resultType="int">
+        SELECT COUNT(*)
+        FROM V_RESERVATION_DETAILS
+        WHERE TRUNC(TREATMENT_DATE) = TRUNC(SYSDATE)
+        AND RESERVATION_STATUS = '확정'
+    </select>
+
+    <select id="getEquipmentUtilizationRate" resultType="double">
+        SELECT
+        (COUNT(CASE WHEN FACILITY_STATUS = 'T' THEN 1 END) / COUNT(*)) * 100 AS AvailablePercentage
+        FROM
+        FACILITY
+    </select>
+</mapper>
