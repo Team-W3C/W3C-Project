@@ -538,6 +538,14 @@
     <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </div>
 
+<%--
+  ================================================
+  수정된 스크립트
+  ================================================
+  - 체크박스의 <label>에 대한 불필요한 click/keydown 리스너를 제거했습니다.
+  - <label for="...">가 올바르게 설정되어 있으므로,
+    체크박스의 'change' 이벤트 리스너 하나로 모든 케이스(직접 클릭, 라벨 클릭)를 처리할 수 있습니다.
+--%>
 <script>
     const contextPath = '${pageContext.request.contextPath}';
 
@@ -563,29 +571,10 @@
         // 페이지 로드 시 초기 상태 설정
         updateNextButtonState();
 
-        // 🎯 수정 사항: 체크박스 변경과 레이블 클릭 모두에 updateNextButtonState 연결
+        // 🎯 수정된 부분:
+        // 각 체크박스에 'change' 이벤트 리스너만 연결합니다.
         checkboxes.forEach(checkbox => {
-            // 1. 체크박스 변경 시 상태 업데이트
             checkbox.addEventListener('change', updateNextButtonState);
-
-            // 2. 레이블 클릭 시에도 상태를 확실히 업데이트 (접근성 및 안정성 보강)
-            const label = document.querySelector(`label[for="${checkbox.id}"]`);
-            if (label) {
-                // 레이블 클릭 시에도 change 이벤트 발생 후 버튼 상태를 확인하도록 보강
-                label.addEventListener('click', function() {
-                    // 비동기적으로 버튼 상태 업데이트를 지연시켜 토글된 상태를 확실히 반영
-                    setTimeout(updateNextButtonState, 0);
-                });
-
-                // 키보드 접근성 처리
-                label.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        checkbox.checked = !checkbox.checked;
-                        checkbox.dispatchEvent(new Event('change'));
-                    }
-                });
-            }
         });
 
         // 다음 단계 버튼
