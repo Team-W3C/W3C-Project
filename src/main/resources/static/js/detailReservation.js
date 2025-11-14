@@ -44,10 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
             backdrop1.addEventListener('click', closeGuestReservationModal);
         }
         if (patientForm1) {
+            // (참고: 이 부분은 실제로는 form의 action 속성을 통해 서버로 제출되어야 합니다.)
             patientForm1.addEventListener('submit', function (e) {
-                e.preventDefault();
-                alert('비회원 예약이 요청되었습니다.');
-                closeGuestReservationModal();
+                // e.preventDefault(); // (실제 구현 시에는 주석 해제)
+                // alert('비회원 예약이 요청되었습니다.');
+                // closeGuestReservationModal();
             });
         }
     }
@@ -119,7 +120,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedTimeSlot = null; // 선택한 시간 버튼 DOM 요소
     let selectedTimeSlotData = null; // 선택한 시간의 데이터
 
-    const contextPath = "/member/reservation";
+    // ▼▼▼ [수정된 부분] ▼▼▼
+    // JSP에서 정의한 전역 변수(g_contextPath)를 사용해 AJAX 요청 기본 경로를 설정
+    // (g_contextPath가 "/w3c" 라면, contextPath는 "/w3c/member/reservation"가 됩니다.)
+    const contextPath = g_contextPath + "/member/reservation";
+    // ▲▲▲ [수정 완료] ▲▲▲
+
 
     // --- 2. FullCalendar 초기화 (높이 고정 추가) ---
     if (calendarEl) {
@@ -215,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!deptGrid) return;
 
         try {
+            // (수정된 contextPath가 여기서 사용됩니다)
             const response = await fetch(contextPath + '/departments');
             if (!response.ok) throw new Error('진료과 로딩 실패');
 
@@ -225,13 +232,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            // (이전에 수정했던 'span/icon' 제거 코드는 그대로 유지)
             deptGrid.innerHTML = departments.map(dept => `
                 <button type="button" class="department-btn" data-dept-id="${dept.departmentNo}" data-dept-name="${dept.departmentName}">
-                    <img src="${dept.iconUrl || 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container.svg'}" alt="" class="department-icon" />
-                    <span>${dept.departmentName}</span>
-                    <img src="https://c.animaapp.com/mhjva9g3rpbRQm/img/icon-1.svg" alt="선택됨" class="check-icon" />
+                    <img src="${g_contextPath}${dept.iconUrl || '/img/icons/default.png'}" alt="" class="department-icon" />
+                    ${dept.departmentName}
                 </button>
             `).join('');
+            // (참고: 아이콘 src 경로에도 g_contextPath를 추가하여 이미지 404 오류를 방지했습니다.)
 
             addDepartmentClickHandlers();
 
@@ -273,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 data-location="${slot.location}">
                             <div class="timeslot-header">
                                 <div class="timeslot-time">
-                                    <img src="https://c.animaapp.com/mhjva9g3rpbRQm/img/icon-4.svg" alt="" />
+                                    <img src="httpsStorage://c.animaapp.com/mhjva9g3rpbRQm/img/icon-4.svg" alt="" />
                                     <span>${timeRange}</span>
                                 </div>
                                 <img src="https://c.animaapp.com/mhjva9g3rpbRQm/img/icon-8.svg" alt="예약 가능" class="status-icon" />

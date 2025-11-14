@@ -7,7 +7,7 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpSidebar.css">
-
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 <body>
     <!-- Sidebar 컴포넌트 -->
@@ -19,7 +19,7 @@
             </a>
         </div>
 
-        <nav class="sidebar__nav">
+        <nav class="sidebar__nav" id="sidebar__nav">
             <a href="${pageContext.request.contextPath}/erp/dashBoard/enterErp" class="sidebar__link sidebar__link--active">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M7.5 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V9.16667C2.5 9.6269 2.8731 10 3.33333 10H7.5C7.96024 10 8.33333 9.6269 8.33333 9.16667V3.33333C8.33333 2.8731 7.96024 2.5 7.5 2.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
@@ -45,7 +45,7 @@
                 <span class="sidebar__text">검사실 관리</span>
             </a>
             
-            <a href="${pageContext.request.contextPath}/erp/employee/manage" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/employee/manage" class="sidebar__link" id="employee-manage-polling">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M13.3333 17.5V15.8333C13.3333 14.9493 12.9821 14.1014 12.357 13.4763C11.7319 12.8512 10.8841 12.5 10 12.5H5C4.11595 12.5 3.2681 12.8512 2.64298 13.4763C2.01786 14.1014 1.66667 14.9493 1.66667 15.8333V17.5M13.3333 2.60666C14.0481 2.79197 14.6812 3.20938 15.1331 3.79338C15.585 4.37738 15.8302 5.0949 15.8302 5.83333C15.8302 6.57175 15.585 7.28927 15.1331 7.87327C14.6812 8.45727 14.0481 8.87468 13.3333 9.05999M18.3333 17.5V15.8333C18.3328 15.0948 18.087 14.3773 17.6345 13.7936C17.182 13.2099 16.5484 12.793 15.8333 12.6083M7.5 9.16667C9.34095 9.16667 10.8333 7.67428 10.8333 5.83333C10.8333 3.99238 9.34095 2.5 7.5 2.5C5.65905 2.5 4.16667 3.99238 4.16667 5.83333C4.16667 7.67428 5.65905 9.16667 7.5 9.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>
@@ -69,7 +69,7 @@
                 <span class="sidebar__text">근태 관리</span>
             </a>
 
-            <a href="${pageContext.request.contextPath}/erp/employee/manage" class="sidebar__link">
+            <a href="${pageContext.request.contextPath}/erp/medi/meditoday" class="sidebar__link">
                 <svg class="sidebar__icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path d="M9.16667 1.66667V3.33333M4.16667 1.66667V3.33333M4.16667 2.5H3.33333C2.89131 2.5 2.46738 2.67559 2.15482 2.98816C1.84226 3.30072 1.66667 3.72464 1.66667 4.16667V7.5C1.66667 8.82608 2.19345 10.0979 3.13113 11.0355C4.06881 11.9732 5.34058 12.5 6.66667 12.5C7.99275 12.5 9.26452 11.9732 10.2022 11.0355C11.1399 10.0979 11.6667 8.82608 11.6667 7.5V4.16667C11.6667 3.72464 11.4911 3.30072 11.1785 2.98816C10.866 2.67559 10.442 2.5 10 2.5H9.16667M6.66667 12.5C6.66667 13.8261 7.19345 15.0979 8.13113 16.0355C9.06881 16.9732 10.3406 17.5 11.6667 17.5C12.9927 17.5 14.2645 16.9732 15.2022 16.0355C16.1399 15.0979 16.6667 13.8261 16.6667 12.5V10M16.6667 10C17.5871 10 18.3333 9.25381 18.3333 8.33333C18.3333 7.41286 17.5871 6.66667 16.6667 6.66667C15.7462 6.66667 15 7.41286 15 8.33333C15 9.25381 15.7462 10 16.6667 10Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
                 </svg>
@@ -95,6 +95,9 @@
             <p class="sidebar__copyright">© 2025 병원 ERP</p>
         </div>
     </aside>
+
+    <!-- script -->
+    <script src="${pageContext.request.contextPath}/js/erp/common/erpCommon.js"></script>
 
 </body>
 </html>

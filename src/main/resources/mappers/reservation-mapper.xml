@@ -83,18 +83,7 @@
         SELECT
             DISTINCT DEPT.department_no AS departmentNo,
                      DEPT.department_name AS departmentName,
-                     CASE DEPT.department_name
-                         WHEN '내과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container.svg'
-                         WHEN '외과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-7.svg'
-                         WHEN '정형외과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-6.svg'
-                         WHEN '소아과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-2.svg'
-                         WHEN '피부과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-3.svg'
-                         WHEN '안과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-1.svg'
-                         WHEN '치과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-4.svg'
-                         WHEN '심장내과' THEN 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container-5.svg'
-                         ELSE 'https://c.animaapp.com/mhjva9g3rpbRQm/img/container.svg'
-                         END AS iconUrl
-        FROM
+                     DEPT.department_name AS departmentKey FROM
             DEPARTMENT DEPT
                 JOIN DOCTOR D ON DEPT.department_no = D.department_no
         ORDER BY

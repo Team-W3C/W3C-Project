@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.AttendanceMapper">
+
+    <select id="findTodayRecordByStaffNo" parameterType="long" resultType="AttendanceVO">
+        SELECT
+        absence_no AS absenceNo,
+        absence_date AS absenceDate,
+        absence_start AS absenceStart,
+        absence_end AS absenceEnd,
+        absence_status AS absenceStatus,
+        staff_no AS staffNo
+        FROM
+        ABSENCE
+        WHERE
+        staff_no = #{staffNo}
+        AND
+        TRUNC(absence_date) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="findHistoryByStaffNo" parameterType="long" resultType="AttendanceVO">
+        SELECT
+        absence_no AS absenceNo,
+        absence_date AS absenceDate,
+        absence_start AS absenceStart,
+        absence_end AS absenceEnd,
+        absence_status AS absenceStatus
+        FROM
+        ABSENCE
+        WHERE
+        staff_no = #{staffNo}
+        ORDER BY
+        absence_date DESC
+    </select>
+
+    <select id="findApplicationsByStaffNo" parameterType="long" resultType="AttendanceVO">
+        SELECT
+        add_no AS addNo,
+        detailed_reason AS detailedReason,
+        isApproved AS isApproved,
+        absence_start_date AS absenceStartDate,
+        absence_end_date AS absenceEndDate,
+        ABSENCE_TYPE AS absenceType,
+        ABSENCE_APPLICATION_DATE AS absenceApplicationDate
+        FROM
+        ABSENCE_APPLICATION_DETAIL
+        WHERE
+        staff_no = #{staffNo}
+        ORDER BY
+        CASE
+        WHEN ISAPPROVED = 'F' THEN 1
+        ELSE 2
+        END,
+        ABSENCE_APPLICATION_DATE DESC
+    </select>
+
+    <insert id="insertApplication" parameterType="AttendanceVO">
+        INSERT INTO ABSENCE_APPLICATION_DETAIL (
+        add_no,
+        detailed_reason,
+        isApproved,
+        staff_no,
+        absence_start_date,
+        absence_end_date,
+        ABSENCE_TYPE
+        ) VALUES (
+        ABSENCE_APP_DETAIL_SEQ.NEXTVAL,
+        #{detailedReason},
+        'F',
+        #{staffNo},
+        #{absenceStartDate},
+        #{absenceEndDate},
+        #{absenceType}
+        )
+    </insert>
+
+    <insert id="insertClockIn" parameterType="AttendanceVO">
+        INSERT INTO ABSENCE (
+        absence_no,
+        staff_no,
+        absence_date,
+        absence_start,
+        absence_status
+        ) VALUES (
+        ABSENCE_SEQ.NEXTVAL,
+        #{staffNo},
+        #{absenceDate},
+        #{absenceStart},
+        #{absenceStatus}
+        )
+    </insert>
+
+    <update id="updateClockOut" parameterType="AttendanceVO">
+        UPDATE
+        ABSENCE
+        SET
+        absence_end = #{absenceEnd},
+        absence_status = #{absenceStatus}
+        WHERE
+        absence_no = #{absenceNo}
+    </update>
+
+
+    <select id="findScheduleStartTimeByStaffNoAndDay" parameterType="map" resultType="string">
+        SELECT
+        schedule_start_time
+        FROM
+        SCHEDULE
+        WHERE
+        staff_no = #{staffNo}
+        AND
+        schedule_day = #{dayOfWeek}
+        AND
+        ROWNUM = 1
+    </select>
+
+
+    <select id="findAllPendingApplications" resultType="AttendanceVO">
+        SELECT
+        A.add_no AS addNo,
+        A.detailed_reason AS detailedReason,
+        A.absence_start_date AS absenceStartDate,
+        A.absence_end_date AS absenceEndDate,
+        A.staff_no AS staffNo,
+        A.ABSENCE_TYPE AS absenceType,
+        V_STAFF.employeeName,
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
+        FROM
+        ABSENCE_APPLICATION_DETAIL A
+        JOIN (
+        SELECT staff_no, member_name AS employeeName, department_name AS departmentName
+        FROM V_DOCTOR_DETAILS
+        UNION ALL
+        SELECT staff_no, member_name AS employeeName, department_name AS departmentName
+        FROM V_NURSE_DETAILS
+        ) V_STAFF ON A.staff_no = V_STAFF.staff_no
+        WHERE
+        A.isApproved = 'F'
+        ORDER BY
+        A.ABSENCE_APPLICATION_DATE DESC
+    </select>
+
+    <select id="findAllCompletedApplications" resultType="AttendanceVO">
+        SELECT
+        A.add_no AS addNo,
+        A.detailed_reason AS detailedReason,
+        A.isApproved AS isApproved,
+        A.absence_start_date AS absenceStartDate,
+        A.absence_end_date AS absenceEndDate,
+        A.staff_no AS staffNo,
+        A.ABSENCE_TYPE AS absenceType,
+        V_STAFF.employeeName,
+        V_STAFF.departmentName,
+        A.ABSENCE_APPLICATION_DATE AS absenceApplicationDate
+        FROM
+        ABSENCE_APPLICATION_DETAIL A
+        JOIN (
+        SELECT staff_no, member_name AS employeeName, department_name AS departmentName
+        FROM V_DOCTOR_DETAILS
+        UNION ALL
+        SELECT staff_no, member_name AS employeeName, department_name AS departmentName
+        FROM V_NURSE_DETAILS
+        ) V_STAFF ON A.staff_no = V_STAFF.staff_no
+        WHERE
+        A.isApproved != 'F'
+        ORDER BY
+        A.ABSENCE_APPLICATION_DATE DESC
+    </select>
+
+    <update id="updateApplicationStatus" parameterType="map">
+        UPDATE
+        ABSENCE_APPLICATION_DETAIL
+        SET
+        isApproved = #{isApproved}
+        WHERE
+        add_no = #{addNo}
+    </update>
+
+    <select id="findAllEmployeeStatus" parameterType="string" resultType="AttendanceVO">
+        WITH StaffSchedulePattern AS (
+        SELECT
+        staff_no,
+        LISTAGG(schedule_day, ', ')
+        WITHIN GROUP (ORDER BY
+        CASE schedule_day
+        WHEN '월' THEN 1
+        WHEN '화' THEN 2
+        WHEN '수' THEN 3
+        WHEN '목' THEN 4
+        WHEN '금' THEN 5
+        WHEN '토' THEN 6
+        WHEN '일' THEN 7
+        ELSE 8
+        END
+        ) AS WorkDays,
+
+        MIN(schedule_start_time) || '~' || MAX(schedule_end_time) AS WorkHours
+        FROM
+        SCHEDULE
+        GROUP BY
+        staff_no
+        )
+
+        SELECT
+        S.staff_no AS staffNo,
+        M.member_name AS employeeName,
+        M.member_email AS email,
+        M.member_phone AS phone,
+        COALESCE(DR.doctor_position, N.nurse_position) AS position,
+        D.department_name AS departmentName,
+
+        SC.WorkDays || '&lt;br&gt;' || SC.WorkHours AS workSchedule,
+        CASE
+        WHEN A.absence_status IS NOT NULL THEN A.absence_status
+        WHEN AAD.add_no IS NOT NULL THEN 4 -- 4를 '휴가/외출'로 임의 지정
+        ELSE 5 -- 5를 '결근'으로 임의 지정
+        END AS absenceStatus
+
+        FROM
+        STAFF S
+        JOIN
+        MEMBER M ON S.member_no = M.member_no
+        LEFT JOIN
+        DOCTOR DR ON S.staff_no = DR.staff_no
+        LEFT JOIN
+        NURSE N ON S.staff_no = N.staff_no
+        LEFT JOIN
+        DEPARTMENT D ON DR.department_no = D.department_no OR N.department_no = D.department_no
+
+        LEFT JOIN
+        ABSENCE A ON S.staff_no = A.staff_no AND TRUNC(A.absence_date) = TRUNC(SYSDATE)
+
+        LEFT JOIN (
+        SELECT add_no, staff_no
+        FROM ABSENCE_APPLICATION_DETAIL
+        WHERE isApproved = 'T'
+        AND TRUNC(SYSDATE) BETWEEN TRUNC(absence_start_date) AND TRUNC(absence_end_date)
+        ) AAD ON S.staff_no = AAD.staff_no
+
+        LEFT JOIN
+        StaffSchedulePattern SC ON S.STAFF_NO = SC.STAFF_NO
+
+        <where>
+            <if test="searchTerm != null and searchTerm != ''">
+                M.member_name LIKE '%' || #{searchTerm} || '%'
+                OR D.department_name LIKE '%' || #{searchTerm} || '%'
+            </if>
+        </where>
+
+        ORDER BY
+        S.staff_no
+    </select>
+</mapper>
