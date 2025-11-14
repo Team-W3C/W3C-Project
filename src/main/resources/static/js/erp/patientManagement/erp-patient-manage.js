@@ -83,14 +83,14 @@ function showPatientDetail(buttonElement) {
                         <div class="modal-record-header">
                           <div class="modal-record-info">
                             <span class="modal-record-date">${formatDate(record.visitDate)}</span>
-                            <span class="modal-record-dept">${record.departmentName}</span>
+                            <span class="modal-record-dept">${record.departmentName || "진료과 없음"}</span>
                           </div>
-                          <span class="modal-record-status">${record.status}</span>
+                          <span class="modal-record-status">${record.status || "상태 없음"}</span>
                         </div>
                         <div class="modal-record-details">
-                          <span class="modal-record-detail">담당의: ${record.doctorName}</span>
+                          <span class="modal-record-detail">담당의: ${record.doctorName || "정보 없음"}</span>
                           <span class="modal-record-separator">•</span>
-                          <span class="modal-record-detail">진단: ${record.diagnosis}</span>
+                          <span class="modal-record-detail">진단: ${record.diagnosis || "없음"}</span>
                         </div>
                     </article>`;
                     $recordList.append(recordHtml);
@@ -109,11 +109,11 @@ function showPatientDetail(buttonElement) {
                       <div class="modal-appointment-header">
                         <div class="modal-appointment-info">
                           <span class="modal-appointment-datetime">${formatDateTime(rsv.reservationDate)}</span>
-                          <span class="modal-appointment-dept">${rsv.departmentName}</span>
+                          <span class="modal-appointment-dept">${rsv.departmentName || "진료과 없음"}</span>
                         </div>
-                        <span class="modal-appointment-type">${rsv.reservationType}</span>
+                        <span class="modal-appointment-type">${rsv.reservationType || "정보 없음"}</span>
                       </div>
-                      <div class="modal-appointment-doctor">담당의: ${rsv.doctorName}</div>
+                      <div class="modal-appointment-doctor">담당의: ${rsv.doctorName || "정보 없음"}</div>
                     </article>`;
                     $reservationList.append(rsvHtml);
                 });
