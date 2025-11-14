@@ -2,682 +2,659 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
-<%-- JSTL을 사용해 현재 날짜 객체 생성 --%>
 <jsp:useBean id="now" class="java.util.Date" />
-
-<%-- 스크립트에서 사용하기 위해 JSP 변수 생성 --%>
 <fmt:formatDate value="${now}" pattern="yyyy.MM.dd.E" var="todayDateString"/>
-
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 탈퇴</title>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/deleteAccountModal.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <style>
-        /* --- 본문 레이아웃 CSS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            color: #2B2B2B;
-            background-color: #F8F9F9;
+            background: #F5F7FA;
+            color: #1A202C;
+            line-height: 1.6;
         }
-        .wrap { width: 100%; min-height: 100vh; }
+
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
         .mypage-container {
             display: flex;
-            width: 100%;
             max-width: 1280px;
+            width: 100%;
             margin: 40px auto;
-            min-height: 70vh;
+            gap: 24px;
+            flex: 1;
+            padding: 0 20px;
         }
+
         .mypage-content {
-            flex-grow: 1;
-            background-color: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #E5E5E5;
-            margin-left: 24px;
+            flex: 1;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
 
-        /* --- 기존 CSS --- */
-        .info-section {
-            margin-bottom: 24px;
-        }
-        .info-section-header {
-            padding: 16px 24px;
-            background: #F8F9F9;
-            border-bottom: 1px solid #E5E5E5;
-        }
-        .info-section-header h3 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 700;
-            color: #1F2937;
-        }
-        .account-management .info-section-header.danger-zone {
-            background: #FEF2F2;
-            border-bottom-color: #FEE2E2;
-        }
-        .account-management .info-section-header.danger-zone h3 {
-            color: #B91C1C;
-        }
-        .account-management .info-section-body {
-            padding: 24px;
-        }
-        .account-management .info-section-body h4 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1F2937;
-            margin-bottom: 8px;
-        }
-        .account-management .info-section-body .description {
-            font-size: 14px;
-            color: #4B5563;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-        .btn-danger {
-            background-color: #DC2626;
+        /* ===== 헤더 영역 ===== */
+        .page-header {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            padding: 40px;
             color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .btn-danger:hover {
-            background-color: #B91C1C;
+            text-align: center;
         }
 
-        /* --- 사이드바 모달 CSS (유지) --- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .password-modal {
-            background: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
+        .page-header h1 {
             font-size: 28px;
-            color: #666;
-            cursor: pointer;
-        }
-        .modal-header {
-            padding: 24px 24px 16px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0E787C;
-            margin: 0 0 8px 0;
-        }
-        .modal-subtitle {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
-        }
-        .modal-body { padding: 24px; }
-        .info-box {
-            background-color: #f0fafa;
-            border: 1px solid #d0e8e9;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-        .info-header {
-            font-size: 14px;
-            font-weight: bold;
-            color: #0E787C;
+            font-weight: 700;
             margin-bottom: 8px;
         }
-        .info-text { font-size: 13px; color: #555; }
-        .field-box {
+
+        .page-header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* ===== 컨텐츠 영역 ===== */
+        .content-wrapper {
+            padding: 48px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 경고 박스 */
+        .warning-box {
+            background: #FEF2F2;
+            border: 2px solid #FEE2E2;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .warning-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 16px;
-            background-color: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
             margin-bottom: 16px;
         }
-        .field-icon { flex-shrink: 0; }
-        .field-info { flex: 1; }
-        .field-label {
-            font-size: 12px;
-            color: #888;
+
+        .warning-icon {
+            width: 32px;
+            height: 32px;
+            background: #DC2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .warning-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #991B1B;
+        }
+
+        .warning-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .warning-list li {
+            padding: 10px 0 10px 44px;
+            position: relative;
+            color: #7F1D1D;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .warning-list li:before {
+            content: "•";
+            position: absolute;
+            left: 32px;
+            font-weight: bold;
+            color: #DC2626;
+        }
+
+        /* 섹션 */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1A202C;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        /* 정보 카드 */
+        .info-cards {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #64748B;
             margin-bottom: 4px;
         }
-        .field-value {
+
+        .info-value {
             font-size: 16px;
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            color: #1A202C;
         }
-        .password-box {
-            padding: 8px 12px;
-            background-color: white;
-            border: 2px solid #0E787C;
-            gap: 8px;
+
+        /* 체크박스 리스트 */
+        .checkbox-list {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 20px;
         }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .checkbox-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .checkbox-item:first-child {
+            padding-top: 0;
+        }
+
+        .checkbox-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin: 0;
+            accent-color: #DC2626;
+        }
+
+        .checkbox-text {
+            flex: 1;
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        /* 비밀번호 입력 영역 */
+        .password-section {
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+            display: none;
+        }
+
+        .password-section.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-input-group {
+            margin-top: 16px;
+        }
+
+        .password-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
         .password-input {
             flex: 1;
-            border: none;
-            outline: none;
+            padding: 14px 16px;
+            border: 2px solid #CBD5E1;
+            border-radius: 8px;
             font-size: 15px;
-            padding: 8px;
-            background: transparent;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
-        .btn-confirm {
-            background-color: #0E787C;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
+
+        .password-input:focus {
+            outline: none;
+            border-color: #DC2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
-        .modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .btn-cancel {
-            background-color: white;
-            color: #666;
-            border: 1px solid #ddd;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+
         .error-message {
-            color: #d32f2f;
+            color: #DC2626;
             font-size: 13px;
             margin-top: 8px;
             display: none;
         }
-        .error-message.show { display: block; }
 
-        .withdrawal-content-area {
-            margin-top: 24px;
-            border-top: 1px solid #E5E5E5;
-            padding-top: 24px;
+        .error-message.show {
+            display: block;
+        }
+
+        /* 버튼 */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .btn-danger {
+            background: #DC2626;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #B91C1C;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-danger:disabled {
+            background: #CBD5E1;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid #CBD5E1;
+        }
+
+        .btn-secondary:hover {
+            background: #E2E8F0;
+        }
+
+        .btn-confirm {
+            background: #DC2626;
+            color: white;
+            padding: 14px 28px;
+        }
+
+        .btn-confirm:hover:not(:disabled) {
+            background: #B91C1C;
+        }
+
+        .btn-confirm:disabled {
+            background: #CBD5E1;
+            cursor: not-allowed;
+        }
+
+        /* 추가: 탈퇴 완료 버튼을 숨김 처리 */
+        #submitBtn {
             display: none;
         }
 
-        /* 1단계: 동의 폼 스타일 */
-        .withdrawal-form-inline {
-            background: #FDFDFD;
-            border: 1px solid #E5E5E5;
-            border-radius: 8px;
-            padding: 24px;
-        }
-        .withdrawal-form-inline .info-card {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            gap: 16px;
-        }
-        .withdrawal-form-inline .info-icon { flex-shrink: 0; }
-        .withdrawal-form-inline .info-content { flex-grow: 1; }
-        .withdrawal-form-inline .info-label {
-            display: block;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 4px;
-        }
-        .withdrawal-form-inline .info-value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-        }
-        .withdrawal-form-inline .consent-section {
-            margin-top: 20px;
-            text-align: center;
-            background: #F8F9F9;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .withdrawal-form-inline .consent-label {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #1F2937;
-        }
-        .withdrawal-form-inline .consent-text {
-            font-size: 14px;
-            color: #4B5563;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-        .withdrawal-form-inline .btn-agree {
-            background-color: #0E787C;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .withdrawal-form-inline .btn-agree:hover {
-            background-color: #0a5f62;
-        }
-        .withdrawal-form-inline .form-actions {
-            margin-top: 16px;
-            text-align: right;
-        }
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .mypage-container {
+                flex-direction: column;
+                margin: 20px auto;
+                padding: 0 16px;
+            }
 
-        /* 2단계: 비밀번호 폼 스타일 */
-        .password-form-inline {
-            background: #FDFDFD;
-            border: 1px solid #E5E5E5;
-            border-radius: 8px;
-            padding: 24px;
-        }
-        .password-form-inline .modal-header {
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-        }
-        .password-form-inline .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0E787C;
-            margin: 0 0 8px 0;
-        }
-        .password-form-inline .modal-subtitle {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
-        }
-        .password-form-inline .modal-footer {
-            padding-top: 16px;
-            margin-top: 24px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: flex-end;
+            .content-wrapper {
+                padding: 32px 24px;
+            }
+
+            .page-header {
+                padding: 32px 24px;
+            }
+
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="wrap">
-
     <jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 
     <div class="mypage-container">
-
-        <%-- 1. 사이드바 Include --%>
         <jsp:include page="/WEB-INF/views/common/homePageMember/member-sidebar.jsp" />
 
-        <%-- 2. 메인 컨텐츠 --%>
         <main class="mypage-content">
-            <section class="info-section account-management">
-                <header class="info-section-header danger-zone">
-                    <h3>계정 관리</h3>
-                </header>
-                <div class="info-section-body">
-                    <h4>회원 탈퇴</h4>
-                    <p class="description">
-                        회원 탈퇴 시 모든 개인정보와 진료 기록이 삭제되며, 복구가 불가능합니다.
-                        신중하게 결정해 주시기 바랍니다.
-                    </p>
-                    <button type="button" class="btn-danger" id="open-withdrawal-modal">회원 탈퇴하기</button>
-
-                    <div id="withdrawal-content-area" class="withdrawal-content-area">
-                    </div>
-
-                </div>
-            </section>
-        </main>
-
-    </div> <%-- .mypage-container 닫기 --%>
-
-
-    <%-- 사이드바 '회원 정보 수정' 모달 (유지) --%>
-    <div class="modal-overlay" id="sidebar-password-modal">
-        <div class="password-modal">
-            <button type="button" class="modal-close" aria-label="닫기"> × </button>
-            <header class="modal-header">
-                <h2 class="modal-title">회원 정보</h2>
-                <p class="modal-subtitle">회원 정보를 보시려면 비밀번호를 입력하여 주세요</p>
-            </header>
-            <div class="modal-body">
-                <form id="sidebarPasswordForm">
-                    <div class="info-box">
-                        <div class="info-header">회원 정보</div>
-                        <div class="info-text">회원 정보를 위한 본인 확인 절차입니다.</div>
-                    </div>
-                    <div class="field-box">
-                        <div class="field-icon">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"></path><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"></circle></svg>
-                        </div>
-                        <div class="field-info">
-                            <div class="field-label">성함</div>
-                            <div class="field-value">${sessionScope.loginMember.memberName}</div>
-                        </div>
-                    </div>
-                    <div class="field-box password-box">
-                        <input type="password" id="sidebar-password" class="password-input" placeholder="비밀번호를 입력하세요" required>
-                        <button type="submit" class="btn-confirm">확인</button>
-                    </div>
-                    <div class="error-message"></div>
-                </form>
+            <div class="page-header">
+                <h1>회원 탈퇴</h1>
+                <p>탈퇴 전 아래 내용을 반드시 확인해 주세요</p>
             </div>
-            <footer class="modal-footer">
-                <button type="button" class="btn-cancel">취소</button>
-            </footer>
-        </div>
+
+            <div class="content-wrapper">
+                <div class="warning-box">
+                    <div class="warning-header">
+                        <div class="warning-icon">!</div>
+                        <h2 class="warning-title">탈퇴 시 주의사항</h2>
+                    </div>
+                    <ul class="warning-list">
+                        <li>회원 탈퇴 시 모든 개인정보가 즉시 삭제되며 복구가 불가능합니다.</li>
+                        <li>진료 기록은 의료법에 따라 10년간 보관되며 삭제되지 않습니다.</li>
+                        <li>탈퇴 후 동일한 아이디로 재가입이 불가능할 수 있습니다.</li>
+                        <li>진행 중인 예약이나 상담 내역이 있다면 먼저 취소해 주세요.</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">회원 정보</h3>
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="7" r="4" stroke="#DC2626" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">성함</div>
+                                <div class="info-value">${sessionScope.loginMember.memberName}</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="#DC2626" stroke-width="2"/>
+                                    <line x1="3" y1="10" x2="21" y2="10" stroke="#DC2626" stroke-width="2"/>
+                                    <line x1="8" y1="2" x2="8" y2="6" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="16" y1="2" x2="16" y2="6" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">탈퇴 날짜</div>
+                                <div class="info-value">${todayDateString}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">탈퇴 동의</h3>
+                    <div class="checkbox-list">
+                        <div class="checkbox-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="agree1" class="agree-checkbox">
+                            </div>
+                            <label for="agree1" class="checkbox-text">
+                                위 주의사항을 모두 확인하였으며, 이에 동의합니다.
+                            </label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="agree2" class="agree-checkbox">
+                            </div>
+                            <label for="agree2" class="checkbox-text">
+                                회원 탈퇴 시 개인정보가 삭제되며 복구가 불가능함을 이해하였습니다.
+                            </label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="agree3" class="agree-checkbox">
+                            </div>
+                            <label for="agree3" class="checkbox-text">
+                                진료 기록은 의료법에 따라 10년간 보관됨을 확인하였습니다.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="password-section" id="passwordSection">
+                    <h3 class="section-title">본인 확인</h3>
+                    <p style="color: #64748B; font-size: 14px; margin-bottom: 16px;">
+                        회원 탈퇴를 완료하려면 비밀번호를 입력해 주세요.
+                    </p>
+                    <form id="withdrawalForm">
+                        <div class="password-input-group">
+                            <div class="password-input-wrapper">
+                                <input
+                                        type="password"
+                                        id="passwordInput"
+                                        class="password-input"
+                                        placeholder="비밀번호를 입력하세요"
+                                        autocomplete="current-password"
+                                >
+                            </div>
+                            <div class="error-message" id="errorMessage"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-confirm" id="submitBtn" style="display: none;">
+                            탈퇴 완료
+                        </button>
+                    </form>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">
+                        취소
+                    </button>
+                    <button type="button" class="btn btn-danger" id="nextBtn" disabled>
+                        다음 단계
+                    </button>
+                    <button type="submit" class="btn btn-danger" id="finalWithdrawalBtn" style="display: none;">
+                        탈퇴 완료
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
 
     <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
-
-</div> <%-- .wrap 닫기 --%>
-
+</div>
 
 <script>
     const contextPath = '${pageContext.request.contextPath}';
 
     document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.agree-checkbox');
+        const nextBtn = document.getElementById('nextBtn');
+        const finalWithdrawalBtn = document.getElementById('finalWithdrawalBtn');
+        const passwordSection = document.getElementById('passwordSection');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const withdrawalForm = document.getElementById('withdrawalForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
 
-        // --- 1. 공통 변수 선언 (사이드바) ---
-        const sidebarModal = document.getElementById('sidebar-password-modal');
-        const openSidebarModalBtn = document.getElementById('open-password-modal');
-        const sidebarForm = document.getElementById('sidebarPasswordForm');
+        // 체크 상태를 확인하고 '다음 단계' 버튼을 업데이트하는 함수
+        function updateNextButtonState() {
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            // 비밀번호 섹션이 이미 열려 있다면 버튼 상태는 변경하지 않음
+            if (!passwordSection.classList.contains('show')) {
+                nextBtn.disabled = !allChecked;
+            }
+        }
 
-        // --- 2. 사이드바 '회원정보 수정' 모달 로직 (기존과 동일) ---
-        if (openSidebarModalBtn && sidebarModal && sidebarForm) {
-            openSidebarModalBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                sidebarModal.classList.add('active');
-                sidebarForm.reset();
-                sidebarModal.querySelector('.error-message').classList.remove('show');
-                setTimeout(() => sidebarModal.querySelector('#sidebar-password').focus(), 100);
-            });
+        // 페이지 로드 시 초기 상태 설정
+        updateNextButtonState();
 
-            sidebarForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const password = sidebarModal.querySelector('#sidebar-password').value;
-                const errorMessage = sidebarModal.querySelector('.error-message');
-                const submitBtn = sidebarModal.querySelector('.btn-confirm');
-                submitBtn.disabled = true;
-                submitBtn.textContent = '확인 중...';
+        // 체크박스 변경 감지
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateNextButtonState);
 
-                try {
-                    const response = await fetch(contextPath + '/member/verify-password', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ password: password })
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        window.location.href = contextPath + '/member/info';
-                    } else {
-                        errorMessage.textContent = result.message || '비밀번호가 일치하지 않습니다.';
-                        errorMessage.classList.add('show');
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = '확인';
+            // 키보드 접근성 처리 (기존 코드 유지)
+            const label = document.querySelector(`label[for="${checkbox.id}"]`);
+            if (label) {
+                label.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        checkbox.checked = !checkbox.checked;
+                        checkbox.dispatchEvent(new Event('change'));
                     }
-                } catch (error) {
-                    console.error('Verify Password Error:', error);
-                    errorMessage.textContent = '서버 통신 오류';
-                    errorMessage.classList.add('show');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '확인';
-                }
-            });
-        }
-
-        // --- 3. '회원 탈퇴' 인라인 폼 로직 ---
-
-        const openWithdrawalBtn = document.getElementById('open-withdrawal-modal');
-        const withdrawalContentArea = document.getElementById('withdrawal-content-area');
-
-        // JSTL 변수를 JS 변수로 안전하게 가져오기
-        const memberName = '${sessionScope.loginMember.memberName}';
-        const todayDate = '${todayDateString}';
-
-        console.log('memberName:', memberName);
-        console.log('todayDate:', todayDate);
-
-        // --- 1단계 (동의) HTML 템플릿 ---
-        function getStep1AgreementHTML() {
-            return '<div class="withdrawal-form-inline">' +
-                '<header class="withdrawal-header" style="text-align:center; margin-bottom: 24px;">' +
-                '<h2 class="modal-title" style="font-size: 20px;">' +
-                '<svg class="icon-alert" width="18" height="18" viewBox="0 0 18 18" style="vertical-align: middle; margin-right: 4px;"><path d="M9 1L2 15L16 15L9 1Z" stroke="#0E787C" stroke-width="2" fill="none"></path><line x1="9" y1="6" x2="9" y2="11" stroke="#0E787C" stroke-width="2"></line></svg>' +
-                '탈퇴 확인' +
-                '</h2>' +
-                '<p class="modal-subtitle">탈퇴를 진행하시겠습니까?</p>' +
-                '</header>' +
-                '<div class="info-card">' +
-                '<div class="info-icon">' +
-                '<svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="1" stroke="#0E787C" stroke-width="1.67" fill="none"></rect><line x1="6" y1="2" x2="6" y2="5" stroke="#0E787C" stroke-width="1.67"></line><line x1="14" y1="2" x2="14" y2="5" stroke="#0E787C" stroke-width="1.67"></line><line x1="3" y1="8" x2="17" y2="8" stroke="#0E787C" stroke-width="1.67"></line></svg>' +
-                '</div>' +
-                '<div class="info-content">' +
-                '<span class="info-label">탈퇴 날짜</span>' +
-                '<span class="info-value">' + todayDate + '</span>' +
-                '</div>' +
-                '</div>' +
-                '<div class="info-card">' +
-                '<div class="info-icon">' +
-                '<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none"></circle><path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="#0E787C" stroke-width="1.67" fill="none"></path></svg>' +
-                '</div>' +
-                '<div class="info-content">' +
-                '<span class="info-label">성함</span>' +
-                '<span class="info-value">' + memberName + '</span>' +
-                '</div>' +
-                '</div>' +
-                '<section class="consent-section">' +
-                '<h3 class="consent-label">동의</h3>' +
-                '<p class="consent-text">' +
-                '환자의 진료 기록은 의료법에 따라<br>' +
-                '일정 기간 보존해야 하는 의무가 있으므로,<br>' +
-                '"회원 탈퇴"를 하더라도 진료 기록은 삭제되지 않고<br>' +
-                '법정 보존 기간 (10년) 동안 보관됩니다.<br>' +
-                '동의하십니까?' +
-                '</p>' +
-                '<button type="button" class="btn-agree" id="inline-agree-btn">동의</button>' +
-                '</section>' +
-                '<div class="form-actions">' +
-                '<button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>' +
-                '</div>' +
-                '</div>';
-        }
-
-        // --- 2단계 (비밀번호) HTML 템플릿 ---
-        function getStep2PasswordHTML() {
-            return '<div class="password-form-inline">' +
-                '<header class="modal-header">' +
-                '<h2 class="modal-title">비밀번호 확인</h2>' +
-                '<p class="modal-subtitle">회원 탈퇴를 완료하려면 비밀번호를 입력해 주세요</p>' +
-                '</header>' +
-                '<div class="modal-body" style="padding: 0;">' +
-                '<form id="withdrawalPasswordFormInline">' +
-                '<div class="info-box">' +
-                '<div class="info-header">회원 정보</div>' +
-                '<div class="info-text">회원 탈퇴를 위한 본인 확인 절차입니다.</div>' +
-                '</div>' +
-                '<div class="field-box">' +
-                '<div class="field-icon">' +
-                '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"></path><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"></circle></svg>' +
-                '</div>' +
-                '<div class="field-info">' +
-                '<div class="field-label">성함</div>' +
-                '<div class="field-value">' + memberName + '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="field-box password-box">' +
-                '<input type="password" id="withdrawal-password-inline" class="password-input" placeholder="비밀번호를 입력하세요">' +
-                '<button type="submit" class="btn-confirm">탈퇴 완료</button>' +
-                '</div>' +
-                '<div class="error-message"></div>' +
-                '</form>' +
-                '</div>' +
-                '<footer class="modal-footer">' +
-                '<button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>' +
-                '</footer>' +
-                '</div>';
-        }
-
-        if (openWithdrawalBtn && withdrawalContentArea) {
-
-            // '회원 탈퇴하기' 버튼(id="open-withdrawal-modal") 클릭
-            openWithdrawalBtn.addEventListener('click', function() {
-                console.log('회원 탈퇴하기 버튼 클릭됨');
-
-                // 1단계(동의) 폼 삽입
-                withdrawalContentArea.innerHTML = getStep1AgreementHTML();
-                withdrawalContentArea.style.display = 'block';
-                openWithdrawalBtn.style.display = 'none';
-
-                // 생성된 폼 영역으로 부드럽게 스크롤
-                withdrawalContentArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            });
-
-            // --- 이벤트 위임 사용 ---
-
-            // (1) 클릭 이벤트 처리 (동의 버튼, 취소 버튼)
-            withdrawalContentArea.addEventListener('click', function(e) {
-
-                // 1단계 '동의' 버튼(#inline-agree-btn) 클릭
-                if (e.target.id === 'inline-agree-btn') {
-                    console.log('동의 버튼 클릭됨');
-                    // 2단계(비밀번호) 폼으로 교체
-                    withdrawalContentArea.innerHTML = getStep2PasswordHTML();
-                    withdrawalContentArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // 비밀번호 필드에 자동 포커스
-                    setTimeout(() => {
-                        const pwdInput = document.getElementById('withdrawal-password-inline');
-                        if (pwdInput) pwdInput.focus();
-                    }, 100);
-                }
-
-                // '취소' 버튼(#inline-cancel-btn) 클릭 (1, 2단계 공통)
-                if (e.target.id === 'inline-cancel-btn') {
-                    console.log('취소 버튼 클릭됨');
-                    // 폼 영역 비우고 숨기기
-                    withdrawalContentArea.innerHTML = '';
-                    withdrawalContentArea.style.display = 'none';
-                    // '회원 탈퇴하기' 버튼 다시 표시
-                    openWithdrawalBtn.style.display = 'block';
-                }
-            });
-
-            // (2) 폼 제출(submit) 이벤트 처리 (2단계 비밀번호 폼)
-            withdrawalContentArea.addEventListener('submit', async function(e) {
-                // 폼 ID로 정확히 타겟팅
-                if (e.target.id === 'withdrawalPasswordFormInline') {
-                    e.preventDefault();
-                    console.log('비밀번호 폼 제출됨');
-
-                    const form = e.target;
-                    const password = form.querySelector('#withdrawal-password-inline').value;
-                    const errorMessage = form.querySelector('.error-message');
-                    const submitBtn = form.querySelector('.btn-confirm');
-
-                    if (!password) {
-                        errorMessage.textContent = '비밀번호를 입력해주세요.';
-                        errorMessage.classList.add('show');
-                        return;
-                    }
-
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = '처리 중...';
-
-                    try {
-                        const response = await fetch(contextPath + '/member/deleteAccount', {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({ password: password })
-                        });
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            alert('회원 탈퇴가 완료되었습니다.');
-                            window.location.href = contextPath + '/member/logout.me';
-                        } else {
-                            errorMessage.textContent = result.message || '탈퇴 처리 중 오류가 발생했습니다.';
-                            errorMessage.classList.add('show');
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = '탈퇴 완료';
-                        }
-                    } catch (error) {
-                        console.error('Account Deletion Error:', error);
-                        errorMessage.textContent = '서버 통신 오류. 다시 시도해주세요.';
-                        errorMessage.classList.add('show');
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = '탈퇴 완료';
-                    }
-                }
-            });
-        }
-
-        // --- 4. 공통 모달 닫기 로직 (사이드바 모달 전용) ---
-        document.querySelectorAll('.modal-close, .btn-cancel, .modal-backdrop').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // 인라인 폼 내부의 .btn-cancel은 위임 로직에서 처리하므로, 여기서는 무시
-                if (e.target.closest('#withdrawal-content-area')) {
-                    return;
-                }
-
-                // 사이드바 모달 등, .modal-overlay를 사용하는 모달만 닫기
-                const parentModal = e.target.closest('.modal-overlay');
-                if (parentModal) {
-                    parentModal.classList.remove('active');
-                }
-            });
+                });
+            }
         });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                // 사이드바 모달 닫기
-                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
-                    modal.classList.remove('active');
+        // 다음 단계 버튼
+        nextBtn.addEventListener('click', function() {
+            if (nextBtn.disabled) return;
+
+            passwordSection.classList.add('show');
+            passwordSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => passwordInput.focus(), 300);
+
+            // 버튼 상태 변경: '다음 단계' 숨기고 '탈퇴 완료' 표시
+            nextBtn.style.display = 'none';
+            finalWithdrawalBtn.style.display = 'block';
+        });
+
+        // '탈퇴 완료' 버튼 클릭 시 폼 제출
+        finalWithdrawalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            withdrawalForm.dispatchEvent(new Event('submit', { cancelable: true }));
+        });
+
+        // 취소 버튼
+        cancelBtn.addEventListener('click', function() {
+            if (confirm('회원 탈퇴를 취소하시겠습니까?')) {
+                window.location.href = contextPath + '/member/mypage';
+            }
+        });
+
+        // 폼 제출
+        withdrawalForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const password = passwordInput.value.trim();
+
+            if (!password) {
+                errorMessage.textContent = '비밀번호를 입력해 주세요.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // 최종 확인
+            if (!confirm('정말로 회원 탈퇴를 진행하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.')) {
+                return;
+            }
+
+            finalWithdrawalBtn.disabled = true;
+            finalWithdrawalBtn.textContent = '처리 중...';
+            errorMessage.classList.remove('show');
+
+            try {
+                const response = await fetch(contextPath + '/member/deleteAccount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
                 });
 
-                // 인라인 폼도 닫기
-                if (withdrawalContentArea && withdrawalContentArea.style.display === 'block') {
-                    withdrawalContentArea.innerHTML = '';
-                    withdrawalContentArea.style.display = 'none';
-                    openWithdrawalBtn.style.display = 'block';
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('회원 탈퇴가 완료되었습니다.\n그동안 이용해 주셔서 감사합니다.');
+                    window.location.href = contextPath + '/member/logout.me';
+                } else {
+                    errorMessage.textContent = result.message || '비밀번호가 일치하지 않습니다.';
+                    errorMessage.classList.add('show');
+                    finalWithdrawalBtn.disabled = false;
+                    finalWithdrawalBtn.textContent = '탈퇴 완료';
+                    passwordInput.value = '';
+                    passwordInput.focus();
                 }
+            } catch (error) {
+                console.error('Account Deletion Error:', error);
+                errorMessage.textContent = '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+                errorMessage.classList.add('show');
+                finalWithdrawalBtn.disabled = false;
+                finalWithdrawalBtn.textContent = '탈퇴 완료';
             }
         });
     });

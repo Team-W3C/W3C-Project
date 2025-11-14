@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
     <title>회원 사이드바</title>
     <style>
         /* (모달 CSS 등 모든 스타일 코드는 기존과 동일 - 생략) */
