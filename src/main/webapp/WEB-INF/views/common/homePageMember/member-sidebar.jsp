@@ -64,17 +64,14 @@
         <h3 class="member-sidebar__nav-title">회원정보</h3>
         <ul class="member-sidebar__nav-list">
 
-            <%-- 이 링크는 id="open-password-modal"이 있어서 스크립트가 모달을 엽니다. --%>
             <li class="member-sidebar__nav-item">
                 <a href="${pageContext.request.contextPath}/member/info" id="open-password-modal" class="member-sidebar__nav-link member-sidebar__nav-link--active">회원 정보 수정</a>
             </li>
 
-            <%-- 이 링크는 id가 없어서 스크립트가 무시하고, 페이지로 이동합니다. --%>
             <li class="member-sidebar__nav-item">
                 <a href="${pageContext.request.contextPath}/member/changePassword" class="member-sidebar__nav-link member-sidebar__nav-link--medium">비밀번호 변경</a>
             </li>
 
-            <%-- 이 링크는 id가 없어서 스크립트가 무시하고, 페이지로 이동합니다. --%>
             <li class="member-sidebar__nav-item">
                 <a href="${pageContext.request.contextPath}/member/cancelMember" class="member-sidebar__nav-link">회원 탈퇴</a>
             </li>
@@ -123,7 +120,9 @@
         </footer>
     </div>
 </div>
-
+<script>
+    const contextPath = '${pageContext.request.contextPath}';
+</script>
 <script>
     // 모달 열기/닫기 함수
     function openPasswordModal() {
