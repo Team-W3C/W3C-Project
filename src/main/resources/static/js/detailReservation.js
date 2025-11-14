@@ -127,38 +127,65 @@ document.addEventListener('DOMContentLoaded', function () {
     // ▲▲▲ [수정 완료] ▲▲▲
 
 
-    // --- 2. FullCalendar 초기화 ---
+    // --- 2. FullCalendar 초기화 (높이 고정 추가) ---
     if (calendarEl) {
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'ko',
+            height: 'auto',
+            aspectRatio: 1.35,
             headerToolbar: {
                 left: 'prev',
                 center: 'title',
                 right: 'next',
             },
             events: contextPath + '/available-dates',
+            selectable: true,
+            dayMaxEvents: false,
+            fixedWeekCount: false,
+            showNonCurrentDates: true,
 
             dayCellDidMount: function (info) {
+                const cellDate = new Date(info.date);
+                cellDate.setHours(0, 0, 0, 0);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
                 info.el.classList.add('calendar-day');
-                if (info.isPast) {
-                    info.el.classList.add('disabled');
+
+                if (cellDate < today) {
+                    info.el.classList.add('disabled', 'fc-day-past');
                 } else {
                     info.el.classList.add('available');
                 }
             },
 
             dateClick: function (info) {
-                if (info.dayEl.classList.contains('disabled') || info.dayEl.classList.contains('unavailable-date')) {
+                const clickedDate = new Date(info.date);
+                clickedDate.setHours(0, 0, 0, 0);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                // 과거 날짜는 클릭 불가
+                if (clickedDate < today) {
                     return;
                 }
 
-                const prevSelected = document.querySelector('.calendar-day.selected');
+                if (info.dayEl.classList.contains('unavailable-date')) {
+                    return;
+                }
+
+                // 이전 선택 제거
+                const prevSelected = calendarEl.querySelector('.calendar-day.selected');
                 if (prevSelected) {
                     prevSelected.classList.remove('selected');
                 }
+
+                // 새로운 선택
                 info.dayEl.classList.add('selected');
                 selectedDate = info.dateStr;
+
+                console.log('Selected date:', selectedDate);
 
                 updateSummary();
                 checkAndLoadTimes();
@@ -167,6 +194,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         calendar.render();
+
+        // 렌더링 후 과거 날짜 비활성화 확인
+        setTimeout(() => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            document.querySelectorAll('.fc-daygrid-day').forEach(dayEl => {
+                const dateStr = dayEl.getAttribute('data-date');
+                if (dateStr) {
+                    const cellDate = new Date(dateStr);
+                    cellDate.setHours(0, 0, 0, 0);
+
+                    if (cellDate < today) {
+                        dayEl.style.pointerEvents = 'none';
+                        dayEl.style.opacity = '0.5';
+                    }
+                }
+            });
+        }, 100);
     }
 
 
@@ -278,7 +324,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // --- 5. 유틸리티 및 이벤트 핸들러 ---
-
     function addDepartmentClickHandlers() {
         deptGrid.querySelectorAll('.department-btn').forEach(button => {
             button.addEventListener('click', function () {
@@ -367,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- 6. [수정] 예약 제출 (DB 연동) ---
+    // --- 6. 예약 제출 (DB 연동) ---
     if (submitReservationBtn) {
         submitReservationBtn.addEventListener('click', async function() {
             const reservationNotes = notesTextarea.value.trim();
