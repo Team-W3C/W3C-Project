@@ -91,7 +91,6 @@
         )
     </insert>
 
-    <!-- 신규 INSERT -->
     <insert id="insertAnswer" parameterType="com.w3c.spring.model.vo.inquiry.Answer">
         INSERT INTO ANSWER (
         ANSWER_NO,
@@ -109,10 +108,26 @@
         )
     </insert>
 
-    <!-- 필요 시 게시글 상태 갱신 -->
     <update id="updateBoardStatus">
         UPDATE BOARD
         SET BOARD_STATUS = #{boardStatus}
         WHERE BOARD_ID = #{boardId}
     </update>
+
+    <select id="selectBoardCountAll" resultType="_int">
+        SELECT COUNT(*)
+        FROM V_BOARD_QA
+    </select>
+
+    <select id="selectBoardCountByStatus" resultType="_int">
+        SELECT COUNT(*)
+        FROM V_BOARD_QA
+        WHERE BOARD_STATUS = #{status}
+    </select>
+
+    <select id="selectBoardCountToday" resultType="_int">
+        SELECT COUNT(*)
+        FROM V_BOARD_QA
+        WHERE TRUNC(QUESTION_DATE) = TRUNC(SYSDATE)
+    </select>
 </mapper>

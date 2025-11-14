@@ -1,13 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>병원 ERP 시스템 - 커뮤니티</title>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpNotice/erp-notice.css">
+    <script>
+        window.contextPath = "${pageContext.request.contextPath}";
+    </script>
 </head>
 <body>
 <!-- Header Include -->
@@ -35,8 +41,8 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <span class="stat-label">공지사항</span>
-                <span class="stat-count">12건</span>
+                <span class="stat-label">문의사항</span>
+                <span class="stat-count">${stats.total}건</span>
             </div>
             <span class="stat-badge">+3</span>
         </div>
@@ -49,9 +55,9 @@
             </div>
             <div class="stat-content">
                 <span class="stat-label">대기 중 문의</span>
-                <span class="stat-count">8건</span>
+                <span class="stat-count">${stats.waiting}건</span>
             </div>
-            <span class="stat-badge">+2</span>
+<%--            <span class="stat-badge">+2</span>--%>
         </div>
 
         <div class="stat-card">
@@ -63,9 +69,9 @@
             </div>
             <div class="stat-content">
                 <span class="stat-label">처리 완료</span>
-                <span class="stat-count">45건</span>
+                <span class="stat-count">${stats.completed}건</span>
             </div>
-            <span class="stat-badge">+12</span>
+<%--            <span class="stat-badge">+12</span>--%>
         </div>
     </section>
 
@@ -83,43 +89,67 @@
     </div>
 
     <section class="notice-list">
-        <article class="notice-item" data-notice-id="1">
-            <div class="notice-header">
-                <span class="notice-badge notice-badge-urgent">중요</span>
-                <span class="notice-badge notice-badge-system">시스템</span>
-            </div>
-            <h3 class="notice-title">10월 정기 시스템 점검 안내</h3>
-            <p class="notice-description">10월 30일 02:00 - 06:00 시스템 점검이 진행됩니다.</p>
-            <div class="notice-footer">
-                <span class="notice-author">관리자</span>
-                <span class="notice-date">2025-10-28</span>
-            </div>
-        </article>
+        <c:forEach var="notice" items="${result}">
+            <article class="notice-item" data-notice-id=${notice.notificationNo}>
+                <div class="notice-header">
+                    <!-- 대상(직원/환자) 뱃지 -->
+                    <c:choose>
+                        <c:when test="${notice.notifiedTypeName eq '직원 공지'}">
+                            <span class="notice-badge notice-badge-urgent">직원</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="notice-badge notice-badge-general">환자</span>
+                        </c:otherwise>
+                    </c:choose>
 
-        <article class="notice-item" data-notice-id="2">
-            <div class="notice-header">
-                <span class="notice-badge notice-badge-general">소식</span>
-            </div>
-            <h3 class="notice-title">신규 MRI 장비 도입 안내</h3>
-            <p class="notice-description">11월부터 최신 MRI 장비가 도입되어 더 나은 서비스를 제공합니다.</p>
-            <div class="notice-footer">
-                <span class="notice-author">시설관리팀</span>
-                <span class="notice-date">2025-10-22</span>
-            </div>
-        </article>
+                    <!-- 분류(시스템/운영/진료 등) 뱃지 -->
+                    <c:choose>
+                        <c:when test="${notice.notificationTypeName eq '시스템'}">
+                            <span class="notice-badge notice-badge-system">${notice.notificationTypeName}</span>
+                        </c:when>
+                        <c:when test="${notice.notificationTypeName eq '운영'}">
+                            <span class="notice-badge notice-badge-event">${notice.notificationTypeName}</span>
+                        </c:when>
+                        <c:when test="${notice.notificationTypeName eq '진료'}">
+                            <span class="notice-badge notice-badge-check">${notice.notificationTypeName}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="notice-badge">${notice.notificationTypeName}</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
 
-        <article class="notice-item" data-notice-id="3">
-            <div class="notice-header">
-                <span class="notice-badge notice-badge-urgent">중요</span>
-                <span class="notice-badge notice-badge-event">이벤트</span>
-            </div>
-            <h3 class="notice-title">직원 시간 변경 안내 (2차수정내)</h3>
-            <p class="notice-description">명절일의 이슈로 일시적 업무 시간이 변경됩니다.</p>
-            <div class="notice-footer">
-                <span class="notice-author">인사총무팀</span>
-                <span class="notice-date">2025-10-20</span>
-            </div>
-        </article>
+                <!-- 제목 -->
+                <h3 class="notice-title">${notice.notificationTitle}</h3>
+
+                <!-- 내용 (null 방지용) -->
+                <p class="notice-description">
+                    <c:choose>
+                        <c:when test="${not empty notice.notificationContent}">
+                            <c:choose>
+                                <c:when test="${fn:length(notice.notificationContent) > 30}">
+                                    ${fn:substring(notice.notificationContent, 0, 30)}...
+                                </c:when>
+                                <c:otherwise>
+                                    ${notice.notificationContent}
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            내용이 없습니다.
+                        </c:otherwise>
+                    </c:choose>
+                </p>
+
+                <!-- 하단부 -->
+                <div class="notice-footer">
+                    <span class="notice-author">${notice.departmentName}</span>
+                    <span class="notice-date">${notice.notificationDate}</span>
+
+                    </span>
+                </div>
+            </article>
+        </c:forEach>
     </section>
 </main>
 
@@ -132,7 +162,7 @@
                     <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" stroke="#0E787C" stroke-width="2"/>
                     <path d="M10 6v4M10 14h.01" stroke="#0E787C" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                <h2 class="modal-title">공지사항</h2>
+                <h2 class="modal-title">문의사항</h2>
             </div>
             <button class="modal-close-btn" id="closeDetailModal">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -143,7 +173,7 @@
 
         <div class="modal-content">
             <nav class="modal-tabs">
-                <button class="modal-tab">시스템</button>
+                <div id="modalBadges" class="modal-badge-group"></div>
             </nav>
 
             <article class="notice-detail">
@@ -194,7 +224,7 @@
                     <label class="form-label">
                         <span class="label-text">대상</span>
                     </label>
-                    <select class="form-select">
+                    <select class="form-select" id="notifiedType" name="notifiedType" required>
                         <option value="all">전체</option>
                         <option value="patient">환자</option>
                         <option value="employee">직원</option>
@@ -205,11 +235,8 @@
                     <label class="form-label">
                         <span class="label-text">부서</span>
                     </label>
-                    <select class="form-select">
-                        <option value="">부서1</option>
-                        <option value="">부서2</option>
-                        <option value="">부서3</option>
-                        <option value="">부서4</option>
+                    <select class="form-select" id="departmentNo" name="departmentNo" required>
+                        <option value="">부서를 선택하세요</option>
                     </select>
                 </div>
 
@@ -217,11 +244,10 @@
                     <label class="form-label">
                         <span class="label-text">분류</span>
                     </label>
-                    <select class="form-select">
-                        <option value="">분류</option>
-                        <option value="urgent">긴급</option>
-                        <option value="general">일반</option>
-                        <option value="info">정보</option>
+                    <select class="form-select" id="notificationType" name="notificationType" required>
+                        <option value="system">시스템</option>
+                        <option value="operate">운영</option>
+                        <option value="medical">진료</option>
                     </select>
                 </div>
             </div>
@@ -229,13 +255,13 @@
                 <label class="form-label">
                     <span class="label-text">제목</span>
                 </label>
-                <input type="text" class="form-input" placeholder="제목을 입력해주세요">
+                <input type="text" class="form-input" id="notificationTitle" name="notificationTitle" placeholder="제목을 입력해주세요" required>
             </div>
             <div class="form-group">
                 <label class="form-label">
                     <span class="label-text">내용</span>
                 </label>
-                <textarea class="form-textarea" placeholder="내용을 입력하세요." rows="8"></textarea>
+                <textarea class="form-textarea" id="notificationContent" name="notificationContent" placeholder="내용을 입력하세요." rows="8" required></textarea>
             </div>
             <button type="submit" class="btn-submit">공지사항 등록</button>
         </form>

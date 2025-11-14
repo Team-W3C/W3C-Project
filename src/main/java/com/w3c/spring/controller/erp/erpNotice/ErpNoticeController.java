@@ -18,15 +18,25 @@ import java.util.Map;
 public class ErpNoticeController {
     private final BoardService boardService;
     @GetMapping("/notice")
-    public String erpNotice() {
+    public String erpNotice(@RequestParam(value = "cpage", defaultValue = "1") int curentPage, Model model) {
+        Map<String,Object> result = boardService.selectNotificationList(curentPage);
+        Map<String, Object> stats = boardService.getInquiryStats();
+
+        model.addAttribute("result", result.get("list"));
+        model.addAttribute("pi", result.get("pi"));
+        model.addAttribute("stats", stats);
+
         return "erp/notice/erp-notice";
     }
     @GetMapping("/inquiry")
     public String erpInquiry(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage, Model model) {
         Map<String, Object> result = boardService.getBoardList(cuurentPage);
+        Map<String, Object> stats = boardService.getInquiryStats();
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
+        model.addAttribute("stats", stats);
+
         System.out.println(result.get("list"));
 
         return "erp/notice/erp-inquiry";

@@ -17,7 +17,7 @@
         <nav class="nav">
 
             <a href="${pageContext.request.contextPath}/member/reservation/main" class="nav-link">예약</a>
-            <a href="${pageContext.request.contextPath}/member/notice" class="nav-link">공지사항</a>
+            <a href="${pageContext.request.contextPath}/member/notice?cpage=1" class="nav-link">공지사항</a>
             <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=1" class="nav-link">문의사항</a>
 
             <c:choose>

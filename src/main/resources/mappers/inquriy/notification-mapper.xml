@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.notification.NotificationMapper">
+
+    <resultMap id="notificationResultMap" type="Notification">
+        <result column="NOTIFICATION_NO" property="notificationNo"/>
+        <result column="NOTIFICATION_TYPE" property="notificationType"/>
+        <result column="DEPARTMENT_NAME" property="departmentName"/>
+        <result column="NOTIFICATION_TITLE" property="notificationTitle"/>
+        <result column="NOTIFICATION_CONTENT" property="notificationContent"/>
+        <result column="NOTIFIED_TYPE" property="notifiedType"/>
+        <result column="NOTIFICATION_DATE" property="notificationDate"/>
+        <result column="STAFF_NO" property="staffNo"/>
+
+    </resultMap>
+
+    <select id="selectNotificationList" resultMap="notificationResultMap">
+        SELECT
+        N.NOTIFICATION_NO,
+        N.NOTIFICATION_TYPE,
+        D.DEPARTMENT_NAME,
+        N.NOTIFICATION_TITLE,
+        N.NOTIFICATION_CONTENT,
+        N.NOTIFIED_TYPE,
+        TO_CHAR(N.NOTIFICATION_DATE, 'YYYY-MM-DD') AS NOTIFICATION_DATE
+        FROM
+        NOTIFICATION N
+        JOIN DEPARTMENT D ON N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE
+        N.NOTIFICATION_DELETE_TYPE = 'F'
+        ORDER BY
+        N.NOTIFICATION_NO DESC
+    </select>
+
+    <select id="selectNotificationListCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM NOTIFICATION
+    </select>
+
+    <select id="selectNotificationById" parameterType="_int" resultMap="notificationResultMap">
+        SELECT
+        N.NOTIFICATION_NO,
+        N.NOTIFICATION_TYPE,
+        D.DEPARTMENT_NAME,
+        N.NOTIFICATION_TITLE,
+        N.NOTIFICATION_CONTENT,
+        N.NOTIFIED_TYPE,
+        TO_CHAR(N.NOTIFICATION_DATE, 'YYYY-MM-DD') AS NOTIFICATION_DATE
+        FROM
+        NOTIFICATION N
+        JOIN DEPARTMENT D ON N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE
+        N.NOTIFICATION_NO = #{notificationNo}
+        AND N.NOTIFICATION_DELETE_TYPE = 'F'
+    </select>
+
+    <insert id="insertNotification" parameterType="com.w3c.spring.model.vo.notification.NotificationInsert">
+        INSERT INTO NOTIFICATION (
+        NOTIFICATION_NO,
+        STAFF_NO,
+        NOTIFICATION_TYPE,
+        DEPARTMENT_NO,
+        NOTIFICATION_TITLE,
+        NOTIFICATION_CONTENT,
+        NOTIFICATION_DATE,
+        NOTIFIED_TYPE,
+        NOTIFICATION_DELETE_TYPE
+        )
+        VALUES (
+        NOTIFICATION_SEQ.NEXTVAL,
+        #{staffNo},
+        #{notificationType},
+        #{departmentNo},
+        #{notificationTitle},
+        #{notificationContent},
+        SYSDATE,
+        #{notifiedType},
+        'F'
+        )
+    </insert>
+
+
+    <select id="getPatientNoticeListCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM NOTIFICATION
+        WHERE NOTIFIED_TYPE = 1
+        AND NOTIFICATION_DELETE_TYPE='F'
+    </select>
+    <select id="selectPatientNoticeList" resultMap="notificationResultMap">
+        SELECT
+        NOTIFICATION_NO,
+        NOTIFICATION_TITLE,
+        NOTIFICATION_CONTENT,
+        TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD') AS NOTIFICATION_DATE,
+        NOTIFIED_TYPE,
+        DEPARTMENT_NAME
+        FROM NOTIFICATION N
+        JOIN MEMBER M ON (N.STAFF_NO = M.STAFF_NO)
+        JOIN DEPARTMENT D ON(N.DEPARTMENT_NO = D.DEPARTMENT_NO)
+        WHERE NOTIFIED_TYPE = 1
+        AND NOTIFICATION_DELETE_TYPE = 'F'
+        ORDER BY NOTIFICATION_DATE DESC
+    </select>
+
+
+</mapper>

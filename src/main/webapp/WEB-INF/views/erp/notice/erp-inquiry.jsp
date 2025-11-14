@@ -41,10 +41,12 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <span class="stat-label">공지사항</span>
-                <span class="stat-count">12건</span>
+                <span class="stat-label">문의사항</span>
+                <span class="stat-count">${stats.total}건</span>
             </div>
-            <span class="stat-badge stat-badge-increase">+3</span>
+            <c:if test="${stats.todayCount > 0}">
+                <span class="stat-badge stat-badge-increase">+${stats.todayCount}</span>
+            </c:if>
         </div>
 
         <div class="stat-card">
@@ -55,9 +57,8 @@
             </div>
             <div class="stat-content">
                 <span class="stat-label">대기 중 문의</span>
-                <span class="stat-count">8건</span>
+                <span class="stat-count">${stats.waiting}건</span>
             </div>
-            <span class="stat-badge stat-badge-increase">+2</span>
         </div>
 
         <div class="stat-card">
@@ -69,23 +70,22 @@
             </div>
             <div class="stat-content">
                 <span class="stat-label">처리 완료</span>
-                <span class="stat-count">45건</span>
+                <span class="stat-count">${stats.completed}건</span>
             </div>
-            <span class="stat-badge stat-badge-increase">+12</span>
         </div>
     </section>
 
     <!-- 탭 네비게이션 -->
     <nav class="inquiry-tabs">
-        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/notice'">공지사항</button>
+        <button class="tab-btn" onclick="location.href='${pageContext.request.contextPath}/erp/erpNotice/notice?cpage=1'">공지사항</button>
         <button class="tab-btn tab-btn-active">문의사항</button>
     </nav>
 
     <!-- 필터 탭 -->
     <nav class="inquiry-filter-tabs">
         <button class="filter-tab filter-tab-active">전체</button>
-        <button class="filter-tab">신청</button>
-        <button class="filter-tab">반려</button>
+        <button class="filter-tab">대기중</button>
+        <button class="filter-tab">진행중</button>
     </nav>
 
     <!-- 문의사항 목록 -->
