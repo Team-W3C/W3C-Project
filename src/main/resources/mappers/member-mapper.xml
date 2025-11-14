@@ -1,55 +1,108 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
+    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
+    <resultMap id="memberResultMap" type="Member">
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="MEMBER_PWD" property="memberPwd"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_GENDER" property="memberGender"/>
+        <result column="MEMBER_RRN" property="memberRrn"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_ADDRESS" property="memberAddress"/>
+        <result column="MEMBER_JOIN_DATE" property="memberJoinDate"/>
+        <result column="MEMBER_BLOOD_TYPE" property="memberBloodType"/>
+        <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
+        <result column="MEMBER_ALLERGY" property="memberAllergy"/>
+        <result column="MEMBER_STATUS" property="memberStatus"/>
+        <result column="STAFF_NO" property="staffNo"/>
+        <result column="DEPARTMENT_NAME" property="departmentName"/> <result column="POSITION_NAME" property="positionName"/> </resultMap>
 
-    <resultMap id="memberResultMap" type="com.w3c.spring.model.vo.Member">
-        <id property="memberNo" column="member_no"/>
-        <result property="memberId" column="member_id"/>
-        <result property="memberPwd" column="member_pwd"/>
-        <result property="memberName" column="member_name"/>
-        <result property="memberGender" column="member_gender"/>
-        <result property="memberRrn" column="member_rrn"/>
-        <result property="memberPhone" column="member_phone"/>
-        <result property="memberEmail" column="member_email"/>
-        <result property="memberAddress" column="member_address"/>
-        <result property="memberJoinDate" column="member_join_date"/>
-        <result property="memberBloodType" column="member_blood_type"/>
-        <result property="memberChronicDisease" column="member_chronic_disease"/>
-        <result property="memberAllergy" column="member_allergy"/>
-        <result property="memberStatus" column="member_status"/>
-        <result property="staffNo" column="staff_no"/>
-    </resultMap>
-
-    <select id="selectMemberById" resultMap="memberResultMap">
-        SELECT *
-        FROM MEMBER
-        WHERE member_id = #{memberId}
-          AND member_status = 'T'
+    <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
+        SELECT
+        M.MEMBER_NO,
+        M.MEMBER_ID,
+        M.MEMBER_PWD,
+        M.MEMBER_NAME,
+        M.MEMBER_GENDER,
+        M.MEMBER_RRN,
+        M.MEMBER_PHONE,
+        M.MEMBER_EMAIL,
+        M.MEMBER_ADDRESS,
+        M.MEMBER_JOIN_DATE,
+        M.MEMBER_BLOOD_TYPE,
+        M.MEMBER_CHRONIC_DISEASE,
+        M.MEMBER_ALLERGY,
+        M.MEMBER_STATUS,
+        S.STAFF_NO,
+        D.DEPARTMENT_NAME,
+        COALESCE(DR.DOCTOR_POSITION, N.NURSE_POSITION) AS POSITION_NAME
+        FROM
+        MEMBER M
+        LEFT JOIN
+        STAFF S ON M.STAFF_NO = S.STAFF_NO
+        LEFT JOIN
+        DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
+        LEFT JOIN
+        NURSE N ON S.STAFF_NO = N.STAFF_NO
+        LEFT JOIN
+        DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE
+        M.MEMBER_ID = #{memberId}
+        AND M.MEMBER_PWD = #{memberPwd}
+        AND M.MEMBER_STATUS = 'T'
     </select>
 
-    <insert id="signUpMember" parameterType="com.w3c.spring.model.vo.Member">
-        INSERT INTO MEMBER (
-            member_no, member_id, member_pwd, member_name,
-            member_gender, member_rrn, member_phone, member_email,
-            member_address, member_blood_type,
-            member_chronic_disease, member_allergy,
-            member_status, member_join_date
+    <insert id="signUpMember" parameterType="Member">
+        INSERT INTO MEMBER
+        (
+            MEMBER_NO,
+            MEMBER_ID,
+            MEMBER_PWD,
+            MEMBER_NAME,
+            MEMBER_GENDER,
+            MEMBER_RRN,
+            MEMBER_PHONE,
+            MEMBER_EMAIL,
+            MEMBER_ADDRESS,
+            MEMBER_JOIN_DATE,
+            MEMBER_BLOOD_TYPE,
+            MEMBER_CHRONIC_DISEASE,
+            MEMBER_ALLERGY,
+            MEMBER_STATUS
         )
-        VALUES (
-                   MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPwd}, #{memberName},
-                   #{memberGender}, #{memberRrn}, #{memberPhone}, #{memberEmail},
-                   #{memberAddress}, #{memberBloodType,jdbcType=VARCHAR},
-                   #{memberChronicDisease,jdbcType=VARCHAR}, #{memberAllergy,jdbcType=VARCHAR},
-                   'T', SYSDATE
-               )
+        VALUES(
+            MEMBER_SEQ.NEXTVAL,
+            #{memberId},
+            #{memberPwd},
+            #{memberName},
+            #{memberGender},
+            #{memberRrn},
+            #{memberPhone},
+            #{memberEmail},
+            #{memberAddress},
+            SYSDATE,
+            #{memberBloodType},
+            #{memberChronicDisease},
+            #{memberAllergy},
+            'T'
+        )
     </insert>
 
-    <select id="getMemberCountById" resultType="int">
+    <select id="getMemberCountById" resultType="_int">
         SELECT COUNT(*)
         FROM MEMBER
-        WHERE member_id = #{memberId}
+        WHERE MEMBER_ID = #{memberId}
     </select>
+    <insert id="insertGuestMember"
+            parameterType="com.w3c.spring.model.vo.Member"
+            useGeneratedKeys="true"
+            keyProperty="memberNo">
 
     <update id="updateMemberInfo" parameterType="com.w3c.spring.model.vo.Member">
         UPDATE MEMBER

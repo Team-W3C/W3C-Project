@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.EmployeeManagementMapper">
+    <resultMap id="memberResultMap" type="Member">
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="MEMBER_PWD" property="memberPwd"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_GENDER" property="memberGender"/>
+        <result column="MEMBER_RRN" property="memberRrn"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_ADDRESS" property="memberAddress"/>
+        <result column="MEMBER_JOIN_DATE" property="memberJoinDate"/>
+        <result column="MEMBER_BLOOD_TYPE" property="memberBloodType"/>
+        <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
+        <result column="MEMBER_ALLERGY" property="memberAllergy"/>
+        <result column="MEMBER_STATUS" property="memberStatus"/>
+        <result column="STAFF_NO" property="staffNo"/>
+    </resultMap>
+
+    <resultMap id="viewStaffListResultMap" type="ViewStaffList">
+        <result column="EMPLOYEE_ID" property="staffNo"/>
+        <result column="EMPLOYEE_NAME" property="staffName"/>
+        <result column="EMPLOYEE_POSITION" property="staffPosition"/>
+        <result column="DEPARTMENT_NAME" property="department"/>
+        <result column="EMPLOYEE_EMAIL" property="staffEmail"/>
+        <result column="EMPLOYEE_PHONE" property="staffPhone"/>
+        <result column="SCHEDULE_DETAILS" property="scheduleDay"/>
+        <result column="EMPLOYEE_STATUS" property="staffStatus"/>
+    </resultMap>
+
+    <resultMap id="viewDetailEmployeeResultMap" type="StaffDetail">
+        <result column="STAFF_NO" property="staffNo"/>
+        <result column="STAFF_NAME" property="staffName"/>
+        <result column="STAFF_EMAIL" property="staffEmail"/>
+        <result column="STAFF_PHONE" property="staffPhone"/>
+        <result column="JOIN_DATE" property="joinDate"/>
+        <result column="STAFF_STATUS" property="status"/>
+        <result column="STAFF_POSITION" property="position"/>
+        <result column="DEPARTMENT" property="department"/>
+        <result column="SCHEDULE_DETAILS" property="scheduleDetail"/>
+        <result column="ATTENDANCE_DAYS" property="attendanceDayCount"/>
+        <result column="LATE_COUNT" property="lateCount"/>
+        <result column="ABSENT_DAYS" property="absentCount"/>
+        <result column="VACATION_DAYS" property="vacationDayCount"/>
+        <result column="TOTAL_ANNUAL_LEAVE" property="totalAnnualLeave"/>
+        <result column="USED_ANNUAL_LEAVE" property="usedAnnualLeave"/>
+        <result column="REMAINING_ANNUAL_LEAVE" property="remainingAnnualLeave"/>
+        <result column="LICENSES" property="licenses"/>
+        <result column="DOCTOR_SPECIALTY" property="specialties"/>
+        <result column="IS_WORKING_NOW" property="working"/>
+    </resultMap>
+
+    <select id="getCountEmployeeAll" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE STAFF_NO IS NOT NULL
+    </select>
+
+    <select id="getCountEmployeeWork" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        JOIN ABSENCE ON MEMBER.STAFF_NO = ABSENCE.STAFF_NO
+        WHERE TRUNC(ABSENCE_START) = TRUNC(SYSDATE)
+        AND ABSENCE_END IS NULL
+    </select>
+
+    <select id="getCountEmployeeVacation" resultType="_int">
+        SELECT COUNT(*)
+        FROM ABSENCE_APPLICATION_DETAIL
+        WHERE ISAPPROVED = 'T' AND ABSENCE_TYPE = 2
+    </select>
+
+    <select id="getCountEmployeeResign" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE STAFF_NO IS NOT NULL
+        AND MEMBER_STATUS = 'F'
+    </select>
+
+    <select id="selectStaffList" resultMap="viewStaffListResultMap">
+        SELECT
+        employee_id, employee_name, employee_position, department_name,
+        employee_email, employee_phone, schedule_details, employee_status
+        FROM V_EMPLOYEE_LIST
+    </select>
+
+    <!-- 검색 결과 총 개수 -->
+    <select id="getSearchCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM V_EMPLOYEE_LIST
+        <where>
+            <choose>
+                <when test="condition == 'name'">
+                    EMPLOYEE_NAME LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="condition == 'position'">
+                    EMPLOYEE_POSITION LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="condition == 'department'">
+                    DEPARTMENT_NAME LIKE '%' || #{keyword} || '%'
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 검색 결과 목록 조회 -->
+    <select id="searchStaffList" resultMap="viewStaffListResultMap">
+        SELECT
+            EMPLOYEE_ID,
+            EMPLOYEE_NAME,
+            EMPLOYEE_POSITION,
+            DEPARTMENT_NAME,
+            EMPLOYEE_EMAIL,
+            EMPLOYEE_PHONE,
+            SCHEDULE_DETAILS,
+            EMPLOYEE_STATUS
+        FROM V_EMPLOYEE_LIST
+        <where>
+            <choose>
+                <when test="condition == 'name'">
+                    EMPLOYEE_NAME LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="condition == 'position'">
+                    EMPLOYEE_POSITION LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="condition == 'department'">
+                    DEPARTMENT_NAME LIKE '%' || #{keyword} || '%'
+                </when>
+            </choose>
+        </where>
+        ORDER BY EMPLOYEE_ID
+    </select>
+
+    <select id="getEmployeeById" resultMap="viewDetailEmployeeResultMap" parameterType="_int">
+        SELECT
+            STAFF_NO,
+            STAFF_NAME,
+            STAFF_EMAIL,
+            STAFF_PHONE,
+            JOIN_DATE,
+            STAFF_STATUS,
+            STAFF_POSITION,
+            DEPARTMENT,
+            SCHEDULE_DETAILS,
+            ATTENDANCE_DAYS,
+            LATE_COUNT,
+            ABSENT_DAYS,
+            VACATION_DAYS,
+            TOTAL_ANNUAL_LEAVE,
+            USED_ANNUAL_LEAVE,
+            REMAINING_ANNUAL_LEAVE,
+            LICENSES,
+            DOCTOR_SPECIALTY,
+            IS_WORKING_NOW
+        FROM V_EMPLOYEE_DETAIL
+        WHERE STAFF_NO = #{staffNo}
+    </select>
+
+</mapper>

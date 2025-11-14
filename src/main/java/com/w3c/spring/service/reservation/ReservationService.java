@@ -4,6 +4,7 @@ import com.w3c.spring.model.vo.*;
 import com.w3c.spring.model.vo.ReservationDetailVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReservationService {
 
@@ -23,4 +24,9 @@ public interface ReservationService {
 
     boolean updateReservation(ReservationRequestVO reservationData, int reservationNo, int memberNo);
 
+    Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate);
+
+    int updateRvtnStatus(String status, int reservationNo);
+
+    ReservationDetailVO selectRvtnDetail(int reservationNo);
 }
