@@ -136,23 +136,26 @@
     <insert id="insertPatient" parameterType="Member">
         INSERT INTO MEMBER (
         MEMBER_NO,
-        MEMBER_NAME,         MEMBER_GENDER,       MEMBER_RRN,
-        MEMBER_PHONE,        MEMBER_EMAIL,        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,    MEMBER_STATUS,
-        MEMBER_CHRONIC_DISEASE
+        MEMBER_ID,              MEMBER_PWD,             MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,      MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,         MEMBER_STATUS
         ) VALUES (
         MEMBER_SEQ.NEXTVAL,
-        #{memberId},
-        #{memberPwd},
-        #{memberName},
+        #{memberId},              #{memberPwd},             #{memberName},
         #{memberGender},
         #{memberRrn},
         #{memberPhone},
         #{memberEmail},
         #{memberAddress},
         #{memberJoinDate},
-        #{memberStatus},
-        #{memberChronicDisease}
+        #{memberBloodType},      #{memberChronicDisease},
+        #{memberAllergy},        #{memberStatus}
         )
     </insert>
 
