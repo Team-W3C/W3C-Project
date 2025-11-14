@@ -563,13 +563,21 @@
         // 페이지 로드 시 초기 상태 설정
         updateNextButtonState();
 
-        // 체크박스 변경 감지
+        // 🎯 수정 사항: 체크박스 변경과 레이블 클릭 모두에 updateNextButtonState 연결
         checkboxes.forEach(checkbox => {
+            // 1. 체크박스 변경 시 상태 업데이트
             checkbox.addEventListener('change', updateNextButtonState);
 
-            // 키보드 접근성 처리 (기존 코드 유지)
+            // 2. 레이블 클릭 시에도 상태를 확실히 업데이트 (접근성 및 안정성 보강)
             const label = document.querySelector(`label[for="${checkbox.id}"]`);
             if (label) {
+                // 레이블 클릭 시에도 change 이벤트 발생 후 버튼 상태를 확인하도록 보강
+                label.addEventListener('click', function() {
+                    // 비동기적으로 버튼 상태 업데이트를 지연시켜 토글된 상태를 확실히 반영
+                    setTimeout(updateNextButtonState, 0);
+                });
+
+                // 키보드 접근성 처리
                 label.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
