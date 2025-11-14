@@ -161,29 +161,63 @@
         WHERE MEMBER_NO = #{memberNo}
     </select>
 
-    <select id="selectMedicalRecords" resultMap="patientRecordMap" parameterType="_int">
+    <select id="selectMedicalRecords" resultMap="patientResultMap" parameterType="_int">
         SELECT
-        V.VISIT_DATE, D.DEPT_NAME, S.STAFF_NAME,
-        DI.DIAGNOSIS_NAME, R.RESERVATION_STATUS
+        V.VISIT_DATE,
+        D.DEPARTMENT_NAME,
+
+        <!-- [수정]
+          R.STAFF_NO가 생겼으므로,
+          STAFF -> MEMBER 테이블을 조인하여 의사 이름을 가져옵니다.
+        -->
+        S_MEM.MEMBER_NAME AS DOCTOR_NAME,
+
+        DIAG.DIAGNOSIS_NAME,
+        R.RESERVATION_STATUS AS STATUS
+
         FROM VISIT V
-        LEFT JOIN RESERVATION R ON V.RESERVATION_NO = R.RESERVATION_NO
+
+        LEFT JOIN RESERVATION R
+        ON V.RESERVATION_NO = R.RESERVATION_NO
+        AND R.RESERVATION_STATUS = '완료' /* '완료'된 예약만 JOIN */
+
+        LEFT JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
+
+        <!-- [수정] R.STAFF_NO (새 컬럼)를 사용하여 의사 이름 JOIN -->
         LEFT JOIN STAFF S ON R.STAFF_NO = S.STAFF_NO
-        LEFT JOIN DEPARTMENT D ON S.DEPT_NO = D.DEPT_NO
-        LEFT JOIN DIAGNOSIS DI ON R.RESERVATION_NO = DI.RESERVATION_NO
-        WHERE V.MEMBER_NO = #{memberNo}
-        AND R.RESERVATION_STATUS = '완료' /* 과거 기록 */
-        ORDER BY V.VISIT_DATE DESC
+        LEFT JOIN MEMBER S_MEM ON S.MEMBER_NO = S_MEM.MEMBER_NO
+
+        LEFT JOIN MEDICAL_ORDER MO ON R.RESERVATION_NO = MO.RESERVATION_NO
+        LEFT JOIN MEDICAL_RECORD MR ON MO.MEDICAL_RECORD_NO = MR.MEDICAL_RECORD_NO
+        LEFT JOIN DIAGNOSIS DIAG ON MR.DIAGNOSIS_NO = DIAG.DIAGNOSIS_NO
+
+        WHERE
+        V.MEMBER_NO = #{memberNo}
+        ORDER BY
+        V.VISIT_DATE DESC
     </select>
 
     <select id="selectReservations" resultMap="reservationResultMap" parameterType="_int">
         SELECT
-        R.RESERVATION_DATE, D.DEPT_NAME, S.STAFF_NAME, R.RESERVATION_TYPE
+        R.TREATMENT_DATE AS RESERVATION_DATE,
+        D.DEPARTMENT_NAME,
+
+        <!-- [수정] 의사 이름 가져오기 -->
+        S_MEM.MEMBER_NAME AS DOCTOR_NAME,
+
+        R.RESERVATION_NOTES AS RESERVATION_TYPE
+
         FROM RESERVATION R
+        LEFT JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
+
+        <!-- [수정] R.STAFF_NO (새 컬럼)를 사용하여 의사 이름 JOIN -->
         LEFT JOIN STAFF S ON R.STAFF_NO = S.STAFF_NO
-        LEFT JOIN DEPARTMENT D ON S.DEPT_NO = D.DEPT_NO
+        LEFT JOIN MEMBER S_MEM ON S.MEMBER_NO = S_MEM.MEMBER_NO
+
         WHERE R.MEMBER_NO = #{memberNo}
-        AND R.RESERVATION_STATUS = '예약' /* 예정된 기록 */
-        AND R.RESERVATION_DATE >= SYSDATE
-        ORDER BY R.RESERVATION_DATE ASC
+        AND R.RESERVATION_STATUS = '예약' /* '예약' 상태 */
+        AND R.TREATMENT_DATE >= SYSDATE
+        ORDER BY
+        R.TREATMENT_DATE ASC
     </select>
 </mapper>
