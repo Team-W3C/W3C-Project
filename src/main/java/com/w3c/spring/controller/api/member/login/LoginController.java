@@ -27,7 +27,7 @@ public class LoginController {
                               @RequestParam("memberPwd") String memberPwd,
                               ModelAndView mv, HttpSession session) {
 
-        Member loginMember = memberService.getMemberById(memberId, memberPwd);
+        Member loginMember = memberService.login(memberId, memberPwd);
         System.out.println(loginMember);
 
         if(loginMember == null) { //ID가 잘못된 상태

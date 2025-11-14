@@ -11,30 +11,20 @@
     <title>회원 정보</title>
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userInfo.css">
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
-    <style>
-        /* 모달을 기본적으로 숨기고, JS로 제어할 클래스 추가 */
-        .withdrawal-modal-overlay,
-        .password-modal-overlay {
-            /* [수정] 비밀번호 모달 선택자 추가 */
-            display: none;
-        }
+    <%--
+      userInfo.css가 sidebar.css보다 *뒤에* 와야
+      스타일 충돌 시 userInfo.css가 이길 수 있습니다.
+    --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userInfo.css">
 
-        .withdrawal-modal-overlay.is-open,
-        .password-modal-overlay.is-open {
-            /* [수정] 비밀번호 모달 선택자 추가 */
-            display: flex;
-        }
+    <%-- ✅ [삭제] 충돌을 일으키는 인라인 <style> 블록 전체 삭제 --%>
 
-        /* 모달이 열렸을 때 배경 스크롤 방지 */
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
 </head>
 
 <body>
@@ -57,7 +47,8 @@
             <section class="info-section basic-info">
                 <header class="info-section-header">
                     <h3>기본 정보</h3>
-                    <button type="button" class="btn btn-primary">정보 수정</button>
+                    <%-- 모달을 열기 위한 클래스 (변경 없음) --%>
+                    <button type="button" class="btn btn-primary open-update-modal-btn">정보 수정</button>
                 </header>
                 <div class="info-section-body">
                     <ul class="info-list">
@@ -141,6 +132,9 @@
         </section>
     </main>
 </div>
+
+<%-- 정보 수정 모달 --%>
+<%-- ✅ [수정] 모달을 열기 위한 is-open 클래스가 JS에 의해 제어됩니다. --%>
 <div class="modal-overlay update-info-modal-overlay">
     <div class="password-modal update-info-modal">
         <button type="button" class="modal-close" aria-label="닫기">
@@ -154,6 +148,8 @@
 
         <div class="modal-body">
             <form class="update-info-form" id="updateInfoForm">
+
+                <input type="hidden" id="update-memberNo" value="${loginMember.memberNo}">
 
                 <div class="field-box">
                     <label for="update-name" class="field-label">성함</label>
@@ -193,7 +189,9 @@
         </footer>
     </div>
 </div>
+
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
+
 <script>const contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/js/userInfo.js" defer></script>
 </body>

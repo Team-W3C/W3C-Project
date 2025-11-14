@@ -319,52 +319,187 @@ button {
     gap: 8px;
     /* 두 개의 주소 박스 사이 간격 */
 }
+
+/* ========================================
+   ✅ [수정] 모달 스타일 (JSP 인라인 스타일 통합)
+   ======================================== */
+
+/* 오버레이 (공통) */
+.withdrawal-modal-overlay,
+.password-modal-overlay,
 .update-info-modal-overlay {
-    /* 기존 .modal-overlay의 스타일을 따릅니다. */
-    z-index: 10000; /* 비밀번호 모달보다 높은 Z-index */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
 }
 
-.update-info-modal {
-    max-width: 600px;
+.withdrawal-modal-overlay.is-open,
+.password-modal-overlay.is-open,
+.update-info-modal-overlay.is-open {
+    display: flex;
 }
 
-.update-info-modal .field-box {
-    display: block; /* 필드 레이아웃 변경 */
-    padding: 12px 0;
+body.modal-open {
+    overflow: hidden;
+}
+
+/* 모달 박스 공통 */
+.password-modal {
+    background: #fff;
+    padding: 0; /* 패딩은 header/body/footer가 갖도록 0으로 리셋 */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden; /* 자식 요소의 패딩을 위해 */
+}
+
+/* 모달 헤더 (이미지 기반) */
+.modal-header {
+    padding: 24px 30px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 4px 0;
+}
+
+.modal-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* 모달 닫기 버튼 (이미지 기반) */
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+.modal-close:hover {
+    color: #333;
+}
+
+/* 모달 바디 (이미지 기반) */
+.modal-body {
+    padding: 24px 30px;
+}
+
+/* 모달 푸터 (이미지 기반) */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 30px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+/* 푸터 버튼 */
+.modal-footer .btn-cancel {
+    background-color: white;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 8px 20px;
+    font-weight: 700;
+    border-radius: 6px;
+}
+.modal-footer .btn-cancel:hover {
+    background-color: #f7f7f7;
+}
+
+.modal-footer .btn-confirm {
+    background-color: #0E787C;
+    color: white;
+    border: none;
+    padding: 9px 20px; /* border 1px 보정 */
+    font-weight: 700;
+    border-radius: 6px;
+}
+.modal-footer .btn-confirm:hover {
+    background-color: #0a5f62;
+}
+
+
+/* ========================================
+   ✅ [수정] 정보 수정 모달 (Specificity 높임)
+   ======================================== */
+
+.update-info-modal-overlay {
+    z-index: 10000;
+}
+
+/* 다른 모달과 구분되도록 max-width 설정 */
+.password-modal.update-info-modal {
+    width: 90%;
+    max-width: 500px; /* 이미지와 유사하게 600 -> 500으로 수정 */
+}
+
+/* ✅ 중요: .password-modal.update-info-modal 선택자를 사용하여
+  다른 CSS 파일(.field-box)의 스타일을 덮어씁니다.
+*/
+.password-modal.update-info-modal .field-box {
+    display: block; /* 'flex' 덮어쓰기 */
+    padding: 10px 0; /* 상하 여백 조정 */
     border: none;
     background: none;
+    margin-bottom: 0; /* field-box 기본 마진 제거 */
 }
 
-.update-info-modal .field-label {
+.password-modal.update-info-modal .field-label {
     display: block;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 700;
     color: #333;
     margin-bottom: 8px;
 }
 
-.update-info-modal .form-input {
+.password-modal.update-info-modal .form-input {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 12px 14px; /* 입력창을 더 크게 */
+    border: 1px solid #ccc; /* 테두리 명확하게 */
+    border-radius: 8px; /* 이미지와 유사하게 둥글게 */
     font-size: 16px;
     box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.password-modal.update-info-modal .form-input:focus {
+    border-color: #0E787C;
+    box-shadow: 0 0 0 2px rgba(14, 120, 124, 0.2);
+    outline: none;
 }
 
-.update-info-modal .address-group {
+.password-modal.update-info-modal .address-group {
     display: flex;
     gap: 8px;
 }
 
-.update-info-modal .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+/* 에러 메시지 */
+.update-info-modal .error-message {
+    color: #d32f2f;
+    font-size: 13px;
+    margin-top: 16px;
+    text-align: center;
+    display: none;
 }
-
-.update-info-modal .update-save-btn {
-    /* 기존 .btn-confirm 스타일 재사용 */
+.update-info-modal .error-message.show {
+    display: block;
 }
 
 

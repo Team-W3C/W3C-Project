@@ -1,10 +1,13 @@
 // MyChart.js (전체 파일)
 
 document.addEventListener('DOMContentLoaded', function () {
-    // contextPath 변수는 JSP 파일에서 이미 전역으로 선언되어 있어야 합니다.
-    // 예: const contextPath = "/your-app-context";
 
-    // --- 1. 비밀번호 모달 로직 ---
+    // JSP에서 선언된 전역 변수 contextPath를 안전하게 참조
+    const contextPath = window.contextPath || '';
+
+    // --- 1. 비밀번호 확인 모달 로직 (정보 수정 페이지 이동 전) ---
+    // (이 로직은 MyChart.jsp가 아닌 다른 페이지(예: userInfo.jsp)의
+    // 사이드바 '회원정보수정' 클릭 시 사용되는 것으로 보입니다.)
     const openBtn = document.getElementById('open-password-modal');
     const passwordModalOverlay = document.querySelector('.password-modal-overlay');
 
@@ -15,34 +18,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const passwordInput = passwordModalOverlay.querySelector('#password');
         const errorMessage = document.getElementById('password-error-message');
 
-        // 모달 함수 정의
-        function openModal() {
+        // 모달 열기
+        function openModal(e) {
+            e.preventDefault();
             passwordModalOverlay.classList.add('is-open');
             document.body.classList.add('modal-open');
-            // 모달이 열릴 때 에러 메시지 초기화
             if (errorMessage) {
                 errorMessage.style.display = 'none';
             }
         }
 
+        // 모달 닫기
         function closeModal() {
             passwordModalOverlay.classList.remove('is-open');
             document.body.classList.remove('modal-open');
             if (passwordForm) {
                 passwordForm.reset();
             }
-            // 모달이 닫힐 때 에러 메시지 초기화
             if (errorMessage) {
                 errorMessage.style.display = 'none';
             }
         }
 
-        // 이벤트 리스너 연결
-        openBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            openModal();
-        });
-
+        // 이벤트 리스너
+        openBtn.addEventListener('click', openModal);
         if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
         if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
 
@@ -52,36 +51,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // 폼 제출 (비밀번호 확인)
+        // 폼 제출 (비밀번호 확인 AJAX)
         if (passwordForm) {
             passwordForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
-                if (!passwordInput.value) {
+                const password = passwordInput.value;
+                if (!password) {
                     alert('비밀번호를 입력해주세요.');
                     return;
                 }
 
-                // 폼 데이터 (비밀번호)
-                const password = passwordInput.value;
-                const url = contextPath + '/member/verify-password'; // 실제 비밀번호 검증 API 엔드포인트
+                // ✅ 컨트롤러에 /member/verify-password가 구현되어 있어야 함
+                const url = contextPath + '/member/verify-password';
 
                 try {
-                    // 서버로 비밀번호 검증 요청
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ password: password })
+                        body: JSON.stringify({ password: password }) // { "password": "..." }
                     });
 
                     const result = await response.json();
 
                     if (response.ok && result.success) {
-                        // 1. 성공 시: 모달 닫고 회원 정보 수정 페이지로 이동
+                        // 성공: 모달 닫고, 실제 회원 정보 수정 페이지로 이동
                         closeModal();
-                        window.location.href = contextPath + '/member/info'; // 실제 수정 페이지 URL
+                        window.location.href = contextPath + '/member/info'; // '/member/info' 페이지로 이동
                     } else {
-                        // 2. 실패 시 (비밀번호 불일치): 에러 메시지 표시하고 모달은 유지
+                        // 실패: 에러 메시지 표시
                         if (errorMessage) {
                             errorMessage.textContent = result.message || '비밀번호가 일치하지 않습니다.';
                             errorMessage.style.display = 'block';
@@ -90,18 +88,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 } catch (error) {
                     console.error('Password verification error:', error);
-                    // 네트워크 오류 시 메시지 표시하고 모달 유지
                     if (errorMessage) {
-                        errorMessage.textContent = '네트워크 오류가 발생했습니다.';
+                        errorMessage.textContent = '서버 통신 중 오류가 발생했습니다.';
                         errorMessage.style.display = 'block';
                     }
                 }
             });
         }
-    } // --- 비밀번호 모달 로직 끝 ---
+    } // --- 1. 비밀번호 확인 모달 로직 끝 ---
 
 
-    // --- 2. '예약 취소' & '변경' 이벤트 리스너 ---
+    // --- 2. '예약 취소' 로직 (이벤트 위임) ---
     const contentSection = document.querySelector('.mypage-content');
 
     if (contentSection) {
@@ -110,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (e.target.classList.contains('btn-cancel') && e.target.closest('.card-actions')) {
                 handleCancelClick(e.target);
             }
-
             // '변경' 버튼 클릭 시
             if (e.target.classList.contains('btn-edit')) {
                 handleEditClick(e.target);
@@ -118,10 +114,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // [취소 로직 - 함수 정의]
+    // [취소] 버튼 클릭 핸들러
     function handleCancelClick(cancelButton) {
-        const isConfirmed = confirm('정말로 이 예약을 취소하시겠습니까?\n취소한 예약은 되돌릴 수 없습니다.');
-        if (isConfirmed) {
+        if (confirm('정말로 이 예약을 취소하시겠습니까?\n취소한 예약은 되돌릴 수 없습니다.')) {
             const card = cancelButton.closest('.reservation-card');
             const reservationNo = card.dataset.reservationNo;
             if (reservationNo) {
@@ -129,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    // [취소 로직 - AJAX]
+
+    // [취소] AJAX 요청
     async function handleCancelReservation(reservationNo, cardElement) {
         try {
             const response = await fetch(`${contextPath}/member/reservation/cancel`, {
@@ -140,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 alert('예약이 성공적으로 취소되었습니다.');
-                updateUICancelled(cardElement);
+                updateUICancelled(cardElement); // UI 즉시 변경
             } else {
                 const errorText = await response.text();
                 alert(`예약 취소에 실패했습니다: ${errorText}`);
@@ -150,28 +146,33 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('네트워크 오류가 발생했습니다.');
         }
     }
-    // [취소 로직 - UI 업데이트]
-    function updateUICancelled(cardElement) {
-        // 기존 스타일을 덮어쓰지 않도록 클래스 기반으로 업데이트
-        cardElement.querySelector('.status-badge-inline').className = 'status-badge-inline cancelled';
-        cardElement.querySelector('.status-text').className = 'status-text cancelled';
-        cardElement.querySelector('.status-text').textContent = '예약 취소';
 
-        // 아이콘을 다시 'warning' 상태로 설정
+    // [취소] UI 업데이트
+    function updateUICancelled(cardElement) {
+        cardElement.querySelector('.status-badge-inline').className = 'status-badge-inline cancelled';
+
+        const statusTextElem = cardElement.querySelector('.status-text');
+        statusTextElem.className = 'status-text cancelled';
+        statusTextElem.textContent = '예약 취소';
+
         const statusDiv = cardElement.querySelector('.status-badge-inline');
-        if (statusDiv && !statusDiv.querySelector('.status-icon.warning')) {
-            statusDiv.innerHTML = `<div class="status-icon warning"></div><span class="status-text cancelled">예약 취소</span>`;
+        if (statusDiv) {
+            const existingIcon = statusDiv.querySelector('.status-icon');
+            if (existingIcon) existingIcon.remove();
+
+            const warningIcon = document.createElement('div');
+            warningIcon.className = 'status-icon warning';
+            statusDiv.prepend(warningIcon);
         }
 
         const actionsDiv = cardElement.querySelector('.card-actions');
         if (actionsDiv) {
-            actionsDiv.innerHTML = '';
+            actionsDiv.innerHTML = ''; // 버튼 제거
         }
     }
 
 
     // --- 3. '예약 변경' 모달 로직 ---
-
     const editModalOverlay = document.querySelector('.edit-modal-overlay');
 
     if (editModalOverlay) {
@@ -184,32 +185,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const editNotesTextarea = document.getElementById('edit-notes');
         const editReservationNoInput = document.getElementById('edit-reservation-no');
 
-
-        // 모달 닫기 버튼 (X 버튼, 하단 '취소' 버튼)
+        // 모달 닫기 이벤트 (X, 취소, 배경 클릭)
         editModal.querySelectorAll('.modal-close, .modal-footer .btn-cancel').forEach(btn => {
             btn.addEventListener('click', closeEditModal);
         });
-
-        // 모달 배경 클릭 시 닫기
         editModalOverlay.addEventListener('click', (e) => {
-            if (e.target === editModalOverlay) {
-                closeEditModal();
-            }
+            if (e.target === editModalOverlay) closeEditModal();
         });
 
-        // '변경' 버튼 클릭 핸들러
+        // '변경' 버튼 클릭 핸들러 (이벤트 위임에서 호출됨)
         function handleEditClick(editButton) {
             const card = editButton.closest('.reservation-card');
             const reservationNo = card.dataset.reservationNo;
-
-            if (!reservationNo) {
+            if (reservationNo) {
+                openEditModal(reservationNo);
+            } else {
                 alert('예약 번호를 찾을 수 없습니다.');
-                return;
             }
-            openEditModal(reservationNo);
         }
 
-        // (AJAX 1) 진료과 목록을 모달 select에 채우기 (최초 1회만)
+        // (AJAX 1) 진료과 목록 로드 (최초 1회)
         let departmentsLoaded = false;
         async function loadDepartmentsIntoModal() {
             if (departmentsLoaded) return true;
@@ -218,9 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.ok) throw new Error('진료과 목록 로드 실패');
 
                 const departments = await response.json();
-
                 editDeptSelect.innerHTML = '<option value="">진료과를 선택하세요</option>';
-
                 departments.forEach(dept => {
                     editDeptSelect.innerHTML += `<option value="${dept.departmentNo}">${dept.departmentName}</option>`;
                 });
@@ -233,64 +226,51 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // (AJAX 2) 특정 예약 정보를 가져와 모달 폼에 채우기
+        // (AJAX 2) 특정 예약 정보 로드
         async function loadReservationData(reservationNo) {
             try {
-                // 폼을 숨기고 로딩 스피너 표시
-                editModalBody.classList.add('is-loading');
+                editModalBody.classList.add('is-loading'); // 로딩 시작
 
-                // API 호출
                 const response = await fetch(`${contextPath}/member/reservation/detail-json/${reservationNo}`);
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText || '예약 정보를 불러올 수 없습니다. 서버 상태를 확인하세요.');
-                }
+                if (!response.ok) throw new Error(await response.text() || '예약 정보를 불러올 수 없습니다.');
 
                 const data = await response.json();
 
-                // ▼▼▼▼▼ [핵심 수정] Null 값 방어 로직 추가 ▼▼▼▼▼
+                // Null 방어 및 데이터 포맷팅
                 const safeDoctorName = data.doctorName || '';
                 const safeTreatmentDate = data.treatmentDate || '';
+                const localDateTime = safeTreatmentDate.replace(' ', 'T'); // YYYY-MM-DD HH:MI -> YYYY-MM-DDTHH:MI
+                const doctorName = safeDoctorName.startsWith('담당의: ') ? safeDoctorName.replace('담당의: ', '') : safeDoctorName;
 
-                // 'YYYY-MM-DD HH24:MI' 형식을 'YYYY-MM-DDTHH:MI' (datetime-local) 형식으로 변경
-                const localDateTime = safeTreatmentDate.replace(' ', 'T');
-
-                // '담당의: 이름' 에서 '이름'만 추출
-                const doctorName = safeDoctorName.replace('담당의: ', '');
-
-                // 폼 필드에 값 채우기
-                editReservationNoInput.value = data.reservationNo; // hidden field
+                // 폼에 값 채우기
+                editReservationNoInput.value = data.reservationNo;
                 editDeptSelect.value = data.departmentNo;
                 editDatetimeInput.value = localDateTime;
                 editDoctorInput.value = doctorName;
-                editNotesTextarea.value = data.reservationNotes || ''; // 증상도 null 방어
+                editNotesTextarea.value = data.reservationNotes || '';
 
             } catch (error) {
                 console.error(error);
                 alert(error.message);
                 closeEditModal();
             } finally {
-                // 로딩 스피너 숨기고 폼 표시
-                editModalBody.classList.remove('is-loading');
+                editModalBody.classList.remove('is-loading'); // 로딩 끝
             }
         }
 
-        // 모달 열기
+        // 모달 열기 (데이터 로드)
         async function openEditModal(reservationNo) {
             editModalOverlay.classList.add('is-open');
             document.body.classList.add('modal-open');
-
-            editModalOverlay.dataset.currentRno = reservationNo;
+            editModalOverlay.dataset.currentRno = reservationNo; // 현재 예약번호 저장
 
             const deptLoaded = await loadDepartmentsIntoModal();
-
             if (deptLoaded) {
                 await loadReservationData(reservationNo);
             }
         }
 
-        // 모달 닫기
+        // 모달 닫기 (폼 리셋)
         function closeEditModal() {
             editModalOverlay.classList.remove('is-open');
             document.body.classList.remove('modal-open');
@@ -298,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
             editModalOverlay.dataset.currentRno = "";
         }
 
-        // (AJAX 3) '저장' 버튼 클릭 (폼 제출) 핸들러
+        // (AJAX 3) '저장' 버튼 (폼 제출)
         editForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -309,18 +289,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const formData = new FormData(editForm);
-
             const payload = {
                 departmentNo: parseInt(formData.get('departmentNo')),
-                // T를 공백으로 변환하여 서버가 인식하는 형식으로 맞춤
-                treatmentDate: formData.get('treatmentDate').replace('T', ' '),
+                treatmentDate: formData.get('treatmentDate').replace('T', ' '), // YYYY-MM-DDTHH:MI -> YYYY-MM-DD HH:MI
                 doctorName: formData.get('doctorName'),
                 reservationNotes: formData.get('reservationNotes'),
                 reservationNo: parseInt(reservationNo)
             };
 
+            // 유효성 검사 (간단)
+            if (!payload.departmentNo || !payload.treatmentDate) {
+                alert('진료과와 예약 시간은 필수입니다.');
+                return;
+            }
+
             try {
-                // 서버 엔드포인트에 reservationNo를 쿼리 파라미터로 명시적으로 전달
+                // Controller의 submit 메소드에 reservationNo를 쿼리로도 전달
                 const response = await fetch(`${contextPath}/member/reservation/submit?reservationNo=${reservationNo}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -332,16 +316,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok && result.success) {
                     alert(result.message || '예약이 성공적으로 변경되었습니다.');
                     closeEditModal();
-                    // UI 변경사항 반영을 위해 페이지 새로고침
-                    window.location.reload();
+                    window.location.reload(); // 성공 시 페이지 새로고침
                 } else {
-                    // 서버에서 실패 메시지를 보낸 경우
                     throw new Error(result.message || '예약 변경에 실패했습니다.');
                 }
 
             } catch (error) {
                 console.error('Update Error:', error);
-                alert(error.message);
+                alert(error.message); // 서버/네트워크 오류 메시지 표시
             }
         });
 

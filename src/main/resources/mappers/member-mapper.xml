@@ -1,156 +1,84 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
 
-    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
-    <resultMap id="memberResultMap" type="Member">
-        <result column="MEMBER_NO" property="memberNo"/>
-        <result column="MEMBER_ID" property="memberId"/>
-        <result column="MEMBER_PWD" property="memberPwd"/>
-        <result column="MEMBER_NAME" property="memberName"/>
-        <result column="MEMBER_GENDER" property="memberGender"/>
-        <result column="MEMBER_RRN" property="memberRrn"/>
-        <result column="MEMBER_PHONE" property="memberPhone"/>
-        <result column="MEMBER_EMAIL" property="memberEmail"/>
-        <result column="MEMBER_ADDRESS" property="memberAddress"/>
-        <result column="MEMBER_JOIN_DATE" property="memberJoinDate"/>
-        <result column="MEMBER_BLOOD_TYPE" property="memberBloodType"/>
-        <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
-        <result column="MEMBER_ALLERGY" property="memberAllergy"/>
-        <result column="MEMBER_STATUS" property="memberStatus"/>
-        <result column="STAFF_NO" property="staff_no"/>
+    <resultMap id="memberResultMap" type="com.w3c.spring.model.vo.Member">
+        <id property="memberNo" column="member_no"/>
+        <result property="memberId" column="member_id"/>
+        <result property="memberPwd" column="member_pwd"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberGender" column="member_gender"/>
+        <result property="memberRrn" column="member_rrn"/>
+        <result property="memberPhone" column="member_phone"/>
+        <result property="memberEmail" column="member_email"/>
+        <result property="memberAddress" column="member_address"/>
+        <result property="memberJoinDate" column="member_join_date"/>
+        <result property="memberBloodType" column="member_blood_type"/>
+        <result property="memberChronicDisease" column="member_chronic_disease"/>
+        <result property="memberAllergy" column="member_allergy"/>
+        <result property="memberStatus" column="member_status"/>
+        <result property="staffNo" column="staff_no"/>
     </resultMap>
 
-    <!-- ✅ 회원 ID + 비밀번호로 로그인용 조회 -->
-    <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
-        SELECT
-        MEMBER_NO,
-        MEMBER_ID,
-        MEMBER_PWD,
-        MEMBER_NAME,
-        MEMBER_GENDER,
-        MEMBER_RRN,
-        MEMBER_PHONE,
-        MEMBER_EMAIL,
-        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,
-        MEMBER_BLOOD_TYPE,
-        MEMBER_CHRONIC_DISEASE,
-        MEMBER_ALLERGY,
-        MEMBER_STATUS,
-        STAFF_NO
-        FROM MEMBER
-        WHERE MEMBER_ID = #{memberId}
-        AND MEMBER_PWD = #{memberPwd}
-        AND MEMBER_STATUS = 'T'
-    </select>
-
-    <!-- 회원가입 -->
-    <insert id="signUpMember" parameterType="Member">
-        INSERT INTO MEMBER (
-        MEMBER_NO,
-        MEMBER_ID,
-        MEMBER_PWD,
-        MEMBER_NAME,
-        MEMBER_GENDER,
-        MEMBER_RRN,
-        MEMBER_PHONE,
-        MEMBER_EMAIL,
-        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,
-        MEMBER_BLOOD_TYPE,
-        MEMBER_CHRONIC_DISEASE,
-        MEMBER_ALLERGY,
-        MEMBER_STATUS
-        )
-        VALUES (
-        MEMBER_SEQ.NEXTVAL,
-        #{memberId},
-        #{memberPwd},
-        #{memberName},
-        #{memberGender},
-        #{memberRrn},
-        #{memberPhone},
-        #{memberEmail},
-        #{memberAddress},
-        SYSDATE,
-        #{memberBloodType},
-        #{memberChronicDisease},
-        #{memberAllergy},
-        'T'
-        )
-    </insert>
-
-    <!-- ID 중복 체크 -->
-    <select id="getMemberCountById" resultType="_int">
-        SELECT COUNT(*)
-        FROM MEMBER
-        WHERE MEMBER_ID = #{memberId}
-    </select>
-
-    <!-- 비회원 등록 -->
-    <insert id="insertGuestMember"
-            parameterType="com.w3c.spring.model.vo.Member"
-            useGeneratedKeys="true"
-            keyProperty="memberNo">
-
-        <selectKey keyProperty="memberNo" resultType="long" order="BEFORE">
-            SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
-        </selectKey>
-
-        INSERT INTO MEMBER (
-        member_no, member_name, member_gender, member_rrn, member_phone,
-        member_email, member_address, member_blood_type,
-        member_chronic_disease, member_status,
-        member_id, member_pwd, member_join_date, staff_no
-        ) VALUES (
-        #{memberNo}, #{memberName}, #{memberGender}, #{memberRrn}, #{memberPhone},
-        #{memberEmail}, #{memberAddress}, #{memberBloodType},
-        #{memberChronicDisease}, #{memberStatus},
-        NULL, NULL, SYSDATE, NULL
-        )
-    </insert>
-
-    <!-- 회원 ID로 회원 정보 조회 -->
-    <select id="selectMemberById" parameterType="string" resultMap="memberResultMap">
-        SELECT
-        MEMBER_NO,
-        MEMBER_ID,
-        MEMBER_PWD,
-        MEMBER_NAME,
-        MEMBER_GENDER,
-        MEMBER_RRN,
-        MEMBER_PHONE,
-        MEMBER_EMAIL,
-        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,
-        MEMBER_BLOOD_TYPE,
-        MEMBER_CHRONIC_DISEASE,
-        MEMBER_ALLERGY,
-        MEMBER_STATUS,
-        STAFF_NO
-        FROM MEMBER
-        WHERE MEMBER_ID = #{memberId}
-        AND MEMBER_STATUS = 'T'
-    </select>
-
-    <!-- ✅ 회원 정보 수정 -->
-    <update id="updateMemberInfo" parameterType="Member">
-        UPDATE MEMBER
-        SET MEMBER_NAME = #{memberName},
-        MEMBER_PHONE = #{memberPhone},
-        MEMBER_EMAIL = #{memberEmail},
-        MEMBER_ADDRESS = #{memberAddress}
-        WHERE MEMBER_NO = #{memberNo}
-    </update>
-
-    <select id="getMemberByNo" resultType="com.w3c.spring.model.vo.Member">
+    <select id="selectMemberById" resultMap="memberResultMap">
         SELECT *
         FROM MEMBER
-        WHERE MEMBER_NO = #{memberNo}
+        WHERE member_id = #{memberId}
+          AND member_status = 'T'
     </select>
+
+    <insert id="signUpMember" parameterType="com.w3c.spring.model.vo.Member">
+        INSERT INTO MEMBER (
+            member_no, member_id, member_pwd, member_name,
+            member_gender, member_rrn, member_phone, member_email,
+            member_address, member_blood_type,
+            member_chronic_disease, member_allergy,
+            member_status, member_join_date
+        )
+        VALUES (
+                   MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPwd}, #{memberName},
+                   #{memberGender}, #{memberRrn}, #{memberPhone}, #{memberEmail},
+                   #{memberAddress}, #{memberBloodType},
+                   #{memberChronicDisease}, #{memberAllergy},
+                   'T', SYSDATE
+               )
+    </insert>
+
+    <select id="getMemberCountById" resultType="int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE member_id = #{memberId}
+    </select>
+
+    <update id="updateMemberInfo" parameterType="com.w3c.spring.model.vo.Member">
+        UPDATE MEMBER
+        SET member_name    = #{memberName},
+            member_phone   = #{memberPhone},
+            member_email   = #{memberEmail},
+            member_address = #{memberAddress},
+            member_blood_type = #{memberBloodType},
+            member_chronic_disease = #{memberChronicDisease},
+            member_allergy = #{memberAllergy}
+        WHERE member_no = #{memberNo}
+    </update>
+
+    <select id="getMemberByNo" resultMap="memberResultMap">
+        SELECT *
+        FROM MEMBER
+        WHERE member_no = #{memberNo}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE MEMBER
+        SET member_pwd = #{newPassword}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <update id="deactivateMember">
+        UPDATE MEMBER
+        SET member_status = 'F'
+        WHERE member_id = #{memberId}
+    </update>
 
 </mapper>

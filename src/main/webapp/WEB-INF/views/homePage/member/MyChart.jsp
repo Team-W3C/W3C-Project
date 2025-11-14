@@ -116,7 +116,7 @@
 <jsp:include page="../../common/homePageMember/header.jsp"/>
 
 <main class="mypage-container">
-    <jsp:include page="../../common/homePageMember/member-sidebar.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/homePageMember/member-sidebar.jsp" />
 
 
     <section class="mypage-content">

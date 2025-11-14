@@ -1,10 +1,12 @@
 // DOM이 모두 로드된 후에 스크립트 실행
 document.addEventListener('DOMContentLoaded', function () {
 
-    // -------------------------------
-    // 공통 설정
-    // -------------------------------
-    const contextPath = '${pageContext.request.contextPath}';
+    // ------------------------------------------------------------
+    // 🔹 공통 설정
+    // ------------------------------------------------------------
+
+    // contextPath 변수는 이 스크립트를 불러온 .jsp 파일에서
+    // 이미 전역 변수로 선언했으므로, 여기서는 선언 없이 바로 사용합니다.
 
     // ============================================================
     // 🔹 [1] 회원 탈퇴 모달 관련 로직
@@ -16,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (openWithdrawalModalBtn && withdrawalModal) {
         const wmCloseBtn = withdrawalModal.querySelector('.modal-close');
         const wmCancelBtn = withdrawalModal.querySelector('.btn-cancel');
-        const wmBackdrop = withdrawalModal.querySelector('.modal-backdrop');
         const wmAgreeBtn = withdrawalModal.querySelector('.btn-agree');
 
         const passwordModal = document.querySelector('.password-modal-overlay');
@@ -41,31 +42,39 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function openPasswordModal() {
-            passwordModal.classList.add('is-open');
-            document.body.classList.add('modal-open');
+            if (passwordModal) {
+                passwordModal.classList.add('is-open');
+                document.body.classList.add('modal-open');
+            }
         }
 
         function closePasswordModal() {
-            passwordModal.classList.remove('is-open');
-            document.body.classList.remove('modal-open');
-            if (pmForm) pmForm.reset();
+            if (passwordModal) {
+                passwordModal.classList.remove('is-open');
+                document.body.classList.remove('modal-open');
+                if (pmForm) pmForm.reset();
+            }
         }
 
-        // --- 이벤트 리스너 ---
-
-        // 탈퇴 모달 열기
+        // --- 이벤트 리스너 연결 ---
         openWithdrawalModalBtn.addEventListener('click', openWithdrawalModal);
-
-        // [모달1] 닫기 버튼들
         wmCloseBtn?.addEventListener('click', closeWithdrawalModal);
         wmCancelBtn?.addEventListener('click', closeWithdrawalModal);
-        wmBackdrop?.addEventListener('click', closeWithdrawalModal);
 
-        // [모달2] 닫기 버튼들
+        withdrawalModal.addEventListener('click', (e) => {
+            if (e.target === withdrawalModal) closeWithdrawalModal();
+        });
+
+
         pmCloseBtn?.addEventListener('click', closePasswordModal);
         pmCancelBtn?.addEventListener('click', closePasswordModal);
 
-        // [모달1] → [모달2]로 전환
+        if (passwordModal) {
+            passwordModal.addEventListener('click', (e) => {
+                if (e.target === passwordModal) closePasswordModal();
+            });
+        }
+
         wmAgreeBtn?.addEventListener('click', function () {
             wmAgreeBtn.disabled = true;
             wmAgreeBtn.innerText = '확인 중...';
@@ -73,14 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
             openPasswordModal();
         });
 
-        // [모달2] 탈퇴 요청
         pmForm?.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            if (pmPasswordInput.value) {
-                alert('회원 탈퇴가 처리되었습니다.');
+            if (pmPasswordInput && pmPasswordInput.value) {
+                alert('회원 탈퇴가 처리되었습니다.'); // (추후 실제 탈퇴 로직 AJAX로 구현 필요)
                 closePasswordModal();
-                // window.location.href = contextPath + '/logout';
+                // 예: window.location.href = contextPath + '/member/withdraw';
             } else {
                 alert('비밀번호를 입력해 주세요.');
             }
@@ -88,84 +95,131 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================================================
-    // 🔹 [2] 회원 정보 수정 모달 관련 로직
+    // 🔹 [2] 회원 정보 수정 모달 관련 로직 (수정된 부분)
     // ============================================================
 
-    const updateInfoModalOverlay = document.querySelector('.update-info-modal-overlay');
-    const openUpdateModalBtn = document.querySelector('.basic-info .btn-primary');
-    const closeUpdateModalBtn = updateInfoModalOverlay?.querySelector('.modal-close');
-    const updateCancelBtn = updateInfoModalOverlay?.querySelector('.update-cancel-btn');
-    const updateInfoForm = document.getElementById('updateInfoForm');
+    const updateModal = document.querySelector('.update-info-modal-overlay');
+    const openUpdateModalBtn = document.querySelector('.open-update-modal-btn'); // 클래스 이름 확인
+
+    const closeModalBtn = updateModal?.querySelector('.modal-close');
+    const cancelBtn = updateModal?.querySelector('.update-cancel-btn');
+    const saveBtn = updateModal?.querySelector('.update-save-btn');
+    const form = document.querySelector('#updateInfoForm');
     const updateErrorMessage = document.getElementById('updateErrorMessage');
-    const updateSaveBtn = updateInfoModalOverlay?.querySelector('.update-save-btn');
 
-    // --- 모달 제어 함수 ---
-    function toggleUpdateInfoModal(isShow) {
-        updateInfoModalOverlay.classList.toggle('is-open', isShow);
-        document.body.classList.toggle('modal-open', isShow);
-        updateErrorMessage.classList.remove('show');
-    }
+    if (updateModal && openUpdateModalBtn && form) {
 
-    // --- 이벤트 리스너 연결 ---
-    if (openUpdateModalBtn && updateInfoModalOverlay) {
-        // 1️⃣ 정보 수정 버튼 클릭 → 모달 열기
-        openUpdateModalBtn.addEventListener('click', () => {
-            // JSP 값으로 초기화
-            document.getElementById('update-name').value = '${loginMember.memberName}';
-            document.getElementById('update-phone').value = '${loginMember.memberPhone}';
-            document.getElementById('update-email').value = '${loginMember.memberEmail}';
-            document.getElementById('update-address').value = '${loginMember.memberAddress}';
-            toggleUpdateInfoModal(true);
-        });
-
-        // 2️⃣ 모달 닫기 (X, 취소, 배경)
-        closeUpdateModalBtn?.addEventListener('click', () => toggleUpdateInfoModal(false));
-        updateCancelBtn?.addEventListener('click', () => toggleUpdateInfoModal(false));
-        updateInfoModalOverlay?.addEventListener('click', (e) => {
-            if (e.target === updateInfoModalOverlay) toggleUpdateInfoModal(false);
-        });
-
-        // 3️⃣ 폼 제출 (AJAX로 서버 업데이트)
-        updateInfoForm?.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            updateSaveBtn.disabled = true;
-            updateSaveBtn.textContent = '저장 중...';
-
-            const updateData = {
-                memberName: document.getElementById('update-name').value,
-                memberPhone: document.getElementById('update-phone').value,
-                memberEmail: document.getElementById('update-email').value,
-                memberAddress: document.getElementById('update-address').value
+        // --- 모달 열기 함수 ---
+        const openModal = () => {
+            // JSP 값으로 초기화 (페이지에 표시된 현재 값)
+            const currentMemberData = {
+                memberName: document.getElementById('name')?.textContent || '',
+                memberPhone: document.getElementById('phone')?.textContent || '',
+                memberEmail: document.getElementById('email')?.textContent || '',
+                memberAddress: document.getElementById('address1')?.textContent || ''
             };
 
-            const url = contextPath + '/member/updateInfo';
+            // 모달 입력 필드에 현재 정보 채우기
+            form.querySelector('#update-name').value = currentMemberData.memberName;
+            form.querySelector('#update-phone').value = currentMemberData.memberPhone;
+            form.querySelector('#update-email').value = currentMemberData.memberEmail;
+            form.querySelector('#update-address').value = currentMemberData.memberAddress;
+
+            updateModal.classList.add('is-open');
+            document.body.classList.add('modal-open');
+        };
+
+        // --- 모달 닫기 함수 ---
+        const closeModal = () => {
+            updateModal.classList.remove('is-open');
+            document.body.classList.remove('modal-open');
+            if (updateErrorMessage) {
+                updateErrorMessage.classList.remove('show');
+                updateErrorMessage.style.display = 'none'; // JSP 스타일시트와 일관성 유지
+            }
+        };
+
+        // --- 이벤트 리스너 연결 ---
+        openUpdateModalBtn.addEventListener('click', openModal);
+        closeModalBtn?.addEventListener('click', closeModal);
+        cancelBtn?.addEventListener('click', closeModal);
+        updateModal?.addEventListener('click', (e) => {
+            if (e.target === updateModal) closeModal();
+        });
+
+        // --- 저장 버튼 클릭 / 폼 제출 ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!saveBtn) return;
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = '저장 중...';
+
+            if (updateErrorMessage) {
+                updateErrorMessage.style.display = 'none';
+                updateErrorMessage.classList.remove('show');
+            }
+
+            const memberNoInput = form.querySelector('#update-memberNo');
+
+            if (!memberNoInput || !memberNoInput.value) {
+                alert('회원 정보를 식별할 수 없습니다. 페이지를 새로고침해주세요.');
+                saveBtn.disabled = false;
+                saveBtn.textContent = '저장';
+                return;
+            }
+
+            const memberData = {
+                memberNo: memberNoInput.value,
+                memberName: form.querySelector('#update-name').value,
+                memberPhone: form.querySelector('#update-phone').value,
+                memberEmail: form.querySelector('#update-email').value,
+                memberAddress: form.querySelector('#update-address').value
+            };
 
             try {
-                const response = await fetch(url, {
+                // 'contextPath'는 .jsp에서 선언된 전역 변수를 사용합니다.
+                const res = await fetch(`${contextPath}/member/updateInfo`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updateData)
+                    body: JSON.stringify(memberData)
                 });
 
-                const result = await response.json();
+                if (!res.ok) throw new Error('서버 응답 실패');
 
-                if (result.success) {
+                const data = await res.json();
+
+                if (data.success) {
                     alert('회원 정보가 성공적으로 수정되었습니다.');
-                    window.location.reload();
+
+                    // ✅ [수정] location.reload() 대신 화면에 직접 그리기
+                    document.getElementById('name').textContent = memberData.memberName;
+                    document.getElementById('phone').textContent = memberData.memberPhone;
+                    document.getElementById('email').textContent = memberData.memberEmail;
+                    document.getElementById('address1').textContent = memberData.memberAddress;
+
+                    // ✅ [추가] 모달 닫기
+                    closeModal();
+
                 } else {
-                    updateErrorMessage.textContent = result.message || '정보 수정에 실패했습니다.';
-                    updateErrorMessage.classList.add('show');
+                    if (updateErrorMessage) {
+                        updateErrorMessage.textContent = data.message || '정보 수정 실패';
+                        updateErrorMessage.classList.add('show');
+                        updateErrorMessage.style.display = 'block';
+                    }
                 }
-            } catch (error) {
-                console.error('정보 수정 AJAX 오류:', error);
-                updateErrorMessage.textContent = '네트워크 오류가 발생했습니다.';
-                updateErrorMessage.classList.add('show');
+            } catch (err) {
+                console.error('정보 수정 오류:', err);
+                if (updateErrorMessage) {
+                    updateErrorMessage.textContent = '네트워크 오류가 발생했습니다.';
+                    updateErrorMessage.classList.add('show');
+                    updateErrorMessage.style.display = 'block';
+                }
             } finally {
-                updateSaveBtn.disabled = false;
-                updateSaveBtn.textContent = '저장';
+                saveBtn.disabled = false;
+                saveBtn.textContent = '저장';
             }
         });
     }
-
 });
