@@ -27,6 +27,15 @@ public class DashBoardController {
         double getEquipmentUtilizationRate = dashBoardService.getEquipmentUtilizationRate();
         model.addAttribute("getEquipmentUtilizationRate", getEquipmentUtilizationRate);
 
+        double getReservationIncreaseRate = dashBoardService.getReservationIncreaseRate();
+        model.addAttribute("getReservationIncreaseRate", getReservationIncreaseRate);
+
+        double getStandbyPatientIncreaseRate=dashBoardService.getStandbyPatientIncreaseRate();
+        model.addAttribute("getStandbyPatientIncreaseRate", getStandbyPatientIncreaseRate);
+
+        double getEquipmentUtilizationIncreaseRate=dashBoardService.getEquipmentUtilizationIncreaseRate();
+        model.addAttribute("getEquipmentUtilizationIncreaseRate", getEquipmentUtilizationIncreaseRate);
+
         return "erp/dashBoard/erpDashBoard";
     }
 }

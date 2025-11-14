@@ -9,4 +9,10 @@ public interface DashBoardMapper {
     int getStandbyPatient();
 
     double getEquipmentUtilizationRate();
+
+    double getReservationIncreaseRate();
+
+    double getStandbyPatientIncreaseRate();
+
+    double getEquipmentUtilizationIncreaseRate();
 }

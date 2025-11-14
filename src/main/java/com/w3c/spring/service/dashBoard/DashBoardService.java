@@ -6,4 +6,10 @@ public interface DashBoardService {
     int getStandbyPatient();
 
     double getEquipmentUtilizationRate();
+
+    double getReservationIncreaseRate();
+
+    double getStandbyPatientIncreaseRate();
+
+    double getEquipmentUtilizationIncreaseRate();
 }

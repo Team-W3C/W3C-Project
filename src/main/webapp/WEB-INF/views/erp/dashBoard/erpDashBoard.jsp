@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 대시보드 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -29,7 +30,17 @@
                 <div class="stat-card__icon stat-card__icon--primary">
                     <img class="img" src="https://c.animaapp.com/mhegd33xAGdRVb/img/container.svg"/>
                 </div>
-                <span class="stat-card__badge stat-card__badge--positive">+12%</span>
+                <c:choose>
+                <c:when test="${getReservationIncreaseRate>0}">
+                <span class="stat-card__badge stat-card__badge--positive">
+                            +<fmt:formatNumber value="${getReservationIncreaseRate}" pattern="#.##"/>%
+                        </c:when>
+                        <c:when test="${getReservationIncreaseRate<0}">
+                    <span class="stat-card__badge stat-card__badge--negative">
+                        <fmt:formatNumber value="${getReservationIncreaseRate}" pattern="#.##"/>%
+                        </c:when>
+                    </c:choose>
+                </span>
             </div>
             <p class="stat-card__label">오늘 예약</p>
             <p class="stat-card__value">${getTodayReservationCount}건</p>
@@ -40,7 +51,9 @@
                 <div class="stat-card__icon stat-card__icon--sky">
                     <img class="img" src="https://c.animaapp.com/mhegd33xAGdRVb/img/container-3.svg"/>
                 </div>
-                <span class="stat-card__badge stat-card__badge--negative">-5%</span>
+                <span class="stat-card__badge stat-card__badge--positive">
+                    완료율: <fmt:formatNumber value="${getStandbyPatientIncreaseRate}" pattern="#.##"/>%
+                </span>
             </div>
             <p class="stat-card__label">대기 환자</p>
             <p class="stat-card__value">${getStandbyPatient}명</p>
@@ -51,10 +64,12 @@
                 <div class="stat-card__icon stat-card__icon--amber">
                     <img class="img" src="https://c.animaapp.com/mhegd33xAGdRVb/img/container-1.svg"/>
                 </div>
-                <span class="stat-card__badge stat-card__badge--positive">+8%</span>
+                <span class="stat-card__badge stat-card__badge--positive">
+                    완료율: <fmt:formatNumber value="${getEquipmentUtilizationIncreaseRate}" pattern="#.##"/>%
+                </span>
             </div>
             <p class="stat-card__label">장비 가동률</p>
-            <p class="stat-card__value"><fmt:formatNumber value="${getEquipmentUtilizationRate}" pattern="#.##" />%</p>
+            <p class="stat-card__value"><fmt:formatNumber value="${getEquipmentUtilizationRate}" pattern="#.##"/>%</p>
         </article>
     </section>
 

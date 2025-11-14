@@ -13,4 +13,10 @@ public class DashBoardVO {
     private int standbyPatient ;
 
     private double equipmentUtilizationRate;
+
+    private double reservationIncreaseRate;
+
+    private double standbyPatientIncreaseRate;
+
+    private double equipmentUtilizationIncreaseRate;
 }

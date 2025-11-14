@@ -24,4 +24,19 @@ public class DashBoardServiceImpl implements DashBoardService {
     public double getEquipmentUtilizationRate() {
         return dashBoardMapper.getEquipmentUtilizationRate();
     }
+
+    @Override
+    public double getReservationIncreaseRate(){
+        return dashBoardMapper.getReservationIncreaseRate();
+    }
+
+    @Override
+    public double getStandbyPatientIncreaseRate(){
+        return dashBoardMapper.getStandbyPatientIncreaseRate();
+    }
+
+    @Override
+    public double getEquipmentUtilizationIncreaseRate(){
+        return dashBoardMapper.getEquipmentUtilizationIncreaseRate();
+    }
 }
