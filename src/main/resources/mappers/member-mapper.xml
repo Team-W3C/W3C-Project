@@ -20,7 +20,7 @@
         <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
         <result column="MEMBER_ALLERGY" property="memberAllergy"/>
         <result column="MEMBER_STATUS" property="memberStatus"/>
-        <result column="STAFF_NO" property="staff_no"/>
+        <result column="STAFF_NO" property="staffNo"/>
     </resultMap>
 
     <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
