@@ -52,13 +52,13 @@ public class MemberServiceImpl implements MemberService {
     public int updateMemberInfo(Member member) {
         // Null 처리 및 기본값 설정
         if (member.getMemberBloodType() == null) {
-            member.setMemberBloodType("알수없음");
+            member.setMemberBloodType("NULL");
         }
         if (member.getMemberChronicDisease() == null) {
-            member.setMemberChronicDisease("없음");
+            member.setMemberChronicDisease("NULL");
         }
         if (member.getMemberAllergy() == null) {
-            member.setMemberAllergy("없음");
+            member.setMemberAllergy("NULL");
         }
 
         return memberMapper.updateMemberInfo(member);

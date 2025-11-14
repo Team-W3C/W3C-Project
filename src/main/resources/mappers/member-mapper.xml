@@ -4,7 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
-    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
     <resultMap id="memberResultMap" type="Member">
         <result column="MEMBER_NO" property="memberNo"/>
         <result column="MEMBER_ID" property="memberId"/>
@@ -21,9 +20,11 @@
         <result column="MEMBER_ALLERGY" property="memberAllergy"/>
         <result column="MEMBER_STATUS" property="memberStatus"/>
         <result column="STAFF_NO" property="staffNo"/>
-        <result column="DEPARTMENT_NAME" property="departmentName"/> <result column="POSITION_NAME" property="positionName"/> </resultMap>
+        <result column="DEPARTMENT_NAME" property="departmentName"/>
+        <result column="POSITION_NAME" property="positionName"/>
+    </resultMap>
 
-    <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
+    <select id="selectMemberById" resultMap="memberResultMap" parameterType="string">
         SELECT
         M.MEMBER_NO,
         M.MEMBER_ID,
@@ -54,69 +55,99 @@
         DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
         WHERE
         M.MEMBER_ID = #{memberId}
-        AND M.MEMBER_PWD = #{memberPwd}
         AND M.MEMBER_STATUS = 'T'
     </select>
 
     <insert id="signUpMember" parameterType="Member">
         INSERT INTO MEMBER
         (
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_PWD,
-            MEMBER_NAME,
-            MEMBER_GENDER,
-            MEMBER_RRN,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_ADDRESS,
-            MEMBER_JOIN_DATE,
-            MEMBER_BLOOD_TYPE,
-            MEMBER_CHRONIC_DISEASE,
-            MEMBER_ALLERGY,
-            MEMBER_STATUS
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS
         )
         VALUES(
-            MEMBER_SEQ.NEXTVAL,
-            #{memberId},
-            #{memberPwd},
-            #{memberName},
-            #{memberGender},
-            #{memberRrn},
-            #{memberPhone},
-            #{memberEmail},
-            #{memberAddress},
-            SYSDATE,
-            #{memberBloodType},
-            #{memberChronicDisease},
-            #{memberAllergy},
-            'T'
+        MEMBER_SEQ.NEXTVAL,
+        #{memberId},
+        #{memberPwd},
+        #{memberName},
+        #{memberGender},
+        #{memberRrn},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        SYSDATE,
+        #{memberBloodType},
+        #{memberChronicDisease},
+        #{memberAllergy},
+        'T'
         )
     </insert>
 
-    <select id="getMemberCountById" resultType="_int">
+    <select id="getMemberCountById" resultType="_int" parameterType="string">
         SELECT COUNT(*)
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
     </select>
+
     <insert id="insertGuestMember"
             parameterType="com.w3c.spring.model.vo.Member"
             useGeneratedKeys="true"
             keyProperty="memberNo">
+        INSERT INTO MEMBER
+        (
+        MEMBER_NO,
+        MEMBER_NAME,
+        MEMBER_GENDER,
+        MEMBER_RRN,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE,
+        MEMBER_BLOOD_TYPE,
+        MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY,
+        MEMBER_STATUS
+        )
+        VALUES(
+        MEMBER_SEQ.NEXTVAL,
+        #{memberName},
+        #{memberGender},
+        #{memberRrn},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberAddress},
+        SYSDATE,
+        #{memberBloodType},
+        #{memberChronicDisease},
+        #{memberAllergy},
+        'T'
+        )
+    </insert>
 
     <update id="updateMemberInfo" parameterType="com.w3c.spring.model.vo.Member">
         UPDATE MEMBER
         SET member_name = #{memberName},
-            member_phone = #{memberPhone},
-            member_email = #{memberEmail},
-            member_address = #{memberAddress},
-            member_blood_type = #{memberBloodType,jdbcType=VARCHAR},
-            member_chronic_disease = #{memberChronicDisease,jdbcType=VARCHAR},
-            member_allergy = #{memberAllergy,jdbcType=VARCHAR}
+        member_phone = #{memberPhone},
+        member_email = #{memberEmail},
+        member_address = #{memberAddress},
+        member_blood_type = #{memberBloodType,jdbcType=VARCHAR},
+        member_chronic_disease = #{memberChronicDisease,jdbcType=VARCHAR},
+        member_allergy = #{memberAllergy,jdbcType=VARCHAR}
         WHERE member_no = #{memberNo}
     </update>
 
-    <select id="getMemberByNo" resultMap="memberResultMap">
+    <select id="getMemberByNo" resultMap="memberResultMap" parameterType="long">
         SELECT *
         FROM MEMBER
         WHERE member_no = #{memberNo}

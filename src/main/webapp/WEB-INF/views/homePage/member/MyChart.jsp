@@ -254,15 +254,6 @@
                 </c:otherwise>
             </c:choose>
 
-        </section>
-        <section class="password-section">
-            <p>
-                소중한 개인정보를 안전하게 보호하기 위해 비밀번호를 정기적으로 변경하실 것을 권고해드립니다.<br>
-                MediFlow에서 회원님의 개인정보보호에 최선을 다하겠습니다.
-            </p>
-            <button class="btn-primary">비밀번호 변경</button>
-        </section>
-
     </section> </main>
 
 <div class="modal-overlay edit-modal-overlay" data-current-rno="">
