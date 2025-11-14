@@ -49,11 +49,23 @@
 
 
         /* ▼▼▼ [예약 변경] 모달 폼 스타일 - 레이아웃 수정 ▼▼▼ */
+
+        /* [수정] .edit-modal의 고정 높이를 제거하고, 내용에 맞게 조절되도록
+           ConfirmPasswordModal.css의 'height: 544px'를 덮어씁니다. */
+        .password-modal.edit-modal {
+            height: auto; /* 고정 높이 제거 */
+            max-height: 90vh; /* 화면 높이의 90%를 넘지 않도록 */
+            display: flex; /* 내부 요소(header, body, footer)를 세로로 정렬하기 위함 */
+            flex-direction: column;
+        }
+
         .edit-modal .modal-body {
             /* 모달 헤더와 푸터가 본문과 겹치지 않도록 패딩 조정 */
             padding: 10px 30px;
-            max-height: 70vh; /* 모달 본문 최대 높이 지정 */
             overflow-y: auto; /* 내용이 많아지면 스크롤 가능하도록 */
+
+            /* [수정] .modal-body가 남은 공간을 채우도록 */
+            flex: 1; /* 헤더와 푸터를 제외한 모든 공간을 차지 */
         }
         .edit-form-group {
             margin-bottom: 20px;
@@ -84,12 +96,19 @@
             /* ▼▼▼ [핵심 수정] 푸터를 명확히 분리 ▼▼▼ */
             padding: 15px 30px;
             border-top: 1px solid #eee;
+            display: flex; /* 버튼 정렬을 위해 flex 사용 */
             justify-content: flex-end; /* 버튼을 오른쪽으로 배치 */
             gap: 10px; /* 버튼 사이 간격 */
-            position: sticky; /* 스크롤 되어도 푸터는 고정 (선택 사항) */
-            bottom: 0;
+
+            /* [수정] ConfirmPasswordModal.css의 'position: absolute'를 덮어씁니다. */
+            position: relative; /* 'absolute' 대신 'relative' 또는 'static' */
+            bottom: auto;       /* 'bottom: 40px' 리셋 */
+            right: auto;        /* 'right: 43px' 리셋 */
+            width: 100%;        /* 부모 너비에 맞춤 */
+
             background-color: white;
             z-index: 10;
+            flex-shrink: 0; /* 푸터가 줄어들지 않도록 */
         }
         .edit-modal .modal-footer .btn-cancel {
             margin-right: 10px;
@@ -254,9 +273,10 @@
                 </c:otherwise>
             </c:choose>
 
-    </section> </main>
+        </section> </main>
 
 <div class="modal-overlay edit-modal-overlay" data-current-rno="">
+    <%-- [수정] .edit-modal 클래스 추가 (스타일 적용을 위함) --%>
     <div class="password-modal edit-modal">
         <button type="button" class="modal-close" aria-label="닫기">
             ×
