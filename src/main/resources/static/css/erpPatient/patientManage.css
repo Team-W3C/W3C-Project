@@ -327,8 +327,7 @@ body {
    ======================================== */
 .patient-pagination {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
     padding: 16px 24px;
     border-top: 1px solid #e5e7eb;
 }
