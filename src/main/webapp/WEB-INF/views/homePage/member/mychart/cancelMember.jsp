@@ -5,9 +5,8 @@
 <%-- JSTL을 사용해 현재 날짜 객체 생성 --%>
 <jsp:useBean id="now" class="java.util.Date" />
 
-<c:set var="todayDateString">
-    <fmt:formatDate value="${now}" pattern="yyyy.MM.dd.E"/>
-</c:set>
+<%-- 스크립트에서 사용하기 위해 JSP 변수 생성 --%>
+<fmt:formatDate value="${now}" pattern="yyyy.MM.dd.E" var="todayDateString"/>
 
 
 <!DOCTYPE html>
@@ -16,15 +15,14 @@
     <meta charset="UTF-8">
     <title>회원 탈퇴</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
-    <%-- 공통 CSS --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
-    <%-- 사이드바 모달 CSS (기존 유지) --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/deleteAccountModal.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <style>
-        /* --- (모든 CSS는 이전과 동일하게 유지) --- */
+        /* --- 본문 레이아웃 CSS --- */
         body {
             font-family: 'Noto Sans KR', sans-serif;
             color: #2B2B2B;
@@ -44,6 +42,22 @@
             border-radius: 12px;
             border: 1px solid #E5E5E5;
             margin-left: 24px;
+        }
+
+        /* --- 기존 CSS --- */
+        .info-section {
+            margin-bottom: 24px;
+        }
+        .info-section-header {
+            padding: 16px 24px;
+            background: #F8F9F9;
+            border-bottom: 1px solid #E5E5E5;
+        }
+        .info-section-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1F2937;
         }
         .account-management .info-section-header.danger-zone {
             background: #FEF2F2;
@@ -67,20 +81,22 @@
             line-height: 1.6;
             margin-bottom: 16px;
         }
-        .btn.btn-danger {
+        .btn-danger {
             background-color: #DC2626;
             color: white;
             border: none;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 12px 24px;
             border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .btn.btn-danger:hover {
+        .btn-danger:hover {
             background-color: #B91C1C;
         }
+
+        /* --- 사이드바 모달 CSS (유지) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -210,32 +226,20 @@
             display: none;
         }
         .error-message.show { display: block; }
+
         .withdrawal-content-area {
             margin-top: 24px;
             border-top: 1px solid #E5E5E5;
             padding-top: 24px;
             display: none;
         }
+
+        /* 1단계: 동의 폼 스타일 */
         .withdrawal-form-inline {
             background: #FDFDFD;
             border: 1px solid #E5E5E5;
             border-radius: 8px;
             padding: 24px;
-        }
-        .withdrawal-form-inline .form-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .withdrawal-form-inline .form-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0E787C;
-            margin: 0 0 8px 0;
-        }
-        .withdrawal-form-inline .form-subtitle {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
         }
         .withdrawal-form-inline .info-card {
             display: flex;
@@ -289,36 +293,38 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .withdrawal-form-inline .btn-agree:hover {
+            background-color: #0a5f62;
+        }
         .withdrawal-form-inline .form-actions {
             margin-top: 16px;
             text-align: right;
         }
+
+        /* 2단계: 비밀번호 폼 스타일 */
         .password-form-inline {
             background: #FDFDFD;
             border: 1px solid #E5E5E5;
             border-radius: 8px;
             padding: 24px;
         }
-        .password-form-inline .form-header {
+        .password-form-inline .modal-header {
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 16px;
             margin-bottom: 24px;
         }
-        .password-form-inline .form-title {
+        .password-form-inline .modal-title {
             font-size: 20px;
             font-weight: bold;
             color: #0E787C;
             margin: 0 0 8px 0;
         }
-        .password-form-inline .form-subtitle {
+        .password-form-inline .modal-subtitle {
             font-size: 14px;
             color: #666;
             margin: 0;
         }
-        .password-form-inline .form-body {
-            padding: 0;
-        }
-        .password-form-inline .form-footer {
+        .password-form-inline .modal-footer {
             padding-top: 16px;
             margin-top: 24px;
             border-top: 1px solid #e0e0e0;
@@ -335,8 +341,10 @@
 
     <div class="mypage-container">
 
+        <%-- 1. 사이드바 Include --%>
         <jsp:include page="/WEB-INF/views/common/homePageMember/member-sidebar.jsp" />
 
+        <%-- 2. 메인 컨텐츠 --%>
         <main class="mypage-content">
             <section class="info-section account-management">
                 <header class="info-section-header danger-zone">
@@ -348,98 +356,10 @@
                         회원 탈퇴 시 모든 개인정보와 진료 기록이 삭제되며, 복구가 불가능합니다.
                         신중하게 결정해 주시기 바랍니다.
                     </p>
-                    <button type="button" class="btn btn-danger" id="open-withdrawal-modal">회원 탈퇴하기</button>
+                    <button type="button" class="btn-danger" id="open-withdrawal-modal">회원 탈퇴하기</button>
 
-                    <%-- JS가 폼을 삽입할 영역 --%>
                     <div id="withdrawal-content-area" class="withdrawal-content-area">
                     </div>
-
-                    <%--
-                      ✅ [신규]
-                      JSP가 JS 대신 템플릿을 미리 만들어 둡니다.
-                      이름과 날짜가 JSTL/EL에 의해 여기에 직접 렌더링됩니다.
-                    --%>
-                    <template id="withdrawal-step1-template">
-                        <div class="withdrawal-form-inline">
-                            <header class="form-header">
-                                <h2 class="form-title">
-                                    <svg class="icon-alert" width="18" height="18" viewBox="0 0 18 18" style="vertical-align: middle; margin-right: 4px;"><path d="M9 1L2 15L16 15L9 1Z" stroke="#0E787C" stroke-width="2" fill="none"/><line x1="9" y1="6" x2="9" y2="11" stroke="#0E787C" stroke-width="2"/></svg>
-                                    탈퇴 확인
-                                </h2>
-                                <p class="form-subtitle">탈퇴를 진행하시겠습니까?</p>
-                            </header>
-                            <div class="info-card">
-                                <div class="info-icon">
-                                    <svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="1" stroke="#0E787C" stroke-width="1.67" fill="none"/><line x1="6" y1="2" x2="6" y2="5" stroke="#0E787C" stroke-width="1.67"/><line x1="14" y1="2" x2="14" y2="5" stroke="#0E787C" stroke-width="1.67"/><line x1="3" y1="8" x2="17" y2="8" stroke="#0E787C" stroke-width="1.67"/></svg>
-                                </div>
-                                <div class="info-content">
-                                    <span class="info-label">탈퇴 날짜</span>
-                                    <%-- JSP가 직접 값을 렌더링 --%>
-                                    <span class="info-value">${todayDateString}</span>
-                                </div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-icon">
-                                    <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none"/><path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="#0E787C" stroke-width="1.67" fill="none"/></svg>
-                                </div>
-                                <div class="info-content">
-                                    <span class="info-label">성함</span>
-                                    <%-- JSP가 직접 값을 렌더링 --%>
-                                    <span class="info-value"><c:out value="${sessionScope.loginMember.memberName}"/></span>
-                                </div>
-                            </div>
-                            <section class="consent-section">
-                                <h3 class="consent-label">동의</h3>
-                                <p class="consent-text">
-                                    환자의 진료 기록은 의료법에 따라<br>
-                                    일정 기간 보존해야 하는 의무가 있으므로,<br>
-                                    "회원 탈퇴"를 하더라도 진료 기록은 삭제되지 않고<br>
-                                    법정 보존 기간 (10년) 동안 보관됩니다.<br>
-                                    동의하십니까?
-                                </p>
-                                <button type="button" class="btn-agree" id="inline-agree-btn">동의</button>
-                            </section>
-                            <div class="form-actions">
-                                <button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>
-                            </div>
-                        </div>
-                    </template>
-
-                    <%-- ✅ [신규] 2단계 템플릿 --%>
-                    <template id="withdrawal-step2-template">
-                        <div class="password-form-inline">
-                            <header class="form-header">
-                                <h2 class="form-title">비밀번호 확인</h2>
-                                <p class="form-subtitle">회원 탈퇴를 완료하려면 비밀번호를 입력해 주세요</p>
-                            </header>
-                            <div class="form-body">
-                                <form id="withdrawalPasswordFormInline">
-                                    <div class="info-box">
-                                        <div class="info-header">회원 정보</div>
-                                        <div class="info-text">회원 탈퇴를 위한 본인 확인 절차입니다.</div>
-                                    </div>
-                                    <div class="field-box">
-                                        <div class="field-icon">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"/><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/></svg>
-                                        </div>
-                                        <div class="field-info">
-                                            <div class="field-label">성함</div>
-                                            <%-- JSP가 직접 값을 렌더링 --%>
-                                            <div class="field-value"><c:out value="${sessionScope.loginMember.memberName}"/></div>
-                                        </div>
-                                    </div>
-                                    <div class="field-box password-box">
-                                        <input type="password" id="withdrawal-password-inline" class="password-input" placeholder="비밀번호를 입력하세요" required>
-                                        <button type="submit" class="btn-confirm">탈퇴 완료</button>
-                                    </div>
-                                    <div class="error-message"></div>
-                                </form>
-                            </div>
-                            <footer class="form-footer">
-                                <button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>
-                            </footer>
-                        </div>
-                    </template>
 
                 </div>
             </section>
@@ -450,7 +370,6 @@
 
     <%-- 사이드바 '회원 정보 수정' 모달 (유지) --%>
     <div class="modal-overlay" id="sidebar-password-modal">
-        <%-- (모달 코드는 변경 없음) --%>
         <div class="password-modal">
             <button type="button" class="modal-close" aria-label="닫기"> × </button>
             <header class="modal-header">
@@ -465,7 +384,7 @@
                     </div>
                     <div class="field-box">
                         <div class="field-icon">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"/><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"></path><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"></circle></svg>
                         </div>
                         <div class="field-info">
                             <div class="field-label">성함</div>
@@ -500,7 +419,7 @@
         const openSidebarModalBtn = document.getElementById('open-password-modal');
         const sidebarForm = document.getElementById('sidebarPasswordForm');
 
-        // --- 2. 사이드바 '회원정보 수정' 모달 로직 (변경 없음) ---
+        // --- 2. 사이드바 '회원정보 수정' 모달 로직 (기존과 동일) ---
         if (openSidebarModalBtn && sidebarModal && sidebarForm) {
             openSidebarModalBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -549,64 +468,144 @@
         const openWithdrawalBtn = document.getElementById('open-withdrawal-modal');
         const withdrawalContentArea = document.getElementById('withdrawal-content-area');
 
-        // ✅ [삭제] HTML 템플릿 함수들 (getStep1AgreementHTML, getStep2PasswordHTML) 모두 삭제
+        // JSTL 변수를 JS 변수로 안전하게 가져오기
+        const memberName = '${sessionScope.loginMember.memberName}';
+        const todayDate = '${todayDateString}';
 
-        // --- 인라인 폼 이벤트 핸들러 ---
+        console.log('memberName:', memberName);
+        console.log('todayDate:', todayDate);
+
+        // --- 1단계 (동의) HTML 템플릿 ---
+        function getStep1AgreementHTML() {
+            return '<div class="withdrawal-form-inline">' +
+                '<header class="withdrawal-header" style="text-align:center; margin-bottom: 24px;">' +
+                '<h2 class="modal-title" style="font-size: 20px;">' +
+                '<svg class="icon-alert" width="18" height="18" viewBox="0 0 18 18" style="vertical-align: middle; margin-right: 4px;"><path d="M9 1L2 15L16 15L9 1Z" stroke="#0E787C" stroke-width="2" fill="none"></path><line x1="9" y1="6" x2="9" y2="11" stroke="#0E787C" stroke-width="2"></line></svg>' +
+                '탈퇴 확인' +
+                '</h2>' +
+                '<p class="modal-subtitle">탈퇴를 진행하시겠습니까?</p>' +
+                '</header>' +
+                '<div class="info-card">' +
+                '<div class="info-icon">' +
+                '<svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="1" stroke="#0E787C" stroke-width="1.67" fill="none"></rect><line x1="6" y1="2" x2="6" y2="5" stroke="#0E787C" stroke-width="1.67"></line><line x1="14" y1="2" x2="14" y2="5" stroke="#0E787C" stroke-width="1.67"></line><line x1="3" y1="8" x2="17" y2="8" stroke="#0E787C" stroke-width="1.67"></line></svg>' +
+                '</div>' +
+                '<div class="info-content">' +
+                '<span class="info-label">탈퇴 날짜</span>' +
+                '<span class="info-value">' + todayDate + '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="info-card">' +
+                '<div class="info-icon">' +
+                '<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3" stroke="#0E787C" stroke-width="1.67" fill="none"></circle><path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="#0E787C" stroke-width="1.67" fill="none"></path></svg>' +
+                '</div>' +
+                '<div class="info-content">' +
+                '<span class="info-label">성함</span>' +
+                '<span class="info-value">' + memberName + '</span>' +
+                '</div>' +
+                '</div>' +
+                '<section class="consent-section">' +
+                '<h3 class="consent-label">동의</h3>' +
+                '<p class="consent-text">' +
+                '환자의 진료 기록은 의료법에 따라<br>' +
+                '일정 기간 보존해야 하는 의무가 있으므로,<br>' +
+                '"회원 탈퇴"를 하더라도 진료 기록은 삭제되지 않고<br>' +
+                '법정 보존 기간 (10년) 동안 보관됩니다.<br>' +
+                '동의하십니까?' +
+                '</p>' +
+                '<button type="button" class="btn-agree" id="inline-agree-btn">동의</button>' +
+                '</section>' +
+                '<div class="form-actions">' +
+                '<button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>' +
+                '</div>' +
+                '</div>';
+        }
+
+        // --- 2단계 (비밀번호) HTML 템플릿 ---
+        function getStep2PasswordHTML() {
+            return '<div class="password-form-inline">' +
+                '<header class="modal-header">' +
+                '<h2 class="modal-title">비밀번호 확인</h2>' +
+                '<p class="modal-subtitle">회원 탈퇴를 완료하려면 비밀번호를 입력해 주세요</p>' +
+                '</header>' +
+                '<div class="modal-body" style="padding: 0;">' +
+                '<form id="withdrawalPasswordFormInline">' +
+                '<div class="info-box">' +
+                '<div class="info-header">회원 정보</div>' +
+                '<div class="info-text">회원 탈퇴를 위한 본인 확인 절차입니다.</div>' +
+                '</div>' +
+                '<div class="field-box">' +
+                '<div class="field-icon">' +
+                '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"></path><circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"></circle></svg>' +
+                '</div>' +
+                '<div class="field-info">' +
+                '<div class="field-label">성함</div>' +
+                '<div class="field-value">' + memberName + '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="field-box password-box">' +
+                '<input type="password" id="withdrawal-password-inline" class="password-input" placeholder="비밀번호를 입력하세요">' +
+                '<button type="submit" class="btn-confirm">탈퇴 완료</button>' +
+                '</div>' +
+                '<div class="error-message"></div>' +
+                '</form>' +
+                '</div>' +
+                '<footer class="modal-footer">' +
+                '<button type="button" class="btn-cancel" id="inline-cancel-btn">취소</button>' +
+                '</footer>' +
+                '</div>';
+        }
+
         if (openWithdrawalBtn && withdrawalContentArea) {
 
-            // (A) '회원 탈퇴하기' 버튼(id="open-withdrawal-modal") 클릭 시
+            // '회원 탈퇴하기' 버튼(id="open-withdrawal-modal") 클릭
             openWithdrawalBtn.addEventListener('click', function() {
+                console.log('회원 탈퇴하기 버튼 클릭됨');
 
-                // ✅ [수정] 템플릿 태그에서 1단계 폼을 복사
-                const template = document.getElementById('withdrawal-step1-template');
-                if (!template) {
-                    console.error('1단계 탈퇴 템플릿을 찾을 수 없습니다.');
-                    return;
-                }
-                const content = template.content.cloneNode(true);
-
-                // 1단계 폼 삽입
-                withdrawalContentArea.innerHTML = ''; // 기존 내용 비우기
-                withdrawalContentArea.appendChild(content); // 복사한 템플릿 삽입
+                // 1단계(동의) 폼 삽입
+                withdrawalContentArea.innerHTML = getStep1AgreementHTML();
                 withdrawalContentArea.style.display = 'block';
                 openWithdrawalBtn.style.display = 'none';
 
+                // 생성된 폼 영역으로 부드럽게 스크롤
                 withdrawalContentArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
             });
 
-            // (B) 이벤트 위임 사용 (동의, 취소, 제출)
+            // --- 이벤트 위임 사용 ---
+
+            // (1) 클릭 이벤트 처리 (동의 버튼, 취소 버튼)
             withdrawalContentArea.addEventListener('click', function(e) {
+
                 // 1단계 '동의' 버튼(#inline-agree-btn) 클릭
                 if (e.target.id === 'inline-agree-btn') {
-
-                    // ✅ [수정] 템플릿 태그에서 2단계 폼을 복사
-                    const template = document.getElementById('withdrawal-step2-template');
-                    if (!template) {
-                        console.error('2단계 탈퇴 템플릿을 찾을 수 없습니다.');
-                        return;
-                    }
-                    const content = template.content.cloneNode(true);
-
-                    // 2단계 폼으로 교체
-                    withdrawalContentArea.innerHTML = ''; // 기존 내용 비우기
-                    withdrawalContentArea.appendChild(content); // 복사한 템플릿 삽입
+                    console.log('동의 버튼 클릭됨');
+                    // 2단계(비밀번호) 폼으로 교체
+                    withdrawalContentArea.innerHTML = getStep2PasswordHTML();
                     withdrawalContentArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    setTimeout(() => document.getElementById('withdrawal-password-inline').focus(), 100);
+                    // 비밀번호 필드에 자동 포커스
+                    setTimeout(() => {
+                        const pwdInput = document.getElementById('withdrawal-password-inline');
+                        if (pwdInput) pwdInput.focus();
+                    }, 100);
                 }
 
                 // '취소' 버튼(#inline-cancel-btn) 클릭 (1, 2단계 공통)
                 if (e.target.id === 'inline-cancel-btn') {
+                    console.log('취소 버튼 클릭됨');
+                    // 폼 영역 비우고 숨기기
                     withdrawalContentArea.innerHTML = '';
                     withdrawalContentArea.style.display = 'none';
+                    // '회원 탈퇴하기' 버튼 다시 표시
                     openWithdrawalBtn.style.display = 'block';
                 }
             });
 
-            // (B-2) 폼 제출(submit) 이벤트 처리 (변경 없음)
+            // (2) 폼 제출(submit) 이벤트 처리 (2단계 비밀번호 폼)
             withdrawalContentArea.addEventListener('submit', async function(e) {
+                // 폼 ID로 정확히 타겟팅
                 if (e.target.id === 'withdrawalPasswordFormInline') {
                     e.preventDefault();
+                    console.log('비밀번호 폼 제출됨');
+
                     const form = e.target;
                     const password = form.querySelector('#withdrawal-password-inline').value;
                     const errorMessage = form.querySelector('.error-message');
@@ -629,11 +628,12 @@
                         });
 
                         const result = await response.json();
+
                         if (result.success) {
                             alert('회원 탈퇴가 완료되었습니다.');
                             window.location.href = contextPath + '/member/logout.me';
                         } else {
-                            errorMessage.textContent = result.message || '비밀번호가 일치하지 않습니다.';
+                            errorMessage.textContent = result.message || '탈퇴 처리 중 오류가 발생했습니다.';
                             errorMessage.classList.add('show');
                             submitBtn.disabled = false;
                             submitBtn.textContent = '탈퇴 완료';
@@ -650,8 +650,14 @@
         }
 
         // --- 4. 공통 모달 닫기 로직 (사이드바 모달 전용) ---
-        document.querySelectorAll('#sidebar-password-modal .modal-close, #sidebar-password-modal .btn-cancel').forEach(btn => {
+        document.querySelectorAll('.modal-close, .btn-cancel, .modal-backdrop').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                // 인라인 폼 내부의 .btn-cancel은 위임 로직에서 처리하므로, 여기서는 무시
+                if (e.target.closest('#withdrawal-content-area')) {
+                    return;
+                }
+
+                // 사이드바 모달 등, .modal-overlay를 사용하는 모달만 닫기
                 const parentModal = e.target.closest('.modal-overlay');
                 if (parentModal) {
                     parentModal.classList.remove('active');
@@ -659,19 +665,14 @@
             });
         });
 
-        if(sidebarModal) {
-            sidebarModal.addEventListener('click', function(e) {
-                if (e.target === sidebarModal) {
-                    sidebarModal.classList.remove('active');
-                }
-            });
-        }
-
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
+                // 사이드바 모달 닫기
                 document.querySelectorAll('.modal-overlay.active').forEach(modal => {
                     modal.classList.remove('active');
                 });
+
+                // 인라인 폼도 닫기
                 if (withdrawalContentArea && withdrawalContentArea.style.display === 'block') {
                     withdrawalContentArea.innerHTML = '';
                     withdrawalContentArea.style.display = 'none';
