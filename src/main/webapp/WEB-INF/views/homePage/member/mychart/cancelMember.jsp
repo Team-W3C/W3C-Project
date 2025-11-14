@@ -15,7 +15,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
+
+    <%--
+      이 페이지의 스타일은 <style> 블록 안에 인라인으로 작성되어 있으므로,
+      외부 CSS 파일 링크는 필요하지 않을 수 있습니다.
+      (만약 별도 CSS 파일이 있다면 여기에 추가)
+    --%>
 
     <style>
         * {
@@ -367,11 +372,6 @@
             cursor: not-allowed;
         }
 
-        /* 추가: 탈퇴 완료 버튼을 숨김 처리 */
-        #submitBtn {
-            display: none;
-        }
-
         /* 반응형 */
         @media (max-width: 768px) {
             .mypage-container {
@@ -513,10 +513,6 @@
                             </div>
                             <div class="error-message" id="errorMessage"></div>
                         </div>
-
-                        <button type="submit" class="btn btn-confirm" id="submitBtn" style="display: none;">
-                            탈퇴 완료
-                        </button>
                     </form>
                 </div>
 
@@ -527,7 +523,7 @@
                     <button type="button" class="btn btn-danger" id="nextBtn" disabled>
                         다음 단계
                     </button>
-                    <button type="submit" class="btn btn-danger" id="finalWithdrawalBtn" style="display: none;">
+                    <button type="submit" class="btn btn-danger" id="finalWithdrawalBtn" form="withdrawalForm" style="display: none;">
                         탈퇴 완료
                     </button>
                 </div>
@@ -540,16 +536,17 @@
 
 <%--
   ================================================
-  수정된 스크립트
+  ✅ 수정된 스크립트
   ================================================
-  - 체크박스의 <label>에 대한 불필요한 click/keydown 리스너를 제거했습니다.
-  - <label for="...">가 올바르게 설정되어 있으므로,
-    체크박스의 'change' 이벤트 리스너 하나로 모든 케이스(직접 클릭, 라벨 클릭)를 처리할 수 있습니다.
+  - 불필요한 이벤트 리스너를 제거하고,
+    체크박스의 'change' 이벤트 하나로 버튼 상태를 제어하도록 단순화했습니다.
+  - '탈퇴 완료' 버튼의 form 속성을 이용해 폼을 제출하도록 수정했습니다.
 --%>
 <script>
     const contextPath = '${pageContext.request.contextPath}';
 
     document.addEventListener('DOMContentLoaded', function() {
+        // DOM 요소 가져오기
         const checkboxes = document.querySelectorAll('.agree-checkbox');
         const nextBtn = document.getElementById('nextBtn');
         const finalWithdrawalBtn = document.getElementById('finalWithdrawalBtn');
@@ -561,70 +558,73 @@
 
         // 체크 상태를 확인하고 '다음 단계' 버튼을 업데이트하는 함수
         function updateNextButtonState() {
+            // 모든 체크박스가 체크되었는지 확인
             const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-            // 비밀번호 섹션이 이미 열려 있다면 버튼 상태는 변경하지 않음
+
+            // 비밀번호 섹션이 아직 보이지 않을 때만 '다음 단계' 버튼 상태를 업데이트
             if (!passwordSection.classList.contains('show')) {
                 nextBtn.disabled = !allChecked;
             }
         }
 
-        // 페이지 로드 시 초기 상태 설정
-        updateNextButtonState();
-
-        // 🎯 수정된 부분:
-        // 각 체크박스에 'change' 이벤트 리스너만 연결합니다.
+        // 페이지 로드 시 및 각 체크박스 변경 시 버튼 상태 업데이트
+        updateNextButtonState(); // 페이지 로드 시 초기 상태
         checkboxes.forEach(checkbox => {
+            // 'click' 대신 'change' 이벤트를 사용해야 라벨을 클릭해도 동작합니다.
             checkbox.addEventListener('change', updateNextButtonState);
         });
 
-        // 다음 단계 버튼
+        // '다음 단계' 버튼 클릭 이벤트
         nextBtn.addEventListener('click', function() {
-            if (nextBtn.disabled) return;
+            if (nextBtn.disabled) return; // 버튼이 비활성화면 중단
 
+            // 비밀번호 섹션 표시
             passwordSection.classList.add('show');
             passwordSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => passwordInput.focus(), 300);
+            setTimeout(() => passwordInput.focus(), 300); // 애니메이션 후 포커스
 
             // 버튼 상태 변경: '다음 단계' 숨기고 '탈퇴 완료' 표시
             nextBtn.style.display = 'none';
             finalWithdrawalBtn.style.display = 'block';
         });
 
-        // '탈퇴 완료' 버튼 클릭 시 폼 제출
-        finalWithdrawalBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            withdrawalForm.dispatchEvent(new Event('submit', { cancelable: true }));
-        });
-
-        // 취소 버튼
+        // '취소' 버튼 클릭 이벤트
         cancelBtn.addEventListener('click', function() {
             if (confirm('회원 탈퇴를 취소하시겠습니까?')) {
+                // 사용자가 'mypage' 또는 'main' 등 원하는 페이지로 이동
                 window.location.href = contextPath + '/member/mypage';
             }
         });
 
-        // 폼 제출
+        // '탈퇴 완료' 버튼은 'submit' 타입이며 form 속성으로 폼을 지정했으므로,
+        // 별도의 'click' 이벤트 리스너 대신 'form'의 'submit' 이벤트를 처리합니다.
+
+        // 폼 제출 이벤트 (탈퇴 처리)
         withdrawalForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+            e.preventDefault(); // 폼의 기본 제출 동작 중단
 
             const password = passwordInput.value.trim();
 
+            // 비밀번호 유효성 검사
             if (!password) {
                 errorMessage.textContent = '비밀번호를 입력해 주세요.';
                 errorMessage.classList.add('show');
+                passwordInput.focus();
                 return;
             }
 
-            // 최종 확인
+            // 최종 탈퇴 확인
             if (!confirm('정말로 회원 탈퇴를 진행하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.')) {
-                return;
+                return; // 사용자가 '취소'를 누르면 중단
             }
 
+            // 버튼 비활성화 및 로딩 상태 표시
             finalWithdrawalBtn.disabled = true;
             finalWithdrawalBtn.textContent = '처리 중...';
             errorMessage.classList.remove('show');
 
             try {
+                // 서버로 탈퇴 요청
                 const response = await fetch(contextPath + '/member/deleteAccount', {
                     method: 'POST',
                     headers: {
@@ -636,17 +636,20 @@
                 const result = await response.json();
 
                 if (result.success) {
+                    // 탈퇴 성공
                     alert('회원 탈퇴가 완료되었습니다.\n그동안 이용해 주셔서 감사합니다.');
-                    window.location.href = contextPath + '/member/logout.me';
+                    window.location.href = contextPath + '/member/logout.me'; // 로그아웃 및 메인페이지 이동
                 } else {
+                    // 탈퇴 실패 (비밀번호 오류 등)
                     errorMessage.textContent = result.message || '비밀번호가 일치하지 않습니다.';
                     errorMessage.classList.add('show');
                     finalWithdrawalBtn.disabled = false;
                     finalWithdrawalBtn.textContent = '탈퇴 완료';
-                    passwordInput.value = '';
+                    passwordInput.value = ''; // 비밀번호 필드 비우기
                     passwordInput.focus();
                 }
             } catch (error) {
+                // 네트워크 오류 등
                 console.error('Account Deletion Error:', error);
                 errorMessage.textContent = '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
                 errorMessage.classList.add('show');

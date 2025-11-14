@@ -15,15 +15,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
 
     <%--
-      userInfo.css가 sidebar.css보다 *뒤에* 와야
-      스타일 충돌 시 userInfo.css가 이길 수 있습니다.
+      ConfirmPasswordModal.css와 userInfo.css가
+      다른 CSS보다 뒤에 와야 스타일이 올바르게 적용됩니다.
     --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userInfo.css">
-
-    <%-- ✅ [삭제] 충돌을 일으키는 인라인 <style> 블록 전체 삭제 --%>
 
 </head>
 
@@ -47,7 +45,6 @@
             <section class="info-section basic-info">
                 <header class="info-section-header">
                     <h3>기본 정보</h3>
-                    <%-- 모달을 열기 위한 클래스 (변경 없음) --%>
                     <button type="button" class="btn btn-primary open-update-modal-btn">정보 수정</button>
                 </header>
                 <div class="info-section-body">
@@ -86,25 +83,20 @@
                             </div>
                         </li>
                         <li class="info-item">
-
                             <label for="phone" class="info-label">연락처</label>
                             <div class="info-value-box">
                                 <span id="phone">${loginMember.memberPhone}</span>
-
                             </div>
                         </li>
                         <li class="info-item">
                             <label for="email" class="info-label">이메일</label>
-
                             <div class="info-value-box">
                                 <span id="email">${loginMember.memberEmail}</span>
                             </div>
                         </li>
-
                         <li class="info-item address-item">
                             <label for="address1" class="info-label">주소</label>
                             <div class="info-value-group">
-
                                 <div class="info-value-box">
                                     <span id="address1">${loginMember.memberAddress}</span>
                                 </div>
@@ -112,11 +104,9 @@
                         </li>
                         <li class="info-item">
                             <label for="join-date" class="info-label">가입일</label>
-
                             <div class="info-value-box">
                                 <span id="join-date">${loginMember.memberJoinDate}</span>
                             </div>
-
                         </li>
                     </ul>
                 </div>
@@ -124,7 +114,6 @@
 
             <section class="privacy-notice">
                 <div class="notice-text">
-
                     <h4>개인정보 보호 안내</h4>
                     <p>회원님의 소중한 개인정보는 안전하게 보호되며, 의료법 및 개인정보보호법에 따라 엄격히 관리됩니다.</p>
                 </div>
@@ -133,8 +122,13 @@
     </main>
 </div>
 
-<%-- 정보 수정 모달 --%>
-<%-- ✅ [수정] 모달을 열기 위한 is-open 클래스가 JS에 의해 제어됩니다. --%>
+<%--
+  ================================================
+  ✅ 정보 수정 모달 (수정된 구조)
+  ================================================
+  - <div class="modal-body"> : 폼(form)과 입력 필드(input)만 포함
+  - <footer class="modal-footer"> : '취소', '저장' 버튼을 포함 (body와 분리)
+--%>
 <div class="modal-overlay update-info-modal-overlay">
     <div class="password-modal update-info-modal">
         <button type="button" class="modal-close" aria-label="닫기">
@@ -146,6 +140,7 @@
             <p class="modal-subtitle">수정할 정보를 입력 후 저장 버튼을 눌러주세요.</p>
         </header>
 
+        <%-- 폼과 입력 필드를 감싸는 본문 --%>
         <div class="modal-body">
             <form class="update-info-form" id="updateInfoForm">
 
@@ -183,6 +178,7 @@
             </form>
         </div>
 
+        <%-- ✅ [수정] 버튼을 'modal-body'와 분리된 'modal-footer'로 이동 --%>
         <footer class="modal-footer">
             <button type="button" class="btn-cancel update-cancel-btn">취소</button>
             <button type="submit" class="btn-confirm update-save-btn" form="updateInfoForm">저장</button>
@@ -195,5 +191,4 @@
 <script>const contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/js/userInfo.js" defer></script>
 </body>
-
 </html>

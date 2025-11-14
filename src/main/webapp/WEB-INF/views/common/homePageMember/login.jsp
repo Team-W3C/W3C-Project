@@ -12,72 +12,49 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 
-    <!--
-        <link rel="stylesheet" href="/메인화면/header/header.css">
-        <link rel="stylesheet" href="/메인화면/footer/footer.css">
-        <link rel="stylesheet" href="/메인화면/index.css">
-    -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 <body>
 
-    <c:choose>
-        <c:when test="${empty sessionScope.loginMember}">
-            <!-- Not Login Member Header Include -->
-            <jsp:include page="header.jsp" />
-        </c:when>
-        <c:when test="${not empty sessionScope.loginMember}">
-            <c:choose>
-                <c:when test="${sessionScope.loginMember.memberId.equals('root')}">
-                    <!-- Login Admin Header Include -->
-                    <jsp:include page="../homePageAdmin/header_admin.jsp" />
-                </c:when>
-                <c:otherwise>
-                    <!-- Login Member Header Include -->
-                    <jsp:include page="header.jsp" />
-                </c:otherwise>
-            </c:choose>
-        </c:when>
-    </c:choose>
+<jsp:include page="header.jsp" />
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Login Title -->
-        <div class="login-title">
-            <h1>로그인</h1>
-        </div>
+<main class="main-content">
+    <div class="login-title">
+        <h1>로그인</h1>
+    </div>
 
-        <!-- Login Form -->
-        <div class="form-container">
-            <form id="loginForm" method="post" action="${pageContext.request.contextPath}/api/member/login">
-                <!-- Username Input -->
-                <div class="input-group">
-                    <label for="username">아이디</label>
-                    <input type="text" id="username" name="memberId" placeholder="아이디를 입력하시오">
-                </div>
+    <div class="form-container">
 
-                <!-- Password Input -->
-                <div class="input-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="memberPwd" placeholder="비밀번호">
-                </div>
-
-                <!-- Login Button -->
-                <button type="submit" class="login-button">로그인</button>
-            </form>
-
-            <!-- Additional Links -->
-            <div class="additional-links">
-                <p class="links"><a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a></p> |
-                <p class="links"><a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a></p> |
-                <p class="links"><a href="${pageContext.request.contextPath}/member/signUpPage">회원가입</a></p>
+        <c:if test="${not empty errorMsg}">
+            <div class="login-error" style="color: red; text-align: center; margin-bottom: 10px; font-weight: bold;">
+                    ${errorMsg}
             </div>
+        </c:if>
+
+        <form id="loginForm" method="post" action="${pageContext.request.contextPath}/api/member/login">
+            <div class="input-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="memberId" placeholder="아이디를 입력하시오">
+            </div>
+
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="memberPwd" placeholder="비밀번호">
+            </div>
+
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+
+        <div class="additional-links">
+            <p class="links"><a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a></p> |
+            <p class="links"><a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a></p> |
+            <p class="links"><a href="${pageContext.request.contextPath}/member/signUpPage">회원가입</a></p>
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- Footer Include -->
-    <jsp:include page="../homePageFooter/footer.jsp" />
+<jsp:include page="../homePageFooter/footer.jsp" />
 
-    <!-- script -->
 <%--    <script src="${pageContext.request.contextPath}/js/index.js"></script>--%>
 </body>
 </html>
