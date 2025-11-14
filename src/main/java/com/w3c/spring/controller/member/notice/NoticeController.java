@@ -1,5 +1,6 @@
 package com.w3c.spring.controller.member.notice;
 
+import com.w3c.spring.model.vo.notification.Notification;
 import com.w3c.spring.service.inquiry.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,11 @@ public class NoticeController {
 
     }
     @GetMapping("/notice-detail")
-    public String noticeDetail() {
+    public String noticeDetail(@RequestParam("nNo") int nNo, Model model) {
+        Notification notifi = boardService.selectPatientNoticeById(nNo);
+
+        model.addAttribute("notifi", notifi);
+
         return "homePage/homePageNotice/notice-detail";
     }
 }

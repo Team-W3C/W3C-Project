@@ -24,4 +24,6 @@ public interface BoardService {
     Map<String, Object> getInquiryStats();
 
     Map<String, Object> selectPatientNoticeList(int curentPage);
+
+    Notification selectPatientNoticeById(int nNo);
 }

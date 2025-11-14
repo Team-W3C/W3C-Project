@@ -26,7 +26,5 @@ public interface BoardMapper {
     int selectBoardCountByStatus(String status);
     int selectBoardCountToday();
 
-    List<Notification> selectPatientNoticeList(RowBounds rowBounds);
 
-    int getPatientNoticeListCount();
 }

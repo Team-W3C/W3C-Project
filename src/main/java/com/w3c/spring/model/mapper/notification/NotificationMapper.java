@@ -15,4 +15,8 @@ public interface NotificationMapper {
     Notification selectNotificationById(int notificationNo);
     int insertNotification(NotificationInsert notificationInsert);
 
+    List<Notification> selectPatientNoticeList(RowBounds rowBounds);
+
+    int getPatientNoticeListCount();
+    Notification selectPatientNoticeById(int notificationNo);
 }

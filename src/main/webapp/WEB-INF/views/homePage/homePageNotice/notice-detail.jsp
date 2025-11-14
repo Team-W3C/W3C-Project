@@ -32,24 +32,32 @@
         <article class="notice-article">
             <!-- 공지 제목 영역 -->
             <div class="notice-title-section">
-                <h2 class="notice-title">MediFlow 도입 공지</h2>
+                <h2 class="notice-title">${notifi.notificationTitle}</h2>
+                <span>${notifi.departmentName}</span>
                 <div class="notice-meta">
-                    <span class="notice-date">등록일: 2025.10.27</span>
+                    <span class="notice-date">${notifi.notificationDate}</span>
                 </div>
             </div>
 
             <!-- 공지 내용 -->
             <div class="notice-content">
                 <p class="content-paragraph">
-                    존경하는 환자 및 내원객 여러분, 그리고 병원 임직원 여러분께,<br>
-                    본원에서는 보다 효율적이고 편리한 의료 서비스 환경을 제공하기 위해 차세대 병원 운영 통합 ERP 시스템인 ‘메디플로우(MediFlow)’를 2025년 11월 1일부로 전면 도입하게 되었음을 알려드립니다.<br>
-                    '메디플로우'는 수동으로 이루어지던 특수 장비 예약 과정을 혁신적으로 자동화하고, 모든 병원 운영 <br>
-                    정보를 통합 관리하여 환자 대기 시간을 줄이고 의료진의 업무 효율을 극대화할 것입니다.
+                    ${notifi.notificationContent}
                 </p>
 
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
                 <!-- 주요 변경 사항 -->
                 <section class="content-section">
-                    <h3 class="section-title">1. 환자 및 내원객 대상 주요 변경 사항</h3>
+                    <h3 class="section-title">환자 및 내원객 안내사항</h3>
 
                     <table class="notice-table">
                         <thead>

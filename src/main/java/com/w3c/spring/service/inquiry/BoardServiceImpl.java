@@ -145,23 +145,35 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Map<String, Object> selectPatientNoticeList(int curentPage) {
-        int listCount = boardMapper.getPatientNoticeListCount();
+        int listCount = notificationMapper.getPatientNoticeListCount();
 
         PageInfo pi = new PageInfo(curentPage, listCount, 5, 10);
 
         int offset = (curentPage - 1) * pi.getBoardLimit();
         RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-        ArrayList<Notification> list = (ArrayList)boardMapper.selectPatientNoticeList(rowBounds);
+        ArrayList<Notification> list = (ArrayList)notificationMapper.selectPatientNoticeList(rowBounds);
 
         for (Notification n : list) {
             notifiType(n);
 
         }
+        System.out.println(list);
         Map<String, Object> map = new HashMap<>();
         map.put("list", list);
         map.put("pi", pi);
         return map;
+    }
+
+    @Override
+    public Notification selectPatientNoticeById(int nNo) {
+        Notification notification = notificationMapper.selectPatientNoticeById(nNo);
+        if (notification != null) {
+            return notification;
+        }else{
+            return null;
+        }
+
     }
 
     private void enrichBoard(Board b) {

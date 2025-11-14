@@ -171,30 +171,24 @@
    </div>
   <nav class="inquiry-pagination" aria-label="페이지네이션">
     <c:choose>
-      <%-- 검색 조건이 없는 경우 (일반 목록) --%>
       <c:when test="${empty condition}">
-        <%-- '이전' 버튼: 현재 페이지가 1보다 클 때만 표시 --%>
         <c:if test="${pi.currentPage > 1}">
           <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage - 1}" class="prev" aria-label="이전 페이지">
             ← Previous
           </a>
         </c:if>
 
-        <%-- 페이지 번호: startPage부터 endPage까지 반복 --%>
         <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
           <c:choose>
-            <%-- 현재 페이지일 경우: active 클래스 적용 --%>
             <c:when test="${i == pi.currentPage}">
               <a href="#" class="active" aria-label="${i}페이지" aria-current="page">${i}</a>
             </c:when>
-            <%-- 다른 페이지일 경우: 해당 페이지로 가는 링크 --%>
             <c:otherwise>
               <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${i}" aria-label="${i}페이지">${i}</a>
             </c:otherwise>
           </c:choose>
         </c:forEach>
 
-        <%-- '다음' 버튼: 현재 페이지가 마지막 페이지보다 작을 때만 표시 --%>
         <c:if test="${pi.currentPage < pi.maxPage}">
           <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage + 1}" class="next" aria-label="다음 페이지">
             Next →
