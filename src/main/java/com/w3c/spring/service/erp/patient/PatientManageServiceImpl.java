@@ -1,17 +1,17 @@
 package com.w3c.spring.service.erp.patient;
 
 import com.w3c.spring.model.mapper.erp.patient.PatientMapper;
+import com.w3c.spring.model.vo.MedicalRecord;
 import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.model.vo.erp.patient.PatientListVO;
+import com.w3c.spring.model.vo.erp.patient.PatientRecordVO;
+import com.w3c.spring.model.vo.erp.patient.ReservationVO;
 import com.w3c.spring.model.vo.inquiry.PageInfo;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
+import java.util.*;
 
 
 @Service
@@ -85,5 +85,25 @@ public class PatientManageServiceImpl implements PatientManageService {
 
         // Mapper 호출
         return patientMapper.insertPatient(member);
+    }
+
+    @Override
+    public Map<String, Object> getPatientDetail(int memberNo) {
+
+        // 1. 환자 기본 정보 (주소, 알러지, 혈액형 등)
+        Member member = patientMapper.selectPatientDetail(memberNo);
+
+        // 2. 환자 진료 기록 (여러 건)
+        List<PatientRecordVO> records = patientMapper.selectMedicalRecords(memberNo);
+
+        List<ReservationVO> reservations = patientMapper.selectReservations(memberNo);
+
+        // 3. Map에 담아 반환
+        Map<String, Object> detail = new HashMap<>();
+        detail.put("member", member);
+        detail.put("records", records);
+        detail.put("reservations", reservations);
+
+        return detail;
     }
 }

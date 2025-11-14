@@ -5,6 +5,24 @@
 
 <mapper namespace="com.w3c.spring.model.mapper.erp.patient.PatientMapper">
     <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
+    <resultMap id="memberResultMap" type="Member">
+        <id column="MEMBER_NO" property="memberNo"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="MEMBER_PWD" property="memberPwd"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_GENDER" property="memberGender"/>
+        <result column="MEMBER_RRN" property="memberRrn"/>
+        <result column="MEMBER_PHONE" property="memberPhone"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_ADDRESS" property="memberAddress"/>
+        <result column="MEMBER_JOIN_DATE" property="memberJoinDate"/>
+        <result column="MEMBER_BLOOD_TYPE" property="memberBloodType"/>
+        <result column="MEMBER_CHRONIC_DISEASE" property="memberChronicDisease"/>
+        <result column="MEMBER_ALLERGY" property="memberAllergy"/>
+        <result column="MEMBER_STATUS" property="memberStatus"/>
+        <result column="STAFF_NO" property="staffNo"/>
+    </resultMap>
+
     <resultMap id="patientResultMap" type="PatientListVO">
         <result column="MEMBER_NO" property="memberNo"/>
         <result column="MEMBER_NAME" property="memberName"/>
@@ -15,6 +33,21 @@
         <result column="AGE" property="age"/>
         <result column="GRADE_STATUS" property="grade"/>
     </resultMap>
+
+    <resultMap id="patientRecordMap" type="PatientRecordVO">
+            <result column="VISIT_DATE" property="visitDate"/>
+            <result column="DEPT_NAME" property="departmentName"/>
+            <result column="STAFF_NAME" property="doctorName"/>
+            <result column="DIAGNOSIS_NAME" property="diagnosis"/>
+            <result column="RESERVATION_STATUS" property="status"/>
+        </resultMap>
+
+        <resultMap id="reservationResultMap" type="ReservationVO">
+            <result column="RESERVATION_DATE" property="reservationDate"/>
+            <result column="DEPT_NAME" property="departmentName"/>
+            <result column="STAFF_NAME" property="doctorName"/>
+            <result column="RESERVATION_TYPE" property="reservationType"/>
+        </resultMap>
 
     <select id="selectPatientList" resultMap="patientResultMap">
         SELECT
@@ -107,20 +140,50 @@
         MEMBER_PHONE,        MEMBER_EMAIL,        MEMBER_ADDRESS,
         MEMBER_JOIN_DATE,    MEMBER_STATUS,
         MEMBER_CHRONIC_DISEASE
-        /* (혈액형, 알러지 등 필요시 컬럼 추가) */
         ) VALUES (
-        MEMBER_SEQ.NEXTVAL,   /* 1. 시퀀스 사용 */
-        #{memberId},             /* 2. ID (JS에서 설정) */
-        #{memberPwd},            /* 3. PWD (JS에서 설정) */
+        MEMBER_SEQ.NEXTVAL,
+        #{memberId},
+        #{memberPwd},
         #{memberName},
-        #{memberGender},         /* 4. 성별 (JS에서 계산) */
-        #{memberRrn},            /* 5. RRN (JS에서 조합) */
+        #{memberGender},
+        #{memberRrn},
         #{memberPhone},
         #{memberEmail},
         #{memberAddress},
-        #{memberJoinDate},       /* 6. (Service에서 설정) */
-        #{memberStatus},         /* 7. (Service에서 설정) */
-        #{memberChronicDisease}  /* 8. "특이사항" 매핑 */
+        #{memberJoinDate},
+        #{memberStatus},
+        #{memberChronicDisease}
         )
     </insert>
+
+    <select id="selectPatientDetail" resultMap="memberResultMap" parameterType="_int">
+        SELECT * FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <select id="selectMedicalRecords" resultMap="patientRecordMap" parameterType="_int">
+        SELECT
+        V.VISIT_DATE, D.DEPT_NAME, S.STAFF_NAME,
+        DI.DIAGNOSIS_NAME, R.RESERVATION_STATUS
+        FROM VISIT V
+        LEFT JOIN RESERVATION R ON V.RESERVATION_NO = R.RESERVATION_NO
+        LEFT JOIN STAFF S ON R.STAFF_NO = S.STAFF_NO
+        LEFT JOIN DEPARTMENT D ON S.DEPT_NO = D.DEPT_NO
+        LEFT JOIN DIAGNOSIS DI ON R.RESERVATION_NO = DI.RESERVATION_NO
+        WHERE V.MEMBER_NO = #{memberNo}
+        AND R.RESERVATION_STATUS = '완료' /* 과거 기록 */
+        ORDER BY V.VISIT_DATE DESC
+    </select>
+
+    <select id="selectReservations" resultMap="reservationResultMap" parameterType="_int">
+        SELECT
+        R.RESERVATION_DATE, D.DEPT_NAME, S.STAFF_NAME, R.RESERVATION_TYPE
+        FROM RESERVATION R
+        LEFT JOIN STAFF S ON R.STAFF_NO = S.STAFF_NO
+        LEFT JOIN DEPARTMENT D ON S.DEPT_NO = D.DEPT_NO
+        WHERE R.MEMBER_NO = #{memberNo}
+        AND R.RESERVATION_STATUS = '예약' /* 예정된 기록 */
+        AND R.RESERVATION_DATE >= SYSDATE
+        ORDER BY R.RESERVATION_DATE ASC
+    </select>
 </mapper>

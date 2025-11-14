@@ -10,5 +10,7 @@ public interface PatientManageService {
 
     int registerPatient(Member member); //신규 환자 등록
 
+    Map<String, Object> getPatientDetail(int memberNo); //환자 상세보기
+
 
 }
