@@ -24,7 +24,7 @@
     <!--    사용 가능한 장비 / 전체 장비-->
     <select id="getEquipmentUtilizationRate" resultType="double">
         SELECT
-        (COUNT(CASE WHEN FACILITY_STATUS = 'T' THEN 1 END) / COUNT(*)) * 100 AS AvailablePercentage
+        NVL((COUNT(CASE WHEN FACILITY_STATUS = 'T' THEN 1 END) / NULLIF(COUNT(*), 0)) * 100, 0) AS AvailablePercentage
         FROM
         FACILITY
     </select>
@@ -32,11 +32,12 @@
     <!--    어제 예약(취소 제외) / 오늘 예약(취소 제외)-->
     <select id="getReservationIncreaseRate" resultType="double">
         SELECT
-        ( (COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '확정' OR RESERVATION_STATUS =
+        NVL(( (COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '확정' OR
+        RESERVATION_STATUS =
         '완료') THEN 1 END) /
         NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) - 1 AND (RESERVATION_STATUS = '확정' OR
         RESERVATION_STATUS = '완료') THEN 1 END), 0))
-        - 1 ) * 100 AS IncreaseRate
+        - 1 ) * 100, 0) AS IncreaseRate
         FROM
         RESERVATION
     </select>
@@ -44,9 +45,9 @@
     <!--   진행도(금일 전체 환자 / 대기 중인 환자)-->
     <select id="getStandbyPatientIncreaseRate" resultType="double">
         SELECT
-        ( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
+        NVL(( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
         NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '확정' OR
-        RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100 AS ProgressRate
+        RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100, 0) AS ProgressRate
         FROM
         RESERVATION
     </select>
@@ -54,9 +55,9 @@
     <!--    진행도(금일 예약 시설 / 대기 중인 시설)-->
     <select id="getEquipmentUtilizationIncreaseRate" resultType="double">
         SELECT
-        ( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
+        NVL(( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
         NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '확정' OR
-        RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100 AS ProgressRate
+        RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100, 0) AS ProgressRate
         FROM
         FACILITY_RESERVATION
     </select>
