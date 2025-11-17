@@ -6,57 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const openBtn = document.getElementById('open-password-modal');
     const passwordModalOverlay = document.querySelector('.password-modal-overlay');
 
-    if (openBtn && passwordModalOverlay) {
-        // [비밀번호 모달 로직 생략]
-        const closeModalBtn = passwordModalOverlay.querySelector('.modal-close');
-        const cancelBtn = passwordModalOverlay.querySelector('.modal-footer .btn-cancel');
-        const passwordForm = passwordModalOverlay.querySelector('.password-form');
-        const passwordInput = passwordModalOverlay.querySelector('#password');
-
-        // 모달 함수 정의
-        function openModal() {
-            passwordModalOverlay.classList.add('is-open');
-            document.body.classList.add('modal-open');
-        }
-
-        function closeModal() {
-            passwordModalOverlay.classList.remove('is-open');
-            document.body.classList.remove('modal-open');
-            if (passwordForm) {
-                passwordForm.reset();
-            }
-        }
-
-        // 이벤트 리스너 연결
-        openBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            openModal();
-        });
-
-        if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
-
-        passwordModalOverlay.addEventListener('click', function (e) {
-            if (e.target === passwordModalOverlay) {
-                closeModal();
-            }
-        });
-
-        // 폼 제출 (비밀번호 확인)
-        if (passwordForm) {
-            passwordForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                if (passwordInput && passwordInput.value) {
-                    window.location.href = contextPath + '/member/info';
-                } else {
-                    alert('비밀번호를 입력해주세요.');
-                }
-            });
-        }
-    } // --- 비밀번호 모달 로직 끝 ---
-
-
     // --- 2. '예약 취소' & '변경' 이벤트 리스너 ---
     const contentSection = document.querySelector('.mypage-content');
 
