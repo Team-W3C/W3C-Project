@@ -61,4 +61,86 @@
         FROM
         FACILITY_RESERVATION
     </select>
+
+    <resultMap id="weeklyMap" type="com.w3c.spring.model.vo.dashBoardChart.ReservaionWeekly">
+        <result column="RDATE" property="rdate"/>
+        <result column="CNT" property="cnt"/>
+    </resultMap>
+
+    <select id="selectWeeklyReservationCount" resultMap="weeklyMap">
+        SELECT
+        TRUNC(TREATMENT_DATE) AS RDATE,
+        COUNT(*) AS CNT
+        FROM RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) BETWEEN #{monday} AND #{today}
+        GROUP BY TRUNC(TREATMENT_DATE)
+        ORDER BY RDATE
+    </select>
+
+
+    <select id="selectGradeCount" resultType="map">
+        SELECT
+        GRADE_STATUS AS GRADE,
+        COUNT(*) AS CNT
+        FROM GRADE
+        GROUP BY GRADE_STATUS
+    </select>
+
+
+    <select id="selectFacilityReservationCount" resultType="map">
+        SELECT
+        CASE
+        WHEN f.FACILITY_NAME LIKE '%MRI%' THEN 'MRI'
+        WHEN f.FACILITY_NAME LIKE '%CT%' AND f.FACILITY_NAME NOT LIKE '%PET%' THEN 'CT'
+        WHEN f.FACILITY_NAME LIKE '%초음파%' THEN '초음파'
+        WHEN f.FACILITY_NAME LIKE '%X-Ray%' THEN 'X-RAY'
+        WHEN f.FACILITY_NAME LIKE '%내시경%' THEN '내시경'
+        ELSE '기타'
+        END AS CATEGORY,
+        COUNT(r.FACILITY_NO) AS CNT
+        FROM FACILITY f
+        LEFT JOIN FACILITY_RESERVATION r
+        ON f.FACILITY_NO = r.FACILITY_NO
+        AND r.TREATMENT_DATE BETWEEN #{startDate} AND #{endDate}
+        WHERE
+        f.FACILITY_NAME LIKE '%MRI%'
+        OR f.FACILITY_NAME LIKE '%CT%'
+        OR f.FACILITY_NAME LIKE '%초음파%'
+        OR f.FACILITY_NAME LIKE '%X-Ray%'
+        OR f.FACILITY_NAME LIKE '%내시경%'
+        GROUP BY
+        CASE
+        WHEN f.FACILITY_NAME LIKE '%MRI%' THEN 'MRI'
+        WHEN f.FACILITY_NAME LIKE '%CT%' AND f.FACILITY_NAME NOT LIKE '%PET%' THEN 'CT'
+        WHEN f.FACILITY_NAME LIKE '%초음파%' THEN '초음파'
+        WHEN f.FACILITY_NAME LIKE '%X-Ray%' THEN 'X-RAY'
+        WHEN f.FACILITY_NAME LIKE '%내시경%' THEN '내시경'
+        ELSE '기타'
+        END
+        ORDER BY CATEGORY
+    </select>
+
+    <!-- 최근 예약 목록 조회 (오늘 날짜 기준, 최신순) -->
+    <resultMap id="recentReservationMap" type="com.w3c.spring.model.vo.dashBoardChart.TOP5Reservaion">
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="DEPARTMENT_NAME" property="departmentName"/>
+        <result column="TREATMENT_DATE" property="treatmentDate"/>
+        <result column="RESERVATION_STATUS" property="reservationStatus"/>
+        <result column="RESERVATION_NO" property="reservationNo"/>
+    </resultMap>
+
+    <select id="selectRecentReservations" resultMap="recentReservationMap">
+        SELECT
+        M.MEMBER_NAME AS MEMBER_NAME,
+        D.DEPARTMENT_NAME AS DEPARTMENT_NAME,
+        TO_CHAR(R.TREATMENT_DATE, 'YYYY-MM-DD') AS TREATMENT_DATE,
+        R.RESERVATION_STATUS AS RESERVATION_STATUS,
+        R.RESERVATION_NO AS RESERVATION_NO
+        FROM RESERVATION R
+        INNER JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+        INNER JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE TRUNC(R.TREATMENT_DATE) BETWEEN #{startDate} AND #{endDate}
+        AND R.RESERVATION_STATUS != '취소'
+        ORDER BY R.TREATMENT_DATE DESC, R.RESERVATION_NO DESC
+    </select>
 </mapper>
