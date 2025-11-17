@@ -256,50 +256,6 @@
 
         </section> </main>
 
-<div class="modal-overlay password-modal-overlay">
-    <div class="password-modal">
-        <button type="button" class="modal-close" aria-label="닫기">
-            ×
-        </button>
-
-        <header class="modal-header">
-            <h2 class="modal-title">회원 정보</h2>
-            <p class="modal-subtitle">회원 정보를 보시려면 비밀번호를 입력하여 주세요</p>
-        </header>
-
-        <div class="modal-body">
-            <form class="password-form">
-                <div class="info-box">
-                    <div class="info-header">회원 정보</div>
-                    <div class="info-text">회원 정보를 보시려면 비밀번호를 입력하여 주세요</div>
-                </div>
-
-                <div class="field-box">
-                    <div class="field-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"/>
-                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/>
-                        </svg>
-                    </div>
-                    <div class="field-info">
-                        <div class="field-label">성함</div>
-                        <div class="field-value">${sessionScope.loginMember.memberName}</div>
-                    </div>
-                </div>
-
-                <div class="field-box password-box">
-                    <input type="password" id="password" class="password-input" placeholder="비밀번호를 입력하세요">
-                    <button type="submit" class="btn-confirm">확인</button>
-                </div>
-            </form>
-        </div>
-
-        <footer class="modal-footer">
-            <button type="button" class="btn-cancel">취소</button>
-        </footer>
-    </div>
-</div>
-
 
 <div class="modal-overlay edit-modal-overlay" data-current-rno="">
     <div class="password-modal edit-modal">

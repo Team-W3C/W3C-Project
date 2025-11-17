@@ -105,7 +105,7 @@
                         <li class="info-item">
                             <label for="join-date" class="info-label">가입일</label>
                             <div class="info-value-box">
-                                <span id="join-date">${loginMember.memberJoinDate}</span>
+                                <span id="join-date"><fmt:formatDate value="${loginMember.memberJoinDate}" pattern="yyyy년 M월 d일"/></span>
                             </div>
                         </li>
                     </ul>
