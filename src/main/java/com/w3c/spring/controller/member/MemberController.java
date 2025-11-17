@@ -275,7 +275,6 @@ public class MemberController {
         if (session.getAttribute("loginMember") == null) {
             return "redirect:/member/loginPage";
         }
-        // JSP 실제 경로: /WEB-INF/views/homePage/member/mychart/cancelMember.jsp
         return "homePage/member/mychart/deleteMember";
     }
 

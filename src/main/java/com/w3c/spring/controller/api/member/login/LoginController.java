@@ -28,7 +28,10 @@ public class LoginController {
                         HttpSession session,
                         RedirectAttributes ra) { //
 
-        Member loginMember = memberService.login(memberId, memberPwd);
+        // ▼▼▼▼▼ [수정] .login() -> .getMemberById()로 변경 ▼▼▼▼▼
+        Member loginMember = memberService.getMemberById(memberId, memberPwd);
+        // ▲▲▲▲▲ [수정] ▲▲▲▲▲
+
         System.out.println(loginMember);
 
         if(loginMember == null) { // ID가 존재하지 않거나 비밀번호가 틀린 상태
