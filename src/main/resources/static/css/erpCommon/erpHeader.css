@@ -155,3 +155,20 @@
     }
 
 }
+
+/* 모바일 - 사이드바 숨김 */
+@media (max-width: 768px) {
+    .header {
+        left: 0;  /* 사이드바 없으므로 0 */
+        padding: 0 16px;
+        height: 56px;
+    }
+
+    .header__search {
+        width: 200px;  /* 검색창 축소 */
+    }
+
+    .header__user-info {
+        display: none;  /* 사용자 정보 텍스트 숨김 */
+    }
+}
