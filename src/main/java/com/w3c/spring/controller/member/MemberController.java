@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +71,10 @@ public class MemberController {
      * /WEB-INF/views/homePage/member/appointment.jsp 파일을 보여줍니다.
      */
     @GetMapping("/appointmentPage")
-    public String showAppointmentPage() {
+    public String showAppointmentPage(HttpSession session) {
+        if (session.getAttribute("loginMember") == null) {
+            return "redirect:/member/loginPage";
+        }
         return "member/reservation/main";
     }
 
@@ -78,6 +82,7 @@ public class MemberController {
     public String myChartPage(HttpSession session, Model model) {
 
         Member loginMember = (Member) session.getAttribute("loginMember");
+
         if (loginMember == null) {
             return "redirect:/member/loginPage";
         }
@@ -89,6 +94,10 @@ public class MemberController {
         return "homePage/member/MyChart";
     }
 
+    /**
+     * 예약 취소 처리 (AJAX)
+     * URL: /member/reservation/cancel
+     */
     @PostMapping("/reservation/cancel")
     @ResponseBody
     public ResponseEntity<String> cancelReservation(@RequestBody Map<String, Integer> payload, HttpSession session) {

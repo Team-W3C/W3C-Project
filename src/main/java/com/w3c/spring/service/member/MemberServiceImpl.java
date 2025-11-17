@@ -7,39 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // BCrypt 제거
-
-
 @Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
-    // private final BCryptPasswordEncoder passwordEncoder; // BCrypt 제거
-
     @Autowired
     public MemberServiceImpl(MemberMapper memberMapper) { // BCrypt 제거
         this.memberMapper = memberMapper;
-        // this.passwordEncoder = passwordEncoder; // BCrypt 제거
     }
-
 
     @Override
     public Member getMemberById(String memberId, String memberPwd) {
         System.out.println("=============");
         System.out.println(memberId);
-        // 암호화가 없으므로 DB에 저장된 평문과 사용자가 입력한 평문을 비교
         return memberMapper.getMemberById(memberId, memberPwd);
     }
 
     @Override
-    @Transactional
     public int signUpMember(Member member) {
-        // 암호화 로직 제거
-        // String encryptedPassword = passwordEncoder.encode(member.getMemberPwd());
-        // member.setMemberPwd(encryptedPassword);
-
-        // 평문 비밀번호를 그대로 저장
         return memberMapper.signUpMember(member);
     }
 

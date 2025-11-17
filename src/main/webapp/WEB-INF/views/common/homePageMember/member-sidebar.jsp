@@ -5,7 +5,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
+
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet"/>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/member-sidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ConfirmPasswordModal.css">
     <title>회원 사이드바</title>
@@ -41,6 +43,7 @@
 <body>
 
 <aside class="member-sidebar">
+
     <div class="member-sidebar__user">
         <h2 class="member-sidebar__user-name">${sessionScope.loginMember.memberName}님</h2>
         <p class="member-sidebar__user-id">병원등록번호 : ${sessionScope.loginMember.memberNo}</p>
@@ -78,6 +81,7 @@
             </li>
         </ul>
     </nav>
+
 </aside>
 
 <div class="modal-overlay password-modal-overlay">

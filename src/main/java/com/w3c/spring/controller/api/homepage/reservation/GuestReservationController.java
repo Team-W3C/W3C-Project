@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.api.hompage.reservation;
+package com.w3c.spring.controller.api.homepage.reservation;
 
 import com.w3c.spring.service.reservation.GuestReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
