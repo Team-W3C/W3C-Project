@@ -470,6 +470,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="password-section" id="passwordSection">
                     <h3 class="section-title">본인 확인</h3>
                     <p style="color: #64748B; font-size: 14px; margin-bottom: 16px;">
@@ -495,10 +496,10 @@
                     <button type="button" class="btn btn-secondary" id="cancelBtn">
                         취소
                     </button>
-                    <button type="button" class="btn btn-danger" id="nextBtn" disabled>
+                    <button type="button" class="btn btn-danger" id="nextBtn" style="display: none;">
                         다음 단계
                     </button>
-                    <button type="submit" class="btn btn-danger" id="finalWithdrawalBtn" form="withdrawalForm" style="display: none;">
+                    <button type="submit" class="btn btn-danger" id="finalWithdrawalBtn" form="withdrawalForm" disabled>
                         탈퇴 완료
                     </button>
                 </div>
@@ -513,9 +514,11 @@
     const contextPath = '${pageContext.request.contextPath}';
 
     document.addEventListener('DOMContentLoaded', function() {
+
+        console.log('DOM 로드 완료. (체크박스 -> 비밀번호 표시) 스크립트 실행.');
+
         // DOM 요소 가져오기
-        const agreeCheckbox = document.getElementById('agreeAll'); // [수정] 1개만 선택
-        const nextBtn = document.getElementById('nextBtn');
+        const agreeCheckbox = document.getElementById('agreeAll');
         const finalWithdrawalBtn = document.getElementById('finalWithdrawalBtn');
         const passwordSection = document.getElementById('passwordSection');
         const cancelBtn = document.getElementById('cancelBtn');
@@ -523,41 +526,48 @@
         const passwordInput = document.getElementById('passwordInput');
         const errorMessage = document.getElementById('errorMessage');
 
-        // [수정] 1개 체크박스의 상태를 확인하는 함수
-        function updateNextButtonState() {
-            const isChecked = agreeCheckbox.checked;
-
-            if (!passwordSection.classList.contains('show')) {
-                nextBtn.disabled = !isChecked;
-            }
+        // [디버깅] 요소 찾기 확인
+        if (!agreeCheckbox || !finalWithdrawalBtn || !passwordSection) {
+            console.error('오류: 필수 DOM 요소를 찾을 수 없습니다. (agreeAll, finalWithdrawalBtn, passwordSection)');
+            return;
         }
 
-        // [수정] 1개 체크박스에만 이벤트 리스너 연결
-        updateNextButtonState(); // 페이지 로드 시 초기 상태
-        agreeCheckbox.addEventListener('change', updateNextButtonState);
+        // 체크박스 'change' 이벤트 리스너
+        agreeCheckbox.addEventListener('change', function() {
+            const isChecked = this.checked;
 
-        // '다음 단계' 버튼 클릭 이벤트 (로직 동일)
-        nextBtn.addEventListener('click', function() {
-            if (nextBtn.disabled) return;
+            console.log('체크박스 변경됨:', isChecked);
 
-            passwordSection.classList.add('show');
-            passwordSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => passwordInput.focus(), 300);
+            // '탈퇴 완료' 버튼 활성화/비활성화
+            finalWithdrawalBtn.disabled = !isChecked;
 
-            nextBtn.style.display = 'none';
-            finalWithdrawalBtn.style.display = 'block';
+            // 비밀번호 섹션 표시/숨김
+            if (isChecked) {
+                passwordSection.classList.add('show');
+                passwordSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => passwordInput.focus(), 300);
+            } else {
+                passwordSection.classList.remove('show');
+                errorMessage.classList.remove('show'); // 오류 메시지도 숨김
+            }
         });
 
-        // '취소' 버튼 클릭 이벤트 (로직 동일)
+        // '취소' 버튼 클릭 이벤트
         cancelBtn.addEventListener('click', function() {
             if (confirm('회원 탈퇴를 취소하시겠습니까?')) {
                 window.location.href = contextPath + '/member/mychart';
             }
         });
 
-        // 폼 제출 이벤트 (로직 동일)
+        // 폼 제출 이벤트 (탈퇴 처리)
         withdrawalForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            // 버튼이 비활성화(체크 안 함) 상태면 제출 방지
+            if (finalWithdrawalBtn.disabled) {
+                alert('탈퇴 동의 항목에 체크해야 합니다.');
+                return;
+            }
 
             const password = passwordInput.value.trim();
 

@@ -254,7 +254,7 @@
                 </c:otherwise>
             </c:choose>
 
-    </section> </main>
+        </section> </main>
 
 <div class="modal-overlay password-modal-overlay">
     <div class="password-modal">
@@ -353,9 +353,7 @@
     </div>
 </div>
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
-<script>
-    const contextPath = "${pageContext.request.contextPath}";
-</script>
+
 <script src="${pageContext.request.contextPath}/js/MyChart.js" defer></script>
 
 </body>
