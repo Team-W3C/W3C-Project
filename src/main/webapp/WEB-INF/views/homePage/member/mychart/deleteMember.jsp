@@ -535,11 +535,13 @@
 </div>
 
 <script>
-    const contextPath = '${pageContext.request.contextPath}';
 
     document.addEventListener('DOMContentLoaded', function() {
+        let contextPath = '${pageContext.request.contextPath}';
+
         // DOM 요소 가져오기
         const checkboxes = document.querySelectorAll('.agree-checkbox');
+        console.log(checkboxes);
         const nextBtn = document.getElementById('nextBtn');
         const finalWithdrawalBtn = document.getElementById('finalWithdrawalBtn');
         const passwordSection = document.getElementById('passwordSection');
