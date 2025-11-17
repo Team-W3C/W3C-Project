@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const formData = new FormData(editForm);
+            const formData = new FormData(editForm); 
 
             const payload = {
                 departmentNo: parseInt(formData.get('departmentNo')),
