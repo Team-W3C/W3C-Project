@@ -166,66 +166,66 @@
 
             <c:if test="${currentTab == 'status'}">
 
-            <div class="tab-panel">
-                <div class="table-wrapper">
+                <div class="tab-panel">
+                    <div class="table-wrapper">
 
-                    <table class="attendance-history-table">
-                        <thead>
-                        <tr>
-                            <th>날짜</th>
-                            <th>출근</th>
-                            <th>퇴근</th>
-                            <th>근무 시간</th>
-                            <th>상태</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <c:forEach var="item" items="${historyList}">
-                        <tr>
-                            <td class="text-primary">${item.absenceDate}</td>
-
-                            <td>${item.absenceStartTime}</td>
-                            <td><c:if test="${not empty item.absenceEndTime}">
-                                    ${item.absenceEndTime}
-                                </c:if>
-                                <c:if test="${empty item.absenceEndTime}">-</c:if>
-
-
-                            </td>
-                            <td>${not empty item.workHours ? item.workHours : '-'}시간
-                            </td>
-                            <td><c:choose>
-                                <c:when test="${item.absenceStatus == 1}">
-
-                                    <span class="badge status-normal">정상</span>
-                                </c:when>
-                                <c:when test="${item.absenceStatus == 2}">
-
-                                    <span class="badge status-late">지각</span>
-                                </c:when>
-                                <c:when test="${item.absenceStatus == 3}">
-
-                                    <span class="badge status-leave-early">조퇴</span>
-                                </c:when>
-
-                                <c:otherwise>
-                                    <span class="badge badge-etc">결근</span>
-
-                                </c:otherwise>
-                            </c:choose></td>
-                        </tr>
-
-                        </c:forEach>
-                        <c:if test="${empty historyList}">
+                        <table class="attendance-history-table">
+                            <thead>
                             <tr>
-                                <td colspan="5">근태 기록이 없습니다.</td>
+                                <th>날짜</th>
+                                <th>출근</th>
+                                <th>퇴근</th>
+                                <th>근무 시간</th>
+                                <th>상태</th>
                             </tr>
-                        </c:if>
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody>
+                            <c:forEach var="item" items="${historyList}">
+                                <tr>
+                                    <td class="text-primary">${item.absenceDate}</td>
+
+                                    <td>${item.absenceStartTime}</td>
+                                    <td><c:if test="${not empty item.absenceEndTime}">
+                                        ${item.absenceEndTime}
+                                    </c:if>
+                                        <c:if test="${empty item.absenceEndTime}">-</c:if>
+
+
+                                    </td>
+                                    <td>${not empty item.workHours ? item.workHours : '-'}시간
+                                    </td>
+                                    <td><c:choose>
+                                        <c:when test="${item.absenceStatus == 1}">
+
+                                            <span class="badge status-normal">정상</span>
+                                        </c:when>
+                                        <c:when test="${item.absenceStatus == 2}">
+
+                                            <span class="badge status-late">지각</span>
+                                        </c:when>
+                                        <c:when test="${item.absenceStatus == 3}">
+
+                                            <span class="badge status-leave-early">조퇴</span>
+                                        </c:when>
+
+                                        <c:otherwise>
+                                            <span class="badge badge-etc">결근</span>
+
+                                        </c:otherwise>
+                                    </c:choose></td>
+                                </tr>
+
+                            </c:forEach>
+                            <c:if test="${empty historyList}">
+                                <tr>
+                                    <td colspan="5">근태 기록이 없습니다.</td>
+                                </tr>
+                            </c:if>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
             </c:if>
 
             <%-- ======================================================= --%>
@@ -780,5 +780,16 @@
 <script
         src="${pageContext.request.contextPath}/js/erp/attendance/attendance.js"
         defer></script>
+<c:if test="${not empty message}">
+    <script>
+        alert('${message}');
+    </script>
+</c:if>
+
+<c:if test="${not empty errorMessage}">
+    <script>
+        alert('${errorMessage}');
+    </script>
+</c:if>
 </body>
 </html>
