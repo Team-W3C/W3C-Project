@@ -24,7 +24,7 @@ W3C 프로젝트는 병원 내 특수장비(초음파, MRI 등) 예약 과정에
 
 ## 🛠️ 설치 및 실행 (Installation & Run)
 ## 1. 프로젝트 클론
-git clone https://github.com/username/project.git
+git clone [https://github.com/Team-W3C/W3C-Project.git]
 
 ## 2. 데이터베이스(Oracle) 설정
 - Oracle 실행 후 데이터베이스 및 테이블 생성
@@ -102,3 +102,4 @@ feat: 로그인 구현 기능 #1
 | 신한서 | 이슈 관리자 | hanseo.lab@gmail.com |
 | 이채진 | 일정 관리자 | jinking0930@gmail.com |
 | 장원석 | 형상 관리자 | jang1suk9155@gmail.com |
+
