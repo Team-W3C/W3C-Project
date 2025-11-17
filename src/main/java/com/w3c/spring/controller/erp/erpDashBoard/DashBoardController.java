@@ -1,11 +1,14 @@
 package com.w3c.spring.controller.erp.erpDashBoard;
 
+import com.w3c.spring.model.vo.dashBoardChart.TOP5Reservaion;
 import com.w3c.spring.service.dashBoard.DashBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/erp/dashBoard")
@@ -36,6 +39,8 @@ public class DashBoardController {
         double getEquipmentUtilizationIncreaseRate=dashBoardService.getEquipmentUtilizationIncreaseRate();
         model.addAttribute("getEquipmentUtilizationIncreaseRate", getEquipmentUtilizationIncreaseRate);
 
+        List<TOP5Reservaion> recentReservations = dashBoardService.getRecentReservations();
+        model.addAttribute("recentReservations", recentReservations);
         return "erp/dashBoard/erpDashBoard";
     }
 }

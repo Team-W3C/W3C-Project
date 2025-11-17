@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!-- 대시보드 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -77,7 +79,7 @@
     <section class="dashboard-charts">
         <article class="chart-card">
             <h2 class="chart-card__title">주간 예약 현황</h2>
-            <div class="chart-card__content">
+            <div class="chart-card__content ">
                 <canvas id="weeklyChart" width="503" height="250"></canvas>
             </div>
         </article>
@@ -104,19 +106,19 @@
                         <span class="legend-item__dot legend-item__dot--gray"></span>
                         <span class="legend-item__label">일반</span>
                     </div>
-                    <span class="legend-item__value">60%</span>
+                    <span class="legend-item__value nomarl_val">60%</span>
                 </li>
                 <li class="legend-item">
                     <div class="legend-item__info">
                         <span class="legend-item__dot legend-item__dot--sky"></span>
                         <span class="legend-item__label">우선예약</span>
                     </div>
-                    <span class="legend-item__value">25%</span>
+                    <span class="legend-item__value first_val">25%</span>
                 </li>
                 <li class="legend-item">
                     <div class="legend-item__info">
                         <span class="legend-item__dot legend-item__dot--amber"></span>
-                        <span class="legend-item__label">VIP</span>
+                        <span class="legend-item__label vip_val">VIP</span>
                     </div>
                     <span class="legend-item__value">15%</span>
                 </li>
@@ -127,71 +129,33 @@
         <article class="reservation-card">
             <h2 class="reservation-card__title">최근 예약</h2>
             <ul class="reservation-list">
-                <li class="reservation-item">
-                    <div class="reservation-item__user">
-                        <div class="reservation-item__avatar">김</div>
-                        <div class="reservation-item__info">
-                            <p class="reservation-item__name">김민수</p>
-                            <p class="reservation-item__dept">정형외과</p>
-                        </div>
-                    </div>
-                    <div class="reservation-item__status">
-                        <span class="reservation-item__time">10:00</span>
-                        <span class="reservation-badge reservation-badge--confirmed">예약확정</span>
-                    </div>
-                </li>
-                <li class="reservation-item">
-                    <div class="reservation-item__user">
-                        <div class="reservation-item__avatar">이</div>
-                        <div class="reservation-item__info">
-                            <p class="reservation-item__name">이영희</p>
-                            <p class="reservation-item__dept">내과</p>
-                        </div>
-                    </div>
-                    <div class="reservation-item__status">
-                        <span class="reservation-item__time">10:30</span>
-                        <span class="reservation-badge reservation-badge--waiting">대기중</span>
-                    </div>
-                </li>
-                <li class="reservation-item">
-                    <div class="reservation-item__user">
-                        <div class="reservation-item__avatar">박</div>
-                        <div class="reservation-item__info">
-                            <p class="reservation-item__name">박철수</p>
-                            <p class="reservation-item__dept">신경외과</p>
-                        </div>
-                    </div>
-                    <div class="reservation-item__status">
-                        <span class="reservation-item__time">11:00</span>
-                        <span class="reservation-badge reservation-badge--confirmed">예약확정</span>
-                    </div>
-                </li>
-                <li class="reservation-item">
-                    <div class="reservation-item__user">
-                        <div class="reservation-item__avatar">정</div>
-                        <div class="reservation-item__info">
-                            <p class="reservation-item__name">정수연</p>
-                            <p class="reservation-item__dept">이비인후과</p>
-                        </div>
-                    </div>
-                    <div class="reservation-item__status">
-                        <span class="reservation-item__time">11:30</span>
-                        <span class="reservation-badge reservation-badge--confirmed">예약확정</span>
-                    </div>
-                </li>
-                <li class="reservation-item">
-                    <div class="reservation-item__user">
-                        <div class="reservation-item__avatar">한</div>
-                        <div class="reservation-item__info">
-                            <p class="reservation-item__name">한지민</p>
-                            <p class="reservation-item__dept">피부과</p>
-                        </div>
-                    </div>
-                    <div class="reservation-item__status">
-                        <span class="reservation-item__time">14:00</span>
-                        <span class="reservation-badge reservation-badge--waiting">대기중</span>
-                    </div>
-                </li>
+                <c:forEach var="reservation" items="${recentReservations}" varStatus="status">
+                    <c:if test="${status.index < 5}">
+                        <li class="reservation-item">
+                            <div class="reservation-item__user">
+                                <div class="reservation-item__avatar">${fn:substring(reservation.memberName, 0, 1)}</div>
+                                <div class="reservation-item__info">
+                                    <p class="reservation-item__name">${reservation.memberName}</p>
+                                    <p class="reservation-item__dept">${reservation.departmentName}</p>
+                                </div>
+                            </div>
+                            <div class="reservation-item__status">
+                                <span class="reservation-item__time">${reservation.treatmentDate}</span>
+                                <c:choose>
+                                    <c:when test="${reservation.reservationStatus == '확정'}">
+                                        <span class="reservation-badge reservation-badge--confirmed">예약확정</span>
+                                    </c:when>
+                                    <c:when test="${reservation.reservationStatus == '대기'}">
+                                        <span class="reservation-badge reservation-badge--waiting">대기중</span>
+                                    </c:when>
+                                    <c:when test="${reservation.reservationStatus == '완료'}">
+                                        <span class="reservation-badge reservation-badge--completed">완료</span>
+                                    </c:when>
+                                </c:choose>
+                            </div>
+                        </li>
+                    </c:if>
+                </c:forEach>
             </ul>
         </article>
     </section>
