@@ -9,4 +9,9 @@ public interface MemberService {
     int signUpMember(Member member);
     int getMemberCountById(String memberId);
     BoardMemberSelect selectMemberByBoardId(int boardId);
+    int updateMemberInfo(Member member);
+    Member getMemberByNo(Long memberNo);
+    boolean checkPassword(String memberId, String currentPassword);
+    int updatePassword(String memberId, String newPassword);
+    int deactivateMember(String memberId);
 }

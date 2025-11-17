@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <title>병원 예약 시스템 - ERP</title>
-
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/systemReservation/systemReservation.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpHeader.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpSidebar.css">

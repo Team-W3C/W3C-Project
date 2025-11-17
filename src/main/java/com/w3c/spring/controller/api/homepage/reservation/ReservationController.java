@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.api.hompage.reservation;
+package com.w3c.spring.controller.api.homepage.reservation;
 
 import com.w3c.spring.model.vo.*;
 import com.w3c.spring.service.reservation.ReservationService;
