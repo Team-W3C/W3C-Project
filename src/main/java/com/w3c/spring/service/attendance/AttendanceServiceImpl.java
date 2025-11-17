@@ -131,6 +131,13 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     @Transactional
     public void clockOut(long absenceNo, long staffNo) throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        String dayOfWeek = now.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("staffNo", staffNo);
+        params.put("dayOfWeek", dayOfWeek);
+
         // 1. 오늘 출근 기록이 있는지, 본인 맞는지, 이미 퇴근했는지 확인
         AttendanceVO todayRecord = attendanceMapper.findTodayRecordByStaffNo(staffNo);
 
@@ -145,11 +152,21 @@ public class AttendanceServiceImpl implements AttendanceService {
         // 2. 퇴근 시간 및 상태 업데이트
         todayRecord.setAbsenceEnd(LocalDateTime.now());
 
-        // 3. 조퇴 여부 판단 (6시 기준)
-        if (todayRecord.getAbsenceStatus() == 1 && LocalDateTime.now().toLocalTime().isBefore(SIX_PM)) {
+        // 스케줄 퇴근 시간
+        String scheduledEndTimeStr = attendanceMapper.findScheduleEndTimeByStaffNoAndDay(params);
+        LocalTime scheduledEndTime = SIX_PM; // 기본 퇴근 시간(18시)으로 초기화
+
+        if (scheduledEndTimeStr != null && !scheduledEndTimeStr.isEmpty()) {
+            try {
+                scheduledEndTime = LocalTime.parse(scheduledEndTimeStr, SCHEDULE_TIME_FORMATTER);
+            } catch (DateTimeParseException e) {
+                e.printStackTrace(); // 파싱 실패 시 기본값 사용
+            }
+        }
+        // 3. 조퇴 여부 판단
+        if (todayRecord.getAbsenceStatus() != 3 && LocalDateTime.now().toLocalTime().isBefore(scheduledEndTime)) {
             todayRecord.setAbsenceStatus(3); // 3: 조퇴
         }
-        // (else) 지각(2)이었으면 상태를 그대로 둠.
 
         // 4. DB 업데이트
         attendanceMapper.updateClockOut(todayRecord); // absenceNo, absenceEnd, absenceStatus 전달
