@@ -5,15 +5,30 @@
 
 $(document).ready(function() {
 
-    // 사이드바(#sidebar-nav)에서 '직원 관리' 링크(#employee-manage-link)를 "제외한"
-    // 모든 <a> 태그에 클릭 이벤트를 연결합니다.
-    $('#sidebar-nav a:not(#employee-manage-link)').on('click', function(event) {
+    // 사이드바 링크 클릭 시 active 상태 전환
+    $('.sidebar__link').on('click', function(event) {
+        // 모든 링크에서 active 클래스 제거
+        $('.sidebar__link').removeClass('sidebar__link--active');
 
-        // employeePolling.js에 정의된 'window.employeeStopLongPolling' 함수가
-        // 존재하는지 확인하고 호출합니다.
-        if (typeof window.employeeStopLongPolling === 'function') {
+        // 클릭된 링크에 active 클래스 추가
+        $(this).addClass('sidebar__link--active');
 
-            window.employeeStopLongPolling();
+        // localStorage에 현재 active 링크 저장 (페이지 새로고침 대응)
+        const href = $(this).attr('href');
+        localStorage.setItem('activeMenu', href);
+
+        // employeePolling.js 관련 처리
+        if (!$(this).is('#employee-manage-polling')) {
+            if (typeof window.employeeStopLongPolling === 'function') {
+                window.employeeStopLongPolling();
+            }
         }
     });
+
+    // 페이지 로드 시 저장된 active 메뉴 복원
+    const savedMenu = localStorage.getItem('activeMenu');
+    if (savedMenu) {
+        $('.sidebar__link').removeClass('sidebar__link--active');
+        $(`.sidebar__link[href="${savedMenu}"]`).addClass('sidebar__link--active');
+    }
 });
