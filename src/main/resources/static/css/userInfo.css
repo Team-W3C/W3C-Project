@@ -338,6 +338,8 @@ button {
     z-index: 9999;
     justify-content: center;
     align-items: center;
+    /* 모달이 길어질 경우 스크롤 */
+    overflow-y: auto;
 }
 
 .withdrawal-modal-overlay.is-open,
@@ -358,6 +360,8 @@ body.modal-open {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     position: relative;
     overflow: hidden; /* 자식 요소의 패딩을 위해 */
+    /* 스크롤 시 상단 정렬을 위해 */
+    margin: 40px auto;
 }
 
 /* 모달 헤더 (이미지 기반) */
@@ -668,5 +672,55 @@ body.modal-open {
 
     .main-footer__legal {
         align-items: center;
+    }
+}
+
+/* ==============================================
+  ✅ [추가] 정보 수정 모달 반응형 스타일
+  (화면 너비 600px 이하에서 적용)
+  ==============================================
+*/
+@media (max-width: 600px) {
+
+    /* 1. 모달 창 크기 조정
+      - 너비를 화면에 꽉 차게(좌우 여백 16px) 설정
+      - 상단 여백을 줄여 화면에 더 잘 보이게 함
+    */
+    .password-modal.update-info-modal {
+        width: calc(100% - 32px); /* 좌우 16px 여백 */
+        margin: 20px auto; /* 상하 20px, 좌우 자동 (중앙) */
+    }
+
+    /* 2. 모달 내부 패딩(여백) 조정
+      - 모바일 화면에 맞게 내부 여백을 살짝 줄입니다.
+    */
+    .password-modal .modal-header {
+        padding: 24px 20px; /* 상하 24px, 좌우 20px */
+    }
+
+    .password-modal .modal-body {
+        /* 헤더의 하단 여백이 있으므로 상단(top) 패딩은 0으로 설정 */
+        padding: 0 20px 20px 20px;
+    }
+
+    .password-modal .modal-footer {
+        padding: 20px;
+    }
+
+    /* 3. 모달 푸터(버튼) 영역
+      - 버튼을 가로(row)가 아닌 세로(column)로 쌓습니다.
+      - column-reverse: '저장' 버튼(btn-confirm)이 '취소' 버튼보다
+                        시각적으로 위에 오도록 순서를 뒤집습니다.
+    */
+    .password-modal .modal-footer {
+        flex-direction: column-reverse;
+        gap: 12px; /* 버튼 사이 간격 */
+    }
+
+    /* 4. 푸터 버튼 너비를 100%로 설정 */
+    .password-modal .modal-footer .btn-cancel,
+    .password-modal .modal-footer .btn-confirm {
+        width: 100%;
+        margin: 0; /* 버튼에 기본 margin이 있다면 제거 */
     }
 }

@@ -534,14 +534,6 @@
     <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </div>
 
-<%--
-  ================================================
-  ✅ 수정된 스크립트
-  ================================================
-  - 불필요한 이벤트 리스너를 제거하고,
-    체크박스의 'change' 이벤트 하나로 버튼 상태를 제어하도록 단순화했습니다.
-  - '탈퇴 완료' 버튼의 form 속성을 이용해 폼을 제출하도록 수정했습니다.
---%>
 <script>
     const contextPath = '${pageContext.request.contextPath}';
 
@@ -592,7 +584,7 @@
         cancelBtn.addEventListener('click', function() {
             if (confirm('회원 탈퇴를 취소하시겠습니까?')) {
                 // 사용자가 'mypage' 또는 'main' 등 원하는 페이지로 이동
-                window.location.href = contextPath + '/member/mypage';
+                window.location.href = contextPath + '/member/mychart';
             }
         });
 

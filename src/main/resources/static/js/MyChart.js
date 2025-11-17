@@ -85,6 +85,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const editNotesTextarea = document.getElementById('edit-notes');
         const editReservationNoInput = document.getElementById('edit-reservation-no');
 
+        /**
+         * [기능 추가] '예약 일시' 입력 필드의 최소 날짜를 '오늘'로 설정
+         * sysdate 기준으로 지난 날짜 예약을 막습니다.
+         */
+        const setMinDateForEditModal = () => {
+            // editDatetimeInput 변수는 이 스코프 상단에 이미 정의되어 있습니다.
+            if (!editDatetimeInput) return;
+
+            const now = new Date();
+
+            // 현지 시간 기준 '오늘' 날짜를 YYYY-MM-DD 형식으로 가져옵니다.
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // getMonth()는 0부터 시작
+            const day = now.getDate().toString().padStart(2, '0');
+
+            // datetime-local input의 min 속성 형식 (YYYY-MM-DDTHH:MM)
+            // '오늘'의 00:00시부터 선택 가능하도록 설정합니다.
+            const minDateTimeString = `${year}-${month}-${day}T00:00`;
+
+            // input의 min 속성에 값을 할당합니다.
+            editDatetimeInput.min = minDateTimeString;
+        };
+
+        // 페이지 로드 시(DOM Content Loaded) 즉시 최소 날짜 설정을 실행합니다.
+        setMinDateForEditModal();
 
         // 모달 닫기 버튼 (X 버튼, 하단 '취소' 버튼)
         editModal.querySelectorAll('.modal-close, .modal-footer .btn-cancel').forEach(btn => {
@@ -150,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const data = await response.json();
 
-                // ▼▼▼▼▼ [핵심 수정] Null 값 방어 로직 추가 ▼▼▼▼▼
                 const safeDoctorName = data.doctorName || '';
                 const safeTreatmentDate = data.treatmentDate || '';
 
