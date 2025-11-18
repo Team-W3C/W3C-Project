@@ -161,8 +161,9 @@ body {
 .modal-footer {
     display: flex;
     gap: 12px;
-    padding: 24.889px 24px 24px 24px;
+    padding: 24.889px 48px 24px 24px;
     border-top: 0.889px solid #E5E7EB;
+    justify-content: flex-end;
 }
 
 .btn {
@@ -178,7 +179,7 @@ body {
 }
 
 .btn-primary {
-    flex: 1;
+    width : 120px;
     background-color: #0e787c;
     color: white;
 }
@@ -192,6 +193,7 @@ body {
     background-color: white;
     color: #6B7280;
     border: 0.889px solid #D1D5DB;
+    display : none;
 }
 
 .btn-secondary:hover {

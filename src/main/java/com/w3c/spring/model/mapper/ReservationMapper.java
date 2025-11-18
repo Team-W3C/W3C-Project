@@ -61,4 +61,9 @@ public interface ReservationMapper {
     List<ReservationDetailVO> selectReservationDetailByDate(@Param("selectedDate") String selectedDate);
     int updateRvtnStatus(Map<String, Object> params);
     ReservationDetailVO selectRvtnDetail(@Param("reservationNo") int reservationNo);
+    List<ReservationDetailVO> selectDoctorByDepartmentName(@Param("departmentName") String departmentName );
+
+    int findDepartmentNo(@Param("departmentName") String departmentName);
+    int findMemberNo(@Param("memberName") String memberName);
+    int insertErpReservation(Map<String, Object> params);
 }
