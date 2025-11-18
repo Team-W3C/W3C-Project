@@ -1,3 +1,8 @@
+/* --- 0. [수정] 좌우 흔들림(스크롤바) 방지 --- */
+html {
+    overflow-y: scroll;
+}
+
 /* --- 1. 전역 설정 및 변수 --- */
 :root {
     /* Fonts */
@@ -13,8 +18,8 @@
     --color-text-active: rgba(255, 255, 255, 1);
     --color-text-subnav-active: rgba(14, 120, 124, 1);
 
-    --color-border: #dfdfdf; /* 스크린샷 기준 */
-    --color-contact-border: #AAA; /* 스크린샷 기준 */
+    --color-border: #dfdfdf;
+    --color-contact-border: #AAA;
 }
 
 * {
@@ -31,34 +36,31 @@ body {
 .booking-sidebar {
     display: flex;
     flex-direction: column;
-    width: 218px; /* v216_2621 */
-    height: 807px; /* v216_2621 */
+    width: 218px;
     background-color: var(--color-bg);
-    overflow: hidden; /* v216_2621 */
+    flex-shrink: 0; /* 너비 고정 */
+
+    /* ▼▼▼ [수정] 스크롤 고정(sticky) ▼▼▼ */
+    position: sticky;
+    /* .page-wrapper의 padding: 40px과 맞춤 (필요시 0으로) */
+    top: 40px;
+
+    /* ▼▼▼ [수정] 스크롤 고정을 위한 높이/오버플로우 설정 ▼▼▼ */
+    /* 화면 높이에서 상단 여백만큼 빼서, 이 안에서만 스크롤되도록 함 */
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
 }
 
 .booking-sidebar-title {
     color: var(--color-text-title);
-    font-size: 26px; /* v216_2623 */
-    font-weight: bold; /* v216_2623 */
-    height: 72px; /* v216_2622 */
-
-    /* Flex로 수직/수평 정렬 */
+    font-size: 26px;
+    font-weight: bold;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
-    /* 원본 기준:
-       width: 218px, text-box: left: 36px, width: 154px
-       -> 218 - 36 - 154 = 28px (오른쪽 여백)
-    */
     padding-right: 28px;
     border-bottom: 1px solid var(--color-border);
-}
-
-.booking-sidebar-nav {
-    /* v216_2624 (top: 105px, height: 441px) */
-    /* 원본의 고정 높이 대신, 메뉴 내용에 따라 유연하게 */
 }
 
 /* --- 3. 메인 메뉴 --- */
@@ -70,94 +72,81 @@ body {
     display: block;
     text-decoration: none;
     color: var(--color-text-main);
-    font-size: 18px; /* v216_2626 */
-    font-weight: bold; /* v216_2626 */
-
-    /* 원본 기준:
-       height: 50px, padding: 17px 0
-       text-box: width: 189px -> 218 - 189 = 29px (오른쪽 여백)
-    */
-    height: 50px; /* v216_2625 */
-    padding: 17px 29px 17px 0; /* v216_2625, v216_2626 */
+    font-size: 18px;
+    font-weight: bold;
+    height: 50px;
+    padding: 17px 29px 17px 0;
     text-align: right;
     border-bottom: 1px solid var(--color-border);
 }
 
 /* 메인 메뉴 활성 상태 */
 .booking-sidebar-menu > li.is-active > .booking-sidebar-menu-item {
-    background-color: var(--color-bg-active); /* v216_2628 */
-    color: var(--color-text-active); /* v216_2629 */
-    border-bottom: none;
+    background-color: var(--color-bg-active);
+    color: var(--color-text-active);
+
+    /* ▼▼▼ [수정] 1px 움찔거림 방지 ▼▼▼ */
+    /* border-bottom: none; 대신 배경색과 같은 색의 테두리 적용 */
+    border-bottom: 1px solid var(--color-bg-active);
 }
 
 /* --- 4. 서브 메뉴 --- */
 .booking-sidebar-submenu {
     list-style: none;
-    background-color: var(--color-bg-subnav); /* v216_2630 */
-    padding: 21px 0; /* v216_2630 */
+    background-color: var(--color-bg-subnav);
+    padding: 21px 0;
 }
 
 .booking-sidebar-submenu-item {
     display: block;
     text-decoration: none;
-    color: var(--color-text-main); /* v216_2634 */
-    font-size: 15px; /* v216_2634 */
-    font-weight: bold; /* v216_2634 */
-
-    /* 원본 기준:
-       height: 32px, text-box: width: 189px
-       -> 218 - 189 = 29px (오른쪽 여백)
-    */
-    height: 32px; /* v216_2633 */
+    color: var(--color-text-main);
+    font-size: 15px;
+    font-weight: bold;
+    height: 32px;
     padding-right: 29px;
     text-align: right;
 }
 
 /* 서브 메뉴 활성 상태 */
 .booking-sidebar-submenu-item.is-active {
-    color: var(--color-text-subnav-active); /* v216_2632 */
+    color: var(--color-text-subnav-active);
 }
 
 /* --- 5. 하단 예약문의 --- */
 .booking-sidebar-contact {
-    /* 원본 기준 v216_2645:
-       top: 586px.
-       (nav top: 105px, nav height: 441px -> 546px)
-       586px - 546px = 40px (상단 마진)
-    */
     margin-top: 40px;
-
-    /* v216_2645 (left: 15px, margin: 3px) */
     margin-left: 15px;
     margin-right: 15px;
     margin-bottom: 3px;
-
-    padding: 18px 32px; /* v216_2645 */
+    padding: 18px 32px;
     border: 1px solid var(--color-contact-border);
     display: flex;
     flex-direction: column;
-    gap: 3px; /* 스크린샷 기준 간격 */
+    gap: 3px;
 }
 
 .booking-sidebar-contact-label {
-    color: var(--color-text-main); /* v216_2647 */
-    font-size: 15px; /* v216_2647 */
-    font-weight: bold; /* v216_2647 */
+    color: var(--color-text-main);
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .booking-sidebar-contact-phone {
-    color: var(--color-text-main); /* v216_2649 */
-    font-size: 23px; /* v216_2649 */
-    font-weight: bold; /* v216_2649 */
+    color: var(--color-text-main);
+    font-size: 23px;
+    font-weight: bold;
 }
 
 /* --- 6. 반응형 (태블릿) --- */
 @media (max-width: 1024px) {
     .booking-sidebar {
-        /* 태블릿에서는 전체 높이를 채우도록 변경 */
+        /* ▼▼▼ [수정] 반응형에서는 고정 해제 ▼▼▼ */
+        position: static;
         height: auto;
-        min-height: 100vh;
-        width: 100%; /* 너비를 100%로 설정 (또는 필요시 고정) */
+        max-height: none;
+        overflow-y: visible;
+        width: 100%;
     }
 
     /* 폰트 크기 미세 조정 */

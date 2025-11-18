@@ -77,21 +77,27 @@ a {
   ---------------------------------
 */
 
-/* ▼▼▼ [수정] 사이드바와 메인 콘텐츠를 감싸는 래퍼 스타일 추가 ▼▼▼ */
-.main-container {
+/* ▼▼▼ [수정] "병원 안내" 페이지(detail.css)와 레이아웃을 동일하게 맞춤 ▼▼▼ */
+.page-wrapper {
     display: flex; /* 자식 요소(사이드바, 메인콘텐츠)를 가로로 배치 */
-    width: 1148px;
-    margin: 30px auto; /* 상하 여백 30px, 좌우 자동(중앙) */
+
+    /* "병원 안내" CSS와 동일한 값으로 수정 */
+    width: 1280px;
+    margin: 0 auto;
+    padding: 40px;
     gap: 30px; /* 사이드바와 메인 콘텐츠 사이의 간격 */
 }
 
-.reservation-content {
-    /* 원본 .v216_2654의 width: 900px 기준 */
-    width: 900px;
-    padding: 20px 0;
+.intro-container {
+    /* "병원 안내" CSS와 동일하게, 남은 공간을 모두 차지하도록 수정 */
+    flex: 1;
+    max-width: 961px; /* "병원 안내" CSS의 intro-container 최대 너비 적용 */
+
+    /* (참고) 원본의 padding: 20px 0; 는 삭제 (부모인 page-wrapper의 padding 40px가 적용됨) */
 }
 
-.reservation-content h1 {
+/* (참고) .reservation-content h1 -> .intro-container h1 으로 변경 */
+.intro-container h1 {
     /* .v216_2653 스타일 */
     font-size: 30px;
     font-weight: bold;
@@ -101,6 +107,8 @@ a {
     /* .v216_2652 padding 축소 적용 */
     border-bottom: 2px solid #333;
 }
+/* ▲▲▲ [수정 완료] ▲▲▲ */
+
 
 /* ---------------------------------
   3. 예약 카드 섹션
@@ -277,24 +285,28 @@ a {
 */
 @media (max-width: 1024px) {
 
-    /* ▼▼▼ [수정] 반응형 레이아웃 수정 ▼▼▼ */
-    .main-container {
+    /* ▼▼▼ [수정] 클래스 이름 변경 및 "병원 안내" CSS와 맞춤 ▼▼▼ */
+    .page-wrapper {
         /* 태블릿에서는 사이드바와 콘텐츠가 세로로 쌓이도록 변경 */
         flex-direction: column;
         width: 100%; /* 너비 100% */
         margin: 0; /* 여백 제거 */
-        gap: 0; /* 간격 제거 */
+        gap: 24px; /* "병원 안내"와 동일하게 간격 수정 */
+        padding: 24px; /* "병원 안내"와 동일하게 패딩 수정 */
     }
 
-    .reservation-content {
+    .intro-container {
         width: 100%; /* 태블릿에서는 너비 100% */
+        max-width: none; /* 최대 너비 제한 해제 */
         padding: 10px;
     }
 
-    .reservation-content h1 {
+    .intro-container h1 {
         padding: 20px 0;
         font-size: 24px;
     }
+    /* ▲▲▲ [수정 완료] ▲▲▲ */
+
 
     .reservation-cards-container {
         flex-direction: column;

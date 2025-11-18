@@ -1,5 +1,4 @@
 // reservation.js - 예약관리 페이지 로직
-
 const reservationsData = {
   waiting: [
     {
@@ -345,20 +344,6 @@ function closeDetailModal() {
   }
 }
 
-function openAddModal() {
-  const addModal = document.getElementById("modalBackdrop");
-  if (addModal) {
-    addModal.style.display = "flex";
-  }
-}
-
-function closeAddModal() {
-  const addModal = document.getElementById("modalBackdrop");
-  if (addModal) {
-    addModal.style.display = "none";
-  }
-}
-
 function startReservation(id) {
   const index = reservationsData.waiting.findIndex((r) => r.id === id);
   if (index !== -1) {
@@ -440,13 +425,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 모달 초기 숨김 처리
   const detailModal = document.getElementById("modalOverlay");
-  const addModal = document.getElementById("modalBackdrop");
   if (detailModal) detailModal.style.display = "none";
-  if (addModal) addModal.style.display = "none";
 
+    const today = new Date().toISOString().split('T')[0];
+    fetchReservationByDate(today);
   // 예약 상세 모달 이벤트
   if (detailModal) {
-    // X 버튼 클릭
     const closeButtons = detailModal.querySelectorAll(
       ".close-button, #closeFooterButton"
     );
@@ -454,38 +438,20 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", closeDetailModal);
     });
 
+    const cancelButton = detailModal.querySelector(".btn-primary");
+    if (cancelButton) {
+        cancelButton.addEventListener("click", function() {
+            const reservationNo = detailModal.dataset.currentReservationNo;
+            if (reservationNo) {
+                cancelReservation(reservationNo);
+            }
+          });
+      }
     // 모달 밖 클릭
     detailModal.addEventListener("click", function (e) {
       if (e.target === detailModal) {
         closeDetailModal();
       }
-    });
-  }
-
-  // 예약 등록 모달 이벤트
-  if (addModal) {
-    // X 버튼, 취소 버튼 클릭
-    const closeButtons = addModal.querySelectorAll(
-      ".close-button, #cancelButton"
-    );
-    closeButtons.forEach((btn) => {
-      btn.addEventListener("click", closeAddModal);
-    });
-
-    // 모달 밖 클릭
-    addModal.addEventListener("click", function (e) {
-      if (e.target === addModal) {
-        closeAddModal();
-      }
-    });
-  }
-
-  // 예약 등록 버튼 클릭
-  const addButton = document.querySelector(".btn-primary-add");
-  if (addButton) {
-    addButton.addEventListener("click", function (e) {
-      e.preventDefault();
-      openAddModal();
     });
   }
 
@@ -499,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("캘린더 요소 찾음:", calendarEl);
     console.log("FullCalendar 로드 여부:", typeof FullCalendar !== "undefined");
 
-    // 한국어 로케일 로드 (필요한 경우)
     function initCalendar() {
       if (typeof FullCalendar === "undefined") {
         console.error("FullCalendar가 로드되지 않았습니다.");
@@ -677,6 +642,8 @@ function displayWaitingList(waitingList) {
 
     container.innerHTML = waitingList.map(item => {
         const resNo = item.reservationNo || '';
+        console.log('처리 중인 예약 항목 (item):', item);
+        console.log('item.reservationTime 값:', item.reservationTime);
 
         return `
         <div class="reservation-card ${item.isVip ? 'reservation-card--vip' : ''}" data-reservation-id="${resNo}" onclick="openReservationDetail('${resNo}')">
@@ -842,43 +809,39 @@ function updateStatistics(data) {
 
 
 // openReservationDetail 함수 수정
+// 예약 상세 조회 및 모달 표시
 function openReservationDetail(reservationNo) {
-    console.log('예약 상세 조회:', reservationNo);
-
     const contextPath = "/erp/erpReservation";
 
-    // AJAX로 예약 상세 정보 조회
     $.ajax({
         url: contextPath + "/detail/" + reservationNo,
         method: "GET",
         dataType: "json",
         success: function(data) {
-            console.log('조회된 데이터:', data);
-
-            // 모달에 데이터 채우기
             const modal = document.getElementById('modalOverlay');
             if (!modal) return;
 
             // 환자 정보
-            const patientInfoRows = modal.querySelectorAll('.info-section:first-child .info-value');
-            if (patientInfoRows.length >= 4) {
-                patientInfoRows[0].textContent = data.patientName || '';      // 환자명
-                patientInfoRows[1].textContent = data.patientCode || '';      // 환자번호
-                patientInfoRows[2].textContent = data.age + ' / ' + data.gender; // 나이/성별
-                patientInfoRows[3].textContent = data.phone || '';            // 연락처
+            const patientRows = modal.querySelectorAll('.info-section:first-child .info-row');
+            if (patientRows.length >= 4) {
+                patientRows[0].querySelector('.info-value').textContent = data.patientName || '-';
+                patientRows[1].querySelector('.info-value').textContent = data.patientCode || '-';
+                patientRows[2].querySelector('.info-value').textContent = data.age + ' / ' + data.gender;
+                patientRows[3].querySelector('.info-value').textContent = data.phone || '-';
             }
 
             // 예약 정보
-            const reservationInfoRows = modal.querySelectorAll('.info-section.bordered:first-of-type .info-value');
-            if (reservationInfoRows.length >= 6) {
-                reservationInfoRows[0].textContent = data.departmentName || ''; // 진료과
-                reservationInfoRows[1].textContent = data.doctorName || '';     // 담당의
-                reservationInfoRows[2].textContent = data.reservationDate || '';// 예약 날짜
-                reservationInfoRows[3].textContent = data.reservationTime || '';// 예약 시간
-                reservationInfoRows[5].textContent = data.symptoms || '';       // 증상
+            const reservationRows = modal.querySelectorAll('.info-section:nth-of-type(2) .info-row');
+            if (reservationRows.length >= 6) {
+                reservationRows[0].querySelector('.info-value').textContent = data.departmentName || '-';
+                reservationRows[1].querySelector('.info-value').textContent = data.doctorName || '-';
+                reservationRows[2].querySelector('.info-value').textContent = data.reservationDate || '-';
+                reservationRows[3].querySelector('.info-value').textContent = data.reservationTime || '-';
+                // reservationRows[4]는 장비
+                reservationRows[5].querySelector('.info-value').textContent = data.symptoms || '-';
             }
 
-            // 메모 채우기
+            // 메모
             const memoTextarea = modal.querySelector('.memo-textarea');
             if (memoTextarea) {
                 memoTextarea.value = data.memo || '';
@@ -886,12 +849,10 @@ function openReservationDetail(reservationNo) {
 
             // 모달 열기
             modal.style.display = 'flex';
-            modal.dataset.currentReservationNo = reservationNo; // 현재 예약번호 저장
+            modal.dataset.currentReservationNo = reservationNo;
         },
         error: function(xhr, status, error) {
             console.error('예약 정보 조회 실패:', error);
-            console.error('상태:', status);
-            console.error('응답:', xhr.responseText);
             alert('예약 정보를 불러올 수 없습니다.');
         }
     });
@@ -914,6 +875,14 @@ function revertToProgress(reservationNo) {
     updateReservationStatus(reservationNo, '진행중');
 }
 
+function cancelReservation(reservationNo) {
+    if (!confirm('정말로 이 예약을 취소하시겠습니까?')) {
+        return;
+    }
+    console.log('예약 취소:', reservationNo);
+    updateReservationStatus(reservationNo, '취소');
+}
+
 function updateReservationStatus(reservationNo, newStatus) {
     const contextPath = "/erp/erpReservation";
 
@@ -927,6 +896,10 @@ function updateReservationStatus(reservationNo, newStatus) {
         dataType: "json",
         success: function(response){
             console.log('상태 업데이트 성공:', response);
+
+            if (typeof closeDetailModal === 'function') {
+                closeDetailModal();
+            }
 
             const selectedDateElem = document.querySelector('.calendar-day.selected');
             const selectedDate = selectedDateElem

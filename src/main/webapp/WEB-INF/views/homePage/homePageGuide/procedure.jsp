@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- 예약절차 페이지 - Main Content -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -15,24 +14,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/appointment-sidebar.css">
 
 </head>
 <body>
-<!-- Header Include -->
 <jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
-<div class="procedure-wrapper">
-<!-- sidebar include -->
-<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 
-    <!-- 메인 콘텐츠 -->
-    <main class="procedure-main">
-        <!-- 페이지 헤더 -->
+<div class="page-wrapper">
+    <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
+
+    <main class="intro-container">
         <header class="procedure-header">
             <h1 class="page-title">예약절차</h1>
         </header>
 
 
-        <!-- 진료시간 안내 -->
         <section class="schedule-section">
             <h2 class="section-title">외래 예약 및 진료시간</h2>
 
@@ -51,11 +47,9 @@
             </div>
         </section>
 
-        <!-- 예약방법 -->
         <section class="reservation-section">
             <h2 class="section-title">예약방법</h2>
 
-            <!-- 방문예약 -->
             <article class="reservation-method">
                 <h3 class="method-title">방문예약</h3>
                 <p class="method-time">예약시간 : 평일 08:30~17:30 / 토 : 08:30~12:30</p>
@@ -102,7 +96,6 @@
                 </div>
             </article>
 
-            <!-- 전화예약 -->
             <article class="reservation-method">
                 <h3 class="method-title">전화 예약</h3>
                 <p class="method-time">예약시간 : 평일 08:00~18:00 / 토·일·공휴일 : 08:30~17:30</p>
@@ -157,7 +150,6 @@
                 </div>
             </article>
 
-            <!-- 인터넷예약 -->
             <article class="reservation-method">
                 <h3 class="method-title">인터넷예약</h3>
                 <p class="method-time">예약시간 : 24시간 가능</p>
@@ -205,7 +197,6 @@
                 </div>
             </article>
 
-            <!-- 모바일APP예약 -->
             <article class="reservation-method">
                 <h3 class="method-title">모바일 APP 예약</h3>
                 <p class="method-time">예약시간 : 24시간 가능</p>
@@ -253,7 +244,6 @@
             </article>
         </section>
 
-        <!-- 의료전달체계 안내 -->
         <section class="medical-system-section">
             <h2 class="section-title">의료전달체계 안내</h2>
 
@@ -267,7 +257,6 @@
         </section>
     </main>
 </div>
-<!-- Footer include-->
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
 </html>
