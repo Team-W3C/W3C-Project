@@ -124,6 +124,39 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    }
+
+#weeklyChart {
+    animation: reveal-left-right 1.2s ease-out forwards;
+    clip-path: inset(0 100% 0 0);
+}
+
+@keyframes reveal-left-right {
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+#equipmentChart{
+    animation: reveal-bottom-top 1.2s ease-out forwards;
+    clip-path: inset(100% 0 0 0);
+}
+
+@keyframes reveal-bottom-top {
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+#patientChart {
+    animation: circle-from-bottom 1.2s ease-out forwards;
+    clip-path: circle(0% at 25% 100%);
+}
+
+@keyframes circle-from-bottom {
+    to {
+        clip-path: circle(120% at 50% 100%);
+    }
 }
 
 .chart-card__title {
