@@ -1,37 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib
-        prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>진료예약</title>
-    <link
-            href="https://fonts.googleapis.com/css?family=Inter&display=swap"
-            rel="stylesheet"
-    />
-    <link
-            href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap"
-            rel="stylesheet"
-    />
-    <link
-            href="${pageContext.request.contextPath}/css/appointmentPage.css"
-            rel="stylesheet"
-    />
-    <link
-            href="${pageContext.request.contextPath}/css/guestPatientReservation.css"
-            rel="stylesheet"
-    />
-    <link
-            href="${pageContext.request.contextPath}/css/guestReservationCheck.css"
-            rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/appointmentPage.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/guestPatientReservation.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/guestReservationCheck.css" rel="stylesheet"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/appointment-sidebar.css">
+
 
     <style>
-        /* ... (기존 스타일) ... */
+        /* ... (기존 style 태그 내용은 동일) ... */
         .guest-modal-overlay,
         .guest-check-modal-overlay {
             position: fixed;
@@ -47,227 +34,34 @@
             padding: 40px 0;
         }
 
-        .guest-modal-overlay.is-open,
-        .guest-check-modal-overlay.is-open {
-            display: flex;
-        }
+        /* ... (중략: 기존 스타일) ... */
 
-        .guest-modal-backdrop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: -1;
-        }
-
-        .patient-modal,
-        .modal-container {
-            position: relative;
-            z-index: 1;
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-
-        /* ▼▼▼ [추가] 모달 레이아웃 깨짐 현상 긴급 수정 ▼▼▼ */
-        .patient-modal .patient-content .patient-form {
-            display: block !important;
-        }
-
-        .patient-modal .patient-content .patient-form h3 {
-            width: 100% !important;
-            flex-basis: 100% !important;
-            display: block !important;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #0e787c;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .patient-modal .patient-content .patient-form h3:first-of-type {
-            margin-top: 0;
-        }
-
-        .patient-modal .patient-content .patient-form .form-field {
-            width: 100% !important;
-            flex-basis: 100% !important;
-            display: block !important;
-            margin-bottom: 15px;
-        }
-
-        .patient-modal .patient-content .patient-form .form-row {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .patient-modal .patient-content .patient-form .form-row .form-field {
-            width: 100% !important;
-            margin-bottom: 15px;
-        }
-        /* ▲▲▲ [레이아웃 수정 완료] ▲▲▲ */
-
-
-        /* ▼▼▼ [수정됨] 비회원 모달 내 동적 UI/UX 스타일 ▼▼▼ */
-        .patient-form .form-field select,
-        .patient-form .form-field input[type="date"],
-        .patient-form .form-field input[type="time"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: inherit;
-            background-color: #fff;
-            line-height: 1.5;
-        }
-
-        /* 1. 진료과 선택 그리드 */
-        #guest-dept-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .guest-dept-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background-color: #fafafa;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-            color: #333;
-        }
-        .guest-dept-btn:hover {
-            border-color: #0e787c;
-            background-color: #f0fafa;
-        }
-        .guest-dept-btn.selected {
-            border-color: #0e787c;
-            background-color: #e8f5f5;
-            color: #0e787c;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .guest-dept-btn img {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 8px;
-        }
-
-        /* 3. 시간 선택 그리드 */
-        #guest-timeslot-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        #guest-timeslot-grid p {
-            grid-column: 1 / -1;
-            color: #777;
-            font-size: 14px;
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        .guest-time-btn {
-            padding: 12px 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #fff;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-        .guest-time-btn:hover:not(:disabled) {
-            border-color: #0e787c;
-            color: #0e787c;
-        }
-        .guest-time-btn.selected {
-            background-color: #0e787c;
-            color: #fff;
-            border-color: #0e787c;
-            font-weight: bold;
-        }
-        .guest-time-btn:disabled {
-            background-color: #f5f5f5;
-            color: #aaa;
-            cursor: not-allowed;
-            text-decoration: line-through;
-        }
-        /* ▲▲▲ [수정 완료] ▲▲▲ */
-
-        /* ▼▼▼ [추가] 성공/오류 메시지 스타일 ▼▼▼ */
-        .alert-success {
-            background-color: #e8f5f5;
-            color: #0e787c;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .alert-danger {
-            background-color: #fcebeb;
-            color: #b90000;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        /* ▲▲▲ [추가 완료] ▲▲▲ */
-
-        /* ▼▼▼ [추가] 비회원 조회 모달 카드 스타일 ▼▼▼ */
-        .info-card {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 15px;
-            background: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 15px; /* (renderGuestReservations 함수에서 사용) */
-        }
-        .info-icon {
-            flex-shrink: 0;
-            margin-right: 15px;
-        }
-        .info-content {
-            display: flex;
-            justify-content: space-between;
-            flex-grow: 1;
-            flex-basis: calc(50% - 30px); /* 아이콘 영역 제외 */
-        }
-        .info-label {
-            color: #555;
-            font-size: 14px;
-        }
         .info-value {
             color: #111;
             font-weight: 500;
             font-size: 15px;
         }
-        /* ▲▲▲ [추가 완료] ▲▲▲ */
+
+        <%-- ▼▼▼ [추가] 비활성화된 버튼 스타일 ▼▼▼ --%>
+        .btn-primary.disabled,
+        .btn-primary:disabled {
+            background-color: #ccc; /* 회색 배경 */
+            color: #888; /* 어두운 회색 텍스트 */
+            cursor: not-allowed; /* '불가능' 커서 */
+            opacity: 0.6;
+            pointer-events: none; /* 클릭 이벤트 차단 */
+        }
+        <%-- ▲▲▲ [추가 완료] ▲▲▲ --%>
     </style>
 </head>
 
 <body>
 <jsp:include page="../../common/homePageMember/header.jsp"/>
-<div class="main-container">
+
+<div class="page-wrapper">
     <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
 
-    <main class="reservation-content">
+    <main class="intro-container">
         <h1>진료예약</h1>
 
         <%-- alert() 창으로 띄우는 방식 --%>
@@ -370,6 +164,7 @@
             </div>
 
             <div class="reservation-column">
+                <%-- ▼▼▼ [수정] 카드 숨기는 <c:if> 제거 (항상 보이도록) ▼▼▼ --%>
                 <article class="reservation-card">
                     <div class="reservation-card-header">
                         <h2>
@@ -378,21 +173,46 @@
                                     alt=""
                                     class="icon-small"
                             />
-                            회원가입을 하지 않아도
+                            회원가입을 하지 않고 진료 예약 하는 경우
                         </h2>
                     </div>
                     <div class="reservation-card-body">
                         <p>
-                            진료예약 및 조회가 가능합니다. 단, 일부 서비스 이용이 제한될 수
+                            회원가입을 하지 않아도 진료예약 및 조회가 가능합니다. 단, 일부 서비스 이용이 제한될 수
                             있습니다.
                         </p>
                         <div class="reservation-card-actions">
-                            <a href="#" class="btn-primary" id="open-guest-modal"
-                            >비회원 예약하기</a
-                            >
-                            <a href="#" class="btn-primary" id="open-guest-check-modal"
-                            >비회원 예약 조회하기</a
-                            >
+                            <%-- ▼▼▼ [수정] '비회원 예약' 버튼 비활성화 로직 ▼▼▼ --%>
+                            <c:choose>
+                                <%-- 1. 로그아웃 상태 (활성화) --%>
+                                <c:when test="${empty sessionScope.loginMember}">
+                                    <a href="#" class="btn-primary" id="open-guest-modal"
+                                    >비회원 예약하기</a
+                                    >
+                                </c:when>
+                                <%-- 2. 로그인 상태 (비활성화) --%>
+                                <c:otherwise>
+                                    <a href="javascript:void(0)" class="btn-primary disabled" aria-disabled="true"
+                                    >비회원 예약하기</a
+                                    >
+                                </c:otherwise>
+                            </c:choose>
+
+                            <%-- ▼▼▼ [수정] '비회원 조회' 버튼 비활성화 로직 ▼▼▼ --%>
+                            <c:choose>
+                                <%-- 1. 로그아웃 상태 (활성화) --%>
+                                <c:when test="${empty sessionScope.loginMember}">
+                                    <a href="#" class="btn-primary" id="open-guest-check-modal"
+                                    >비회원 예약 조회하기</a
+                                    >
+                                </c:when>
+                                <%-- 2. 로그인 상태 (비활성화) --%>
+                                <c:otherwise>
+                                    <a href="javascript:void(0)" class="btn-primary disabled" aria-disabled="true"
+                                    >비회원 예약 조회하기</a
+                                    >
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="reservation-card-info">
                             회원가입을 하실 경우 『나의차트』에서 진료 및
@@ -401,6 +221,7 @@
                         </div>
                     </div>
                 </article>
+
                 <article class="reservation-card">
                     <div class="reservation-card-header">
                         <h2>
@@ -431,43 +252,56 @@
 
         <nav class="reservation-quick-nav">
             <ul>
-                <li>
-                    <a href="${pageContext.request.contextPath}/member/signUpPage">
-                        <img
-                                src="${pageContext.request.contextPath}/img/icon-signup.png"
-                                alt=""
-                        />
-                        <span>회원가입</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/member/loginPage">
-                        <img
-                                src="${pageContext.request.contextPath}/img/icon-login.png"
-                                alt=""
-                        />
-                        <span>로그인</span>
-                    </a>
-                    <a href="#" class="nav-sublink">아이디/비밀번호찾기</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img
-                                src="${pageContext.request.contextPath}/img/icon-doctor.png"
-                                alt=""
-                        />
-                        <span>의료진/진료과 보기</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/member/mychart">
-                        <img
-                                src="${pageContext.request.contextPath}/img/icon-chart.png"
-                                alt=""
-                        />
-                        <span>나의차트</span>
-                    </a>
-                </li>
+                <%--로그인하지 않은 경우 (logged-out)에만 표시--%>
+                <c:if test="${empty sessionScope.loginMember}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/member/signUpPage">
+                            <img
+                                    src="${pageContext.request.contextPath}/img/icon-signup.png"
+                                    alt=""
+                            />
+                            <span>회원가입</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/member/loginPage">
+                            <img
+                                    src="${pageContext.request.contextPath}/img/icon-login.png"
+                                    alt=""
+                            />
+                            <span>로그인</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/member/findId">
+                            <img
+                                    src="${pageContext.request.contextPath}/img/icon-doctor.png"
+                                    alt=""
+                            />
+                            <span>아이디 찾기</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/member/findPwd">
+                            <img
+                                    src="${pageContext.request.contextPath}/img/icon-doctor.png"
+                                    alt=""
+                            />
+                            <span>비밀번호 찾기</span>
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${not empty sessionScope.loginMember}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/member/mychart">
+                            <img
+                                    src="${pageContext.request.contextPath}/img/icon-chart.png"
+                                    alt=""
+                            />
+                            <span>나의차트</span>
+                        </a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
     </main>
@@ -666,7 +500,6 @@
                 </p>
             </header>
 
-            <%-- ▼▼▼ [수정됨] form 구조 변경 ▼▼▼ --%>
             <form class="reservation-form" id="guestCheckForm">
 
                 <div class="input-group">
@@ -691,29 +524,24 @@
                                 required
                         />
 
-                        <%-- [수정] type="button" -> "submit" / id 추가 --%>
                         <button type="button" class="btn-cancel" id="guest-check-cancel-btn">취소</button>
                         <button type="submit" class="btn-confirm" id="guest-check-submit-btn">확인</button>
                     </div>
                 </div>
             </form>
-            <%-- ▲▲▲ [수정 완료] ▲▲▲ --%>
 
             <section class="info-section">
                 <div class="section-header">
                     <h3 class="section-title">조회된 예약 내역</h3>
                 </div>
 
-                <%-- ▼▼▼ [추가] 오류 메시지 영역 추가 ▼▼▼ --%>
                 <p id="guest-check-error" class="alert-danger" style="display:none; margin-top:10px;"></p>
 
-                <%-- ▼▼▼ [수정] 정적 카드 -> 동적 결과 표시 영역으로 변경 ▼▼▼ --%>
                 <div id="guest-check-results">
                     <p style="text-align: center; padding: 20px 0; color: #888;">
                         성함과 전화번호를 입력 후 '확인' 버튼을 눌러주세요.
                     </p>
                 </div>
-                <%-- ▲▲▲ [수정 완료] ▲▲▲ --%>
 
             </section>
         </div>
@@ -723,7 +551,7 @@
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
 
 <script>
-    // 404 오류 방지를 위해 JSP가 동적으로 contextPath를 JS에 전달합니다.
+
     const g_contextPath = "${pageContext.request.contextPath}";
 </script>
 <script

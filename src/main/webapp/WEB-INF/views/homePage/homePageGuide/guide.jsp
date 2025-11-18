@@ -17,23 +17,19 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/appointment-sidebar.css">
 </head>
 <body>
-<!-- Header Include -->
 <jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
-<div class="guide-wrapper">
-<!-- sidebar include -->
-<jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
-<main class="guide-main">
-    <!-- 메인 콘텐츠 -->
-    <section class="guide-content">
-        <!-- 페이지 헤더 -->
+
+<div class="page-wrapper">
+    <jsp:include page="../../common/homePageMember/appointment-sidebar.jsp"/>
+
+    <main class="intro-container">
+
         <header class="guide-header">
             <h1>진료안내</h1>
         </header>
 
-        <!-- 진료 단계 목록 -->
         <div class="guide-steps">
 
-            <!-- 01 접수방법 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide1.PNG">
@@ -49,7 +45,6 @@
                 </div>
             </article>
 
-            <!-- 02 진찰사항 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide2.PNG">
@@ -63,7 +58,6 @@
                 </div>
             </article>
 
-            <!-- 03 진료 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide3.PNG">
@@ -79,7 +73,6 @@
                 </div>
             </article>
 
-            <!-- 04 진료 후 안내 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide4.PNG">
@@ -93,7 +86,6 @@
                 </div>
             </article>
 
-            <!-- 05 수납 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide5.PNG">
@@ -110,7 +102,6 @@
                 </div>
             </article>
 
-            <!-- 06 약제발급/약국/귀가 -->
             <article class="guide-step">
                 <div class="step-icon">
                     <img src="${pageContext.request.contextPath}/img/guide/guide6.PNG">
@@ -125,10 +116,8 @@
                 </div>
             </article>
         </div>
-    </section>
-</main>
+    </main>
 </div>
-<!-- Footer include-->
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
 </html>
