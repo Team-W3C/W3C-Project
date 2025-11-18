@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.w3c.spring.model.mapper.erp.facilityReservation.FacilityReservationMapper">
+
+    <!-- ResultMap -->
+    <resultMap id="FacilityReservationMap" type="FacilityReservation">
+        <id property="facilityReservationNo" column="FACILITY_RESERVATION_NO"/>
+        <result property="reservationStatus" column="RESERVATION_STATUS"/>
+        <result property="reservationNotes" column="RESERVATION_NOTES"/>
+        <result property="treatmentDate" column="TREATMENT_DATE"/>
+        <result property="facilityReservationMemo" column="FACILITY_RESERVATION_MEMO"/>
+        <result property="staffNo" column="STAFF_NO"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="facilityNo" column="FACILITY_NO"/>
+    </resultMap>
+
+    <!-- Facility ResultMap -->
+    <resultMap id="FacilityMap" type="Facility">
+        <id property="facilityNo" column="FACILITY_NO"/>
+        <result property="facilityName" column="FACILITY_NAME"/>
+        <result property="facilityCode" column="FACILITY_CODE"/>
+        <result property="facilityLocation" column="FACILITY_LOCATION"/>
+        <result property="facilityType" column="FACILITY_TYPE"/>
+        <result property="facilityStatus" column="FACILITY_STATUS"/>
+        <result property="facilityPhone" column="FACILITY_PHONE"/>
+        <result property="facilityRepresentative" column="FACILITY_REPRESENTATIVE"/>
+        <result property="reservationUnit" column="RESERVATION_UNIT"/>
+        <result property="fixDate" column="FIX_DATE"/>
+    </resultMap>
+
+    <!-- 모든 예약 조회 -->
+    <select id="selectAllReservations" resultMap="FacilityReservationMap">
+        SELECT
+        FACILITY_RESERVATION_NO,
+        RESERVATION_STATUS,
+        RESERVATION_NOTES,
+        TO_CHAR(TREATMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS TREATMENT_DATE,
+        FACILITY_RESERVATION_MEMO,
+        STAFF_NO,
+        MEMBER_NO,
+        FACILITY_NO,
+        COUNT(*) OVER (PARTITION BY TRUNC(TREATMENT_DATE), FACILITY_NO) AS RESERVATION_COUNT
+        FROM FACILITY_RESERVATION
+        WHERE RESERVATION_STATUS != '취소'
+        ORDER BY TREATMENT_DATE DESC
+    </select>
+
+    <!-- 특정 날짜의 예약 조회 -->
+    <select id="selectReservationsByDate" resultMap="FacilityReservationMap">
+        SELECT
+        FACILITY_RESERVATION_NO,
+        RESERVATION_STATUS,
+        RESERVATION_NOTES,
+        TO_CHAR(TREATMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS TREATMENT_DATE,
+        FACILITY_RESERVATION_MEMO,
+        STAFF_NO,
+        MEMBER_NO,
+        FACILITY_NO
+        FROM FACILITY_RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
+        AND RESERVATION_STATUS != '취소'
+        ORDER BY TREATMENT_DATE
+    </select>
+
+    <!-- 특정 날짜와 시설의 예약 조회 -->
+    <select id="selectReservationsByDateAndFacility" resultMap="FacilityReservationMap">
+        SELECT
+        FACILITY_RESERVATION_NO,
+        RESERVATION_STATUS,
+        RESERVATION_NOTES,
+        TO_CHAR(TREATMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS TREATMENT_DATE,
+        FACILITY_RESERVATION_MEMO,
+        STAFF_NO,
+        MEMBER_NO,
+        FACILITY_NO
+        FROM FACILITY_RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
+        AND FACILITY_NO = #{facilityNo}
+        AND RESERVATION_STATUS != '취소'
+        ORDER BY TREATMENT_DATE
+    </select>
+
+    <!-- 특정 날짜의 총 예약 개수 조회 -->
+    <select id="selectReservationCountByDate" resultType="int">
+        SELECT COUNT(*)
+        FROM FACILITY_RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
+        AND FACILITY_NO = #{facilityNo}
+        AND RESERVATION_STATUS != '취소'
+    </select>
+
+    <!-- 예약 추가 -->
+    <insert id="insertReservation" parameterType="FacilityReservation">
+        INSERT INTO FACILITY_RESERVATION (
+        FACILITY_RESERVATION_NO,
+        RESERVATION_STATUS,
+        RESERVATION_NOTES,
+        TREATMENT_DATE,
+        FACILITY_RESERVATION_MEMO,
+        STAFF_NO,
+        MEMBER_NO,
+        FACILITY_NO
+        ) VALUES (
+        FACILITY_RESERVATION_SEQ.NEXTVAL,
+        #{reservationStatus},
+        #{reservationNotes},
+        TO_DATE(#{treatmentDate}, 'YYYY-MM-DD HH24:MI:SS'),
+        #{facilityReservationMemo},
+        #{staffNo},
+        #{memberNo},
+        #{facilityNo}
+        )
+    </insert>
+
+    <!-- 특정 날짜와 시설의 모든 예약 삭제 -->
+    <delete id="deleteReservationsByDateAndFacility">
+        DELETE FROM FACILITY_RESERVATION
+        WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
+        AND FACILITY_NO = #{facilityNo}
+    </delete>
+
+    <!-- 모든 시설 조회 -->
+    <select id="selectAllFacilities" resultMap="FacilityMap">
+        SELECT
+        FACILITY_NO,
+        FACILITY_NAME,
+        FACILITY_CODE,
+        FACILITY_LOCATION,
+        FACILITY_TYPE,
+        FACILITY_STATUS,
+        FACILITY_PHONE,
+        FACILITY_REPRESENTATIVE,
+        RESERVATION_UNIT,
+        TO_CHAR(FIX_DATE, 'YYYY-MM-DD') AS FIX_DATE
+        FROM FACILITY
+        WHERE FACILITY_STATUS = 'T' OR FACILITY_STATUS IS NULL
+        ORDER BY FACILITY_NO
+    </select>
+</mapper>

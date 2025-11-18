@@ -28,4 +28,8 @@ public class Board {
 
     private String boardTypeName;     // 게시글 유형명
     private String boardSecretTypeName; // 비밀 여부명
+
+    private String memberEmail; //멤버 이메일 가져올때
+    private String memberPhone;// 멤버 전화번호 가져올때
+
 }

@@ -19,4 +19,5 @@ public interface AttendanceMapper {
     int insertClockIn(AttendanceVO attendance);
     int updateClockOut(AttendanceVO attendance);
     String findScheduleStartTimeByStaffNoAndDay(Map<String, Object> params);
+    String findScheduleEndTimeByStaffNoAndDay(Map<String, Object> params);
 }

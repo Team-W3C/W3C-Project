@@ -10,6 +10,6 @@ public class ptManageController {
 
     @GetMapping("/manage")
     public String ShowPatientManage(){
-        return "erp/patient/patientManagement";
+        return "forward:/api/erp/patientList";
     }
 }
