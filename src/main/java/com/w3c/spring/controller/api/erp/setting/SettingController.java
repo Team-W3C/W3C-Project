@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller("erpSettingViewController")
+@Controller
 public class SettingController {
 
     private final MemberService memberService;
@@ -18,11 +18,6 @@ public class SettingController {
     @Autowired
     public SettingController(MemberService memberService) {
         this.memberService = memberService;
-    }
-
-    @GetMapping("/erp/setting")
-    public String setting() {
-        return "erp/setting";
     }
 
     @PostMapping("/erp/updateMember")
@@ -37,16 +32,14 @@ public class SettingController {
             return "redirect:/"; // 로그인이 안되어있다면 메인으로
         }
 
-        // 2. [중요] DB에서 '기존' 정보를 온전히 다 가져옵니다. (혈액형, 알러지 등 보존을 위해)
+        // 2. DB에서 기존 정보를 가져오기
         Member originMember = memberService.getMemberByNo((long) loginMember.getMemberNo());
 
-        // 3. 폼에서 입력받은 '수정할 데이터'만 기존 정보에 덮어씌웁니다.
-        // (formMember에는 null인 필드가 많으므로, 필요한 것만 꺼내서 옮깁니다)
+        // 3. 폼에서 입력받은 수정할 데이터만 기존 정보에 덮어씌움
         originMember.setMemberName(formMember.getMemberName());
         originMember.setMemberPhone(formMember.getMemberPhone());
         originMember.setMemberEmail(formMember.getMemberEmail());
-        // 주소 입력란이 있다면 아래 주석 해제
-        // originMember.setMemberAddress(formMember.getMemberAddress());
+        originMember.setMemberAddress(formMember.getMemberAddress());
 
         // 4. 비밀번호 변경 로직 (새 비밀번호가 있는 경우에만)
         if (newPassword != null && !newPassword.isEmpty()) {
