@@ -24,6 +24,7 @@ public class Board {
     private String answerContent;  // 답변 내용
     private String staffName;      // 답변자 이름
     private String answerDate;    // 답변 날짜
+    private int memberNo;          // 작성자 회원 번호 - 추가
 
 
     private String boardTypeName;     // 게시글 유형명

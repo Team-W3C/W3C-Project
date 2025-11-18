@@ -203,7 +203,7 @@
         FROM RESERVATION R
                  JOIN MEMBER M ON R.member_no = M.member_no
                  JOIN DEPARTMENT D ON R.department_no = D.department_no
-        WHERE M.staff_no IS NULL AND TRUNC(R.treatment_date) = TO_DATE(#{selectedDate},'YYYY-MM-DD')
+        WHERE TRUNC(R.treatment_date) = TO_DATE(#{selectedDate},'YYYY-MM-DD')
         ORDER BY reservationDate, reservationTime
     </select>
 
@@ -236,7 +236,7 @@
             M.MEMBER_PHONE AS phone,
             R.RESERVATION_NO AS reservation_no,
             R.RESERVATION_NOTES AS symptoms,
-            D.department_name AS departmentName,
+            D.department_name AS DEPARTMENT_NAME,
             SUBSTR(RESERVATION_MEMO, 6, 8) AS doctor_name,
             TO_CHAR(R.TREATMENT_DATE, 'YYYY-MM-DD') AS reservationDate,
             TO_CHAR(R.TREATMENT_DATE, 'HH24:MI')    AS reservationTime
@@ -246,4 +246,49 @@
         WHERE R.RESERVATION_NO = #{reservationNo}
         ORDER BY R.TREATMENT_DATE DESC
     </select>
+
+    <select id="selectDoctorByDepartmentName" resultMap="ReservationDetailMap">
+        SELECT
+            DEPT.department_no AS departmentNo,
+            DEPT.department_name AS departmentName,
+            M.member_name AS DOCTOR_NAME
+        FROM
+            DEPARTMENT DEPT
+                JOIN
+            DOCTOR D ON DEPT.department_no = D.department_no
+                JOIN
+            MEMBER M ON D.staff_no = M.member_no
+        WHERE
+            department_name = #{departmentName}
+    </select>
+
+    <select id="findMemberNo" resultType="int">
+        SELECT MEMBER_NO
+        FROM MEMBER
+        WHERE MEMBER_NAME = #{memberName}
+    </select>
+
+    <select id="findDepartmentNo" resultType="int">
+        SELECT DEPARTMENT_NO
+        FROM DEPARTMENT
+        WHERE DEPARTMENT_NAME = #{departmentName}
+    </select>
+
+    <insert id="insertErpReservation">
+        INSERT INTO RESERVATION (
+            reservation_no,
+            reservation_notes,
+            member_no,
+            department_no,
+            treatment_date,
+            reservation_memo
+        ) VALUES (
+                     RESERVATION_SEQ.NEXTVAL,
+                     #{symptoms},
+                     #{memberNo},
+                     #{departmentNo},
+                     TO_TIMESTAMP(#{date} || ' ' || #{time}, 'YYYY-MM-DD HH24:MI'),
+                     '담당의: ' || #{memo}
+                 )
+    </insert>
 </mapper>

@@ -19,14 +19,26 @@ public class NoticeController {
 
     private final BoardService boardService;
     @GetMapping("/notice")
-    public String notice(@RequestParam(value = "cpage", defaultValue = "1") int curentPage, Model model) {
-        Map<String,Object> result = boardService.selectPatientNoticeList(curentPage);
+    public String notice(
+            @RequestParam(value = "cpage", defaultValue = "1") int curentPage,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            Model model) {
+
+        if ("undefined".equals(keyword)) {
+            keyword = "";
+        }
+        if ("undefined".equals(category)) {
+            category = "";
+        }
+
+        Map<String,Object> result = boardService.selectPatientNoticeList(curentPage, keyword, category);
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
-
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", category);
 
         return "homePage/homePageNotice/notice-member";
-
     }
     @GetMapping("/notice-detail")
     public String noticeDetail(@RequestParam("nNo") int nNo, Model model) {
@@ -36,4 +48,5 @@ public class NoticeController {
 
         return "homePage/homePageNotice/notice-detail";
     }
+
 }

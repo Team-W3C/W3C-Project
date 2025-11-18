@@ -1,4 +1,4 @@
-package com.w3c.spring.controller.api.hompage.inquiry;
+package com.w3c.spring.controller.api.homepage.inquiry;
 
 import com.w3c.spring.model.vo.Member;
 import com.w3c.spring.model.vo.inquiry.BoardInsert;

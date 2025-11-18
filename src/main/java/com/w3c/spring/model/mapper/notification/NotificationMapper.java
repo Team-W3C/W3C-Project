@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface NotificationMapper {
@@ -15,8 +16,10 @@ public interface NotificationMapper {
     Notification selectNotificationById(int notificationNo);
     int insertNotification(NotificationInsert notificationInsert);
 
-    List<Notification> selectPatientNoticeList(RowBounds rowBounds);
+    List<Notification> selectPatientNoticeList(Map<String, Object> param, RowBounds rowBounds);
 
-    int getPatientNoticeListCount();
+    int getPatientNoticeListCount(Map<String, Object> param);
     Notification selectPatientNoticeById(int notificationNo);
+
+    List<Notification> getBoardListTop3();
 }

@@ -274,14 +274,11 @@ body {
     background: #FFF7ED;
 }
 
-/* 상태 아이콘  */
+/* 상태 아이콘 */
 .status-icon {
     width: 20px;
     height: 20px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .status-icon.check {
@@ -291,34 +288,40 @@ body {
 
 .status-icon.check::after {
     content: '';
-    width: 5px;
-    height: 8px;
+    position: absolute;
+    width: 7px;
+    height: 3px;
     border: 1.67px solid #00A63D;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
-    margin-bottom: 2px;
+    top: 6px;
+    left: 6px;
 }
 
 .status-icon.warning {
     border: 1.67px solid #FF6900;
     border-radius: 2px;
-    flex-direction: column;
 }
 
 .status-icon.warning::before {
     content: '';
+    position: absolute;
     width: 0;
     height: 3px;
     border: 1.67px solid #FF6900;
-    margin-bottom: 2px;
+    top: 5px;
+    left: 8px;
 }
 
 .status-icon.warning::after {
     content: '';
+    position: absolute;
     width: 0;
     height: 0;
     border: 1.67px solid #FF6900;
+    top: 12px;
+    left: 8px;
 }
 
 .status-text {

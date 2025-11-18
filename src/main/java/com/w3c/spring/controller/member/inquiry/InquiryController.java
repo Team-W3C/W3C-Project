@@ -26,22 +26,54 @@ public class InquiryController {
 
 
     @GetMapping("/inquiry-board")
-    public String SelecthomePageinquiryBoard(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage, Model model) {
-        Map<String, Object> result = boardService.getBoardList(cuurentPage);
+    public String SelecthomePageinquiryBoard(
+            @RequestParam(value = "cpage", defaultValue = "1") int cuurentPage,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            Model model) {
 
+        if ("undefined".equals(keyword)) {
+            keyword = "";
+        }
+        if ("undefined".equals(category)) {
+            category = "";
+        }
+
+        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category);
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", category);
 
         System.out.println("inquiry-board");
         return "homePage/homePageinquiry/inquiry-board";
     }
     @GetMapping("/inquiry-detail")
-    public String homePageinquiryDetail(@RequestParam("bno") int boardId, Model model) {
+    public String homePageinquiryDetail(@RequestParam("bno") int boardId, Model model, HttpSession session) {
         System.out.println("inquiry-detail");
-        Map<String,Object> boardDetail= boardService.getBoardById(boardId);
-        model.addAttribute("board", boardDetail.get("boardDetail"));
 
+        Board boardDetail= boardService.getBoardById(boardId);
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        System.out.println("스테프넘버 :" + loginMember.getStaffNo());
+        // 로그인하지 않은 경우
+        if (loginMember == null) {
+            model.addAttribute("alertMessage", "비밀글 열람 권한이 없습니다.");
+            model.addAttribute("redirectUrl", "/member/inquiry-board");
+            return "common/alert";
+        }
+
+        // 작성자 본인이 아니고, 직원도 아닌 경우
+        if (loginMember.getMemberNo() != boardDetail.getMemberNo() &&
+                loginMember.getStaffNo() == null) {
+
+            model.addAttribute("alertMessage", "비밀글 열람 권한이 없습니다.");
+            model.addAttribute("redirectUrl", "/member/inquiry-board");
+            return "common/alert";
+        }
+
+        model.addAttribute("board", boardDetail);
         return "homePage/homePageinquiry/inquiry-detail";
     }
     @GetMapping("/inquiry-insert")

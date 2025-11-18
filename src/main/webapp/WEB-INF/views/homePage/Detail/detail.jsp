@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Detail/detail.css">
-    <%--
-      사이드바 CSS도 필요할 수 있으므로 추가하는 것을 권장합니다.
-      (경로는 실제 파일 위치에 맞게 수정하세요.)
-    --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/appointment-sidebar.css">
 
 

@@ -17,6 +17,20 @@
         <result property="facilityNo" column="FACILITY_NO"/>
     </resultMap>
 
+    <!-- Facility ResultMap -->
+    <resultMap id="FacilityMap" type="Facility">
+        <id property="facilityNo" column="FACILITY_NO"/>
+        <result property="facilityName" column="FACILITY_NAME"/>
+        <result property="facilityCode" column="FACILITY_CODE"/>
+        <result property="facilityLocation" column="FACILITY_LOCATION"/>
+        <result property="facilityType" column="FACILITY_TYPE"/>
+        <result property="facilityStatus" column="FACILITY_STATUS"/>
+        <result property="facilityPhone" column="FACILITY_PHONE"/>
+        <result property="facilityRepresentative" column="FACILITY_REPRESENTATIVE"/>
+        <result property="reservationUnit" column="RESERVATION_UNIT"/>
+        <result property="fixDate" column="FIX_DATE"/>
+    </resultMap>
+
     <!-- 모든 예약 조회 -->
     <select id="selectAllReservations" resultMap="FacilityReservationMap">
         SELECT
@@ -69,18 +83,9 @@
         ORDER BY TREATMENT_DATE
     </select>
 
-    <!-- 특정 날짜의 총 예약 개수 조회 (8개 체크용) -->
+    <!-- 특정 날짜의 총 예약 개수 조회 -->
     <select id="selectReservationCountByDate" resultType="int">
         SELECT COUNT(*)
-        FROM FACILITY_RESERVATION
-        WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
-        AND FACILITY_NO = #{facilityNo}
-        AND RESERVATION_STATUS != '취소'
-    </select>
-
-    <!-- 특정 날짜의 고유 환자 수 조회 (사용되지 않지만 유지) -->
-    <select id="selectUniquePatientCountByDate" resultType="int">
-        SELECT COUNT(DISTINCT MEMBER_NO)
         FROM FACILITY_RESERVATION
         WHERE TRUNC(TREATMENT_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
         AND FACILITY_NO = #{facilityNo}
@@ -117,4 +122,21 @@
         AND FACILITY_NO = #{facilityNo}
     </delete>
 
+    <!-- 모든 시설 조회 -->
+    <select id="selectAllFacilities" resultMap="FacilityMap">
+        SELECT
+        FACILITY_NO,
+        FACILITY_NAME,
+        FACILITY_CODE,
+        FACILITY_LOCATION,
+        FACILITY_TYPE,
+        FACILITY_STATUS,
+        FACILITY_PHONE,
+        FACILITY_REPRESENTATIVE,
+        RESERVATION_UNIT,
+        TO_CHAR(FIX_DATE, 'YYYY-MM-DD') AS FIX_DATE
+        FROM FACILITY
+        WHERE FACILITY_STATUS = 'T' OR FACILITY_STATUS IS NULL
+        ORDER BY FACILITY_NO
+    </select>
 </mapper>

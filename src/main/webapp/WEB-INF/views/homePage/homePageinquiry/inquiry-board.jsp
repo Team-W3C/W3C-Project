@@ -31,9 +31,14 @@
 
   <!-- 검색 영역 -->
   <section class="inquiry-search-section" aria-label="문의사항 검색">
-    <button class="inquiry-category-btn" type="button" aria-label="카테고리 선택">
-      전체
-    </button>
+    <select class="inquiry-category-btn" id="inquiryCategorySelect" aria-label="카테고리 선택">
+      <option value="">전체</option>
+      <option value="1" <c:if test="${category == '1'}">selected</c:if>>결제</option>
+      <option value="2" <c:if test="${category == '2'}">selected</c:if>>진료</option>
+      <option value="3" <c:if test="${category == '3'}">selected</c:if>>기타</option>
+      <option value="4" <c:if test="${category == '4'}">selected</c:if>>시스템</option>
+      <option value="5" <c:if test="${category == '5'}">selected</c:if>>예약</option>
+    </select>
 
     <div class="inquiry-search-input-wrapper">
       <label for="inquiry-search" class="visually-hidden">문의사항 검색</label>
@@ -47,6 +52,7 @@
               class="inquiry-search-input"
               placeholder="제목으로 검색하세요"
               aria-label="제목으로 검색하세요"
+              value="${keyword}"
       >
     </div>
   </section>
@@ -69,94 +75,33 @@
       </tr>
       </thead>
       <tbody>
-    <c:forEach var="b" items="${list}">
-      <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail?bno=${b.boardId}'">
-        <td>${b.boardId}</td>
-        <td>${b.boardTypeName}</td>
-        <td>${b.boardTitle}</td>
-        <c:if test="${b.boardSecretTypeName =='비밀'}">
-        <td><span class="inquiry-privacy-badge private">${b.boardSecretTypeName}</span></td>
-        </c:if>
-        <c:if test="${b.boardSecretTypeName =='공개'}">
-          <td><span class="inquiry-privacy-badge public">${b.boardSecretTypeName}</span></td>
-        </c:if>
+      <c:choose>
+        <c:when test="${empty list}">
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 40px 0; color: #666;">
+              결과가 없습니다
+            </td>
+          </tr>
+        </c:when>
+        <c:otherwise>
+          <c:forEach var="b" items="${list}">
+            <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail?bno=${b.boardId}'">
+              <td>${b.boardId}</td>
+              <td>${b.boardTypeName}</td>
+              <td>${b.boardTitle}</td>
+              <c:if test="${b.boardSecretTypeName =='비밀'}">
+              <td><span class="inquiry-privacy-badge private">${b.boardSecretTypeName}</span></td>
+              </c:if>
+              <c:if test="${b.boardSecretTypeName =='공개'}">
+                <td><span class="inquiry-privacy-badge public">${b.boardSecretTypeName}</span></td>
+              </c:if>
 
-        <td>${b.boardStatus}</td>
-        <td><time datetime="${b.questionDate}">${b.questionDate}</time></td>
-      </tr>
-    </c:forEach>
-<%--      <tr>--%>
-<%--        <td>14</td>--%>
-<%--        <td>진료</td>--%>
-<%--        <td>진료 전 (검사 때문에) 금식이나 특별히 준비해야 할 사항이 있나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2025-01-10">2025-01-10</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>13</td>--%>
-<%--        <td>예약</td>--%>
-<%--        <td>예약 없이 급하게 방문하면 진료를 받을 수 있나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
-<%--        <td>진료지원팀</td>--%>
-<%--        <td><time datetime="2025-01-05">2025-01-05</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>12</td>--%>
-<%--        <td>결제 및 비용</td>--%>
-<%--        <td>진료비는 현장에서 바로 결제해야 하나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
-<%--        <td>원무팀</td>--%>
-<%--        <td><time datetime="2024-12-28">2024-12-28</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>11</td>--%>
-<%--        <td>결제 및 비용</td>--%>
-<%--        <td>실손 보험금 청구를 위해 필요한 서류는 무엇이며, 어디서 발급받나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
-<%--        <td>원무팀</td>--%>
-<%--        <td><time datetime="2024-12-20">2024-12-20</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>10</td>--%>
-<%--        <td>기타</td>--%>
-<%--        <td>주차장이 따로 마련되어 있나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
-<%--        <td>원무팀</td>--%>
-<%--        <td><time datetime="2024-12-15">2024-12-15</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>9</td>--%>
-<%--        <td>진료</td>--%>
-<%--        <td>검사 결과는 언제쯤 나오며, 결과를 어떻게 확인할 수 있나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
-<%--        <td>원무팀</td>--%>
-<%--        <td><time datetime="2024-12-10">2024-12-10</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>8</td>--%>
-<%--        <td>결제 및 비용</td>--%>
-<%--        <td>진료 기록 사본이나 진단서를 발급받으려면 어떤 절차가 필요하고 비용은 얼마인가요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
-<%--        <td>응급의학과</td>--%>
-<%--        <td><time datetime="2024-12-01">2024-12-01</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>7</td>--%>
-<%--        <td>예약</td>--%>
-<%--        <td>기존에 처방받은 약을 추가로 받거나 재진 예약을 하려면 어떻게 해야 하나요?</td>--%>
-<%--        <td><span class="inquiry-privacy-badge private">유</span></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2024-11-25">2024-11-25</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>6</td>--%>
-<%--        <td>진료</td>--%>
-<%--        <td>병원에 도착해서 가장 먼저 해야 할 접수 절차가 궁금합니다</td>--%>
-<%--        <td><span class="inquiry-privacy-badge public">무</span></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2024-11-20">2024-11-20</time></td>--%>
-<%--      </tr>--%>
+              <td>${b.boardStatus}</td>
+              <td><time datetime="${b.questionDate}">${b.questionDate}</time></td>
+            </tr>
+          </c:forEach>
+        </c:otherwise>
+      </c:choose>
       </tbody>
     </table>
   </section>
@@ -171,7 +116,7 @@
    </div>
   <nav class="inquiry-pagination" aria-label="페이지네이션">
     <c:choose>
-      <c:when test="${empty condition}">
+      <c:when test="${empty keyword and empty category}">
         <c:if test="${pi.currentPage > 1}">
           <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage - 1}" class="prev" aria-label="이전 페이지">
             ← Previous
@@ -195,40 +140,33 @@
           </a>
         </c:if>
       </c:when>
-
-      <%-- 검색 조건이 있는 경우 (검색 목록) --%>
       <c:otherwise>
-        <%-- '이전' 버튼: 검색 조건 포함 --%>
         <c:if test="${pi.currentPage > 1}">
-          <a href="${pageContext.request.contextPath}//member/inquiry-board?cpage=${pi.currentPage - 1}" class="prev" aria-label="이전 페이지">
+          <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage - 1}&keyword=${keyword}&category=${category}" class="prev" aria-label="이전 페이지">
             ← Previous
           </a>
         </c:if>
 
-        <%-- 페이지 번호: 검색 조건 포함 --%>
         <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
           <c:choose>
-            <%-- 현재 페이지일 경우: active 클래스 적용 --%>
             <c:when test="${i == pi.currentPage}">
               <a href="#" class="active" aria-label="${i}페이지" aria-current="page">${i}</a>
             </c:when>
             <c:otherwise>
-              <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${i}" aria-label="${i}페이지">${i}</a>
+              <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${i}&keyword=${keyword}&category=${category}" aria-label="${i}페이지">${i}</a>
             </c:otherwise>
           </c:choose>
         </c:forEach>
 
-        <%-- '다음' 버튼: 검색 조건 포함 --%>
         <c:if test="${pi.currentPage < pi.maxPage}">
-<%--          <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage + 1}&condition=${condition}&keyword=${keyword}" class="next" aria-label="다음 페이지">--%>
-              <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage + 1}" class="next" >
+          <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage + 1}&keyword=${keyword}&category=${category}" class="next" aria-label="다음 페이지">
             Next →
           </a>
         </c:if>
       </c:otherwise>
     </c:choose>
   </nav>
-  </nav>
+</main>
     <c:if test="${pi!= null}">
   <!-- 총 개수 -->
   <div class="inquiry-count">
@@ -238,5 +176,32 @@
 
 </main>
 <jsp:include page="../../common/homePageFooter/footer.jsp" />
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("inquiry-search");
+    const categorySelect = document.getElementById("inquiryCategorySelect");
+
+    // 카테고리 선택 시 검색
+    categorySelect.addEventListener("change", function() {
+      performSearch();
+    });
+
+    // 검색 함수
+    function performSearch() {
+      const keyword = searchInput.value || "";
+      const category = categorySelect.value || "";
+      const url = "${pageContext.request.contextPath}/member/inquiry-board?cpage=1&keyword=" + encodeURIComponent(keyword) + "&category=" + encodeURIComponent(category);
+      location.href = url;
+    }
+
+    // 엔터키 검색
+    searchInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        performSearch();
+      }
+    });
+  });
+</script>
 </body>
 </html>

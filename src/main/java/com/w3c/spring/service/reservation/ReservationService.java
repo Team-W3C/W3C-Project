@@ -25,8 +25,8 @@ public interface ReservationService {
     boolean updateReservation(ReservationRequestVO reservationData, int reservationNo, int memberNo);
 
     Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate);
-
-    int updateRvtnStatus(String status, int reservationNo);
-
     ReservationDetailVO selectRvtnDetail(int reservationNo);
+    int updateRvtnStatus(String status, int reservationNo);
+    List<ReservationDetailVO> selectDoctorByDepartmentName(String departmentName);
+    int insertErpReservation(Map<String,Object> params);
 }

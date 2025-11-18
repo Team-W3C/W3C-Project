@@ -1,6 +1,7 @@
 package com.w3c.spring.controller.api.erp.facilityReservation;
 
 import com.w3c.spring.model.vo.erp.facilityReservation.FacilityReservation;
+import com.w3c.spring.model.vo.erp.facilityReservation.Facility;
 import com.w3c.spring.service.erp.facilityReservation.FacilityReservationService;
 import com.w3c.spring.service.member.MemberService;
 import com.w3c.spring.model.vo.Member;
@@ -8,6 +9,7 @@ import com.w3c.spring.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,6 @@ import java.util.Map;
 public class FacilityReservationController {
 
     private static final Logger log = LoggerFactory.getLogger(FacilityReservationController.class);
-    private static final int MAX_RESERVATIONS_PER_DAY = 8;
 
     private final FacilityReservationService reservationService;
     private final MemberService memberService;
@@ -37,7 +38,6 @@ public class FacilityReservationController {
      * 모든 예약 목록 조회
      */
     @GetMapping("/list")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>> getReservationList() {
         Map<String, Object> result = new HashMap<>();
         try {
@@ -47,10 +47,10 @@ public class FacilityReservationController {
             log.debug("예약 목록 조회 성공: {} 건", reservations.size());
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            log.error("예약 목록 조회 실패", e);
             result.put("success", false);
             result.put("message", e.getMessage());
-            log.error("예약 목록 조회 실패", e);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
@@ -58,7 +58,6 @@ public class FacilityReservationController {
      * 특정 날짜의 예약 조회
      */
     @GetMapping("/date")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>> getReservationsByDate(
             @RequestParam("date") String date,
             @RequestParam(value = "facilityNo", required = false) Integer facilityNo) {
@@ -76,10 +75,10 @@ public class FacilityReservationController {
             result.put("reservations", reservations);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            log.error("날짜별 예약 조회 실패: {}", date, e);
             result.put("success", false);
             result.put("message", e.getMessage());
-            log.error("날짜별 예약 조회 실패: {}", date, e);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
@@ -87,7 +86,6 @@ public class FacilityReservationController {
      * 환자 목록 조회 (STAFF_NO IS NULL인 일반 환자만)
      */
     @GetMapping("/patients")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>> getPatientList() {
         Map<String, Object> result = new HashMap<>();
         try {
@@ -97,10 +95,30 @@ public class FacilityReservationController {
             log.debug("환자 목록 조회 성공: {} 명", patients.size());
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            log.error("환자 목록 조회 실패", e);
             result.put("success", false);
             result.put("message", e.getMessage());
-            log.error("환자 목록 조회 실패", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+        }
+    }
+
+    /**
+     * 시설 목록 조회
+     */
+    @GetMapping("/facilities")
+    public ResponseEntity<Map<String, Object>> getFacilityList() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<Facility> facilities = reservationService.getAllFacilities();
+            result.put("success", true);
+            result.put("facilities", facilities);
+            log.debug("시설 목록 조회 성공: {} 건", facilities.size());
             return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("시설 목록 조회 실패", e);
+            result.put("success", false);
+            result.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
@@ -108,39 +126,29 @@ public class FacilityReservationController {
      * 예약 추가
      */
     @PostMapping("/insert")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>> insertReservation(
             @RequestBody FacilityReservation reservation) {
         Map<String, Object> result = new HashMap<>();
         try {
-            // 해당 날짜+시설의 총 예약 개수 확인
+            reservationService.insertReservation(reservation);
+            result.put("success", true);
+            result.put("message", "예약이 등록되었습니다.");
+
             String date = reservation.getTreatmentDate().substring(0, 10);
-            int reservationCount = reservationService.getReservationCountByDate(date, reservation.getFacilityNo());
-
-            if (reservationCount >= MAX_RESERVATIONS_PER_DAY) {
-                result.put("success", false);
-                result.put("message", String.format("해당 날짜는 예약이 마감되었습니다. (최대 %d개)", MAX_RESERVATIONS_PER_DAY));
-                log.warn("예약 마감: {} / 시설번호: {} / 현재 예약 수: {}", date, reservation.getFacilityNo(), reservationCount);
-                return ResponseEntity.ok(result);
-            }
-
-            int insertResult = reservationService.insertReservation(reservation);
-            if (insertResult > 0) {
-                result.put("success", true);
-                result.put("message", "예약이 등록되었습니다.");
-                log.info("예약 등록 성공: {} / 시설번호: {} / 환자번호: {}",
-                        date, reservation.getFacilityNo(), reservation.getMemberNo());
-            } else {
-                result.put("success", false);
-                result.put("message", "예약 등록에 실패했습니다.");
-                log.warn("예약 등록 실패: {}", reservation);
-            }
+            log.info("예약 등록 성공: {} / 시설번호: {} / 환자번호: {}",
+                    date, reservation.getFacilityNo(), reservation.getMemberNo());
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            // 비즈니스 로직 예외 (예약 마감 등)
+            log.warn("예약 등록 실패: {}", e.getMessage());
             result.put("success", false);
             result.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        } catch (Exception e) {
             log.error("예약 등록 중 오류 발생", e);
-            return ResponseEntity.ok(result);
+            result.put("success", false);
+            result.put("message", "예약 등록 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
@@ -148,7 +156,6 @@ public class FacilityReservationController {
      * 특정 날짜의 모든 예약 삭제
      */
     @DeleteMapping("/deleteByDate")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>> deleteReservationsByDate(
             @RequestBody Map<String, Object> params) {
         Map<String, Object> result = new HashMap<>();
@@ -156,7 +163,14 @@ public class FacilityReservationController {
             String date = (String) params.get("date");
             Integer facilityNo = (Integer) params.get("facilityNo");
 
+            if (date == null || facilityNo == null) {
+                result.put("success", false);
+                result.put("message", "날짜와 시설번호는 필수입니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+            }
+
             int deleteResult = reservationService.deleteReservationsByDateAndFacility(date, facilityNo);
+
             if (deleteResult > 0) {
                 result.put("success", true);
                 result.put("message", "예약이 삭제되었습니다.");
@@ -169,10 +183,13 @@ public class FacilityReservationController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-            result.put("success", false);
-            result.put("message", e.getMessage());
             log.error("예약 삭제 중 오류 발생", e);
-            return ResponseEntity.ok(result);
+            result.put("success", false);
+            result.put("message", "예약 삭제 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
+
+
+
 }

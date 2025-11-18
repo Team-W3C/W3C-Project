@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 @RequiredArgsConstructor
 @Service
@@ -24,19 +23,22 @@ public class BoardServiceImpl implements BoardService{
     private final NotificationMapper notificationMapper;
 
     @Override
-    public Map<String, Object> getBoardList(int cpage) {
-        int listCount = boardMapper.selectBoardListCount();
+    public Map<String, Object> getBoardList(int cpage, String keyword, String category) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("keyword", keyword);
+        param.put("category", category);
+
+        int listCount = boardMapper.selectBoardListCount(param);
 
         PageInfo pi = new PageInfo(cpage, listCount, 5, 10);
 
         int offset = (cpage - 1) * pi.getBoardLimit();
         RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-        ArrayList<Board> list = (ArrayList)boardMapper.selectBoardList(rowBounds);
+        ArrayList<Board> list = (ArrayList)boardMapper.selectBoardList(param, rowBounds);
 
         for (Board b : list) {
             enrichBoard(b);
-
         }
         Map<String, Object> map = new HashMap<>();
         map.put("list", list);
@@ -45,23 +47,28 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
-    @Override
-    public int selectBoardListCount() {
-        return boardMapper.selectBoardListCount();
-    }
+//    @Override
+//    public int selectBoardListCount() {
+//        return boardMapper.selectBoardListCount(param);
+//    }
+
+
 
     @Override
-    public Map<String, Object> getBoardById(int boardId) {
+    public Board getBoardById(int boardId) {
         Map<String, Object> map = new HashMap<>();
 
         Board board = boardMapper.getBoardById(boardId);
 
-        enrichBoard(board);
+        if(board != null) {
+            enrichBoard(board);
+            int memberId = boardMapper.getBoardMemberId(boardId);
+            board.setMemberNo(memberId);
+            return board;
+        }else{
+            return null;
+        }
 
-        
-
-        map.put("boardDetail", board);
-        return map;
     }
 
     @Override
@@ -144,19 +151,22 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Map<String, Object> selectPatientNoticeList(int curentPage) {
-        int listCount = notificationMapper.getPatientNoticeListCount();
+    public Map<String, Object> selectPatientNoticeList(int curentPage, String keyword, String category) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("keyword", keyword);
+        param.put("category", category);
+
+        int listCount = notificationMapper.getPatientNoticeListCount(param);
 
         PageInfo pi = new PageInfo(curentPage, listCount, 5, 10);
 
         int offset = (curentPage - 1) * pi.getBoardLimit();
         RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-        ArrayList<Notification> list = (ArrayList)notificationMapper.selectPatientNoticeList(rowBounds);
+        ArrayList<Notification> list = (ArrayList)notificationMapper.selectPatientNoticeList(param, rowBounds);
 
         for (Notification n : list) {
             notifiType(n);
-
         }
         System.out.println(list);
         Map<String, Object> map = new HashMap<>();
@@ -175,6 +185,17 @@ public class BoardServiceImpl implements BoardService{
         }
 
     }
+
+    @Override
+    public Map<String, Object> getBoardListTop3() {
+
+        ArrayList<Notification> list = (ArrayList)notificationMapper.getBoardListTop3();
+        Map<String, Object> map = new HashMap<>();
+        System.out.println(list);
+        map.put("list", list);
+        return map;
+    }
+
 
     private void enrichBoard(Board b) {
         switch (b.getBoardType()) {

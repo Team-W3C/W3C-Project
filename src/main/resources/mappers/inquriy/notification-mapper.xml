@@ -83,13 +83,45 @@
     </insert>
 
 
-    <select id="getPatientNoticeListCount" resultType="_int">
+<!--    <select id="getPatientNoticeListCount" resultType="_int">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM NOTIFICATION-->
+<!--        WHERE NOTIFIED_TYPE = 1-->
+<!--        AND NOTIFICATION_DELETE_TYPE='F'-->
+<!--    </select>-->
+
+    <select id="getPatientNoticeListCount" resultType="_int" parameterType="map">
         SELECT COUNT(*)
-        FROM NOTIFICATION
+        FROM NOTIFICATION N
+        JOIN MEMBER M ON (N.STAFF_NO = M.STAFF_NO)
+        JOIN DEPARTMENT D ON(N.DEPARTMENT_NO = D.DEPARTMENT_NO)
         WHERE NOTIFIED_TYPE = 1
         AND NOTIFICATION_DELETE_TYPE='F'
+        <if test="keyword != null and keyword != ''">
+            AND NOTIFICATION_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="category != null and category != ''">
+            AND NOTIFICATION_TYPE = #{category}
+        </if>
     </select>
-    <select id="selectPatientNoticeList" resultMap="notificationResultMap">
+<!--    <select id="selectPatientNoticeList" resultMap="notificationResultMap">-->
+<!--        SELECT-->
+<!--        NOTIFICATION_NO,-->
+<!--        NOTIFICATION_TITLE,-->
+<!--        NOTIFICATION_TYPE,-->
+<!--        NOTIFICATION_CONTENT,-->
+<!--        TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD') AS NOTIFICATION_DATE,-->
+<!--        NOTIFIED_TYPE,-->
+<!--        DEPARTMENT_NAME-->
+<!--        FROM NOTIFICATION N-->
+<!--        JOIN MEMBER M ON (N.STAFF_NO = M.STAFF_NO)-->
+<!--        JOIN DEPARTMENT D ON(N.DEPARTMENT_NO = D.DEPARTMENT_NO)-->
+<!--        WHERE NOTIFIED_TYPE = 1-->
+<!--        AND NOTIFICATION_DELETE_TYPE = 'F'-->
+<!--        ORDER BY NOTIFICATION_NO DESC-->
+<!--    </select>-->
+
+    <select id="selectPatientNoticeList" resultMap="notificationResultMap" parameterType="map">
         SELECT
         NOTIFICATION_NO,
         NOTIFICATION_TITLE,
@@ -103,9 +135,14 @@
         JOIN DEPARTMENT D ON(N.DEPARTMENT_NO = D.DEPARTMENT_NO)
         WHERE NOTIFIED_TYPE = 1
         AND NOTIFICATION_DELETE_TYPE = 'F'
+        <if test="keyword != null and keyword != ''">
+            AND NOTIFICATION_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="category != null and category != ''">
+            AND NOTIFICATION_TYPE = #{category}
+        </if>
         ORDER BY NOTIFICATION_NO DESC
     </select>
-
 
     <select id="selectPatientNoticeById" parameterType="_int" resultMap="notificationResultMap">
         SELECT
@@ -124,4 +161,19 @@
         AND NOTIFICATION_NO = #{notificationNo}
     </select>
 
+    <select id="getBoardListTop3" resultMap="notificationResultMap">
+        SELECT
+        NOTIFICATION_NO,
+        NOTIFICATION_TITLE,
+        NOTIFIED_TYPE,
+        TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD') AS NOTIFICATION_DATE
+        FROM
+        NOTIFICATION
+        WHERE
+        NOTIFICATION_DELETE_TYPE = 'F'
+        AND NOTIFIED_TYPE = 1
+        ORDER BY
+        NOTIFICATION_NO DESC
+        FETCH FIRST 3 ROWS ONLY
+    </select>
 </mapper>

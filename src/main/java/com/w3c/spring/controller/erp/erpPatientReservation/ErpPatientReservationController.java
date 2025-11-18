@@ -6,9 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/erp/erpReservation")
@@ -19,13 +22,20 @@ public class ErpPatientReservationController {
         this.reservationService = reservationService;
     }
     @GetMapping("/reservation")
-    public String enterErp() {
+    public String enterErp(Model model) {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        System.out.println(today);
+        Map<String, List<ReservationDetailVO>> todayReservation = reservationService.selectReservationDetailByDate(today);
+
+        model.addAttribute("todayReservation", todayReservation);
+        model.addAttribute("today", today);
+
         return "erp/patientReservation/reservation";
     }
 
     @GetMapping("/getReservations")
     @ResponseBody
-    public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(@RequestParam String selectedDate) {
+    public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(@RequestParam("selectedDate") String selectedDate) {
         System.out.println("선택 날짜: " + selectedDate);
         return reservationService.selectReservationDetailByDate(selectedDate);
     }
@@ -44,6 +54,20 @@ public class ErpPatientReservationController {
     public ReservationDetailVO selectRvtnDetail(@PathVariable("reservationNo") int reservationNo){
         return reservationService.selectRvtnDetail(reservationNo);
     }
+
+    @GetMapping("/doctors")
+    @ResponseBody
+    public List<ReservationDetailVO> selectDoctorByDepartmentName(@RequestParam("departmentName") String departmentName){
+        return reservationService.selectDoctorByDepartmentName(departmentName);
+    }
+
+    @PostMapping("/add")
+    @ResponseBody
+    public int insertReservation(@RequestBody Map<String,Object> params) {
+        return reservationService.insertErpReservation(params);
+    }
+
+
 }
 
 

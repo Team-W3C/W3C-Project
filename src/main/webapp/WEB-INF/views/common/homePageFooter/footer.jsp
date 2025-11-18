@@ -5,8 +5,8 @@
         <div class="footer-container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3 class="footer-title">고객센터 ></h3>
-                    <p class="footer-phone">1588-0724</p>
+                    <h3 class="footer-title">고객센터</h3>
+                    <p class="footer-phone">1111-2222</p>
                     <p class="footer-hours">09:00~18:00</p>
                 </div>
 
@@ -36,7 +36,7 @@
                     </div>
                     <div class="footer-column">
                         <h4>장원석</h4>
-                        <p>일상 관리자<br>Git</p>
+                        <p>형상 관리자<br>Git</p>
                     </div>
                     <div class="footer-column">
                         <h4>조치호</h4>

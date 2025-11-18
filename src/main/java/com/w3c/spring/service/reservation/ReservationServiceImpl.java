@@ -190,6 +190,7 @@ public class ReservationServiceImpl implements ReservationService {
         result.put("waiting", new ArrayList<>());
         result.put("inProgress", new ArrayList<>());
         result.put("completed", new ArrayList<>());
+        result.put("canceled", new ArrayList<>());
 
         for (ReservationDetailVO reservation : Reservations){
             String status = reservation.getStatus();
@@ -199,7 +200,9 @@ public class ReservationServiceImpl implements ReservationService {
                 result.get("inProgress").add(reservation);
             }else if("완료".equals(status)){
                 result.get("completed").add(reservation);
-            }
+            }else if("취소".equals(status)){
+                result.get("canceled").add(reservation);
+            };
         }
 
         return result;
@@ -215,7 +218,28 @@ public class ReservationServiceImpl implements ReservationService {
 
     public ReservationDetailVO selectRvtnDetail(int reservationNo){
         ReservationDetailVO result = reservationMapper.selectRvtnDetail(reservationNo);
-        System.out.println("Service 결과: " + result);
         return result;
+    }
+
+    public List<ReservationDetailVO> selectDoctorByDepartmentName(String departmentName) {
+        return reservationMapper.selectDoctorByDepartmentName(departmentName);
+    }
+
+    public int insertErpReservation(Map<String, Object> params) {
+        String patientName = (String) params.get("patientName");
+        String departmentName = (String) params.get("department");
+
+        int memberNo = reservationMapper.findMemberNo(patientName);
+        int departmentNo = reservationMapper.findDepartmentNo(departmentName);
+
+        Map<String, Object> reservations = new HashMap<>();
+        reservations.put("memberNo", memberNo);
+        reservations.put("departmentNo", departmentNo);
+        reservations.put("time", params.get("time"));
+        reservations.put("date", params.get("date"));
+        reservations.put("symptoms", params.get("symptom"));
+        reservations.put("memo", params.get("doctor"));
+
+        return reservationMapper.insertErpReservation(reservations);
     }
 }
