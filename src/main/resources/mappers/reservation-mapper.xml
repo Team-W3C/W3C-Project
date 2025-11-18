@@ -99,7 +99,7 @@
             treatment_date
         ) VALUES (
                      RESERVATION_SEQ.NEXTVAL,
-                     '확정',
+                     '대기',
                      #{reservationNotes},
                      '담당의: ' || #{doctorName}, #{memberNo},
                      #{departmentNo},
@@ -274,21 +274,20 @@
         WHERE DEPARTMENT_NAME = #{departmentName}
     </select>
 
-    <insert id="insertErpReservation">
+  <insert id="insertReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
         INSERT INTO RESERVATION (
             reservation_no,
-            reservation_notes,
-            member_no,
+            reservation_status,
+            reservation_notes,  reservation_memo,   member_no,
             department_no,
-            treatment_date,
-            reservation_memo
+            treatment_date
         ) VALUES (
                      RESERVATION_SEQ.NEXTVAL,
-                     #{symptoms},
-                     #{memberNo},
+                     '확정',
+                     #{reservationNotes},
+                     '담당의: ' || #{doctorName}, #{memberNo},
                      #{departmentNo},
-                     TO_TIMESTAMP(#{date} || ' ' || #{time}, 'YYYY-MM-DD HH24:MI'),
-                     '담당의: ' || #{memo}
+                     TO_TIMESTAMP(#{treatmentDate}, 'YYYY-MM-DD HH24:MI')
                  )
     </insert>
 </mapper>
