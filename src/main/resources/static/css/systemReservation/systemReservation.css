@@ -14,23 +14,6 @@ body {
     background: #F9FAFB;
 }
 
-
-
-/*!* ================================== *!*/
-/*!* ※ .dashboard-main 스타일 수정 ※ *!*/
-/*!* 헤더와 사이드바에 가려지지 않도록 패딩/마진 추가 *!*/
-/*!* [수정] : 콘텐츠 자체 패딩(padding: 24px)은 제거하고,*/
-/*          레이아웃을 위한 padding-top과 margin-left만 남깁니다. *!*/
-/*!* ================================== *!*/
-/*.dashboard-main {*/
-/*    padding-top: 64px; !* 헤더 높이 *!*/
-/*    margin-left: 256px; !* 사이드바 너비 *!*/
-/*    !* 내용물(.reservation-container)이*/
-/*      자체 패딩을 가지므로 여기서는 패딩을 제거합니다.*/
-/*    *!*/
-/*}*/
-
-
 /* 스크롤바 스타일 */
 ::-webkit-scrollbar {
     width: 8px;
@@ -100,22 +83,30 @@ body {
     --radius-full: 9999px;
 }
 
-/* ========================================
-    레이아웃
-    ======================================== */
-/* .reservation-container가 .dashboard-main 내부에 위치합니다.
-  .dashboard-main이 레이아웃을 잡고,
-  .reservation-container는 콘텐츠 영역의 패딩과 최대 너비를 정의합니다.
-*/
-.reservation-container {
+/* ▼▼▼ [수정] "병원 안내" 페이지와 동일하게 레이아웃 추가 ▼▼▼ */
+.page-wrapper {
+    display: flex;
+    width: 1280px;
+    margin: 0 auto;
+    padding: 40px;
+    gap: 30px;
+}
+
+.intro-container {
+    flex: 1;
+    max-width: 961px;
+    min-width: 0;
+
+    /* [추가] 원본 .reservation-container의 속성을 일부 가져옴 */
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
-    padding: var(--spacing-xl); /* 32px의 콘텐츠 내부 여백 */
-    max-width: 1440px;
-    margin-top: 60px;
-    margin-left : 256px;
 }
+/* ▲▲▲ [수정 완료] ▲▲▲ */
+
+
+/* [삭제] .reservation-container { ... margin-left: 256px; } 스타일 제거 */
+
 
 /* ========================================
     공통 컴포넌트
@@ -767,49 +758,20 @@ body {
     ======================================== */
 
 @media (max-width: 1024px) {
-    /* --- 1. 레이아웃 (test.css) --- */
-    .header {
-        left: 80px;
+    .page-wrapper {
+        flex-direction: column;
+        width: 100%;
+        padding: 24px;
+        gap: 24px;
     }
 
-    .header__search {
-        width: 400px;
-    }
-
-    .sidebar {
-        width: 80px;
-    }
-
-    .sidebar__text {
-        display: none;
-    }
-
-    .sidebar__link {
-        justify-content: center;
-        padding: 0 16px;
-    }
-
-    .sidebar__link--active {
-        border-right: none;
-        border-bottom: 3px solid #0E787C;
-    }
-
-    .sidebar__copyright {
-        font-size: 12px;
-        text-align: center;
-    }
-
-    /* [수정] .dashboard-main: 불필요한 padding: 24px; 제거 */
-    /* [버그 수정] padding-top: 64px; 를 유지해야 헤더에 가려지지 않음 */
-    .dashboard-main {
-        margin-left: 80px;
-        padding-top: 64px;
+    .intro-container {
+        width: 100%;
+        max-width: none;
+        padding: 0; /* intro-container 자체의 패딩은 제거 */
     }
 
     /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
-    .reservation-container {
-        padding: var(--spacing-md); /* 16px */
-    }
     .room-list {
         gap: var(--spacing-sm);
     }
@@ -846,35 +808,15 @@ body {
 }
 
 @media (max-width: 768px) {
-    /* --- 1. 레이아웃 (test.css) --- */
-    .header {
-        left: 0;
-        padding: 0 16px;
+    .page-wrapper {
+        padding: 16px;
     }
 
-    .header__search {
-        width: 200px;
+    .intro-container {
+        gap: var(--spacing-md); /* 모바일에서는 gap 감소 */
     }
 
-    .header__user-info {
-        display: none;
-    }
 
-    .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-
-    .sidebar.active {
-        transform: translateX(0);
-    }
-
-    /* [수정] .dashboard-main: margin-left: 0으로 변경 */
-    /* [버그 수정] padding-top: 64px; 유지 */
-    .dashboard-main {
-        margin-left: 0;
-        padding-top: 64px;
-    }
 
     /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
     .reservation-header {
