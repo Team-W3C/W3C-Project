@@ -31,4 +31,7 @@ public class ReservationDetailVO {
     private String reservationTime;
     private String patientCode;
     private String phone;
+
+    private String memberNo;
+    private String departmentNo;
 }
