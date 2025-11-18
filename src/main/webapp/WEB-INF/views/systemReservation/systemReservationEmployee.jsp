@@ -103,7 +103,6 @@
             <div class="fc-event" data-room="endoscopy" data-facility-no="3" data-title="내시경 가능">
                 <span class="event-indicator endoscopy"></span>
                 <span>내시경 가능</span>
-            </div>
         </div>
     </section>
 

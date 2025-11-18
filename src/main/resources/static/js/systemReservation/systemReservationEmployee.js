@@ -22,6 +22,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
     };
 
+    const roomColorMap = {
+        mri: '#0e787c',
+        ct: '#8b5cf6',
+        ultrasound: '#0ea5e9',
+        xray: '#f59e0b',
+        endoscopy: '#ec4899'
+    };
+
+    const facilityNameMap = {
+        MRI: 'mri',
+        XRAY: 'xray',
+        ENDOSCOPE: 'endoscopy',
+        ENDOSCOPY: 'endoscopy',
+        CT: 'ct',
+        UW: 'ultrasound',
+        ULTRASOUND: 'ultrasound',
+        '초음파': 'ultrasound',
+        '내시경': 'endoscopy'
+    };
+
+    function normalizeKey(value) {
+        return value ? value.toString().trim().toUpperCase().replace(/[\s\-]/g, '') : '';
+    }
+
+    function stripDigits(value) {
+        return value ? value.replace(/\d+/g, '') : value;
+    }
+
+    function resolveRoomKey(facility) {
+        const nameKey = normalizeKey(facility.facilityName);
+        const nameKeyNoDigits = stripDigits(nameKey);
+        const codeKey = normalizeKey(facility.facilityCode);
+        const codeKeyNoDigits = stripDigits(codeKey);
+
+        return facilityNameMap[nameKey] ||
+            facilityNameMap[nameKeyNoDigits] ||
+            facilityNameMap[codeKey] ||
+            facilityNameMap[codeKeyNoDigits] ||
+            `facility${facility.facilityNo}`;
+    }
+
+    function resolveColor(roomKey) {
+        return roomColorMap[roomKey] || '#0e787c';
+    }
+
     // ✅ 모달 요소들 (patientSelect 추가)
     const modal = document.getElementById('reservationModal');
     const modalCloseBtn = document.getElementById('closeModal');
@@ -335,46 +380,36 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.facilities) {
-                    // 시설 정보를 facilityInfo 객체로 변환
                     const facilityMap = {};
-                    const colorMap = {
-                        'MRI': '#0e787c',
-                        'CT': '#8b5cf6',
-                        '초음파': '#0ea5e9',
-                        'X-Ray': '#f59e0b',
-                        '내시경': '#ec4899'
-                    };
 
                     data.facilities.forEach(facility => {
-                        // FACILITY_TYPE을 기반으로 키 생성 (소문자, 공백/하이픈 제거)
-                        let typeKey = facility.facilityType?.toLowerCase().replace(/\s+/g, '').replace(/-/g, '') || '';
+                        const baseRoomKey = resolveRoomKey(facility);
+                        const color = resolveColor(baseRoomKey);
+                        const hasColorClass = roomColorMap.hasOwnProperty(baseRoomKey);
 
-                        // typeKey가 없거나 이미 존재하면 facilityCode 기반으로 생성
-                        if (!typeKey || facilityMap[typeKey]) {
-                            typeKey = facility.facilityCode?.toLowerCase().replace(/\s+/g, '').replace(/-/g, '') ||
-                                `facility${facility.facilityNo}`;
+                        if (facilityMap[baseRoomKey]) {
+                            console.warn(`중복된 시설 키(${baseRoomKey})가 감지되어 최근 항목으로 덮어씁니다.`);
                         }
 
-                        facilityMap[typeKey] = {
+                        facilityMap[baseRoomKey] = {
                             name: facility.facilityName || facility.facilityCode || '',
                             fullName: facility.facilityName || '',
                             location: facility.facilityLocation || '',
-                            hours: '09:00 - 18:00', // 기본값 (DB에 컬럼이 없으면 기본값 사용)
-                            duration: facility.reservationUnit || '60분',
+                            hours: facility.operatingHours || '09:00 - 16:00',
+                            duration: facility.reservationUnit ? `${facility.reservationUnit}분` : '60분',
                             manager: facility.facilityRepresentative || '',
                             contact: facility.facilityPhone || '',
-                            color: colorMap[facility.facilityType] || '#0e787c',
+                            color,
                             code: facility.facilityCode || '',
                             facilityNo: facility.facilityNo,
-                            facilityType: facility.facilityType || ''
+                            facilityType: facility.facilityType || '',
+                            roomClass: hasColorClass ? baseRoomKey : '',
+                            baseRoomKey
                         };
                     });
 
                     facilityInfo = facilityMap;
-
-                    // 외부 이벤트 목록 동적 생성
                     updateExternalEvents();
-
                     console.log('시설 목록 로드 완료:', facilityInfo);
                 } else {
                     console.warn('시설 목록이 비어있습니다.');
@@ -382,7 +417,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('시설 목록 로드 실패:', error);
-                // 실패 시 기본값 사용 (선택사항)
             });
     }
 
@@ -398,12 +432,23 @@ document.addEventListener('DOMContentLoaded', function () {
         Object.entries(facilityInfo).forEach(([key, facility]) => {
             const eventEl = document.createElement('div');
             eventEl.className = 'fc-event';
-            eventEl.dataset.title = facility.name;
+            eventEl.dataset.title = `${facility.name} 가능`;
             eventEl.dataset.room = key;
             eventEl.dataset.facilityNo = facility.facilityNo;
-            eventEl.style.backgroundColor = facility.color;
-            eventEl.style.borderColor = facility.color;
-            eventEl.textContent = facility.name;
+            eventEl.style.backgroundColor = 'transparent';
+            eventEl.style.borderColor = 'var(--border-color)';
+
+            const indicatorClass = facility.roomClass ? `event-indicator ${facility.roomClass}` : 'event-indicator';
+            const indicatorHTML = `<span class="${indicatorClass}" style="background-color: ${facility.color};"></span>`;
+
+            eventEl.innerHTML = `
+                ${indicatorHTML}
+                <div>
+                    <span>${facility.name} 가능</span>
+                    <span class="room-code">(${facility.code})</span>
+                </div>
+            `;
+
             externalEventsEl.appendChild(eventEl);
         });
 
