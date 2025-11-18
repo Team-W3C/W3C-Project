@@ -24,6 +24,7 @@ public class ErpPatientReservationController {
     @GetMapping("/reservation")
     public String enterErp(Model model) {
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        System.out.println(today);
         Map<String, List<ReservationDetailVO>> todayReservation = reservationService.selectReservationDetailByDate(today);
 
         model.addAttribute("todayReservation", todayReservation);

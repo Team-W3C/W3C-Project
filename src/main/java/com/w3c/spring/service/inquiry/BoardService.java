@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 public interface BoardService {
-    public Map<String, Object> getBoardList(int cpage);
-    int selectBoardListCount();
+//    public Map<String, Object> getBoardList(int cpage);
+//    int selectBoardListCount();
 
-    Map<String, Object> getBoardById(int boardId);
+    Board getBoardById(int boardId);
 
     int insertBoard(BoardInsert boardInsert);
     Board selectInquiryDetail(int boardNo);
@@ -23,7 +23,13 @@ public interface BoardService {
     int insertNotification(NotificationInsert notificationInsert);
     Map<String, Object> getInquiryStats();
 
-    Map<String, Object> selectPatientNoticeList(int curentPage);
+//    Map<String, Object> selectPatientNoticeList(int curentPage);
 
     Notification selectPatientNoticeById(int nNo);
+
+    Map<String, Object> getBoardListTop3();
+
+    Map<String, Object> selectPatientNoticeList(int curentPage, String keyword, String category);
+
+    Map<String, Object> getBoardList(int cuurentPage, String keyword, String category);
 }

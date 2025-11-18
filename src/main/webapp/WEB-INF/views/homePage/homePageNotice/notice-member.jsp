@@ -28,9 +28,12 @@
 
   <!-- 검색 영역 -->
   <section class="notice-search-section" aria-label="공지사항 검색">
-    <button class="notice-category-btn" type="button" aria-label="카테고리 선택">
-      전체
-    </button>
+    <select class="notice-category-btn" id="noticeCategorySelect" aria-label="카테고리 선택">
+      <option value="">전체</option>
+      <option value="1" <c:if test="${category == '1'}">selected</c:if>>시스템</option>
+      <option value="2" <c:if test="${category == '2'}">selected</c:if>>운영</option>
+      <option value="3" <c:if test="${category == '3'}">selected</c:if>>진료</option>
+    </select>
 
     <div class="notice-search-input-wrapper">
       <label for="notice-search" class="visually-hidden">공지사항 검색</label>
@@ -44,6 +47,7 @@
               class="notice-search-input"
               placeholder="제목으로 검색하세요"
               aria-label="제목으로 검색하세요"
+              value="${keyword}"
       >
     </div>
   </section>
@@ -65,119 +69,119 @@
       </tr>
       </thead>
       <tbody>
+      <c:choose>
+        <c:when test="${empty list}">
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 40px 0; color: #666;">
+              결과가 없습니다
+            </td>
+          </tr>
+        </c:when>
+        <c:otherwise>
+          <c:forEach var="notice" items="${list}">
+            <tr onclick="location.href='${pageContext.request.contextPath}/member/notice-detail?nNo=${notice.notificationNo}'">
+              <td>${notice.notificationNo}</td>
+              <td>${notice.notificationTypeName}</td>
+              <td><a href="#">${notice.notificationTitle}</a></td>
+              <td>${notice.departmentName}</td>
+              <td><time datetime="${notice.notificationDate}">${notice.notificationDate}</time></td>
+            </tr>
+          </c:forEach>
+        </c:otherwise>
+      </c:choose>
 
-    <c:forEach var="notice" items="${list}">
-      <tr onclick="location.href='${pageContext.request.contextPath}/member/notice-detail?nNo=${notice.notificationNo}'">
-        <td>${notice.notificationNo}</td>
-        <td>${notice.notificationTypeName}</td>
-        <td><a href="#">${notice.notificationTitle}</a></td>
-        <td>${notice.departmentName}</td>
-        <td><time datetime="${notice.notificationDate}">${notice.notificationDate}</time></td>
-      </tr>
-    </c:forEach>
-<%--      <tr>--%>
-<%--        <td>14</td>--%>
-<%--        <td>시스템</td>--%>
-<%--        <td><a href="#">처방전달시스템(OCS) 업데이트 완료</a></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2025-01-10">2025-01-10</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>13</td>--%>
-<%--        <td>진료</td>--%>
-<%--        <td><a href="#">내과 외래진료 시간 변경 안내</a></td>--%>
-<%--        <td>진료지원팀</td>--%>
-<%--        <td><time datetime="2025-01-05">2025-01-05</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>12</td>--%>
-<%--        <td>행정</td>--%>
-<%--        <td><a href="#">의료보험 청구 기준 변경 공지</a></td>--%>
-<%--        <td>원무팀</td>--%>
-<%--        <td><time datetime="2024-12-28">2024-12-28</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>11</td>--%>
-<%--        <td>안전</td>--%>
-<%--        <td><a href="#">겨울철 감염관리 지침 강화</a></td>--%>
-<%--        <td>의료안전팀</td>--%>
-<%--        <td><time datetime="2024-12-20">2024-12-20</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>10</td>--%>
-<%--        <td>교육</td>--%>
-<%--        <td><a href="#">신규 의료장비 도입 및 사용 교육 일정</a></td>--%>
-<%--        <td>의공학팀</td>--%>
-<%--        <td><time datetime="2024-12-15">2024-12-15</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>9</td>--%>
-<%--        <td>교육</td>--%>
-<%--        <td><a href="#">개인정보보호법 준수사항 교육 필수 참석</a></td>--%>
-<%--        <td>인사팀</td>--%>
-<%--        <td><time datetime="2024-12-10">2024-12-10</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>8</td>--%>
-<%--        <td>진료</td>--%>
-<%--        <td><a href="#">응급실 트리아지 시스템 개선</a></td>--%>
-<%--        <td>응급의학과</td>--%>
-<%--        <td><time datetime="2024-12-01">2024-12-01</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>7</td>--%>
-<%--        <td>시스템</td>--%>
-<%--        <td><a href="#">전자의무기록(EMR) 백업 시스템 점검 완료</a></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2024-11-25">2024-11-25</time></td>--%>
-<%--      </tr>--%>
-<%--      <tr>--%>
-<%--        <td>6</td>--%>
-<%--        <td>시스템</td>--%>
-<%--        <td><a href="#">외래 예약 시스템 기능 추가</a></td>--%>
-<%--        <td>정보시스템팀</td>--%>
-<%--        <td><time datetime="2024-11-20">2024-11-20</time></td>--%>
-<%--      </tr>--%>
       </tbody>
     </table>
   </section>
 
   <!-- 페이지네이션 -->
-<nav class="notice-pagination" aria-label="페이지네이션">
-<c:choose>
-  <c:when test="${empty condition}">
-    <c:if test="${pi.currentPage > 1}">
-      <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage - 1}" class="prev" aria-label="이전 페이지">
-        ← Previous
-      </a>
-    </c:if>
+  <nav class="notice-pagination" aria-label="페이지네이션">
+    <c:choose>
+      <c:when test="${empty keyword and empty category}">
+        <c:if test="${pi.currentPage > 1}">
+          <a href="${pageContext.request.contextPath}/member/notice?cpage=${pi.currentPage - 1}" class="prev" aria-label="이전 페이지">
+            ← Previous
+          </a>
+        </c:if>
 
-    <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
-      <c:choose>
-        <c:when test="${i == pi.currentPage}">
-          <a href="#" class="active" aria-label="${i}페이지" aria-current="page">${i}</a>
-        </c:when>
-        <c:otherwise>
-          <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${i}" aria-label="${i}페이지">${i}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
+        <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+          <c:choose>
+            <c:when test="${i == pi.currentPage}">
+              <a href="#" class="active" aria-label="${i}페이지" aria-current="page">${i}</a>
+            </c:when>
+            <c:otherwise>
+              <a href="${pageContext.request.contextPath}/member/notice?cpage=${i}" aria-label="${i}페이지">${i}</a>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
 
-    <c:if test="${pi.currentPage < pi.maxPage}">
-      <a href="${pageContext.request.contextPath}/member/inquiry-board?cpage=${pi.currentPage + 1}" class="next" aria-label="다음 페이지">
-        Next →
-      </a>
-    </c:if>
-  </c:when>
-  </c:choose>
-</nav>
+        <c:if test="${pi.currentPage < pi.maxPage}">
+          <a href="${pageContext.request.contextPath}/member/notice?cpage=${pi.currentPage + 1}" class="next" aria-label="다음 페이지">
+            Next →
+          </a>
+        </c:if>
+      </c:when>
+      <c:otherwise>
+        <c:if test="${pi.currentPage > 1}">
+          <a href="${pageContext.request.contextPath}/member/notice?cpage=${pi.currentPage - 1}&keyword=${keyword}&category=${category}" class="prev" aria-label="이전 페이지">
+            ← Previous
+          </a>
+        </c:if>
+
+        <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+          <c:choose>
+            <c:when test="${i == pi.currentPage}">
+              <a href="#" class="active" aria-label="${i}페이지" aria-current="page">${i}</a>
+            </c:when>
+            <c:otherwise>
+              <a href="${pageContext.request.contextPath}/member/notice?cpage=${i}&keyword=${keyword}&category=${category}" aria-label="${i}페이지">${i}</a>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+
+        <c:if test="${pi.currentPage < pi.maxPage}">
+          <a href="${pageContext.request.contextPath}/member/notice?cpage=${pi.currentPage + 1}&keyword=${keyword}&category=${category}" class="next" aria-label="다음 페이지">
+            Next →
+          </a>
+        </c:if>
+      </c:otherwise>
+    </c:choose>
+  </nav>
   <!-- 총 개수 -->
   <div class="notice-count">
     총 ${pi.listCount}개의 공지사항
   </div>
 
 </main>
+
 <!-- Footer include-->
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("notice-search");
+    const categorySelect = document.getElementById("noticeCategorySelect");
+
+    // 카테고리 선택 시 검색
+    categorySelect.addEventListener("change", function() {
+      performSearch();
+    });
+
+    // 검색 함수
+    function performSearch() {
+      const keyword = searchInput.value || "";
+      const category = categorySelect.value || "";
+      const url = "${pageContext.request.contextPath}/member/notice?cpage=1&keyword=" + encodeURIComponent(keyword) + "&category=" + encodeURIComponent(category);
+      location.href = url;
+    }
+
+    // 엔터키 검색
+    searchInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        performSearch();
+      }
+    });
+  });
+</script>
 </body>
 </html>
