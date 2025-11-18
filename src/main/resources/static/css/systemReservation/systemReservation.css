@@ -866,4 +866,8 @@ body {
         grid-template-columns: 1fr;
         gap: 16px;
     }
+
+    .status-item.default .status-dot {
+        background-color: #9ca3af;
+    }
 }

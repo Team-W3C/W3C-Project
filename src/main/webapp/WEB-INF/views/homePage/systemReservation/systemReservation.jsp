@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
 
+    <script>
+        const contextPath = "${pageContext.request.contextPath}";
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
@@ -31,35 +34,10 @@
 
         <section class="reservation-rooms">
             <h2>검사실 선택</h2>
-            <div class="room-list" role="group" aria-label="검사실 필터">
+            <div class="room-list" id="roomList" role="group" aria-label="검사실 필터">
                 <button type="button" class="room-btn active" data-room="all" aria-pressed="true">
                     <span class="room-indicator"></span>
                     <span class="room-name">전체</span>
-                </button>
-                <button type="button" class="room-btn" data-room="mri" aria-pressed="false">
-                    <span class="room-indicator"></span>
-                    <span class="room-name">MRI</span>
-                    <span class="room-code">(MRI-01)</span>
-                </button>
-                <button type="button" class="room-btn" data-room="ultrasound" aria-pressed="false">
-                    <span class="room-indicator"></span>
-                    <span class="room-name">초음파</span>
-                    <span class="room-code">(초음파-01)</span>
-                </button>
-                <button type="button" class="room-btn" data-room="ct" aria-pressed="false">
-                    <span class="room-indicator"></span>
-                    <span class="room-name">CT</span>
-                    <span class="room-code">(CT-01)</span>
-                </button>
-                <button type="button" class="room-btn" data-room="xray" aria-pressed="false">
-                    <span class="room-indicator"></span>
-                    <span class="room-name">X-Ray</span>
-                    <span class="room-code">(X Ray-01)</span>
-                </button>
-                <button type="button" class="room-btn" data-room="endoscopy" aria-pressed="false">
-                    <span class="room-indicator"></span>
-                    <span class="room-name">내시경</span>
-                    <span class="room-code">(내시경-01)</span>
                 </button>
             </div>
         </section>
@@ -127,8 +105,8 @@
             <div class="modal-title-section">
                 <div class="modal-room-indicator" id="modalRoomIndicator"></div>
                 <div class="modal-title-text">
-                    <h2 id="modalTitle">MRI - 10월 5일</h2>
-                    <p id="modalSubtitle">2층 영상의학과</p>
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalSubtitle"></p>
                 </div>
             </div>
             <button class="modal-close-btn" id="modalCloseBtn" aria-label="닫기">
@@ -180,26 +158,27 @@
                 <div class="time-selection-section">
                     <div class="section-label">예약 가능 시간</div>
                     <div class="time-grid" id="timeGrid">
+                        <p style="color: #666; font-size: 0.9rem;">해당 날짜에 예약이 가능합니다.</p>
                     </div>
                 </div>
             </div>
 
             <div class="facility-info-section">
                 <div class="info-item">
-                    <span class="info-label">운영 시간</span>
-                    <span class="info-value" id="facilityHours">평일 09:00 - 18:00</span>
+                    <span class="info-label">시설 위치</span>
+                    <span class="info-value" id="facilityLocation">-</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">검사 소요시간</span>
-                    <span class="info-value" id="facilityDuration">30-60분</span>
+                    <span class="info-label">일일 수용량</span>
+                    <span class="info-value" id="facilityDuration">-</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">담당자</span>
-                    <span class="info-value" id="facilityManager">김영희 기사</span>
+                    <span class="info-value" id="facilityManager">-</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">연락처</span>
-                    <span class="info-value" id="facilityContact">내선 2201</span>
+                    <span class="info-value" id="facilityContact">-</span>
                 </div>
             </div>
 
@@ -211,6 +190,7 @@
         </div>
     </div>
 </div>
+
 <script src="${pageContext.request.contextPath}/js/systemReservation/systemReservation.js"></script>
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 </body>
