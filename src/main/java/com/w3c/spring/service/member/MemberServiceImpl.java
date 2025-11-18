@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -92,5 +94,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public int deactivateMember(String memberId) {
         return memberMapper.deactivateMember(memberId);
+    }
+
+    // ✅ 환자 목록 조회
+    @Override
+    public List<Member> getPatientList() {
+        return memberMapper.getPatientList();
     }
 }
