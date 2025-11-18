@@ -88,19 +88,19 @@
                 <span class="event-indicator mri"></span>
                 <span>MRI 가능</span>
             </div>
-            <div class="fc-event" data-room="ct" data-facility-no="2" data-title="CT 가능">
+            <div class="fc-event" data-room="ct" data-facility-no="5" data-title="CT 가능">
                 <span class="event-indicator ct"></span>
                 <span>CT 가능</span>
             </div>
-            <div class="fc-event" data-room="xray" data-facility-no="5" data-title="X-ray 가능">
+            <div class="fc-event" data-room="xray" data-facility-no="2" data-title="X-ray 가능">
                 <span class="event-indicator xray"></span>
                 <span>X-ray 가능</span>
             </div>
-            <div class="fc-event" data-room="ultrasound" data-facility-no="3" data-title="초음파 가능">
+            <div class="fc-event" data-room="ultrasound" data-facility-no="4" data-title="초음파 가능">
                 <span class="event-indicator ultrasound"></span>
                 <span>초음파 가능</span>
             </div>
-            <div class="fc-event" data-room="endoscopy" data-facility-no="7" data-title="내시경 가능">
+            <div class="fc-event" data-room="endoscopy" data-facility-no="3" data-title="내시경 가능">
                 <span class="event-indicator endoscopy"></span>
                 <span>내시경 가능</span>
             </div>
