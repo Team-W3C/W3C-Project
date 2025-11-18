@@ -7,6 +7,9 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpHeader.css">
+    
+    <!-- ✅ jQuery를 먼저 로드 -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 </head>
 <body>
@@ -87,6 +90,8 @@
             </div>
         </div>
     </header>
-<script src="${pageContext.request.contextPath}/js/erp/common/erpCommon.js"></script>
+    
+    <!-- ✅ erpCommon.js는 jQuery 로드 후에 실행 -->
+    <script src="${pageContext.request.contextPath}/js/erp/common/erpCommon.js"></script>
 </body>
 </html>

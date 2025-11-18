@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
     Member getMemberById(@Param("memberId") String memberId, @Param("memberPwd") String memberPwd);
@@ -24,4 +26,7 @@ public interface MemberMapper {
     int updatePassword(@Param("memberId") String memberId, @Param("newPassword") String newPassword);
     // 회원 탈퇴 (비활성화)
     int deactivateMember(@Param("memberId") String memberId);
+    
+    // ✅ 환자 목록 조회 (STAFF_NO IS NULL인 일반 환자만)
+    List<Member> getPatientList();
 }

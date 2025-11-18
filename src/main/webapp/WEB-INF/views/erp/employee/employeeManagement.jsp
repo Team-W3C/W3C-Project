@@ -427,8 +427,8 @@
           document.getElementById("employeeModal").classList.add("active");
         });
       });
+    </script>
 
-    <!-- script -->
     <script src="${pageContext.request.contextPath}/js/erp/employee/erpEmployeePolling.js"></script>
     <script src="${pageContext.request.contextPath}/js/erp/employee/erpEmployeeDetail.js"></script>
 
