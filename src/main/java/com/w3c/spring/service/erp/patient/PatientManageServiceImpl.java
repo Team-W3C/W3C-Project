@@ -25,7 +25,7 @@ public class PatientManageServiceImpl implements PatientManageService {
     }
 
     @Override
-    public Map<String, Object> getPatientList(int currentPage,String keyword, String grade) {
+    public Map<String, Object> getPatientList(int currentPage, String keyword, String grade) {
 
         Map<String, Object> param = new HashMap<>();
         param.put("keyword", keyword);

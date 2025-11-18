@@ -8,202 +8,277 @@
     <meta charset="utf-8" />
     <title>병원 예약 시스템 - ERP</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/systemReservation/systemReservation.css">
+    <!-- FullCalendar CDN -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales/ko.js'></script>
+
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/systemReservation/systemReservationEmployee.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpHeader.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/erpCommon/erpSidebar.css">
 
+    <script>
+        // JS 전역 변수로 contextPath를 선언
+        const gContextPath = "${pageContext.request.contextPath}";
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/erp/header.jsp" />
 <jsp:include page="/WEB-INF/views/common/erp/sidebar.jsp" />
 
-<main class="reservation-container">
+<body>
+<<!-- 시설 예약 관리 페이지 -->
+<main class="reservation-main">
+    <!-- 페이지 헤더 -->
+    <header class="reservation-header">
+        <h1>시설 예약 관리</h1>
+    </header>
 
-    <section class="reservation-header">
-        <h1>예약</h1>
-    </section>
-
-    <section class="reservation-rooms">
+    <!-- 검사실 선택 -->
+    <section class="reservation-card">
         <h2>검사실 선택</h2>
-        <div class="room-list" role="group" aria-label="검사실 필터">
-            <button type="button" class="room-btn active" data-room="all" aria-pressed="true">
-                <span class="room-indicator"></span>
-                <span class="room-name">전체</span>
+        <div class="room-list">
+            <button class="room-btn active" data-room="all" data-facility-no="" type="button">
+                <span>전체</span>
             </button>
-            <button type="button" class="room-btn" data-room="mri" aria-pressed="false">
-                <span class="room-indicator"></span>
-                <span class="room-name">MRI</span>
-                <span class="room-code">(MRI-01)</span>
+            <button class="room-btn" data-room="mri" data-facility-no="1" type="button">
+                <span class="room-indicator mri"></span>
+                <div>
+                    <span>MRI</span>
+                    <span class="room-code">(MRI-01)</span>
+                </div>
             </button>
-            <button type="button" class="room-btn" data-room="ultrasound" aria-pressed="false">
-                <span class="room-indicator"></span>
-                <span class="room-name">초음파</span>
-                <span class="room-code">(초음파-01)</span>
+            <button class="room-btn" data-room="ct" data-facility-no="2" type="button">
+                <span class="room-indicator ct"></span>
+                <div>
+                    <span>CT</span>
+                    <span class="room-code">(CT-01)</span>
+                </div>
             </button>
-            <button type="button" class="room-btn" data-room="ct" aria-pressed="false">
-                <span class="room-indicator"></span>
-                <span class="room-name">CT</span>
-                <span class="room-code">(CT-01)</span>
+            <button class="room-btn" data-room="ultrasound" data-facility-no="3" type="button">
+                <span class="room-indicator ultrasound"></span>
+                <div>
+                    <span>초음파</span>
+                    <span class="room-code">(초음파-01)</span>
+                </div>
             </button>
-            <button type="button" class="room-btn" data-room="xray" aria-pressed="false">
-                <span class="room-indicator"></span>
-                <span class="room-name">X-Ray</span>
-                <span class="room-code">(X Ray-01)</span>
+            <button class="room-btn" data-room="xray" data-facility-no="5" type="button">
+                <span class="room-indicator xray"></span>
+                <div>
+                    <span>X-Ray</span>
+                    <span class="room-code">(X Ray-01)</span>
+                </div>
             </button>
-            <button type="button" class="room-btn" data-room="endoscopy" aria-pressed="false">
-                <span class="room-indicator"></span>
-                <span class="room-name">내시경</span>
-                <span class="room-code">(내시경-01)</span>
+            <button class="room-btn" data-room="endoscopy" data-facility-no="7" type="button">
+                <span class="room-indicator endoscopy"></span>
+                <div>
+                    <span>내시경</span>
+                    <span class="room-code">(내시경-01)</span>
+                </div>
             </button>
         </div>
     </section>
 
-    <section class="reservation-calendar-nav">
-        <button class="btn-nav" type="button" aria-label="이전 달" id="prevMonthBtn">
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-        </button>
-
-        <div class="calendar-nav-selects">
-            <select id="yearSelect" class="calendar-select"></select>
-            <select id="monthSelect" class="calendar-select"></select>
+    <!-- 예약 가능 항목 -->
+    <section class="reservation-card">
+        <h2>예약 가능 항목</h2>
+        <div class="draggable-events" id="external-events">
+            <div class="fc-event" data-room="mri" data-facility-no="1" data-title="MRI 가능">
+                <span class="event-indicator mri"></span>
+                <span>MRI 가능</span>
+            </div>
+            <div class="fc-event" data-room="ct" data-facility-no="2" data-title="CT 가능">
+                <span class="event-indicator ct"></span>
+                <span>CT 가능</span>
+            </div>
+            <div class="fc-event" data-room="xray" data-facility-no="5" data-title="X-ray 가능">
+                <span class="event-indicator xray"></span>
+                <span>X-ray 가능</span>
+            </div>
+            <div class="fc-event" data-room="ultrasound" data-facility-no="3" data-title="초음파 가능">
+                <span class="event-indicator ultrasound"></span>
+                <span>초음파 가능</span>
+            </div>
+            <div class="fc-event" data-room="endoscopy" data-facility-no="7" data-title="내시경 가능">
+                <span class="event-indicator endoscopy"></span>
+                <span>내시경 가능</span>
+            </div>
         </div>
-
-        <button class="btn-nav" type="button" aria-label="다음 달" id="nextMonthBtn">
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-        </button>
     </section>
 
-    <section class="reservation-calendar">
-        <header class="calendar-header" role="row">
-            <div class="calendar-day sunday" role="columnheader">일</div>
-            <div class="calendar-day" role="columnheader">월</div>
-            <div class="calendar-day" role="columnheader">화</div>
-            <div class="calendar-day" role="columnheader">수</div>
-            <div class="calendar-day" role="columnheader">목</div>
-            <div class="calendar-day" role="columnheader">금</div>
-            <div class="calendar-day saturday" role="columnheader">토</div>
-        </header>
-        <div class="calendar-body" id="calendarBody" role="grid"></div>
+    <!-- 달력 네비게이션 -->
+    <section class="reservation-card">
+        <nav class="calendar-nav">
+            <!-- 년도 선택 -->
+            <div class="year-selector">
+                <button class="btn-nav" id="prevYear" type="button" title="이전 년도">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path d="M15 15L10 10L15 5M10 15L5 10L10 5" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <span class="year-display" id="currentYear">2025년</span>
+                <button class="btn-nav" id="nextYear" type="button" title="다음 년도">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path d="M5 15L10 10L5 5M10 15L15 10L10 5" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- 월 선택 -->
+            <div class="calendar-nav-controls">
+                <button class="btn-nav" id="prevMonth" type="button" title="이전 달">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <span class="calendar-current-date" id="currentMonth">11월</span>
+                <button class="btn-nav" id="nextMonth" type="button" title="다음 달">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Today 버튼 -->
+            <div class="today-wrapper">
+                <button class="btn-today" id="todayBtn" type="button">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path
+                                d="M5.333 1.333V4M10.667 1.333V4M2 6.667h12M3.333 2.667h9.334c.736 0 1.333.597 1.333 1.333v9.333c0 .737-.597 1.334-1.333 1.334H3.333A1.333 1.333 0 012 13.333V4c0-.736.597-1.333 1.333-1.333z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                    </svg>
+                    <span>오늘</span>
+                </button>
+            </div>
+        </nav>
     </section>
 
-    <section class="reservation-legend">
+    <!-- 달력 -->
+    <section class="reservation-card">
+        <div id="calendar"></div>
+    </section>
+
+    <!-- 상태 안내 -->
+    <section class="reservation-card">
         <h2>상태 안내</h2>
         <div class="legend-list">
             <div class="legend-item">
-                <span class="legend-box available"></span>
+                <div class="legend-box available"></div>
                 <span class="legend-text">예약 가능</span>
             </div>
             <div class="legend-item">
-                <span class="legend-box full"></span>
+                <div class="legend-box full"></div>
                 <span class="legend-text">예약 마감</span>
             </div>
             <div class="legend-item">
-                <span class="legend-box closed"></span>
-                <span class="legend-text">점검 중</span>
+                <div class="legend-box closed"></div>
+                <span class="legend-text">운영 중단</span>
             </div>
             <div class="legend-item">
-                <span class="legend-badge" id="todayLegendBadge"></span>
+                <div class="legend-box completed"></div>
+                <span class="legend-text">완료</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-badge">T</span>
                 <span class="legend-text">오늘</span>
             </div>
         </div>
     </section>
 
-</main>
-
-<div class="modal-overlay" id="reservationModal">
-    <div class="modal-container">
-        <div class="modal-header">
-            <div class="modal-title-section">
-                <div class="modal-room-indicator" id="modalRoomIndicator"></div>
-                <div class="modal-title-text">
-                    <h2 id="modalTitle">MRI - 10월 5일</h2>
-                    <p id="modalSubtitle">2층 영상의학과</p>
+    <!-- 모달 -->
+    <div class="modal-overlay" id="reservationModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <div class="modal-room-indicator" id="modalRoomIndicator"></div>
+                    <div class="modal-title-text">
+                        <h2 id="modalTitle">MRI 예약</h2>
+                        <p id="modalDate">2025년 11월 1일 (금)</p>
+                    </div>
                 </div>
-            </div>
-            <button class="modal-close-btn" id="modalCloseBtn" aria-label="닫기">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="modal-body">
-
-            <div id="modalClosedContent" class="hidden">
-                <div class="status-notice notice-closed">
-                    <svg class="notice-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.33 16c-.77 1.333.192 3 1.732 3z" />
+                <button class="modal-close-btn" id="closeModal" type="button">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" />
                     </svg>
-                    <span class="notice-text">정기 점검 실행중입니다</span>
-                </div>
-                <div class="status-details">
-                    <span class="details-label">점검 안내</span>
-                    <p class="details-text" id="modalClosedDetailsText">
-                        이 날짜는 정기 점검 일정입니다. 점검 시간 동안 예약이 불가능합니다.
-                    </p>
-                </div>
+                </button>
             </div>
 
-            <div id="modalFullContent" class="hidden">
-                <div class="status-notice notice-full">
-                    <svg class="notice-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="notice-text">예약이 마감되었습니다</span>
-                </div>
-                <div class="status-details">
-                    <span class="details-label">마감 안내</span>
-                    <p class="details-text" id="modalFullDetailsText">
-                        이 날짜의 모든 예약이 마감되었습니다. 다른 날짜를 선택해 주세요.
-                    </p>
-                </div>
-            </div>
+            <div class="modal-body">
+                <div id="statusNotice"></div>
 
-            <div id="modalAvailableContent" class="hidden">
-                <div class="availability-notice">
-                    <svg class="availability-notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span class="availability-notice-text">✓ 예약 가능한 시간대가 있습니다</span>
+                <div class="time-selection-section" id="timeSelection">
+                    <label class="section-label">예약 시간 선택</label>
+                    <div class="time-grid" id="timeGrid"></div>
                 </div>
-                <div class="time-selection-section">
-                    <div class="section-label">예약 가능 시간</div>
-                    <div class="time-grid" id="timeGrid">
+
+                <!-- ✅ 예약 메모 입력 영역 추가 -->
+                <div class="memo-section" id="memoSection">
+                    <label class="section-label">예약 정보 입력</label>
+                    <div class="memo-grid">
+                        <!-- ✅ 환자 선택 드롭다운 추가 -->
+                        <div class="memo-item" style="grid-column: 1 / -1;">
+                            <span class="info-label">환자 선택 <span style="color: red;">*</span></span>
+                            <select id="patientSelect" class="patient-select">
+                                <option value="">환자를 선택해주세요</option>
+                            </select>
+                        </div>
+
+                        <div class="memo-item">
+                            <span class="info-label">예약 내용 (Notes)</span>
+                            <textarea id="reservationNotes" class="memo-textarea"
+                                      placeholder="예: 검사 목적, 주의사항 등을 입력하세요."></textarea>
+                        </div>
+                        <div class="memo-item">
+                            <span class="info-label">내부 메모 (Memo)</span>
+                            <textarea id="reservationMemo" class="memo-textarea"
+                                      placeholder="직원 전용 메모를 입력하세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="facility-info-section">
+                    <div class="info-item">
+                        <span class="info-label">시설명</span>
+                        <span class="info-value" id="facilityName">MRI (MRI-01)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">운영 시간</span>
+                        <span class="info-value" id="operatingHours">09:00 - 18:00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">예약 단위</span>
+                        <span class="info-value" id="reservationUnit">1시간</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">담당자</span>
+                        <span class="info-value" id="manager">김담당</span>
                     </div>
                 </div>
             </div>
 
-            <div class="facility-info-section">
-                <div class="info-item">
-                    <span class="info-label">운영 시간</span>
-                    <span class="info-value" id="facilityHours">평일 09:00 - 18:00</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">검사 소요시간</span>
-                    <span class="info-value" id="facilityDuration">30-60분</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">담당자</span>
-                    <span class="info-value" id="facilityManager">김영희 기사</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">연락처</span>
-                    <span class="info-value" id="facilityContact">내선 2201</span>
-                </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-delete hidden" id="deleteBtn" type="button">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16" style="margin-right: 4px;">
+                        <path
+                                d="M2 4h12M5.333 4V2.667a1.333 1.333 0 011.334-1.334h2.666a1.333 1.333 0 011.334 1.334V4m2 0v9.333a1.333 1.333 0 01-1.334 1.334H4.667a1.333 1.333 0 01-1.334-1.334V4h9.334z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                    </svg>
+                    삭제
+                </button>
+                <button class="modal-btn modal-btn-cancel" id="cancelBtn" type="button">취소</button>
+                <button class="modal-btn modal-btn-confirm hidden" id="confirmBtn" type="button">예약 확인</button>
             </div>
-
-        </div>
-
-        <div class="modal-footer">
-            <button class="modal-btn modal-btn-cancel" id="modalCancelBtn">닫기</button>
-            <button class="modal-btn modal-btn-confirm hidden" id="modalConfirmBtn" disabled>예약하기</button>
         </div>
     </div>
-</div>
+</main>
 <script src="${pageContext.request.contextPath}/js/systemReservation/systemReservationEmployee.js"></script>
 </body>
 </html>

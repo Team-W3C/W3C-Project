@@ -216,6 +216,18 @@ body {
     border-top: 1px solid #e5e7eb;
 }
 
+.validation-message {
+    font-size: 13px;
+    margin-left: 10px;
+    font-weight: 500;
+}
+.text-success {
+    color: #0E787C;
+}
+.text-danger {
+    color: #ef4444;
+}
+
 /* ========== 빈 상태 ========== */
 .settings-empty-state {
     color: #6b7280;

@@ -117,6 +117,18 @@
         ROWNUM = 1
     </select>
 
+    <select id="findScheduleEndTimeByStaffNoAndDay" parameterType="map" resultType="string">
+        SELECT
+        schedule_end_time
+        FROM
+        SCHEDULE
+        WHERE
+        staff_no = #{staffNo}
+        AND
+        schedule_day = #{dayOfWeek}
+        AND
+        ROWNUM = 1
+    </select>
 
     <select id="findAllPendingApplications" resultType="AttendanceVO">
         SELECT

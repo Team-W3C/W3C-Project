@@ -160,7 +160,8 @@
 
   <!-- 오른쪽 영역 (이미지) -->
   <aside class="faq-right-section" aria-label="시스템 이미지">
-    <p>이미지 영역 (508x657px)</p>
+<%--    <p>이미지 영역 (508x657px)</p>--%>
+    <img src="${pageContext.request.contextPath}/img/mediflowImage.png" alt="">
   </aside>
 
 </main>

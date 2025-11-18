@@ -14,12 +14,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/index.css">
-    <!--
-        <link rel="stylesheet" href="/mainView/header/header.css">
-        <link rel="stylesheet" href="/mainView/main/main.css">
-        <link rel="stylesheet" href="/mainView/footer/footer.css">
-        <link rel="stylesheet" href="/mainView/index.css">
-    -->
 </head>
 <body>
 

@@ -254,88 +254,7 @@
                 </c:otherwise>
             </c:choose>
 
-        </section> <section class="verification-section">
-        <div class="verification-header">
-            <h3>본인인증을 하시면 더 많은 정보를 볼 수 있습니다.</h3>
-            <button class="btn-primary">본인인증하기</button>
-        </div>
-
-        <div class="verification-items">
-            <div class="verification-item">
-                <div class="verification-icon">
-                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                        <rect x="10" y="15" width="40" height="35" rx="3" stroke="#0E787C" stroke-width="2"/>
-                        <path d="M20 10V20M40 10V20" stroke="#0E787C" stroke-width="2"/>
-                    </svg>
-                </div>
-                <h4>진료내역</h4>
-            </div>
-
-            <div class="verification-item">
-                <div class="verification-icon">
-                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                        <circle cx="30" cy="30" r="20" stroke="#0E787C" stroke-width="2"/>
-                        <circle cx="30" cy="30" r="10" stroke="#0E787C" stroke-width="2"/>
-                    </svg>
-                </div>
-                <h4>진단검사결과</h4>
-            </div>
-        </div>
-    </section>
-
-        <section class="password-section">
-            <p>
-                소중한 개인정보를 안전하게 보호하기 위해 비밀번호를 정기적으로 변경하실 것을 권고해드립니다.<br>
-                MediFlow에서 회원님의 개인정보보호에 최선을 다하겠습니다.
-            </p>
-            <button class="btn-primary">비밀번호 변경</button>
-        </section>
-
-    </section> </main>
-
-<div class="modal-overlay password-modal-overlay">
-    <div class="password-modal">
-        <button type="button" class="modal-close" aria-label="닫기">
-            ×
-        </button>
-
-        <header class="modal-header">
-            <h2 class="modal-title">회원 정보</h2>
-            <p class="modal-subtitle">회원 정보를 보시려면 비밀번호를 입력하여 주세요</p>
-        </header>
-
-        <div class="modal-body">
-            <form class="password-form">
-                <div class="info-box">
-                    <div class="info-header">회원 정보</div>
-                    <div class="info-text">회원 정보를 보시려면 비밀번호를 입력하여 주세요</div>
-                </div>
-
-                <div class="field-box">
-                    <div class="field-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M5 16C5 13.5 7 11 10 11C13 11 15 13.5 15 16" stroke="#0E787C" stroke-width="1.67"/>
-                            <circle cx="10" cy="6" r="3" stroke="#0E787C" stroke-width="1.67"/>
-                        </svg>
-                    </div>
-                    <div class="field-info">
-                        <div class="field-label">성함</div>
-                        <div class="field-value">${sessionScope.loginMember.memberName}</div>
-                    </div>
-                </div>
-
-                <div class="field-box password-box">
-                    <input type="password" id="password" class="password-input" placeholder="비밀번호를 입력하세요">
-                    <button type="submit" class="btn-confirm">확인</button>
-                </div>
-            </form>
-        </div>
-
-        <footer class="modal-footer">
-            <button type="button" class="btn-cancel">취소</button>
-        </footer>
-    </div>
-</div>
+        </section> </main>
 
 
 <div class="modal-overlay edit-modal-overlay" data-current-rno="">
@@ -390,9 +309,7 @@
     </div>
 </div>
 <jsp:include page="../../common/homePageFooter/footer.jsp"/>
-<script>
-    const contextPath = "${pageContext.request.contextPath}";
-</script>
+
 <script src="${pageContext.request.contextPath}/js/MyChart.js" defer></script>
 
 </body>
