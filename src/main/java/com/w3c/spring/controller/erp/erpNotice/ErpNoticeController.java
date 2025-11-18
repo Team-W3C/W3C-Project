@@ -29,12 +29,24 @@ public class ErpNoticeController {
         return "erp/notice/erp-notice";
     }
     @GetMapping("/inquiry")
-    public String erpInquiry(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage, Model model) {
-        Map<String, Object> result = boardService.getBoardList(cuurentPage);
+    public String erpInquiry(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage,
+                             @RequestParam(value = "keyword", defaultValue = "") String keyword,
+                             @RequestParam(value = "category", defaultValue = "") String category,
+                             Model model) {
+
+        if ("undefined".equals(keyword)) {
+            keyword = "";
+        }
+        if ("undefined".equals(category)) {
+            category = "";
+        }
         Map<String, Object> stats = boardService.getInquiryStats();
+        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category);
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", category);
         model.addAttribute("stats", stats);
 
         System.out.println(result.get("list"));

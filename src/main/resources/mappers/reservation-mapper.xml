@@ -93,15 +93,17 @@
     <insert id="insertReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
         INSERT INTO RESERVATION (
             reservation_no,
+            reservation_status,
             reservation_notes,  reservation_memo,   member_no,
             department_no,
             treatment_date
         ) VALUES (
                      RESERVATION_SEQ.NEXTVAL,
+                     '확정',
                      #{reservationNotes},
                      '담당의: ' || #{doctorName}, #{memberNo},
                      #{departmentNo},
-                     TO_DATE(#{reservationDate} || ' ' || #{reservationTimes}, 'YYYY-MM-DD HH24:MI'),
+                     TO_TIMESTAMP(#{treatmentDate}, 'YYYY-MM-DD HH24:MI')
                  )
     </insert>
 

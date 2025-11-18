@@ -96,7 +96,7 @@
             RESERVATION_MEMO
         ) VALUES (
                      RESERVATION_SEQ.NEXTVAL,
-                     '확정',
+                     '대기',
                      #{reservationNotes, jdbcType=VARCHAR},
                      #{memberNo},
                      #{departmentNo},
