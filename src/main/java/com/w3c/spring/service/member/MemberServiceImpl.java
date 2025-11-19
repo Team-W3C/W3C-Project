@@ -6,7 +6,6 @@ import com.w3c.spring.model.vo.inquiry.BoardMemberSelect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -15,14 +14,12 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
 
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper) { // BCrypt 제거
+    public MemberServiceImpl(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
     }
 
     @Override
     public Member getMemberById(String memberId, String memberPwd) {
-        System.out.println("=============");
-        System.out.println(memberId);
         return memberMapper.getMemberById(memberId, memberPwd);
     }
 
@@ -38,25 +35,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public BoardMemberSelect selectMemberByBoardId(int boardId) {
-
-        BoardMemberSelect  selectMemberByBoardId = memberMapper.selectMemberByBoardId(boardId);
-        return selectMemberByBoardId;
+        return memberMapper.selectMemberByBoardId(boardId);
     }
 
     @Override
     @Transactional
     public int updateMemberInfo(Member member) {
-        // Null 처리 및 기본값 설정
-        if (member.getMemberBloodType() == null) {
-            member.setMemberBloodType("NULL");
-        }
-        if (member.getMemberChronicDisease() == null) {
-            member.setMemberChronicDisease("NULL");
-        }
-        if (member.getMemberAllergy() == null) {
-            member.setMemberAllergy("NULL");
-        }
-
+        if (member.getMemberBloodType() == null) member.setMemberBloodType("NULL");
+        if (member.getMemberChronicDisease() == null) member.setMemberChronicDisease("NULL");
+        if (member.getMemberAllergy() == null) member.setMemberAllergy("NULL");
         return memberMapper.updateMemberInfo(member);
     }
 
@@ -66,27 +53,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    // 70행 오류 수정
     public boolean checkPassword(String memberId, String currentPassword) {
-
-        // 1. this.getMemberById(memberId) -> memberMapper.selectMemberById(memberId)로 변경
         Member member = memberMapper.selectMemberById(memberId);
-
-        if (member == null || member.getMemberPwd() == null) {
-            return false;
-        }
-
-        // 2. BCrypt.matches() -> .equals() 평문 비교로 변경
+        if (member == null || member.getMemberPwd() == null) return false;
         return member.getMemberPwd().equals(currentPassword);
     }
 
     @Override
     @Transactional
     public int updatePassword(String memberId, String newPassword) {
-        // 암호화 로직 제거
-        // String encryptedPassword = passwordEncoder.encode(newPassword);
-
-        // 평문 비밀번호를 그대로 업데이트
         return memberMapper.updatePassword(memberId, newPassword);
     }
 
@@ -96,9 +71,18 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.deactivateMember(memberId);
     }
 
-    // ✅ 환자 목록 조회
     @Override
     public List<Member> getPatientList() {
         return memberMapper.getPatientList();
+    }
+
+    @Override
+    public String findMemberIdByNameAndPhone(String memberName, String memberPhone) {
+        return memberMapper.findMemberIdByNameAndPhone(memberName, memberPhone);
+    }
+
+    @Override
+    public Member getMemberByIdOnly(String memberId) {
+        return memberMapper.selectMemberById(memberId);
     }
 }

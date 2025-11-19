@@ -28,7 +28,6 @@ body {
     justify-content: center;
     align-items: center;
     margin: 32px 0;
-    
 }
 
 .input-group {
@@ -82,25 +81,38 @@ body {
     background-color: #0a5f62;
 }
 
+/* 하단 링크 스타일 (find.css와 동일하게) */
 .additional-links {
     margin-top: 32px;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0;
+    font-size: 14px;
 }
 
-.additional-links p {
-    font-size: 15px;
-    color: #828282;
+/* 구분자 스타일 */
+.additional-links span {
+    color: #ddd;
+    margin: 0 10px;
+}
+
+/* a 태그 기본 상태: 회색 (#555) */
+.additional-links a {
+    font-size: 14px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
     line-height: 1.5;
+    transition: color 0.2s ease;
 }
 
-.additional-links p:hover {
+/* a 태그 호버 상태: 청록색 (#0e787c) + 밑줄 */
+.additional-links a:hover {
     color: #0e787c;
+    text-decoration: underline;
     cursor: pointer;
-
 }
 
 /* Responsive Design */
@@ -108,7 +120,7 @@ body {
     .main-content {
         padding: 0 120px;
     }
-    
+
     .team-section {
         display: none;
     }
@@ -118,55 +130,55 @@ body {
     body {
         padding-bottom: 400px;
     }
-    
+
     .main-content {
         padding: 0 20px;
     }
-    
+
     .login-title h1 {
         font-size: 48px;
     }
-    
+
     .footer {
         height: auto;
         padding: 40px 20px;
         position: relative;
     }
-    
+
     .customer-service {
         position: relative;
         left: 0;
         top: 0;
     }
-    
+
     .service-info {
         position: relative;
         left: 0;
         top: 10px;
         margin-top: 10px;
     }
-    
+
     .social-icons {
         position: relative;
         left: 0;
         top: 20px;
         margin-top: 20px;
     }
-    
+
     .contact-button {
         position: relative;
         left: 0;
         top: 20px;
         margin-top: 20px;
     }
-    
+
     .copyright {
         position: relative;
         padding-right: 0;
         margin-top: 40px;
         text-align: center;
     }
-    
+
     .copyright p {
         text-align: center;
     }

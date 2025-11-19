@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/member") // URL이 /member 로 시작하는 요청을 처리
+@RequestMapping("/member")
 public class MemberController {
 
     @Autowired
@@ -27,117 +27,143 @@ public class MemberController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private MyChartService myChartService;
 
+
+    // --- 로그인 & 회원가입 ---
     @GetMapping("/loginPage")
     public String homePageLogin() {
-        System.out.println("homePageLogin");
         return "common/homePageMember/login";
     }
 
     @GetMapping("/signUpPage")
     public String homePageSignUp() {
-        System.out.println("homePageSignUp");
         return "common/homePageMember/signUp";
     }
 
+    @PostMapping("/signUp.me")
+    public String signUp(Member member) {
+        System.out.println("회원가입: " + member);
+        // memberService.signUpMember(member); // 필요 시 주석 해제
+        return "common/homePageMember/login";
+    }
+
+
+    // --- 아이디 찾기 ---
     @GetMapping("/findId")
     public String showFindIdPage() {
         return "homePage/Find/findId";
     }
 
+    @PostMapping("/findId.me")
+    public String findIdAction(@RequestParam("memberName") String memberName,
+                               @RequestParam("memberPhone") String memberPhone,
+                               Model model) {
+        String foundId = memberService.findMemberIdByNameAndPhone(memberName, memberPhone);
+
+        if (foundId != null) {
+            model.addAttribute("message", "회원님의 아이디는 [ " + foundId + " ] 입니다.");
+            return "homePage/Find/findId";
+        } else {
+            model.addAttribute("error", "일치하는 회원 정보가 없습니다.");
+            return "homePage/Find/findId";
+        }
+    }
+
+
+    // --- 비밀번호 찾기 (1단계: 아이디 확인) ---
     @GetMapping("/findPwd")
     public String showFindPwdPage() {
         return "homePage/Find/findPwd";
     }
 
+    @PostMapping("/findPwd-checkId.me")
+    public String checkIdForFindPwd(@RequestParam("memberId") String memberId, Model model) {
+        int count = memberService.getMemberCountById(memberId);
+
+        if (count > 0) {
+            model.addAttribute("memberId", memberId);
+            return "homePage/Find/findPwdReset";
+        } else {
+            model.addAttribute("errorMessage", "존재하지 않는 아이디입니다.");
+            return "homePage/Find/findPwd";
+        }
+    }
+
+    // --- 비밀번호 찾기 (2단계: 변경 실행) ---
     @PostMapping("/findPwd-update.me")
-    public String updatePassword(@RequestParam("memberId") String memberId,
-                                 @RequestParam("memberPwd") String newPassword) {
-        System.out.println(memberId + " 회원의 비밀번호가 " + newPassword + " (으)로 변경되었습니다.");
-        return "redirect:/loginPage";
+    public String updatePasswordAction(@RequestParam("memberId") String memberId,
+                                       @RequestParam("memberPwd") String newPassword,
+                                       Model model) {
+
+        // 1. 현재 회원 정보 가져오기 (비밀번호 비교를 위해)
+        Member member = memberService.getMemberByIdOnly(memberId);
+
+        // 2. 현재 비밀번호와 새 비밀번호가 같은지 확인
+        if(member != null && member.getMemberPwd().equals(newPassword)) {
+            // 같다면 에러 메시지와 함께 다시 재설정 페이지로 보냄
+            model.addAttribute("memberId", memberId); // ID값 유지
+            model.addAttribute("errorMessage", "새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.");
+            return "homePage/Find/findPwdReset";
+        }
+
+        // 3. 다르다면 업데이트 진행
+        int result = memberService.updatePassword(memberId, newPassword);
+
+        if(result > 0) {
+            System.out.println(memberId + " 비밀번호 변경 완료");
+            return "redirect:/member/loginPage";
+        } else {
+            return "common/errorPage";
+        }
     }
 
 
-    @PostMapping("/signUp.me")
-    public String signUp(Member member) {
-        System.out.println(member);
-        return "common/homePageMember/login";
-    }
-
-    /**
-     * [404 오류 해결]
-     * GET /member/appointmentPage 요청을 받아서
-     * /WEB-INF/views/homePage/member/appointment.jsp 파일을 보여줍니다.
-     */
+    // --- 예약 관련 ---
     @GetMapping("/appointmentPage")
     public String showAppointmentPage(HttpSession session) {
-        if (session.getAttribute("loginMember") == null) {
-            return "redirect:/member/loginPage";
-        }
+        if (session.getAttribute("loginMember") == null) return "redirect:/member/loginPage";
         return "member/reservation/main";
     }
 
-    @GetMapping("/mychart")
-    public String myChartPage(HttpSession session, Model model) {
-
-        Member loginMember = (Member) session.getAttribute("loginMember");
-
-        if (loginMember == null) {
-            return "redirect:/member/loginPage";
-        }
-
-        int memberNo = loginMember.getMemberNo();
-        List<ReservationDetailVO> reservationList = reservationService.getReservationsByMemberNo(memberNo);
-        model.addAttribute("reservationList", reservationList);
-
-        return "homePage/member/MyChart";
-    }
-
-    /**
-     * 예약 취소 처리 (AJAX)
-     * URL: /member/reservation/cancel
-     */
     @PostMapping("/reservation/cancel")
     @ResponseBody
     public ResponseEntity<String> cancelReservation(@RequestBody Map<String, Integer> payload, HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
+        if (loginMember == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
 
         Integer reservationNo = payload.get("reservationNo");
-        if (reservationNo == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("예약 번호가 누락되었습니다.");
-        }
+        if (reservationNo == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("예약 번호 없음");
 
         try {
             boolean success = reservationService.cancelReservation(reservationNo, loginMember.getMemberNo());
-
-            if (success) {
-                return ResponseEntity.ok("success");
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("예약을 취소할 권한이 없거나 이미 완료/취소된 예약입니다.");
-            }
+            return success ? ResponseEntity.ok("success") : ResponseEntity.status(HttpStatus.FORBIDDEN).body("취소 권한 없음");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류로 인해 취소에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
         }
     }
 
 
-    // --- 6. 마이페이지 (회원정보 수정) ---
+    // --- 마이페이지 (정보수정, 비번변경, 탈퇴) ---
+    @GetMapping("/mychart")
+    public String myChartPage(HttpSession session, Model model) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) return "redirect:/member/loginPage";
+
+        int memberNo = loginMember.getMemberNo();
+        List<ReservationDetailVO> reservationList = reservationService.getReservationsByMemberNo(memberNo);
+        model.addAttribute("reservationList", reservationList);
+        return "homePage/member/MyChart";
+    }
 
     @GetMapping("/info")
     public String showUserInfo(HttpSession session) {
-        if (session.getAttribute("loginMember") == null) {
-            return "redirect:/member/loginPage";
-        }
+        if (session.getAttribute("loginMember") == null) return "redirect:/member/loginPage";
         return "homePage/member/userInfo";
     }
 
-    /**
-     * (AJAX) 현재 비밀번호 확인 (정보 수정 페이지 접근 전)
-     */
     @PostMapping("/verify-password")
     @ResponseBody
     public Map<String, Object> verifyPassword(@RequestBody Map<String, String> payload, HttpSession session) {
@@ -146,73 +172,39 @@ public class MemberController {
 
         if (loginMember == null) {
             response.put("success", false);
-            response.put("message", "로그인이 필요합니다.");
             return response;
         }
-
-        String memberId = loginMember.getMemberId();
-        String passwordToVerify = payload.get("password");
-
-        if (passwordToVerify == null) {
-            response.put("success", false);
-            response.put("message", "비밀번호가 전송되지 않았습니다.");
-            return response;
-        }
-
-        boolean isPasswordCorrect = memberService.checkPassword(memberId, passwordToVerify);
-
-        if (isPasswordCorrect) {
-            response.put("success", true);
-        } else {
-            response.put("success", false);
-            response.put("message", "비밀번호가 일치하지 않습니다.");
-        }
-
+        boolean isCorrect = memberService.checkPassword(loginMember.getMemberId(), payload.get("password"));
+        response.put("success", isCorrect);
+        if(!isCorrect) response.put("message", "비밀번호 불일치");
         return response;
     }
-
 
     @PostMapping("/updateInfo")
     @ResponseBody
     public Map<String, Object> updateMemberInfo(@RequestBody Member member, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Member loginMember = (Member) session.getAttribute("loginMember");
-
         if (loginMember == null) {
             response.put("success", false);
-            response.put("message", "세션이 만료되었거나 로그인이 필요합니다.");
             return response;
         }
 
         member.setMemberNo(loginMember.getMemberNo());
+        int result = memberService.updateMemberInfo(member);
 
-        try {
-            int result = memberService.updateMemberInfo(member);
-
-            if (result > 0) {
-                Member updatedMember = memberService.getMemberByNo((long) member.getMemberNo());
-                session.setAttribute("loginMember", updatedMember);
-                response.put("success", true);
-            } else {
-                response.put("success", false);
-                response.put("message", "회원정보 수정에 실패했습니다.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (result > 0) {
+            session.setAttribute("loginMember", memberService.getMemberByNo((long)member.getMemberNo()));
+            response.put("success", true);
+        } else {
             response.put("success", false);
-            response.put("message", "서버 오류가 발생했습니다.");
         }
-
         return response;
     }
 
-    // --- 7. 마이페이지 (비밀번호 변경) ---
-
     @GetMapping("/changePassword")
     public String showChangePasswordPage(HttpSession session) {
-        if (session.getAttribute("loginMember") == null) {
-            return "redirect:/member/loginPage";
-        }
+        if (session.getAttribute("loginMember") == null) return "redirect:/member/loginPage";
         return "homePage/member/mychart/changePassword";
     }
 
@@ -224,44 +216,59 @@ public class MemberController {
 
         if (loginMember == null) {
             response.put("success", false);
-            response.put("message", "로그인이 필요합니다.");
             return response;
         }
 
-        String memberId = loginMember.getMemberId();
-        String currentPassword = payload.get("currentPassword");
-        String newPassword = payload.get("newPassword");
+        String currentPwd = payload.get("currentPassword");
+        String newPwd = payload.get("newPassword");
 
-        // [추가된 로직] 현재 비밀번호와 새 비밀번호가 같은지 확인
-        if (currentPassword != null && currentPassword.equals(newPassword)) {
+        // 현재 비밀번호 확인
+        if (!memberService.checkPassword(loginMember.getMemberId(), currentPwd)) {
+            response.put("success", false);
+            response.put("message", "현재 비밀번호가 일치하지 않습니다.");
+            return response;
+        }
+
+        if (currentPwd.equals(newPwd)) {
             response.put("success", false);
             response.put("message", "새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.");
             return response;
         }
 
-        boolean isPasswordCorrect = memberService.checkPassword(memberId, currentPassword);
+        int result = memberService.updatePassword(loginMember.getMemberId(), newPwd);
+        response.put("success", result > 0);
+        return response;
+    }
 
-        if (!isPasswordCorrect) {
+    @GetMapping("/deleteMember")
+    public String showCancelMemberPage(HttpSession session) {
+        if (session.getAttribute("loginMember") == null) return "redirect:/member/loginPage";
+        return "homePage/member/mychart/deleteMember";
+    }
+
+    @PostMapping("/deleteAccount")
+    @ResponseBody
+    public Map<String, Object> deleteAccount(@RequestBody Map<String, String> payload, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
             response.put("success", false);
-            response.put("message", "현재 비밀번호가 일치하지 않습니다.");
-            response.put("field", "current");
             return response;
         }
 
-        try {
-            int result = memberService.updatePassword(memberId, newPassword);
-            if (result > 0) {
-                response.put("success", true);
-            } else {
-                response.put("success", false);
-                response.put("message", "비밀번호 변경에 실패했습니다. (DB 오류)");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!memberService.checkPassword(loginMember.getMemberId(), payload.get("password"))) {
             response.put("success", false);
-            response.put("message", "서버 오류가 발생했습니다.");
+            response.put("message", "비밀번호 불일치");
+            return response;
         }
 
+        int result = memberService.deactivateMember(loginMember.getMemberId());
+        if (result > 0) {
+            session.invalidate();
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+        }
         return response;
     }
 
@@ -271,95 +278,24 @@ public class MemberController {
         return "redirect:/member/loginPage";
     }
 
-    // --- 8. 마이페이지 (회원 탈퇴) ---
-    @GetMapping("/deleteMember")
-    public String showCancelMemberPage(HttpSession session) {
-        if (session.getAttribute("loginMember") == null) {
-            return "redirect:/member/loginPage";
-        }
-        return "homePage/member/mychart/deleteMember";
-    }
-
-    /**
-     * (AJAX) 회원 탈퇴 처리
-     */
-    @PostMapping("/deleteAccount")
-    @ResponseBody
-    public Map<String, Object> deleteAccount(@RequestBody Map<String, String> payload, HttpSession session) {
-        Map<String, Object> response = new HashMap<>();
-        Member loginMember = (Member) session.getAttribute("loginMember");
-
-        if (loginMember == null) {
-            response.put("success", false);
-            response.put("message", "로그인이 필요합니다.");
-            return response;
-        }
-
-        String memberId = loginMember.getMemberId();
-        String password = payload.get("password");
-
-        // 1. 비밀번호가 맞는지 확인
-        boolean isPasswordCorrect = memberService.checkPassword(memberId, password);
-
-        if (!isPasswordCorrect) {
-            response.put("success", false);
-            response.put("message", "비밀번호가 일치하지 않습니다.");
-            return response;
-        }
-
-        // 2. 비밀번호가 맞으면, 회원 비활성화(탈퇴) 처리
-        try {
-            int result = memberService.deactivateMember(memberId);
-            if (result > 0) {
-                // 3. 탈퇴 성공 시 세션(로그인) 무효화
-                session.invalidate();
-                response.put("success", true);
-            } else {
-                response.put("success", false);
-                response.put("message", "회원 탈퇴 처리에 실패했습니다. (DB 오류)");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("success", false);
-            response.put("message", "서버 오류가 발생했습니다.");
-        }
-
-        return response;
-    }
-
-    @Autowired
-    private MyChartService myChartService;
-
+    // --- 진료 기록 ---
     @GetMapping("/history")
     public String medicalHistory(Model model, HttpSession session) {
-
         Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/member/loginPage";
-        }
-        int memberNo = loginMember.getMemberNo();
+        if(loginMember == null) return "redirect:/member/loginPage";
 
-        List<Map<String, Object>> historyList = myChartService.getMedicalHistoryList(memberNo);
-
-        model.addAttribute("historyList", historyList);
+        model.addAttribute("historyList", myChartService.getMedicalHistoryList(loginMember.getMemberNo()));
         return "homePage/member/mychart/history";
     }
 
     @GetMapping("/results")
     public String diagnosisResults(Model model, HttpSession session) {
-
         Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/member/loginPage";
-        }
+        if(loginMember == null) return "redirect:/member/loginPage";
+
         int memberNo = loginMember.getMemberNo();
-
-        List<Map<String, Object>> diagnosisList = myChartService.getDiagnosisRecords(memberNo);
-        List<Map<String, Object>> testList = myChartService.getTestResults(memberNo);
-
-        model.addAttribute("diagnosisList", diagnosisList);
-        model.addAttribute("testList", testList);
-
+        model.addAttribute("diagnosisList", myChartService.getDiagnosisRecords(memberNo));
+        model.addAttribute("testList", myChartService.getTestResults(memberNo));
         return "homePage/member/mychart/results";
     }
 }
