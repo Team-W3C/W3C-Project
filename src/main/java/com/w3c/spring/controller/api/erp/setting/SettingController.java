@@ -21,7 +21,7 @@ public class SettingController {
     }
 
     @PostMapping("/erp/updateMember")
-    public String updateMember(Member formMember, // [1] 폼에서 넘어온 껍데기 객체 (이름 변경: member -> formMember)
+    public String updateMember(Member formMember,
                                @RequestParam(value = "currentPassword", required = false) String currentPassword,
                                @RequestParam(value = "newPassword", required = false) String newPassword,
                                HttpSession session) {
@@ -46,11 +46,11 @@ public class SettingController {
             if (memberService.checkPassword(originMember.getMemberId(), currentPassword)) {
                 memberService.updatePassword(originMember.getMemberId(), newPassword);
             } else {
-                return "redirect:/erp/setting?error=password";
+                return "redirect:/erp/setting?error=password"; // 비밀번호 오류 시 error 파라미터
             }
         }
 
-        // 5. [중요] 완성된 객체(기존 정보 + 수정 정보)를 DB에 업데이트 요청
+        // 5. 완성된 객체(기존 정보 + 수정 정보)를 DB에 업데이트 요청
         int result = memberService.updateMemberInfo(originMember);
 
         // 6. 세션 정보 갱신
@@ -58,8 +58,12 @@ public class SettingController {
             // 업데이트된 최신 정보를 다시 조회하여 세션에 저장
             Member updatedMember = memberService.getMemberByNo((long) loginMember.getMemberNo());
             session.setAttribute("loginMember", updatedMember);
-        }
 
-        return "redirect:/erp/setting";
+            // ⭐️ 수정: 성공 시 success=true 파라미터를 추가하여 리다이렉트
+            return "redirect:/erp/setting?success=update";
+        } else {
+            // DB 업데이트 실패 시에도 에러 메시지를 전달할 수 있습니다.
+            return "redirect:/erp/setting?error=updateFail";
+        }
     }
 }

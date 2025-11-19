@@ -79,9 +79,12 @@ public class PatientManageServiceImpl implements PatientManageService {
         // 2. 환자 상태: 'T' (정상)
         member.setMemberStatus("T");
 
-        // 3. (참고)
-        // memberName, memberRrn, memberGender, memberPhone 등은
-        // JavaScript에서 이미 가공되어 넘어올 것입니다.
+        String rrn = member.getMemberRrn();
+        if (rrn != null && rrn.length() == 13 && !rrn.contains("-")) {
+            // 0111133123456 -> 011113-3123456
+            String formattedRrn = rrn.substring(0, 6) + "-" + rrn.substring(6);
+            member.setMemberRrn(formattedRrn);
+        }
 
         // Mapper 호출
         return patientMapper.insertPatient(member);

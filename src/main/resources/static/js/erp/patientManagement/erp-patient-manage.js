@@ -1,6 +1,6 @@
 function showPatientDetail(buttonElement) {
 
-    console.log("--- 상세보기 버튼 클릭됨 (onclick) ---"); // 👈 이제 떠야 합니다!
+    console.log("--- 상세보기 버튼 클릭됨 (onclick) ---");
 
     // 'buttonElement'(this)를 jQuery 객체로 변환
     const $button = $(buttonElement);
@@ -39,8 +39,8 @@ function showPatientDetail(buttonElement) {
 
             // (날짜 포맷팅을 위한 간단한 헬퍼 함수)
             const formatDate = (dateString) => {
-                if (!dateString) return "정보 없음";
-                // 'sv-SE' (스웨덴) 로캘은 'YYYY-MM-DD' 형식을 보장합니다.
+                if (!dateString) return "N/A";
+
                 return new Date(dateString).toLocaleDateString('sv-SE');
             };
             const formatDateTime = (dateString) => {
@@ -195,7 +195,9 @@ $(document).ready(function() {
         const phone = $(".register-modal #phone").val();
         const address = $(".register-modal #address").val();
         const email = $(".register-modal #email").val();
-        const notes = $(".register-modal #notes").val();
+        const bloodType = $(".register-modal #blood-type").val();
+        const allergy = $(".register-modal #allergy").val();
+        const chronicDisease = $(".register-modal #chronicDisease").val();
 
         const memberRrn = birthDate + birthSuffix;
         let gender = "F";
@@ -212,7 +214,9 @@ $(document).ready(function() {
             memberPhone: phone,
             memberAddress: address,
             memberEmail: email,
-            memberChronicDisease: notes,
+            memberBloodType: bloodType,
+            memberChronicDisease: chronicDisease,
+            memberAllergy: allergy,
             memberId: memberId,
             memberPwd: memberPwd
         };
