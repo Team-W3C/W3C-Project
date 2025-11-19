@@ -101,7 +101,7 @@ function initTimeSlotHandler() {
 
     selectedCountSpan.textContent = "";
 
-    timeSlotsContainer.addEventListener('click', function(e) {
+    timeSlotsContainer.addEventListener('click', function (e) {
         const timeSlot = e.target.closest('.time-slot');
         if (timeSlot) {
             e.preventDefault();
@@ -137,7 +137,7 @@ function initTimeSlotHandler() {
             </div>
         `;
 
-        selectedBadgesContainer.querySelector('.remove-time').addEventListener('click', function(e){
+        selectedBadgesContainer.querySelector('.remove-time').addEventListener('click', function (e) {
             e.preventDefault();
             clearSelection();
         });
@@ -168,10 +168,10 @@ function initDepartmentSelectHandler() {
         return;
     }
 
-    departmentSelect.addEventListener('change', function(){
+    departmentSelect.addEventListener('change', function () {
         const departmentName = this.value;
 
-        if(!departmentName){
+        if (!departmentName) {
             updateDoctorList([]);
             return;
         }
@@ -179,22 +179,22 @@ function initDepartmentSelectHandler() {
         const contextPath = "/erp/erpReservation";
 
         $.ajax({
-            url : contextPath + "/doctors",
-            method : 'GET',
-            data : {
-                departmentName : departmentName
+            url: contextPath + "/doctors",
+            method: 'GET',
+            data: {
+                departmentName: departmentName
             },
-            dataType : "json",
-            beforeSend: function() {
+            dataType: "json",
+            beforeSend: function () {
                 const doctorSelect = document.getElementById('doctorSelect');
                 doctorSelect.innerHTML = '<option value="">담당의 정보를 불러오는 중...</option>';
                 doctorSelect.disabled = true;
                 doctorSelect.classList.add('disabled');
             },
-            success: function(data) {
+            success: function (data) {
                 updateDoctorList(data);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("의사 목록 조회 실패:", error);
                 alert("담당의 정보를 불러오는데 실패했습니다.");
                 updateDoctorList([]);
@@ -228,7 +228,7 @@ function updateDoctorList(doctors) {
         option.value = doctor.doctorName;
         option.textContent = doctor.doctorName;
         doctorSelect.appendChild(option);
-        console.log('객체 데이터:',doctor);
+        console.log('객체 데이터:', doctor);
     });
 
     if (doctors.length > 0) {
@@ -297,59 +297,120 @@ function submitReservation() {
     const reservationDate = modalCalendarEl.dataset.selectedDate;
     const selectedTime = window.timeSelectionManager.getSelectedTimes()[0];
 
-    const reservationData = {
-        patientName: patientName,
-        symptom: symptom,
-        department: department,
-        doctor: doctor,
-        date: reservationDate,
-        time: selectedTime
-    };
+    const now = new Date();
+    // reservationDate: YYYY-MM-DD, selectedTime: HH:mm
+    const [year, month, day] = reservationDate.split('-').map(Number);
+    const [hour, minute] = selectedTime.split(':').map(Number);
+    // Month is 0-indexed in JS Date
+    const reservationDateTime = new Date(year, month - 1, day, hour, minute);
 
-    console.log("예약 데이터:", reservationData);
+    if (reservationDateTime <= now) {
+        alert("현재 시각 이후로만 예약할 수 있습니다.");
+        return;
+    }
 
     const contextPath = "/erp/erpReservation";
 
     $.ajax({
-        url: contextPath + "/add",
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(reservationData),
+        url: contextPath + "/getReservations",
+        method: 'GET',
+        data: {selectedDate: reservationDate},
         dataType: 'json',
-        beforeSend: function() {
-            const submitButton = document.getElementById('submitButton');
-            if (submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = '등록 중...';
-            }
-        },
-        success: function(response) {
-            console.log("예약 등록 성공:", response);
-            alert("예약이 성공적으로 등록되었습니다.");
-            closeAddModal();
+        success: function (data) {
+            // data는 Map<String, List<ReservationDetailVO>> 구조
+            // 모든 진료과의 예약 리스트를 하나의 배열로 병합
+            const allReservations = Object.values(data).flat();
 
-            if (typeof window.mainCalendar !== 'undefined' && window.mainCalendar) {
-                window.mainCalendar.refetchEvents();
+            let isDuplicate = false;
+
+            for (const res of allReservations) {
+                // 1. 이미 취소된 예약은 건너뜀 (status 체크)
+                if (res.status === '취소' || res.status === 'CANCELLED') {
+                    continue;
+                }
+
+                // 2. 예약 시간 비교
+                const dbTime = res.time || res.reservationTime;
+
+                // 3. 담당의 이름 비교 (doctorName이 없으면 memo에서 추출)
+                // Mapper에서 doctorName을 반환하지 않고 memo("담당의: 홍길동")를 반환하는 경우 처리
+                let dbDoctor = res.doctorName;
+                if (!dbDoctor && res.memo) {
+                    dbDoctor = res.memo.replace("담당의: ", "").trim();
+                } else if (dbDoctor) {
+                    dbDoctor = dbDoctor.trim();
+                }
+
+                // 담당의와 시간이 모두 일치하면 중복
+                if (dbDoctor === doctor && dbTime === selectedTime) {
+                    isDuplicate = true;
+                    break;
+                }
             }
 
-            const selectedDateElem = document.querySelector('.calendar-day.selected');
-            const selectedDate = selectedDateElem
-                ? selectedDateElem.dataset.date
-                : new Date().toISOString().split('T')[0];
+            if (isDuplicate) {
+                alert("해당 담당의는 선택하신 시간에 이미 예약이 존재합니다.\n다른 시간을 선택해주세요.");
+                return;
+            }
 
-            if (typeof fetchReservationByDate === 'function') {
-                fetchReservationByDate(selectedDate);
-            }
+            const reservationData = {
+                patientName: patientName,
+                symptom: symptom,
+                department: department,
+                doctor: doctor,
+                date: reservationDate,
+                time: selectedTime
+            };
+
+            console.log("예약 데이터:", reservationData);
+
+            $.ajax({
+                url: contextPath + "/add",
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(reservationData),
+                dataType: 'json',
+                beforeSend: function () {
+                    const submitButton = document.getElementById('submitButton');
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.textContent = '등록 중...';
+                    }
+                },
+                success: function (response) {
+                    console.log("예약 등록 성공:", response);
+                    alert("예약이 성공적으로 등록되었습니다.");
+                    closeAddModal();
+
+                    if (typeof window.mainCalendar !== 'undefined' && window.mainCalendar) {
+                        window.mainCalendar.refetchEvents();
+                    }
+
+                    const selectedDateElem = document.querySelector('.calendar-day.selected');
+                    const selectedDate = selectedDateElem
+                        ? selectedDateElem.dataset.date
+                        : new Date().toISOString().split('T')[0];
+
+                    if (typeof fetchReservationByDate === 'function') {
+                        fetchReservationByDate(selectedDate);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("예약 등록 실패:", error);
+                    alert("예약 등록 중 오류가 발생했습니다.");
+                },
+                complete: function () {
+                    const submitButton = document.getElementById('submitButton');
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = '예약 등록';
+                    }
+                }
+            });
         },
-        error: function(xhr, status, error) {
-            console.error("예약 등록 실패:", error);
-        },
-        complete: function() {
-            const submitButton = document.getElementById('submitButton');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = '예약 등록';
-            }
+        error: function (xhr, status, error) {
+            console.error("기존 예약 조회 실패:", error);
+            alert("예약 가능 여부를 확인하는 중 오류가 발생했습니다.");
         }
     });
 }
@@ -362,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const closeButtons = addModal.querySelectorAll(".close-button, #cancelButton");
         closeButtons.forEach((btn) => {
-            btn.addEventListener("click", function(e) {
+            btn.addEventListener("click", function (e) {
                 e.preventDefault();
                 closeAddModal();
             });
@@ -385,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const submitButton = document.getElementById('submitButton');
     if (submitButton) {
-        submitButton.addEventListener("click", function(e) {
+        submitButton.addEventListener("click", function (e) {
             e.preventDefault();
             submitReservation();
         });

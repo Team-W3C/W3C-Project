@@ -214,4 +214,23 @@ public class ReservationServiceImpl implements ReservationService {
         reservations.put("memo", params.get("doctor"));
         return reservationMapper.insertErpReservation(reservations);
     }
+
+//    public boolean submitReservation(ReservationRequestVO reservationData, int memberNo) {
+//        try {
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//            LocalDateTime rvtnTime = LocalDateTime.parse(reservationData.getTreatmentDate(), formatter);
+//
+//            if (rvtnTime.isBefore(LocalDateTime.now())) {
+//                throw new IllegalArgumentException("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+//            }
+//        } catch (IllegalArgumentException e) {
+//            throw e;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        reservationData.setMemberNo(memberNo);
+//        int result = reservationMapper.insertReservation(reservationData);
+//        return result == 1;
+//    }
 }
