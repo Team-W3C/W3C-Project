@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // '전체' 버튼만 남기고 초기화 (혹은 유지하고 뒤에 추가)
         // roomList.innerHTML = ''; // 기존 '전체' 버튼 유지를 위해 주석 처리
 
+        // 중복 생성 방지를 위해 기존에 스크립트로 추가된 버튼들이 있다면 제거하는 로직이 필요할 수 있음
+        // 현재는 init에서 한 번만 호출되므로 그대로 둡니다.
+
         facilitiesData.forEach(facility => {
             const btn = document.createElement('button');
             btn.type = "button";
@@ -86,11 +89,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // '전체' 버튼에도 리스너 재확인/추가
         const allBtn = roomList.querySelector('[data-room="all"]');
-        if(allBtn) allBtn.addEventListener("click", handleRoomFilterClick);
+        if(allBtn) {
+            // 이벤트 리스너 중복 방지를 위해 제거 후 추가하거나, 한 번만 추가되도록 유의
+            allBtn.removeEventListener("click", handleRoomFilterClick);
+            allBtn.addEventListener("click", handleRoomFilterClick);
+        }
     }
 
     // 시설명을 CSS 클래스로 매핑하는 헬퍼 함수
     function mapFacilityToCssClass(name) {
+        if (!name) return "default";
         const lowerName = name.toLowerCase().replace(/\s/g, ""); // 소문자 변환 및 공백 제거
         if (lowerName.includes("mri")) return "mri";
         if (lowerName.includes("초음파")) return "ultrasound";
@@ -109,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
         this.classList.add("active");
         this.setAttribute("aria-pressed", "true");
 
-        applyRoomFilter(); // 필터 적용하여 다시 표시 (DOM hide/show)
+        applyRoomFilter(); // 필터 적용하여 다시 표시
     }
 
     // ===========================================
@@ -307,13 +315,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const allItems = document.querySelectorAll(".status-list .status-item");
 
         allItems.forEach(item => {
+            // '전체' 선택 시 모든 항목 보이기
             if (selectedRoomClass === 'all') {
-                item.classList.remove('is-hidden');
+                item.style.display = ''; // CSS 기본값으로 복원
             } else {
+                // 선택된 룸 클래스를 포함하는지 확인
                 if (item.classList.contains(selectedRoomClass)) {
-                    item.classList.remove('is-hidden');
+                    item.style.display = ''; // 보이기
                 } else {
-                    item.classList.add('is-hidden');
+                    item.style.display = 'none'; // 직접 display: none 적용하여 숨김
                 }
             }
         });
