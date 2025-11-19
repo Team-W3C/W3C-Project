@@ -18,6 +18,7 @@ public class ReservationServiceImpl implements ReservationService {
     // ▼▼▼ [수정된 부분] ▼▼▼
     // 제공해주신 DB 스크립트(더미 데이터)의 진료과 목록에 맞게 수정했습니다.
     private static final Map<String, String> ICON_MAP;
+
     static {
         Map<String, String> iconMap = new HashMap<>();
 
@@ -98,9 +99,24 @@ public class ReservationServiceImpl implements ReservationService {
         List<TimeSlotVO> finalTimeSlots = new ArrayList<>();
         int doctorIndex = 0;
 
+        java.time.LocalDate today = java.time.LocalDate.now();
+        java.time.LocalTime now = java.time.LocalTime.now();
+        boolean isToday = today.toString().equals(date);
+
         for (String hour : WORK_HOURS) {
             long currentBooked = bookedCountsMap.getOrDefault(hour, 0L);
-            boolean isAvailable = (currentBooked < totalCapacity);
+
+            boolean isPassed = false;
+            if (isToday) {
+                // 예: "09:00" -> 9
+                int slotHour = Integer.parseInt(hour.split(":")[0]);
+                // 현재 시간이 14시라면, 14:00 예약도 불가능한지 정책에 따라 결정 (보통 < 또는 <= 사용)
+                if (slotHour <= now.getHour()) {
+                    isPassed = true;
+                }
+            }
+            boolean isAvailable = (currentBooked < totalCapacity) && !isPassed;
+
 
             if (workingDoctors.isEmpty()) {
                 break;
@@ -113,10 +129,9 @@ public class ReservationServiceImpl implements ReservationService {
                     hour,
                     assignedDoctor.getMemberName(),
                     assignedDoctor.getDepartmentLocation(),
-                    isAvailable
+                    isAvailable // 수정된 값 전달
             ));
         }
-
         return finalTimeSlots;
     }
 
@@ -183,7 +198,7 @@ public class ReservationServiceImpl implements ReservationService {
         return result == 1;
     }
 
-    public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate){
+    public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate) {
         List<ReservationDetailVO> Reservations = reservationMapper.selectReservationDetailByDate(selectedDate);
         System.out.println(Reservations);
         Map<String, List<ReservationDetailVO>> result = new HashMap<>();
@@ -192,31 +207,32 @@ public class ReservationServiceImpl implements ReservationService {
         result.put("completed", new ArrayList<>());
         result.put("canceled", new ArrayList<>());
 
-        for (ReservationDetailVO reservation : Reservations){
+        for (ReservationDetailVO reservation : Reservations) {
             String status = reservation.getStatus();
-            if("대기".equals(status)){
+            if ("대기".equals(status)) {
                 result.get("waiting").add(reservation);
-            }else if("진행중".equals(status)){
+            } else if ("진행중".equals(status)) {
                 result.get("inProgress").add(reservation);
-            }else if("완료".equals(status)){
+            } else if ("완료".equals(status)) {
                 result.get("completed").add(reservation);
-            }else if("취소".equals(status)){
+            } else if ("취소".equals(status)) {
                 result.get("canceled").add(reservation);
-            };
+            }
+            ;
         }
 
         return result;
     }
 
     @Transactional
-    public int updateRvtnStatus(String status, int reservationNo ){
+    public int updateRvtnStatus(String status, int reservationNo) {
         Map<String, Object> reservations = new HashMap<>();
         reservations.put("status", status);
         reservations.put("reservationNo", reservationNo);
         return reservationMapper.updateRvtnStatus(reservations);
     }
 
-    public ReservationDetailVO selectRvtnDetail(int reservationNo){
+    public ReservationDetailVO selectRvtnDetail(int reservationNo) {
         ReservationDetailVO result = reservationMapper.selectRvtnDetail(reservationNo);
         return result;
     }
