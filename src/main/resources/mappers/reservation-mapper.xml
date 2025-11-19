@@ -99,7 +99,7 @@
             treatment_date
         ) VALUES (
                      RESERVATION_SEQ.NEXTVAL,
-                     '확정',
+                     '대기',
                      #{reservationNotes},
                      '담당의: ' || #{doctorName}, #{memberNo},
                      #{departmentNo},
