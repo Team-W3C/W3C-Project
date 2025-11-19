@@ -218,7 +218,7 @@
                         <a href="${pageContext.request.contextPath}/member/changePassword" class="member-sidebar__nav-link member-sidebar__nav-link--active member-sidebar__nav-link--medium">비밀번호 변경</a>
                     </li>
                     <li class="member-sidebar__nav-item">
-                        <a href="${pageContext.request.contextPath}/member/cancelMember" class="member-sidebar__nav-link">회원 탈퇴</a>
+                        <a href="${pageContext.request.contextPath}/member/deleteMember" class="member-sidebar__nav-link">회원 탈퇴</a>
                     </li>
                 </ul>
             </nav>
