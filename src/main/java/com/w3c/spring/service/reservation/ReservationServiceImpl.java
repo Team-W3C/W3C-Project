@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,47 +19,34 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationMapper reservationMapper;
 
-    // ▼▼▼ [수정된 부분] ▼▼▼
-    // 제공해주신 DB 스크립트(더미 데이터)의 진료과 목록에 맞게 수정했습니다.
     private static final Map<String, String> ICON_MAP;
 
     static {
         Map<String, String> iconMap = new HashMap<>();
-
-        // (DB DML에 포함된 진료과)
         iconMap.put("정형외과", "/img/icons/orthopedics.png");
         iconMap.put("내과", "/img/icons/medicine.png");
         iconMap.put("피부과", "/img/icons/dermatology.jpg");
         iconMap.put("응급실", "/img/icons/emergency.png");
-        iconMap.put("안경원과", "/img/icons/ophthalmology.png"); // (안과 아이콘)
-        iconMap.put("응급의학과", "/img/icons/emergency.png"); // (응급실 아이콘)
-
-        // (DB DML에 없는 항목은 지도에서 제외함 - 예: 소아과, 외과, 치과 등)
-
-        // (기본값)
-        // (정보시스템팀, 원무팀 등은 이 아이콘이 표시됨)
+        iconMap.put("안경원과", "/img/icons/ophthalmology.png");
+        iconMap.put("응급의학과", "/img/icons/emergency.png");
         iconMap.put("DEFAULT", "/img/icons/default.png");
-
         ICON_MAP = Collections.unmodifiableMap(iconMap);
     }
-    // ▲▲▲ [수정 완료] ▲▲▲
+
+    private static final List<String> WORK_HOURS = List.of(
+            "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"
+    );
 
     @Autowired
     public ReservationServiceImpl(ReservationMapper reservationMapper) {
         this.reservationMapper = reservationMapper;
     }
 
-    // 병원 기본 운영 시간 (원본 유지)
-    private static final List<String> WORK_HOURS = List.of(
-            "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"
-    );
-
     @Override
     public List<FullCalendarEventVO> getReservationSchedule() {
         List<AbsenceVO> absenceList = reservationMapper.findApprovedAbsences();
         List<FullCalendarEventVO> eventList = new ArrayList<>();
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
-
         for (AbsenceVO absence : absenceList) {
             String startDate = sdfDate.format(absence.getAbsenceStartDate());
             Date endDate = absence.getAbsenceEndDate();
@@ -63,103 +54,70 @@ public class ReservationServiceImpl implements ReservationService {
             c.setTime(endDate);
             c.add(Calendar.DATE, 1);
             String exclusiveEndDate = sdfDate.format(c.getTime());
-
-            eventList.add(new FullCalendarEventVO(
-                    "휴무",
-                    "background",
-                    startDate,
-                    exclusiveEndDate,
-                    "unavailable-date"
-            ));
+            eventList.add(new FullCalendarEventVO("휴무", "background", startDate, exclusiveEndDate, "unavailable-date"));
         }
         return eventList;
     }
 
     @Override
     public List<TimeSlotVO> getAvailableTimes(String date, int departmentId) {
-
         Map<String, Object> params = new HashMap<>();
         params.put("date", date);
         params.put("departmentId", departmentId);
-
         List<WorkingDoctorVO> workingDoctors = reservationMapper.findWorkingDoctorsByDeptOnDate(params);
         int totalCapacity = workingDoctors.size();
-
-        if (totalCapacity == 0) {
-            return Collections.emptyList();
-        }
+        if (totalCapacity == 0) return Collections.emptyList();
 
         List<Map<String, Object>> bookedCountsList = reservationMapper.findBookedTimeCountsByDeptOnDate(params);
         Map<String, Long> bookedCountsMap = bookedCountsList.stream()
-                .collect(Collectors.toMap(
-                        map -> (String) map.get("HOUR"),
-                        map -> ((Number) map.get("COUNT")).longValue()
-                ));
+                .collect(Collectors.toMap(m -> (String) m.get("HOUR"), m -> ((Number) m.get("COUNT")).longValue()));
 
         List<TimeSlotVO> finalTimeSlots = new ArrayList<>();
         int doctorIndex = 0;
-
-        java.time.LocalDate today = java.time.LocalDate.now();
-        java.time.LocalTime now = java.time.LocalTime.now();
-        boolean isToday = today.toString().equals(date);
+        LocalDate targetDate = LocalDate.parse(date);
+        boolean isToday = targetDate.isEqual(LocalDate.now());
+        int currentHour = LocalTime.now().getHour();
 
         for (String hour : WORK_HOURS) {
             long currentBooked = bookedCountsMap.getOrDefault(hour, 0L);
-
-            boolean isPassed = false;
-            if (isToday) {
-                // 예: "09:00" -> 9
+            boolean isAvailable = (currentBooked < totalCapacity);
+            if (isToday && isAvailable) {
                 int slotHour = Integer.parseInt(hour.split(":")[0]);
-                // 현재 시간이 14시라면, 14:00 예약도 불가능한지 정책에 따라 결정 (보통 < 또는 <= 사용)
-                if (slotHour <= now.getHour()) {
-                    isPassed = true;
-                }
+                if (slotHour <= currentHour) isAvailable = false;
             }
-            boolean isAvailable = (currentBooked < totalCapacity) && !isPassed;
-
-
-            if (workingDoctors.isEmpty()) {
-                break;
-            }
-
+            if (workingDoctors.isEmpty()) break;
             WorkingDoctorVO assignedDoctor = workingDoctors.get(doctorIndex % workingDoctors.size());
             doctorIndex++;
-
-            finalTimeSlots.add(new TimeSlotVO(
-                    hour,
-                    assignedDoctor.getMemberName(),
-                    assignedDoctor.getDepartmentLocation(),
-                    isAvailable // 수정된 값 전달
-            ));
+            finalTimeSlots.add(new TimeSlotVO(hour, assignedDoctor.getMemberName(), assignedDoctor.getDepartmentLocation(), isAvailable));
         }
         return finalTimeSlots;
     }
 
-    /**
-     * 의사가 배정된 진료과 목록을 조회하고, 각 진료과에 아이콘 URL을 매핑하여 반환합니다.
-     * (이 로직은 원본 그대로이며, 수정된 ICON_MAP을 사용합니다)
-     */
     @Override
     public List<DepartmentVO> getDepartments() {
-        // 1. DB에서 진료과 데이터 조회 (SQL에서는 departmentName, departmentNo만 가져옴)
         List<DepartmentVO> departmentList = reservationMapper.findDepartmentsWithDoctors();
-
-        // 2. Service에서 아이콘 URL 매칭 로직 처리
         for (DepartmentVO dept : departmentList) {
-            String iconPath = ICON_MAP.getOrDefault(
-                    dept.getDepartmentName(),
-                    ICON_MAP.get("DEFAULT")
-            );
-            // DepartmentVO의 iconUrl 필드에 설정
-            dept.setIconUrl(iconPath);
+            dept.setIconUrl(ICON_MAP.getOrDefault(dept.getDepartmentName(), ICON_MAP.get("DEFAULT")));
         }
-
         return departmentList;
     }
 
     @Override
     @Transactional
     public boolean submitReservation(ReservationRequestVO reservationData, int memberNo) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime rvtnTime = LocalDateTime.parse(reservationData.getTreatmentDate(), formatter);
+
+            if (rvtnTime.isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+            }
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         reservationData.setMemberNo(memberNo);
         int result = reservationMapper.insertReservation(reservationData);
         return result == 1;
@@ -179,18 +137,29 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationUpdateVO getReservationForUpdate(int reservationNo, int memberNo) {
-        // XML 쿼리가 Map 타입을 기대하므로, Map으로 변환하여 전달합니다.
         Map<String, Integer> params = new HashMap<>();
         params.put("reservationNo", reservationNo);
         params.put("memberNo", memberNo);
-
-        // Map을 받는 selectReservationForUpdate 메소드 호출
         return reservationMapper.selectReservationForUpdate(params);
     }
 
     @Override
     @Transactional
     public boolean updateReservation(ReservationRequestVO reservationData, int reservationNo, int memberNo) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime rvtnTime = LocalDateTime.parse(reservationData.getTreatmentDate(), formatter);
+
+            if (rvtnTime.isBefore(LocalDateTime.now())) {
+                // 예외를 던짐 (Controller에서 catch하여 메시지 반환)
+                throw new IllegalArgumentException("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+            }
+        } catch (IllegalArgumentException e) {
+            throw e; // 중요한 예외이므로 상위로 전달
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         reservationData.setReservationNo(reservationNo);
         reservationData.setMemberNo(memberNo);
 
@@ -200,27 +169,18 @@ public class ReservationServiceImpl implements ReservationService {
 
     public Map<String, List<ReservationDetailVO>> selectReservationDetailByDate(String selectedDate) {
         List<ReservationDetailVO> Reservations = reservationMapper.selectReservationDetailByDate(selectedDate);
-        System.out.println(Reservations);
         Map<String, List<ReservationDetailVO>> result = new HashMap<>();
         result.put("waiting", new ArrayList<>());
         result.put("inProgress", new ArrayList<>());
         result.put("completed", new ArrayList<>());
         result.put("canceled", new ArrayList<>());
-
         for (ReservationDetailVO reservation : Reservations) {
             String status = reservation.getStatus();
-            if ("대기".equals(status)) {
-                result.get("waiting").add(reservation);
-            } else if ("진행중".equals(status)) {
-                result.get("inProgress").add(reservation);
-            } else if ("완료".equals(status)) {
-                result.get("completed").add(reservation);
-            } else if ("취소".equals(status)) {
-                result.get("canceled").add(reservation);
-            }
-            ;
+            if ("대기".equals(status)) result.get("waiting").add(reservation);
+            else if ("진행중".equals(status)) result.get("inProgress").add(reservation);
+            else if ("완료".equals(status)) result.get("completed").add(reservation);
+            else if ("취소".equals(status)) result.get("canceled").add(reservation);
         }
-
         return result;
     }
 
@@ -233,8 +193,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     public ReservationDetailVO selectRvtnDetail(int reservationNo) {
-        ReservationDetailVO result = reservationMapper.selectRvtnDetail(reservationNo);
-        return result;
+        return reservationMapper.selectRvtnDetail(reservationNo);
     }
 
     public List<ReservationDetailVO> selectDoctorByDepartmentName(String departmentName) {
@@ -244,10 +203,8 @@ public class ReservationServiceImpl implements ReservationService {
     public int insertErpReservation(Map<String, Object> params) {
         String patientName = (String) params.get("patientName");
         String departmentName = (String) params.get("department");
-
         int memberNo = reservationMapper.findMemberNo(patientName);
         int departmentNo = reservationMapper.findDepartmentNo(departmentName);
-
         Map<String, Object> reservations = new HashMap<>();
         reservations.put("memberNo", memberNo);
         reservations.put("departmentNo", departmentNo);
@@ -255,7 +212,6 @@ public class ReservationServiceImpl implements ReservationService {
         reservations.put("date", params.get("date"));
         reservations.put("symptoms", params.get("symptom"));
         reservations.put("memo", params.get("doctor"));
-
         return reservationMapper.insertErpReservation(reservations);
     }
 }
