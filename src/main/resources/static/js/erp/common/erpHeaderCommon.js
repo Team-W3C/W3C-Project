@@ -41,3 +41,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// 로그아웃 시 사이드바 상태 초기화
+document.addEventListener("DOMContentLoaded", function() {
+    const logoutBtn = document.getElementById('logoutBtn'); 
+
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            sessionStorage.removeItem('activeMenu');
+        });
+    }
+});
