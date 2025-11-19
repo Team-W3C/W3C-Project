@@ -167,7 +167,7 @@
             TREATMENT_DATE = TO_TIMESTAMP(#{treatmentDate}, 'YYYY-MM-DD HH24:MI'),
             RESERVATION_NOTES = #{reservationNotes},
             RESERVATION_MEMO = '담당의: ' || #{doctorName},
-            RESERVATION_STATUS = '확정'
+            RESERVATION_STATUS = '대기'
         WHERE
             RESERVATION_NO = #{reservationNo}
           AND MEMBER_NO = #{memberNo}

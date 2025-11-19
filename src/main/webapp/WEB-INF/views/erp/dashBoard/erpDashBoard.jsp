@@ -142,14 +142,11 @@
                             <div class="reservation-item__status">
                                 <span class="reservation-item__time">${reservation.treatmentDate}</span>
                                 <c:choose>
-                                    <c:when test="${reservation.reservationStatus == '확정'}">
-                                        <span class="reservation-badge reservation-badge--confirmed">예약확정</span>
-                                    </c:when>
-                                    <c:when test="${reservation.reservationStatus == '대기'}">
-                                        <span class="reservation-badge reservation-badge--waiting">대기중</span>
+                                    <c:when test="${reservation.reservationStatus == '대기'||reservation.reservationStatus == '확정' || reservation.reservationStatus == '진행중'}">
+                                        <span class="reservation-badge reservation-badge--waiting">예약 대기</span>
                                     </c:when>
                                     <c:when test="${reservation.reservationStatus == '완료'}">
-                                        <span class="reservation-badge reservation-badge--completed">완료</span>
+                                        <span class="reservation-badge reservation-badge--confirmed">완료</span>
                                     </c:when>
                                 </c:choose>
                             </div>

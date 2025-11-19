@@ -741,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const reservationData = {
                 facilityNo: selectedFacilityNo,
                 treatmentDate: `${currentSelectedDate} ${selectedTime}:00`,
-                reservationStatus: '확정',
+                reservationStatus: '대기',
                 reservationNotes: notes || '직원 예약',
                 facilityReservationMemo: memo || null,
                 memberNo: selectedPatient, // ✅ 선택한 환자 번호 사용
