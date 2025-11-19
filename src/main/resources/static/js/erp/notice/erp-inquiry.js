@@ -223,12 +223,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterTabs = document.querySelectorAll('.filter-tab');
     filterTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            filterTabs.forEach(t => t.classList.remove('filter-tab-active'));
-            this.classList.add('filter-tab-active');
-
-            const filterType = this.textContent;
-            console.log('필터 적용:', filterType);
-            // (필터링 로직 구현)
+            const status = this.getAttribute('data-status') || '';
+            const url = `${contextPath}/erp/erpNotice/inquiry?cpage=1&status=${encodeURIComponent(status)}`;
+            location.href = url;
         });
     });
 });

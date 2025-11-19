@@ -27,12 +27,12 @@
 <%--                    </svg>--%>
 <%--                    부재 관리--%>
 <%--                </button>--%>
-                <button class="employee-btn-add">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    직원 추가
-                </button>
+<%--                <button class="employee-btn-add">--%>
+<%--                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">--%>
+<%--                        <path d="M8 3.33337V12.6667M3.33333 8H12.6667" stroke="white" stroke-width="1.5" stroke-linecap="round"/>--%>
+<%--                    </svg>--%>
+<%--                    직원 추가--%>
+<%--                </button>--%>
             </div>
         </section>
 

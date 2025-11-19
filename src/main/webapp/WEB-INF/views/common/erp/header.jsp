@@ -11,14 +11,14 @@
 </head>
 <!-- 헤더 -->
     <header class="header">
-        <div class="header__search">
-            <input type="text" class="header__search-input" placeholder="환자, 예약, 직원 검색...">
-            <svg class="header__search-icon" width="20" height="20" fill="none" viewBox="0 0 20 20">
-                <path d="M17.5 17.5L13.8833 13.8833" stroke="#6B7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
-                <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#6B7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>
-            </svg>
-        </div>
-        <button class="header__search-btn"><label class="header__search-btn-label">검색</label></button>
+<%--        <div class="header__search">--%>
+<%--            <input type="text" class="header__search-input" placeholder="환자, 예약, 직원 검색...">--%>
+<%--            <svg class="header__search-icon" width="20" height="20" fill="none" viewBox="0 0 20 20">--%>
+<%--                <path d="M17.5 17.5L13.8833 13.8833" stroke="#6B7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>--%>
+<%--                <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#6B7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"/>--%>
+<%--            </svg>--%>
+<%--        </div>--%>
+<%--        <button class="header__search-btn"><label class="header__search-btn-label">검색</label></button>--%>
         
         <div class="header__actions">
             <!-- 알림 버튼 -->

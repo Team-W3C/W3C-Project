@@ -29,6 +29,7 @@ public class InquiryController {
             @RequestParam(value = "cpage", defaultValue = "1") int cuurentPage,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "category", defaultValue = "") String category,
+            @RequestParam(value = "status", defaultValue = "") String status,
             Model model) {
 
         if ("undefined".equals(keyword)) {
@@ -37,8 +38,11 @@ public class InquiryController {
         if ("undefined".equals(category)) {
             category = "";
         }
+        if ("undefined".equals(status)) {
+            status = "";
+        }
 
-        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category);
+        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category, status);
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));

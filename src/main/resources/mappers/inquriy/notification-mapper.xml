@@ -17,7 +17,7 @@
 
     </resultMap>
 
-    <select id="selectNotificationList" resultMap="notificationResultMap">
+    <select id="selectNotificationList" resultMap="notificationResultMap" parameterType="map">
         SELECT
         N.NOTIFICATION_NO,
         N.NOTIFICATION_TYPE,
@@ -31,13 +31,27 @@
         JOIN DEPARTMENT D ON N.DEPARTMENT_NO = D.DEPARTMENT_NO
         WHERE
         N.NOTIFICATION_DELETE_TYPE = 'F'
+        <if test="keyword != null and keyword != ''">
+            AND N.NOTIFICATION_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="category != null and category != ''">
+            AND N.NOTIFICATION_TYPE = #{category}
+        </if>
         ORDER BY
         N.NOTIFICATION_NO DESC
     </select>
 
-    <select id="selectNotificationListCount" resultType="_int">
+    <select id="selectNotificationListCount" resultType="_int" parameterType="map">
         SELECT COUNT(*)
-        FROM NOTIFICATION
+        FROM NOTIFICATION N
+        JOIN DEPARTMENT D ON N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE N.NOTIFICATION_DELETE_TYPE = 'F'
+        <if test="keyword != null and keyword != ''">
+            AND N.NOTIFICATION_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="category != null and category != ''">
+            AND N.NOTIFICATION_TYPE = #{category}
+        </if>
     </select>
 
     <select id="selectNotificationById" parameterType="_int" resultMap="notificationResultMap">

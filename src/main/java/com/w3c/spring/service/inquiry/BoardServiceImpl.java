@@ -23,10 +23,11 @@ public class BoardServiceImpl implements BoardService{
     private final NotificationMapper notificationMapper;
 
     @Override
-    public Map<String, Object> getBoardList(int cpage, String keyword, String category) {
+    public Map<String, Object> getBoardList(int cpage, String keyword, String category, String status) {
         Map<String, Object> param = new HashMap<>();
         param.put("keyword", keyword);
         param.put("category", category);
+        param.put("status", status);
 
         int listCount = boardMapper.selectBoardListCount(param);
 
@@ -103,15 +104,19 @@ public class BoardServiceImpl implements BoardService{
 
     // 공지사항
     @Override
-    public Map<String, Object> selectNotificationList(int cpage) {
-        int listCount = notificationMapper.selectNotificationListCount();
+    public Map<String, Object> selectNotificationList(int cpage, String keyword, String category) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("keyword", keyword);
+        param.put("category", category);
+
+        int listCount = notificationMapper.selectNotificationListCount(param);
 
         PageInfo pi = new PageInfo(cpage, listCount, 5, 10);
 
         int offset = (cpage - 1) * pi.getBoardLimit();
         RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-        ArrayList<Notification> list = (ArrayList)notificationMapper.selectNotificationList(rowBounds);
+        ArrayList<Notification> list = (ArrayList)notificationMapper.selectNotificationList(param, rowBounds);
 
         for (Notification n : list) {
             notifiType(n);

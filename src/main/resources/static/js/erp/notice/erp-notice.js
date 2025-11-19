@@ -11,6 +11,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const noticeItems = document.querySelectorAll('.notice-item');
     const noticeForm = document.getElementById('noticeForm');
     const departmentSelect = document.getElementById('departmentNo');
+    const noticeSearchInput = document.getElementById('noticeSearchInput');
+    const noticeSearchBtn = document.getElementById('noticeSearchBtn');
+
+    // 검색 기능
+    function performSearch() {
+        const keyword = noticeSearchInput ? noticeSearchInput.value.trim() : '';
+        const url = `${contextPath}/erp/erpNotice/notice?cpage=1&keyword=${encodeURIComponent(keyword)}`;
+        location.href = url;
+    }
+
+    if (noticeSearchBtn) {
+        noticeSearchBtn.addEventListener('click', performSearch);
+    }
+
+    if (noticeSearchInput) {
+        noticeSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
 
     // 부서 목록 로드
     async function loadDepartments() {
