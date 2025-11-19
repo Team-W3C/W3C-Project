@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     facilitiesData.forEach(facility => {
                         const reservationUnit = parseInt(facility.reservationUnit || '60', 10);
-                        const capacity = Math.floor((18 * 60 - 9 * 60) / reservationUnit);
+                        const capacity = 8;
                         const count = getReservationCount(dateStr, facility.facilityNo);
                         const fixDate = facility.fixDate;
 
