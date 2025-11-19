@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const maxYear = today.getFullYear() + 3;
 
     // 시설별 정보
-    let facilityInfo = {
-
-    };
+    let facilityInfo = {};
 
     const roomColorMap = {
         mri: '#0e787c',
@@ -32,7 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const facilityNameMap = {
         MRI: 'mri',
+        MR: 'mri',
         XRAY: 'xray',
+        'X-RAY': 'xray',
         ENDOSCOPE: 'endoscopy',
         ENDOSCOPY: 'endoscopy',
         CT: 'ct',
@@ -262,32 +262,16 @@ document.addEventListener('DOMContentLoaded', function () {
     calendar.render();
     updateMonthTitle();
     updateYearButtons();
-    // ✅ 시설 목록을 먼저 로드한 후 예약 데이터 로드
-    loadFacilityList().then(() => {
-        loadInitialReservations();
-    });
     loadPatientList();
 
-    // 외부 이벤트 드래그 가능하게 설정
-    const externalEventsEl = document.getElementById('external-events');
-    if (externalEventsEl) {
-        new FullCalendar.Draggable(externalEventsEl, {
-            itemSelector: '.fc-event',
-            eventData: function (eventEl) {
-                return {
-                    title: eventEl.dataset.title,
-                    backgroundColor: '#dcfce7',
-                    borderColor: '#dcfce7',
-                    textColor: '#1f2937',
-                    extendedProps: {
-                        room: eventEl.dataset.room,
-                        facilityNo: eventEl.dataset.facilityNo,
-                        status: 'available'
-                    }
-                };
-            }
+    loadFacilityList()
+        .then(() => {
+            loadInitialReservations();
+        })
+        .catch(error => {
+            console.error('시설 정보를 불러오지 못했습니다. 기본 데이터로 진행합니다.', error);
+            loadInitialReservations();
         });
-    }
 
     /**
      * DB에서 초기 예약 데이터 로드
@@ -395,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             name: facility.facilityName || facility.facilityCode || '',
                             fullName: facility.facilityName || '',
                             location: facility.facilityLocation || '',
-                            hours: facility.operatingHours || '09:00 - 16:00',
+                            hours: facility.operatingHours || '09:00 - 17:00',
                             duration: facility.reservationUnit ? `${facility.reservationUnit}분` : '60분',
                             manager: facility.facilityRepresentative || '',
                             contact: facility.facilityPhone || '',
@@ -452,8 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
             externalEventsEl.appendChild(eventEl);
         });
 
-        // Draggable 재초기화
-        if (externalEventsEl && Object.keys(facilityInfo).length > 0) {
+        if (Object.keys(facilityInfo).length > 0) {
             new FullCalendar.Draggable(externalEventsEl, {
                 itemSelector: '.fc-event',
                 eventData: function (eventEl) {
@@ -479,14 +462,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function openPastEventModal(dateStr, roomType, status) {
         currentSelectedDate = dateStr;
         const facility = facilityInfo[roomType];
-
-        // ✅ facility가 없을 경우 처리
         if (!facility) {
             console.error('시설 정보를 찾을 수 없습니다:', roomType);
             alert('시설 정보를 불러올 수 없습니다.');
             return;
         }
-
         const date = new Date(dateStr);
         const month = date.getMonth() + 1;
         const day = date.getDate();
@@ -547,17 +527,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         modalDeleteBtn.classList.add('hidden');
 
-        let roomButtonsHtml = '';
-        for (const [roomKey, info] of Object.entries(facilityInfo)) {
-            roomButtonsHtml += `
-                <button type="button" 
-                        class="modal-room-option" 
-                        data-room="${roomKey}" 
-                        data-facility-no="${info.facilityNo}">
-                    ${info.name} (${info.code})
-                </button>
-            `;
+        // 동적으로 시설 목록 생성
+        let roomListHtml = '<div class="modal-room-list">';
+        if (Object.keys(facilityInfo).length > 0) {
+            const sortedFacilities = Object.values(facilityInfo).sort((a, b) => a.facilityNo - b.facilityNo);
+            sortedFacilities.forEach(facility => {
+                roomListHtml += `<button type="button" class="modal-room-option" data-room="${facility.baseRoomKey}" data-facility-no="${facility.facilityNo}">${facility.name} (${facility.code})</button>`;
+            });
+        } else {
+            roomListHtml += '<p>예약 가능한 시설 정보를 불러오지 못했습니다.</p>';
         }
+        roomListHtml += '</div>';
 
         statusNotice.innerHTML = `
             <div class="status-notice notice-full">
@@ -567,9 +547,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </svg>
                 <span class="notice-text">날짜를 선택했습니다. 검사실을 선택해주세요.</span>
             </div>
-            <div class="modal-room-list">
-                ${roomButtonsHtml}
-            </div>
+            ${roomListHtml}
         `;
 
         timeSelection.classList.add('hidden');
@@ -600,36 +578,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function openModalWithRoom(dateStr, roomType, status, reservations, showDeleteBtn) {
         currentSelectedDate = dateStr;
         const facility = facilityInfo[roomType];
-
-        // ✅ facility가 없을 경우 처리
         if (!facility) {
             console.error('시설 정보를 찾을 수 없습니다:', roomType);
-            // 시설 정보가 아직 로드되지 않았을 수 있으므로 다시 시도
-            if (Object.keys(facilityInfo).length === 0) {
-                loadFacilityList().then(() => {
-                    // 시설 정보 로드 후 roomType 재확인
-                    const retryFacility = facilityInfo[roomType];
-                    if (retryFacility) {
-                        openModalWithRoom(dateStr, roomType, status, reservations, showDeleteBtn);
-                    } else {
-                        // facilityNo로 시설 찾기
-                        const facilityByNo = Object.values(facilityInfo).find(f => f.facilityNo == selectedFacilityNo);
-                        if (facilityByNo) {
-                            const newRoomType = Object.keys(facilityInfo).find(key => facilityInfo[key] === facilityByNo);
-                            if (newRoomType) {
-                                openModalWithRoom(dateStr, newRoomType, status, reservations, showDeleteBtn);
-                                return;
-                            }
-                        }
-                        alert('시설 정보를 불러올 수 없습니다.');
-                    }
-                });
-            } else {
-                alert('시설 정보를 찾을 수 없습니다.');
-            }
+            alert('시설 정보를 불러올 수 없습니다. 페이지를 새로고침 해주세요.');
             return;
         }
-
         const date = new Date(dateStr);
         const month = date.getMonth() + 1;
         const day = date.getDate();
@@ -984,9 +937,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return key;
             }
         }
-        // ✅ 기본값 반환 (시설이 없을 경우 첫 번째 시설 또는 null)
-        const firstKey = Object.keys(facilityInfo)[0];
-        return firstKey || null;
+        return 'mri';
     }
 
     // 상태별 색상 가져오기
