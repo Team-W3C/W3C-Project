@@ -198,9 +198,9 @@ $(document).ready(function() {
         const notes = $(".register-modal #notes").val();
 
         const memberRrn = birthDate + birthSuffix;
-        let gender = "여";
+        let gender = "F";
         if (birthSuffix.startsWith('1') || birthSuffix.startsWith('3')) {
-            gender = "남";
+            gender = "M";
         }
         const memberId = phone;
         const memberPwd = birthDate;
