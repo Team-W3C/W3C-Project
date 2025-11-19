@@ -92,18 +92,23 @@ public class ReservationController {
             if (reservationNo == null) {
                 // 1. 신규 등록
                 success = reservationService.submitReservation(reservationData, loginMember.getMemberNo());
-                message = success ? "예약이 성공적으로 완료되었습니다." : "예약 등록에 실패했습니다.";
+                message = "예약이 성공적으로 완료되었습니다.";
             } else {
-                // 2. 수정 (reservationData에 reservationNo가 세팅되어 있어야 함)
+                // 2. 수정
                 success = reservationService.updateReservation(reservationData, reservationNo, loginMember.getMemberNo());
-                message = success ? "예약이 성공적으로 변경되었습니다." : "예약 변경에 실패했습니다.";
+                message = "예약이 성공적으로 변경되었습니다.";
             }
 
             if (success) {
                 return ResponseEntity.ok(Map.of("success", true, "message", message));
             } else {
-                return ResponseEntity.status(500).body(Map.of("success", false, "message", message));
+                // 혹시 모를 예외 아닌 false 반환 시
+                return ResponseEntity.status(500).body(Map.of("success", false, "message", "요청 처리에 실패했습니다."));
             }
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(Map.of("success", false, "message", e.getMessage()));
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of("success", false, "message", "서버 오류: " + e.getMessage()));
