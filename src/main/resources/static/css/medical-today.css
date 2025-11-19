@@ -1,4 +1,4 @@
-/* ========== 공통 스타일 ========== */
+/* ========== 초기화 ========== */
 * {
     margin: 0;
     padding: 0;
@@ -12,15 +12,36 @@ body {
     line-height: 1.5;
 }
 
-/* ========== 메인 컨텐츠 ========== */
-
-.medical-main {
-    padding: 32px;
-    max-width: 1280px;
-    margin: 0 auto;
+/* ========== 레이아웃 ========== */
+.header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: white !important;
 }
 
-/* 페이지 제목 */
+aside.sidebar,
+.sidebar {
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 250px !important;
+    z-index: 999 !important;
+    overflow-y: auto !important;
+}
+
+.medical-main {
+    margin-left: 250px !important;
+    margin-top: 60px !important;
+    padding: 32px !important;
+    max-width: calc(100% - 250px) !important;
+    width: 100% !important;
+}
+
+/* ========== 타이포그래피 ========== */
 .medical-page-title {
     font-size: 24px;
     color: #111827;
@@ -37,7 +58,7 @@ body {
     overflow: hidden;
 }
 
-/* ========== 탭 헤더 ========== */
+/* ========== 탭 ========== */
 .medical-tabs-header {
     display: flex;
     border-bottom: 1px solid #e5e7eb;
@@ -51,7 +72,6 @@ body {
     color: #6b7280;
     cursor: pointer;
     font-size: 14px;
-    position: relative;
     transition: color 0.2s;
     display: flex;
     align-items: center;
@@ -82,7 +102,6 @@ body {
     font-weight: 500;
 }
 
-/* ========== 탭 컨텐츠 ========== */
 .medical-tab-content {
     padding: 24px;
 }
@@ -95,7 +114,7 @@ body {
     display: block;
 }
 
-/* ========== 테이블 (오늘의 환자) ========== */
+/* ========== 테이블 ========== */
 .medical-table {
     width: 100%;
     border-collapse: collapse;
@@ -128,7 +147,44 @@ body {
     background-color: #f9fafb;
 }
 
-/* 환자 배지 */
+/* 진단 테이블 특화 스타일 */
+#diagnosis-panel .medical-table {
+    table-layout: fixed;
+}
+
+#diagnosis-panel .medical-table th:nth-child(1),
+#diagnosis-panel .medical-table td:nth-child(1) {
+    width: 100px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(2),
+#diagnosis-panel .medical-table td:nth-child(2) {
+    width: 120px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(3),
+#diagnosis-panel .medical-table td:nth-child(3) {
+    width: 120px;
+}
+
+#diagnosis-panel .medical-table th:nth-child(4),
+#diagnosis-panel .medical-table td:nth-child(4),
+#diagnosis-panel .medical-table th:nth-child(5),
+#diagnosis-panel .medical-table td:nth-child(5) {
+    width: 35%;
+}
+
+#diagnosis-panel .medical-table td:nth-child(4),
+#diagnosis-panel .medical-table td:nth-child(5) {
+    white-space: pre-line;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.7;
+    vertical-align: top;
+    font-size: 13px;
+}
+
+/* ========== 배지 ========== */
 .patient-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -152,87 +208,6 @@ body {
     color: #065f46;
 }
 
-/* ========== 진단 그리드 ========== */
-/* ========== 진단 그리드 ========== */
-.diagnosis-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.diagnosis-header {
-    display: grid;
-    grid-template-columns: 80px 100px 100px 2fr 2fr;
-    gap: 16px;
-    padding: 12px 24px;
-    background-color: #f9fafb;
-    border-radius: 8px 8px 0 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: #6b7280;
-}
-
-.diagnosis-item {
-    display: grid;
-    grid-template-columns: 80px 100px 100px 2fr 2fr;
-    gap: 16px;
-    padding: 16px 24px;
-    border-top: 1px solid #e5e7eb;
-    transition: background-color 0.2s;
-}
-
-.diagnosis-item:hover {
-    background-color: #f9fafb;
-}
-
-.diagnosis-text {
-    font-size: 12px;
-    line-height: 1.6;
-    white-space: normal;
-    color: #4b5563;
-    word-break: break-word;
-    hyphens: auto;
-    overflow-wrap: break-word;
-}
-
-#diagnosis-panel .medical-table {
-    table-layout: fixed;
-    width: 100%;
-}
-
-#diagnosis-panel .medical-table th:nth-child(1),
-#diagnosis-panel .medical-table td:nth-child(1) {
-    width: 100px;
-}
-
-#diagnosis-panel .medical-table th:nth-child(2),
-#diagnosis-panel .medical-table td:nth-child(2) {
-    width: 120px;
-}
-
-#diagnosis-panel .medical-table th:nth-child(3),
-#diagnosis-panel .medical-table td:nth-child(3) {
-    width: 120px;
-}
-
-#diagnosis-panel .medical-table th:nth-child(4),
-#diagnosis-panel .medical-table td:nth-child(4) {
-    width: 35%;
-}
-
-#diagnosis-panel .medical-table th:nth-child(5),
-#diagnosis-panel .medical-table td:nth-child(5) {
-    width: 35%;
-}
-
-#diagnosis-panel .medical-table td:nth-child(4),
-#diagnosis-panel .medical-table td:nth-child(5) {
-    white-space: pre-line;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.7;
-    vertical-align: top;
-    font-size: 13px;
-}
 /* ========== 페이지네이션 ========== */
 .medical-pagination {
     display: flex;
@@ -276,10 +251,17 @@ body {
     fill: none;
 }
 
-/* ========== 반응형 (태블릿) ========== */
+/* ========== 반응형: 태블릿 (1024px 이하) ========== */
 @media (max-width: 1024px) {
+    aside.sidebar,
+    .sidebar {
+        width: 80px !important;
+    }
+
     .medical-main {
-        padding: 24px 16px;
+        margin-left: 80px !important;
+        max-width: calc(100% - 80px) !important;
+        padding: 24px 16px !important;
     }
 
     .medical-page-title {
@@ -291,53 +273,38 @@ body {
         padding: 16px;
     }
 
-    /* 테이블 가로 스크롤 */
     .medical-table-wrapper {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .medical-table {
         min-width: 800px;
     }
 
-    .medical-table td {
-        white-space: normal !important;
-        word-break: break-word;
-    }
     .medical-table th,
     .medical-table td {
         padding: 12px 16px;
         font-size: 13px;
-    }
-
-    /* 진단 그리드 → 모바일에서 세로 배치 */
-    .diagnosis-header,
-    .diagnosis-item {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
-    .diagnosis-header {
-        display: none; /* 모바일에서 헤더 숨김 */
-    }
-
-    .diagnosis-item {
-        padding: 16px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        margin-bottom: 12px;
-    }
-
-    .diagnosis-item > div::before {
-        content: attr(data-label);
-        font-weight: 500;
-        color: #6b7280;
-        display: block;
-        margin-bottom: 4px;
+        white-space: normal;
+        word-break: break-word;
     }
 }
 
+/* ========== 반응형: 모바일 (768px 이하) ========== */
 @media (max-width: 768px) {
+    aside.sidebar,
+    .sidebar {
+        transform: translateX(-100%) !important;
+    }
+
+    .medical-main {
+        margin-left: 0 !important;
+        max-width: 100% !important;
+        padding: 16px !important;
+        margin-top: 60px !important;
+    }
+
     .medical-tabs-header {
         flex-direction: column;
     }
