@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List; // [추가]
-import java.util.Map; // [추가]
+import java.time.LocalDateTime; // [추가]
+import java.time.format.DateTimeFormatter; // [추가]
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class GuestReservationServiceImpl implements GuestReservationService {
@@ -127,7 +129,16 @@ public class GuestReservationServiceImpl implements GuestReservationService {
             throw new Exception("날짜와 시간은 필수입니다.");
         }
 
-        reservation.setTreatmentDate(treatmentDate + " " + treatmentTime);
+        // 과거 시간 검증 로직 추가
+        String dateTimeStr = treatmentDate + " " + treatmentTime; // "yyyy-MM-dd HH:mm"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime rvtnDateTime = LocalDateTime.parse(dateTimeStr, formatter);
+
+        if (rvtnDateTime.isBefore(LocalDateTime.now())) {
+            throw new Exception("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+        }
+
+        reservation.setTreatmentDate(dateTimeStr);
         System.out.println("진료 날짜/시간: " + reservation.getTreatmentDate());
 
         // 7. 예약 삽입
@@ -158,12 +169,8 @@ public class GuestReservationServiceImpl implements GuestReservationService {
         return "M";
     }
 
-    /**
-     * 비회원 예약 조회
-     */
     @Override
     public List<Map<String, Object>> findGuestReservationsByNameAndPhone(String name, String phone) {
-        // Mapper(DAO)를 호출하여 Map 리스트를 그대로 반환합니다.
         return guestMapper.findGuestReservationsMap(name, phone);
     }
 }
