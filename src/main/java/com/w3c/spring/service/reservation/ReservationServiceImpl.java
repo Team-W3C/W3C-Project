@@ -54,7 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
             c.setTime(endDate);
             c.add(Calendar.DATE, 1);
             String exclusiveEndDate = sdfDate.format(c.getTime());
-            eventList.add(new FullCalendarEventVO("휴무", "background", startDate, exclusiveEndDate, "unavailable-date"));
+//            eventList.add(new FullCalendarEventVO("휴무", "background", startDate, exclusiveEndDate, "unavailable-date"));
         }
         return eventList;
     }
