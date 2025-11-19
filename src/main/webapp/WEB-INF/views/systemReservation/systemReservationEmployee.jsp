@@ -49,28 +49,28 @@
                     <span class="room-code">(MRI-01)</span>
                 </div>
             </button>
-            <button class="room-btn" data-room="ct" data-facility-no="2" type="button">
+            <button class="room-btn" data-room="ct" data-facility-no="5" type="button">
                 <span class="room-indicator ct"></span>
                 <div>
                     <span>CT</span>
                     <span class="room-code">(CT-01)</span>
                 </div>
             </button>
-            <button class="room-btn" data-room="ultrasound" data-facility-no="3" type="button">
+            <button class="room-btn" data-room="ultrasound" data-facility-no="4" type="button">
                 <span class="room-indicator ultrasound"></span>
                 <div>
                     <span>초음파</span>
                     <span class="room-code">(초음파-01)</span>
                 </div>
             </button>
-            <button class="room-btn" data-room="xray" data-facility-no="5" type="button">
+            <button class="room-btn" data-room="xray" data-facility-no="2" type="button">
                 <span class="room-indicator xray"></span>
                 <div>
                     <span>X-Ray</span>
                     <span class="room-code">(X Ray-01)</span>
                 </div>
             </button>
-            <button class="room-btn" data-room="endoscopy" data-facility-no="7" type="button">
+            <button class="room-btn" data-room="endoscopy" data-facility-no="3" type="button">
                 <span class="room-indicator endoscopy"></span>
                 <div>
                     <span>내시경</span>
