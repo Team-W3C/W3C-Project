@@ -14,7 +14,11 @@
 <body>
 
 <%-- 현재 페이지 URI 가져오기 --%>
-<c:set var="currentURI" value="${pageContext.request.requestURI}" />
+<c:set var="currentURI" value="${requestScope['jakarta.servlet.forward.request_uri']}" />
+
+<c:if test="${empty currentURI}">
+    <c:set var="currentURI" value="${pageContext.request.requestURI}" />
+</c:if>
 
 <c:set var="isDetailActive" value="${fn:contains(currentURI, '/detail')}" />
 <c:set var="isMainActive" value="${fn:contains(currentURI, '/reservation/main')}" />
