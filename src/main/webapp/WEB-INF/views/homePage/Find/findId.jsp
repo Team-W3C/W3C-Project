@@ -15,32 +15,37 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <%-- 공통 CSS (헤더, 푸터) --%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/header.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/homePage/footer.css">
+    <%-- 공통 CSS --%>
+    <link rel="stylesheet" href="${contextPath}/css/common/homePage/header.css">
+    <link rel="stylesheet" href="${contextPath}/css/common/homePage/footer.css">
+    <link rel="stylesheet" href="${contextPath}/css/Find/find.css">
 
-    <%-- 이 페이지 전용 CSS (로그인, 회원가입 등과 공유 가능) --%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Find/find.css">
+    <script>
+        // Controller에서 전달된 메시지가 있으면 알림창 띄우기
+        window.onload = function() {
+            var message = "${message}";
+            var error = "${error}";
+
+            if(message) {
+                alert(message);
+                location.href = "${contextPath}/member/loginPage"; // 찾기 성공 시 로그인 페이지로 이동
+            }
+            if(error) {
+                alert(error);
+            }
+        }
+    </script>
 </head>
 <body>
 
-<%--
-  '아이디 찾기' 페이지에 맞는 헤더를 include 합니다.
-  (예: 로그아웃 상태의 헤더)
-  경로는 프로젝트 구조에 맞게 수정하세요.
---%>
 <jsp:include page="/WEB-INF/views/common/homePageMember/header.jsp" />
 
-<%-- 메인 콘텐츠: 아이디 찾기 폼 --%>
 <main class="form-wrapper">
     <div class="form-container">
         <h1 class="form-title">아이디 찾기</h1>
 
-        <%--
-          아이디 찾기 결과를 처리할 Controller URL을 action에 입력합니다.
-          (예: /findIdResult.me)
-        --%>
-        <form action="${contextPath}/findId.me" method="post" id="findIdForm">
+        <%-- action 경로 수정: /member/findId.me --%>
+        <form action="${contextPath}/member/findId.me" method="post" id="findIdForm">
 
             <div class="form-group">
                 <label for="memberName">이름</label>
@@ -57,17 +62,14 @@
         </form>
 
         <div class="form-links">
-            <%-- 비밀번호 찾기 페이지로 이동하는 링크 --%>
             <a href="${contextPath}/member/findPwd">비밀번호 찾기</a>
             <span>|</span>
-            <%-- 로그인 페이지로 이동하는 링크 --%>
-            <a href="${pageContext.request.contextPath}/member/loginPage">로그인</a>
+            <a href="${contextPath}/member/loginPage">로그인</a>
         </div>
 
     </div>
 </main>
 
-<%-- 공통 푸터 --%>
 <jsp:include page="/WEB-INF/views/common/homePageFooter/footer.jsp" />
 
 </body>

@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.w3c.spring.model.mapper.MemberMapper">
-    <!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
+
     <resultMap id="memberResultMap" type="Member">
         <result column="MEMBER_NO" property="memberNo"/>
         <result column="MEMBER_ID" property="memberId"/>
@@ -21,107 +21,50 @@
         <result column="MEMBER_ALLERGY" property="memberAllergy"/>
         <result column="MEMBER_STATUS" property="memberStatus"/>
         <result column="STAFF_NO" property="staffNo"/>
-        <result column="DEPARTMENT_NAME" property="departmentName"/> <result column="POSITION_NAME" property="positionName"/> </resultMap>
+        <result column="DEPARTMENT_NAME" property="departmentName"/>
+        <result column="POSITION_NAME" property="positionName"/>
+    </resultMap>
 
     <select id="getMemberById" resultMap="memberResultMap" parameterType="string">
-        SELECT
-        M.MEMBER_NO,
-        M.MEMBER_ID,
-        M.MEMBER_PWD,
-        M.MEMBER_NAME,
-        M.MEMBER_GENDER,
-        M.MEMBER_RRN,
-        M.MEMBER_PHONE,
-        M.MEMBER_EMAIL,
-        M.MEMBER_ADDRESS,
-        M.MEMBER_JOIN_DATE,
-        M.MEMBER_BLOOD_TYPE,
-        M.MEMBER_CHRONIC_DISEASE,
-        M.MEMBER_ALLERGY,
-        M.MEMBER_STATUS,
-        S.STAFF_NO,
-        D.DEPARTMENT_NAME,
+        SELECT M.*, S.STAFF_NO, D.DEPARTMENT_NAME,
         COALESCE(DR.DOCTOR_POSITION, N.NURSE_POSITION) AS POSITION_NAME
-        FROM
-        MEMBER M
-        LEFT JOIN
-        STAFF S ON M.STAFF_NO = S.STAFF_NO
-        LEFT JOIN
-        DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
-        LEFT JOIN
-        NURSE N ON S.STAFF_NO = N.STAFF_NO
-        LEFT JOIN
-        DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
-        WHERE
-        M.MEMBER_ID = #{memberId}
-        AND M.MEMBER_PWD = #{memberPwd}
-        AND M.MEMBER_STATUS = 'T'
+        FROM MEMBER M
+        LEFT JOIN STAFF S ON M.STAFF_NO = S.STAFF_NO
+        LEFT JOIN DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
+        LEFT JOIN NURSE N ON S.STAFF_NO = N.STAFF_NO
+        LEFT JOIN DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE M.MEMBER_ID = #{memberId} AND M.MEMBER_PWD = #{memberPwd} AND M.MEMBER_STATUS = 'T'
     </select>
 
     <insert id="signUpMember" parameterType="Member">
-        INSERT INTO MEMBER
-        (
-        MEMBER_NO,
-        MEMBER_ID,
-        MEMBER_PWD,
-        MEMBER_NAME,
-        MEMBER_GENDER,
-        MEMBER_RRN,
-        MEMBER_PHONE,
-        MEMBER_EMAIL,
-        MEMBER_ADDRESS,
-        MEMBER_JOIN_DATE,
-        MEMBER_BLOOD_TYPE,
-        MEMBER_CHRONIC_DISEASE,
-        MEMBER_ALLERGY,
-        MEMBER_STATUS
-        )
-        VALUES(
-        MEMBER_SEQ.NEXTVAL,
-        #{memberId},
-        #{memberPwd},
-        #{memberName},
-        #{memberGender},
-        #{memberRrn},
-        #{memberPhone},
-        #{memberEmail},
-        #{memberAddress},
-        SYSDATE,
-        #{memberBloodType},
-        #{memberChronicDisease},
-        #{memberAllergy},
-        'T'
+        INSERT INTO MEMBER (
+        MEMBER_NO, MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_GENDER,
+        MEMBER_RRN, MEMBER_PHONE, MEMBER_EMAIL, MEMBER_ADDRESS,
+        MEMBER_JOIN_DATE, MEMBER_BLOOD_TYPE, MEMBER_CHRONIC_DISEASE,
+        MEMBER_ALLERGY, MEMBER_STATUS
+        ) VALUES(
+        MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPwd}, #{memberName}, #{memberGender},
+        #{memberRrn}, #{memberPhone}, #{memberEmail}, #{memberAddress},
+        SYSDATE, #{memberBloodType}, #{memberChronicDisease}, #{memberAllergy}, 'T'
         )
     </insert>
 
     <select id="getMemberCountById" resultType="_int">
-        SELECT COUNT(*)
-        FROM MEMBER
-        WHERE MEMBER_ID = #{memberId}
+        SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_STATUS = 'T'
     </select>
 
-    <insert id="insertGuestMember"
-            parameterType="com.w3c.spring.model.vo.Member"
-            useGeneratedKeys="true"
-            keyProperty="memberNo">
-
+    <insert id="insertGuestMember" parameterType="com.w3c.spring.model.vo.Member" useGeneratedKeys="true" keyProperty="memberNo">
         <selectKey keyProperty="memberNo" resultType="long" order="BEFORE">
             SELECT MEMBER_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-
         INSERT INTO MEMBER (
         member_no, member_name, member_gender, member_rrn, member_phone,
         member_email, member_address, member_blood_type,
-        member_chronic_disease, member_status,
-
-        -- 비회원이므로 NULL 허용 필드들은 제외하거나 NULL로 명시
-        member_id, member_pwd, member_join_date, staff_no
+        member_chronic_disease, member_status, member_id, member_pwd, member_join_date
         ) VALUES (
         #{memberNo}, #{memberName}, #{memberGender}, #{memberRrn}, #{memberPhone},
         #{memberEmail}, #{memberAddress}, #{memberBloodType},
-        #{memberChronicDisease}, #{memberStatus},
-
-        NULL, NULL, SYSDATE, NULL
+        #{memberChronicDisease}, #{memberStatus}, NULL, NULL, SYSDATE
         )
     </insert>
 
@@ -131,57 +74,27 @@
         <result column="MEMBER_EMAIL" property="memberEmail"/>
         <result column="MEMBER_PHONE" property="memberPhone"/>
     </resultMap>
-    <select id="selectMemberByBoardId" parameterType="_int"  resultMap="boardMemberSelectMap">
-        SELECT
-        MEMBER_NO,
-        MEMBER_NAME,
-        MEMBER_EMAIL,
-        MEMBER_PHONE
-        FROM MEMBER
-        JOIN BOARD  USING(MEMBER_NO)
-        WHERE BOARD_ID = #{boardId}
+
+    <select id="selectMemberByBoardId" parameterType="_int" resultMap="boardMemberSelectMap">
+        SELECT MEMBER_NO, MEMBER_NAME, MEMBER_EMAIL, MEMBER_PHONE
+        FROM MEMBER JOIN BOARD USING(MEMBER_NO) WHERE BOARD_ID = #{boardId}
     </select>
 
     <select id="selectMemberById" resultMap="memberResultMap" parameterType="string">
-        SELECT
-        M.MEMBER_NO,
-        M.MEMBER_ID,
-        M.MEMBER_PWD,
-        M.MEMBER_NAME,
-        M.MEMBER_GENDER,
-        M.MEMBER_RRN,
-        M.MEMBER_PHONE,
-        M.MEMBER_EMAIL,
-        M.MEMBER_ADDRESS,
-        M.MEMBER_JOIN_DATE,
-        M.MEMBER_BLOOD_TYPE,
-        M.MEMBER_CHRONIC_DISEASE,
-        M.MEMBER_ALLERGY,
-        M.MEMBER_STATUS,
-        S.STAFF_NO,
-        D.DEPARTMENT_NAME,
+        SELECT M.*, S.STAFF_NO, D.DEPARTMENT_NAME,
         COALESCE(DR.DOCTOR_POSITION, N.NURSE_POSITION) AS POSITION_NAME
-        FROM
-        MEMBER M
-        LEFT JOIN
-        STAFF S ON M.STAFF_NO = S.STAFF_NO
-        LEFT JOIN
-        DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
-        LEFT JOIN
-        NURSE N ON S.STAFF_NO = N.STAFF_NO
-        LEFT JOIN
-        DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
-        WHERE
-        M.MEMBER_ID = #{memberId}
-        AND M.MEMBER_STATUS = 'T'
+        FROM MEMBER M
+        LEFT JOIN STAFF S ON M.STAFF_NO = S.STAFF_NO
+        LEFT JOIN DOCTOR DR ON S.STAFF_NO = DR.STAFF_NO
+        LEFT JOIN NURSE N ON S.STAFF_NO = N.STAFF_NO
+        LEFT JOIN DEPARTMENT D ON DR.DEPARTMENT_NO = D.DEPARTMENT_NO OR N.DEPARTMENT_NO = D.DEPARTMENT_NO
+        WHERE M.MEMBER_ID = #{memberId} AND M.MEMBER_STATUS = 'T'
     </select>
 
     <update id="updateMemberInfo" parameterType="com.w3c.spring.model.vo.Member">
         UPDATE MEMBER
-        SET member_name = #{memberName},
-        member_phone = #{memberPhone},
-        member_email = #{memberEmail},
-        member_address = #{memberAddress},
+        SET member_name = #{memberName}, member_phone = #{memberPhone},
+        member_email = #{memberEmail}, member_address = #{memberAddress},
         member_blood_type = #{memberBloodType,jdbcType=VARCHAR},
         member_chronic_disease = #{memberChronicDisease,jdbcType=VARCHAR},
         member_allergy = #{memberAllergy,jdbcType=VARCHAR}
@@ -189,35 +102,25 @@
     </update>
 
     <select id="getMemberByNo" resultMap="memberResultMap" parameterType="long">
-        SELECT *
-        FROM MEMBER
-        WHERE member_no = #{memberNo}
+        SELECT * FROM MEMBER WHERE member_no = #{memberNo}
     </select>
 
     <update id="updatePassword">
-        UPDATE MEMBER
-        SET member_pwd = #{newPassword}
-        WHERE member_id = #{memberId}
+        UPDATE MEMBER SET member_pwd = #{newPassword} WHERE member_id = #{memberId}
     </update>
 
     <update id="deactivateMember">
-        UPDATE MEMBER
-        SET member_status = 'F'
-        WHERE member_id = #{memberId}
+        UPDATE MEMBER SET member_status = 'F' WHERE member_id = #{memberId}
     </update>
 
-    <!-- ✅ 환자 목록 조회 (STAFF_NO IS NULL인 일반 환자만) -->
     <select id="getPatientList" resultMap="memberResultMap">
-        SELECT 
-            MEMBER_NO,
-            MEMBER_ID,
-            MEMBER_NAME,
-            MEMBER_PHONE,
-            MEMBER_EMAIL,
-            MEMBER_STATUS
-        FROM MEMBER
-        WHERE STAFF_NO IS NULL
-          AND MEMBER_STATUS = 'T'
-        ORDER BY MEMBER_NAME
+        SELECT MEMBER_NO, MEMBER_ID, MEMBER_NAME, MEMBER_PHONE, MEMBER_EMAIL, MEMBER_STATUS
+        FROM MEMBER WHERE STAFF_NO IS NULL AND MEMBER_STATUS = 'T' ORDER BY MEMBER_NAME
     </select>
+
+    <select id="findMemberIdByNameAndPhone" resultType="string">
+        SELECT MEMBER_ID FROM MEMBER
+        WHERE MEMBER_NAME = #{memberName} AND MEMBER_PHONE = #{memberPhone} AND MEMBER_STATUS = 'T'
+    </select>
+
 </mapper>

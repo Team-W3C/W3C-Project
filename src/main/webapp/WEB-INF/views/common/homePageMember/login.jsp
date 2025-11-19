@@ -46,9 +46,11 @@
         </form>
 
         <div class="additional-links">
-            <p class="links"><a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a></p> |
-            <p class="links"><a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a></p> |
-            <p class="links"><a href="${pageContext.request.contextPath}/member/signUpPage">회원가입</a></p>
+            <a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a>
+            <span>|</span>
+            <a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a>
+            <span>|</span>
+            <a href="${pageContext.request.contextPath}/member/signUpPage">회원가입</a>
         </div>
     </div>
 </main>
