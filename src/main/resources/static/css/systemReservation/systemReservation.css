@@ -83,7 +83,7 @@ body {
     --radius-full: 9999px;
 }
 
-/* ▼▼▼ [수정] "병원 안내" 페이지와 동일하게 레이아웃 추가 ▼▼▼ */
+/* 레이아웃 */
 .page-wrapper {
     display: flex;
     width: 1280px;
@@ -96,22 +96,14 @@ body {
     flex: 1;
     max-width: 961px;
     min-width: 0;
-
-    /* [추가] 원본 .reservation-container의 속성을 일부 가져옴 */
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
 }
-/* ▲▲▲ [수정 완료] ▲▲▲ */
-
-
-/* [삭제] .reservation-container { ... margin-left: 256px; } 스타일 제거 */
-
 
 /* ========================================
     공통 컴포넌트
     ======================================== */
-/* 버튼 */
 .btn-calendar {
     display: flex;
     align-items: center;
@@ -126,13 +118,16 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     transition: background-color 0.2s;
 }
+
 .btn-calendar:hover {
     background-color: #0a5c5f;
 }
+
 .btn-calendar .icon {
     width: 16px;
     height: 16px;
 }
+
 .btn-nav {
     display: flex;
     align-items: center;
@@ -146,9 +141,11 @@ body {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .btn-nav:hover {
     background-color: var(--bg-gray);
 }
+
 .btn-nav .icon {
     width: 20px;
     height: 20px;
@@ -173,6 +170,7 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .reservation-header h1 {
     font-size: 16px;
     font-weight: 400;
@@ -188,11 +186,13 @@ body {
     color: var(--text-primary);
     margin-bottom: var(--spacing-md);
 }
+
 .room-list {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
 }
+
 .room-btn {
     display: flex;
     align-items: center;
@@ -205,52 +205,67 @@ body {
     cursor: pointer;
     transition: all 0.2s;
 }
+
 .room-btn:hover {
     background-color: var(--bg-gray);
 }
+
 .room-btn.active {
     border-color: var(--primary-color);
 }
+
 .room-indicator {
     width: 12px;
     height: 12px;
     border-radius: var(--radius-full);
 }
+
 .room-btn[data-room="mri"] .room-indicator {
     background-color: var(--mri-color);
 }
+
 .room-btn[data-room="mri"].active {
     border-color: var(--mri-color);
 }
+
 .room-btn[data-room="ultrasound"] .room-indicator {
     background-color: var(--ultrasound-color);
 }
+
 .room-btn[data-room="ultrasound"].active {
     border-color: var(--ultrasound-color);
 }
+
 .room-btn[data-room="ct"] .room-indicator {
     background-color: var(--ct-color);
 }
+
 .room-btn[data-room="ct"].active {
     border-color: var(--ct-color);
 }
+
 .room-btn[data-room="xray"] .room-indicator {
     background-color: var(--xray-color);
 }
+
 .room-btn[data-room="xray"].active {
     border-color: var(--xray-color);
 }
+
 .room-btn[data-room="endoscopy"] .room-indicator {
     background-color: var(--endoscopy-color);
 }
+
 .room-btn[data-room="endoscopy"].active {
     border-color: var(--endoscopy-color);
 }
+
 .room-name {
     font-size: 14px;
     font-weight: 400;
     color: var(--text-primary);
 }
+
 .room-code {
     font-size: 12px;
     color: var(--text-secondary);
@@ -265,6 +280,7 @@ body {
     align-items: center;
     padding: var(--spacing-lg);
 }
+
 .reservation-calendar-nav h2 {
     font-size: 18px;
     font-weight: 400;
@@ -280,6 +296,7 @@ body {
     grid-template-columns: repeat(7, 1fr);
     border-bottom: 1px solid var(--border-color);
 }
+
 .calendar-day {
     padding: var(--spacing-md);
     font-size: 14px;
@@ -287,58 +304,73 @@ body {
     color: var(--text-secondary);
     text-align: center;
 }
+
 .calendar-day.sunday {
     color: var(--sunday-color);
 }
+
 .calendar-day.saturday {
     color: var(--saturday-color);
 }
+
 .calendar-body {
     display: flex;
     flex-direction: column;
 }
+
 .calendar-row {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     border-bottom: 1px solid var(--border-color);
 }
+
 .calendar-row:last-child {
     border-bottom: none;
 }
+
 .calendar-cell {
     min-height: 180px;
     padding: var(--spacing-sm);
     border-right: 1px solid var(--border-color);
     position: relative;
 }
+
 .calendar-cell:last-child {
     border-right: none;
 }
+
 .calendar-cell.empty {
     background-color: var(--bg-gray);
 }
+
 .calendar-cell.is-past {
     background-color: #f9fafb;
     opacity: 0.7;
 }
+
 .calendar-cell.is-past .status-item {
     cursor: not-allowed;
 }
+
 .calendar-cell.today {
     background-color: var(--primary-light);
 }
+
 .calendar-cell.sunday .date {
     color: var(--sunday-color);
 }
+
 .calendar-cell.saturday .date {
     color: var(--saturday-color);
 }
+
 .date {
     font-size: 14px;
     font-weight: 400;
     color: var(--text-primary);
     line-height: 20px;
 }
+
 .date-today {
     display: flex;
     align-items: center;
@@ -359,6 +391,7 @@ body {
     gap: var(--spacing-xs);
     margin-top: var(--spacing-sm);
 }
+
 .status-item {
     display: flex;
     align-items: center;
@@ -367,46 +400,59 @@ body {
     height: 24px;
     border-radius: var(--radius-sm);
 }
+
 .status-item.available {
     background-color: var(--available-bg);
 }
+
 .status-item.full {
     background-color: var(--full-bg);
 }
+
 .status-item.closed {
     background-color: var(--closed-bg);
 }
+
 .status-dot {
     width: 8px;
     height: 8px;
     border-radius: var(--radius-full);
 }
+
 .status-item.mri .status-dot {
     background-color: var(--mri-color);
 }
+
 .status-item.ultrasound .status-dot {
     background-color: var(--ultrasound-color);
 }
+
 .status-item.ct .status-dot {
     background-color: var(--ct-color);
 }
+
 .status-item.xray .status-dot {
     background-color: var(--xray-color);
 }
+
 .status-item.endoscopy .status-dot {
     background-color: var(--endoscopy-color);
 }
+
 .status-text {
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
 }
+
 .status-item.available .status-text {
     color: var(--available-text);
 }
+
 .status-item.full .status-text {
     color: var(--full-text);
 }
+
 .status-item.closed .status-text {
     color: var(--closed-text);
 }
@@ -420,30 +466,37 @@ body {
     color: var(--text-primary);
     margin-bottom: var(--spacing-md);
 }
+
 .legend-list {
     display: flex;
     gap: var(--spacing-lg);
     flex-wrap: wrap;
 }
+
 .legend-item {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
 }
+
 .legend-box {
     width: 48px;
     height: 24px;
     border-radius: var(--radius-sm);
 }
+
 .legend-box.available {
     background-color: var(--available-bg);
 }
+
 .legend-box.full {
     background-color: var(--full-bg);
 }
+
 .legend-box.closed {
     background-color: var(--closed-bg);
 }
+
 .legend-badge {
     display: flex;
     align-items: center;
@@ -456,6 +509,7 @@ body {
     background-color: var(--primary-color);
     border-radius: var(--radius-full);
 }
+
 .legend-text {
     font-size: 14px;
     font-weight: 400;
@@ -471,37 +525,38 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    align-items: center;
+    z-index: 10000;
     justify-content: center;
+    align-items: center;
 }
 
-.modal-overlay.active {
-    display: flex;
+.modal-overlay.show {
+    display: flex !important;
 }
 
 .modal-container {
-    background-color: white;
+    background-color: #fff;
+    width: 400px;
+    max-width: 90%;
     border-radius: 12px;
-    max-width: 750px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    animation: modalSlideIn 0.3s ease-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease-out;
 }
 
-@keyframes modalSlideIn {
+@keyframes slideUp {
     from {
+        transform: translateY(20px);
         opacity: 0;
-        transform: translateY(-20px);
     }
     to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
     }
 }
 
@@ -589,38 +644,40 @@ body {
     margin-bottom: 16px;
 }
 
+/* [수정] 시간 그리드 스타일 (버튼 -> 단순 표시) */
 .time-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
 }
 
-.time-btn {
-    padding: 12px;
-    border: 2px solid #0e787c;
+/* [수정] 단순 표시용 타임 슬롯 스타일 */
+.time-slot-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
     border-radius: 8px;
-    background-color: white;
-    color: #0e787c;
     font-size: 14px;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+    cursor: default; /* 커서 기본으로 변경 */
+    transition: all 0.2s ease;
 }
 
-.time-btn:hover {
+/* 예약 가능 상태 */
+.time-slot-display.available {
     background-color: #f0fdfa;
+    color: #0e787c;
+    border: 1px solid #0e787c;
+    font-weight: 600;
 }
 
-.time-btn.selected {
-    background-color: #0e787c;
-    color: white;
-}
-
-.time-btn:disabled {
-    border-color: #e5e7eb;
+/* 예약 마감 상태 */
+.time-slot-display.booked {
+    background-color: #f3f4f6;
     color: #9ca3af;
-    background-color: #f9fafb;
-    cursor: not-allowed;
+    border: 1px solid #e5e7eb;
+    text-decoration: line-through;
 }
 
 .facility-info-section {
@@ -630,7 +687,7 @@ body {
     padding: 24px;
     background-color: #f9fafb;
     border-radius: 8px;
-    margin-top: 32px; /* 위쪽 콘텐츠와 간격 */
+    margin-top: 32px;
 }
 
 .info-item {
@@ -691,12 +748,12 @@ body {
     cursor: not-allowed;
 }
 
-/* JS로 숨김/표시를 제어하기 위한 유틸리티 클래스 */
+/* 유틸리티 */
 .hidden {
     display: none !important;
 }
 
-/* 상태별 안내창 (점검, 마감) */
+/* 상태별 안내창 */
 .status-notice {
     display: flex;
     align-items: center;
@@ -705,56 +762,62 @@ body {
     border-radius: 8px;
     margin-bottom: 24px;
 }
+
 .notice-icon {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
 }
+
 .notice-text {
     font-size: 14px;
     font-weight: 500;
 }
 
-/* '점검' 스타일 (빨간색) */
+/* '점검' 스타일 */
 .notice-closed {
     background-color: var(--closed-bg);
     color: var(--closed-text);
 }
+
 .notice-closed .notice-icon {
     color: var(--closed-text);
 }
 
-/* '마감' 스타일 (노란색) */
+/* '마감' 스타일 */
 .notice-full {
     background-color: var(--full-bg);
     color: var(--full-text);
 }
+
 .notice-full .notice-icon {
     color: var(--full-text);
 }
 
-/* 상태 상세 안내 (회색 배경) */
+/* 상태 상세 안내 */
 .status-details {
     padding: 24px;
-    background-color: #f9fafb; /* --bg-gray */
+    background-color: #f9fafb;
     border-radius: 8px;
 }
+
 .details-label {
     display: block;
     font-size: 16px;
     font-weight: 600;
-    color: #1f2937; /* --text-primary */
+    color: #1f2937;
     margin-bottom: 16px;
 }
+
 .details-text {
     font-size: 14px;
-    color: #6b7280; /* --text-secondary */
+    color: #6b7280;
     line-height: 1.6;
 }
 
 
 /* ========================================
-    반응형 (두 파일의 미디어 쿼리 통합)
+    반응형
     ======================================== */
 
 @media (max-width: 1024px) {
@@ -768,39 +831,46 @@ body {
     .intro-container {
         width: 100%;
         max-width: none;
-        padding: 0; /* intro-container 자체의 패딩은 제거 */
+        padding: 0;
     }
 
-    /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
     .room-list {
         gap: var(--spacing-sm);
     }
+
     .room-btn {
         flex: 1 1 calc(50% - var(--spacing-sm));
         min-width: 150px;
     }
+
     .calendar-cell {
         min-height: 120px;
     }
+
     .calendar-day,
     .date,
     .status-text {
         font-size: 12px;
     }
+
     .status-list {
         gap: 2px;
     }
+
     .status-item {
         height: 20px;
         padding: 0 4px;
     }
+
     .status-dot {
         width: 6px;
         height: 6px;
     }
+
     .legend-list {
         gap: var(--spacing-md);
     }
+
     .legend-box {
         width: 36px;
         height: 20px;
@@ -813,34 +883,37 @@ body {
     }
 
     .intro-container {
-        gap: var(--spacing-md); /* 모바일에서는 gap 감소 */
+        gap: var(--spacing-md);
     }
 
-
-
-    /* --- 2. 콘텐츠 (systemReservationEmployee.css) --- */
     .reservation-header {
         flex-direction: column;
         gap: var(--spacing-md);
         align-items: stretch;
     }
+
     .btn-calendar {
         width: 100%;
         justify-content: center;
     }
+
     .room-btn {
         flex: 1 1 100%;
     }
+
     .calendar-cell {
         min-height: 80px;
         padding: var(--spacing-xs);
     }
+
     .calendar-day {
         padding: var(--spacing-sm);
     }
+
     .status-list {
-        display: none; /* 모바일에서는 상세 상태 숨김 */
+        display: none;
     }
+
     .legend-list {
         flex-direction: column;
         gap: var(--spacing-sm);
@@ -859,7 +932,7 @@ body {
     }
 
     .time-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* 모바일에서는 3열 */
     }
 
     .facility-info-section {
