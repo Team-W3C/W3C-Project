@@ -83,9 +83,9 @@
 
     <!-- 필터 탭 -->
     <nav class="inquiry-filter-tabs">
-        <button class="filter-tab filter-tab-active">전체</button>
-        <button class="filter-tab">대기중</button>
-        <button class="filter-tab">진행중</button>
+        <button class="filter-tab ${empty status ? 'filter-tab-active' : ''}" data-status="">전체</button>
+        <button class="filter-tab ${status == '대기중' ? 'filter-tab-active' : ''}" data-status="대기중">대기중</button>
+        <button class="filter-tab ${status == '완료' ? 'filter-tab-active' : ''}" data-status="완료">완료</button>
     </nav>
 
     <!-- 문의사항 목록 -->

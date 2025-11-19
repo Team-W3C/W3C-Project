@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Mapper
 public interface NotificationMapper {
-    int selectNotificationListCount();
-    List<Board> selectNotificationList(RowBounds rowBounds);
+    int selectNotificationListCount(Map<String, Object> param);
+    List<Board> selectNotificationList(Map<String, Object> param, RowBounds rowBounds);
     Notification selectNotificationById(int notificationNo);
     int insertNotification(NotificationInsert notificationInsert);
 

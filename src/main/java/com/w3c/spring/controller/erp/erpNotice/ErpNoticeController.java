@@ -18,21 +18,11 @@ import java.util.Map;
 public class ErpNoticeController {
     private final BoardService boardService;
     @GetMapping("/notice")
-    public String erpNotice(@RequestParam(value = "cpage", defaultValue = "1") int curentPage, Model model) {
-        Map<String,Object> result = boardService.selectNotificationList(curentPage);
-        Map<String, Object> stats = boardService.getInquiryStats();
-
-        model.addAttribute("result", result.get("list"));
-        model.addAttribute("pi", result.get("pi"));
-        model.addAttribute("stats", stats);
-
-        return "erp/notice/erp-notice";
-    }
-    @GetMapping("/inquiry")
-    public String erpInquiry(@RequestParam(value = "cpage", defaultValue = "1") int cuurentPage,
-                             @RequestParam(value = "keyword", defaultValue = "") String keyword,
-                             @RequestParam(value = "category", defaultValue = "") String category,
-                             Model model) {
+    public String erpNotice(
+            @RequestParam(value = "cpage", defaultValue = "1") int curentPage,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            Model model) {
 
         if ("undefined".equals(keyword)) {
             keyword = "";
@@ -40,13 +30,44 @@ public class ErpNoticeController {
         if ("undefined".equals(category)) {
             category = "";
         }
+
+        Map<String,Object> result = boardService.selectNotificationList(curentPage, keyword, category);
         Map<String, Object> stats = boardService.getInquiryStats();
-        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category);
+
+        model.addAttribute("result", result.get("list"));
+        model.addAttribute("pi", result.get("pi"));
+        model.addAttribute("stats", stats);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", category);
+
+        return "erp/notice/erp-notice";
+    }
+    @GetMapping("/inquiry")
+    public String erpInquiry(
+            @RequestParam(value = "cpage", defaultValue = "1") int cuurentPage,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            @RequestParam(value = "status", defaultValue = "") String status,
+            Model model) {
+
+        if ("undefined".equals(keyword)) {
+            keyword = "";
+        }
+        if ("undefined".equals(category)) {
+            category = "";
+        }
+        if ("undefined".equals(status)) {
+            status = "";
+        }
+
+        Map<String, Object> stats = boardService.getInquiryStats();
+        Map<String, Object> result = boardService.getBoardList(cuurentPage, keyword, category, status);
 
         model.addAttribute("list", result.get("list"));
         model.addAttribute("pi",  result.get("pi"));
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
+        model.addAttribute("status", status);
         model.addAttribute("stats", stats);
 
         System.out.println(result.get("list"));

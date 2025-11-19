@@ -79,7 +79,8 @@
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="b" items="${list}">
-                        <tr onclick="checkSecret('${b.boardId}', '${b.boardSecretTypeName}')" style="cursor: pointer;">
+<%--                        <tr onclick="checkSecret('${b.boardId}', '${b.boardSecretTypeName}')" style="cursor: pointer;">--%>
+                        <tr onclick="location.href='${pageContext.request.contextPath}/member/inquiry-detail?bno=${b.boardId}'">
                             <td>${b.boardId}</td>
                             <td>${b.boardTypeName}</td>
                             <td>${b.boardTitle}</td>
@@ -179,19 +180,19 @@
         });
     });
 
-    // [추가됨] 비밀글 체크 및 이동 함수
-    function checkSecret(boardId, secretType) {
-        // 비밀글 여부 확인
-        if (secretType === '비밀') {
-            // 작성자 본인 여부 체크 로직을 추가하려면,
-            // JSP에서 작성자 ID와 로그인한 ID를 비교하여 파라미터로 넘겨주면 됩니다.
-            // 현재 요청사항: 비밀이면 무조건 alert
-            alert("비밀글입니다.");
-        } else {
-            // 공개글이면 상세 페이지로 이동
-            location.href = '${pageContext.request.contextPath}/member/inquiry-detail?bno=' + boardId;
-        }
-    }
+    <%--// [추가됨] 비밀글 체크 및 이동 함수--%>
+    <%--function checkSecret(boardId, secretType) {--%>
+    <%--    // 비밀글 여부 확인--%>
+    <%--    if (secretType === '비밀') {--%>
+    <%--        // 작성자 본인 여부 체크 로직을 추가하려면,--%>
+    <%--        // JSP에서 작성자 ID와 로그인한 ID를 비교하여 파라미터로 넘겨주면 됩니다.--%>
+    <%--        // 현재 요청사항: 비밀이면 무조건 alert--%>
+    <%--        alert("비밀글입니다.");--%>
+    <%--    } else {--%>
+    <%--        // 공개글이면 상세 페이지로 이동--%>
+    <%--        location.href = '${pageContext.request.contextPath}/member/inquiry-detail?bno=' + boardId;--%>
+    <%--    }--%>
+    <%--}--%>
 </script>
 </body>
 </html>

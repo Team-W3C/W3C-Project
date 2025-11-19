@@ -57,6 +57,9 @@
             <if test="category != null and category != ''">
                 AND BOARD_TYPE = #{category}
             </if>
+            <if test="status != null and status != ''">
+                AND BOARD_STATUS = #{status}
+            </if>
         </where>
         ORDER BY BOARD_ID DESC
     </select>
@@ -74,6 +77,9 @@
             </if>
             <if test="category != null and category != ''">
                 AND BOARD_TYPE = #{category}
+            </if>
+            <if test="status != null and status != ''">
+                AND BOARD_STATUS = #{status}
             </if>
         </where>
     </select>

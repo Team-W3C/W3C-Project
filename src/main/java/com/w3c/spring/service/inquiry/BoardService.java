@@ -18,7 +18,7 @@ public interface BoardService {
     Board selectInquiryDetail(int boardNo);
     int registerAnswer(int boardId, int staffNo, String answerContent);
 
-    Map<String, Object> selectNotificationList(int curentPage);
+    Map<String, Object> selectNotificationList(int curentPage, String keyword, String category);
     Notification selectNotificationById(int notificationNo);
     int insertNotification(NotificationInsert notificationInsert);
     Map<String, Object> getInquiryStats();
@@ -31,5 +31,5 @@ public interface BoardService {
 
     Map<String, Object> selectPatientNoticeList(int curentPage, String keyword, String category);
 
-    Map<String, Object> getBoardList(int cuurentPage, String keyword, String category);
+    Map<String, Object> getBoardList(int cuurentPage, String keyword, String category, String status);
 }

@@ -81,8 +81,8 @@
     </nav>
 
     <div class="community-search">
-        <input type="text" class="search-input" placeholder="공지사항 검색...">
-        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <input type="text" class="search-input" id="noticeSearchInput" placeholder="공지사항 검색..." value="${keyword}">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" id="noticeSearchBtn" style="cursor: pointer;">
             <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2"/>
             <path d="m13 13 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
