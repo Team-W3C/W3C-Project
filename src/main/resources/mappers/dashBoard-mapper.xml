@@ -56,7 +56,7 @@
     <select id="getEquipmentUtilizationIncreaseRate" resultType="double">
         SELECT
         NVL(( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
-        NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '확정' OR
+        NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '진행중' OR
         RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100, 0) AS ProgressRate
         FROM
         FACILITY_RESERVATION
