@@ -310,10 +310,19 @@
             e.target.value = value;
         });
 
-        // ========== 7. 서버 에러 메시지 확인 ==========
+        // ========== 7. 서버 응답 메시지 확인 ==========
         const urlParams = new URLSearchParams(window.location.search);
+
+        // 에러 메시지 확인 (기존 로직)
         if (urlParams.get('error') === 'password') {
             alert('현재 비밀번호가 일치하지 않아 정보 수정에 실패했습니다.');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // 성공 메시지 확인 로직 추가
+        if (urlParams.get('success') === 'update') {
+            alert('변경사항이 저장되었습니다.');
+            // URL에서 success 파라미터 제거
             window.history.replaceState({}, document.title, window.location.pathname);
         }
 

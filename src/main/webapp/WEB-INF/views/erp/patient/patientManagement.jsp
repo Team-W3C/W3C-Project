@@ -296,7 +296,7 @@
                           <span class="modal-medical-value" id="modal-chronic">천식</span>
                       </div>
                       <div class="modal-medical-item modal-medical-allergy">
-                          <span class="modal-medical-label">알러지</span>
+                          <span class="modal-medical-label">알레르기</span>
                           <span class="modal-medical-value" id="modal-allergy">망고 알레르기</span>
                       </div>
                   </div>
