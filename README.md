@@ -36,21 +36,27 @@ git clone [https://github.com/Team-W3C/W3C-Project.git]
 http://localhost:8001
 
 ## 📂 프로젝트 구조 (Directory Structure)
+
+```text
 project/
- ├── src/main/java
- │   ├── com/project/config/
- │   ├── com/project/controller/     # Servlet 컨트롤러
- │   ├── com/project/model/dao/      # 데이터 접근 로직 (DAO)
- │   ├── com/project/model/mapper/
- │   ├── com/project/model/vo/       # VO (Value Object)
- │   ├── com/project/service/        # 비즈니스 로직
- │  
- ├── resources/                     # CSS, JS, 이미지
- ├── webapp/
- │   ├── WEB-INF/
- │   │   ├── views/                  # JSP 뷰 페이지
- │   └── index.jsp                   # 메인 페이지
- └── README.md
+├── src/main/java/com/w3c/spring/
+│   ├── config/             # 설정 클래스 (Security 등)
+│   ├── controller/         # 웹 컨트롤러 (Controller)
+│   ├── model/
+│   │   ├── dto/            # 데이터 전송 객체 (DTO)
+│   │   ├── mapper/         # MyBatis 매퍼 인터페이스
+│   │   └── vo/             # 값 객체 (VO)
+│   └── service/            # 비즈니스 로직 (Service)
+│
+├── src/main/resources/
+│   ├── mappers/            # MyBatis XML SQL 매핑 파일
+│   └── static/             # 정적 리소스 (CSS, JS, Image)
+│
+├── src/main/webapp/
+│   └── WEB-INF/
+│       └── views/          # JSP 뷰 페이지
+│
+└── README.md
 
 ## 🌟 주요 기능 (Key Features)
 ✅ 회원가입 / 로그인 / 로그아웃 기능
@@ -97,9 +103,10 @@ feat: 로그인 구현 기능 #1
 | 이름 | 포지션 | Contact |
 | --- | --- | --- |
 | 최승호 | 조장 | dreamdpsh@gmail.com |
-| 신동호 | DB 관리자 | a1@gmail.com |
+| 신동호 | DB 관리자 | ICEH0TCH0C0@gmail.com |
 | 조치호 | DB 관리자 | chiho3898@gmail.com |
 | 신한서 | 이슈 관리자 | hanseo.lab@gmail.com |
 | 이채진 | 일정 관리자 | jinking0930@gmail.com |
 | 장원석 | 형상 관리자 | jang1suk9155@gmail.com |
+
 
