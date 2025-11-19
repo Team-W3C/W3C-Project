@@ -403,16 +403,36 @@
               </div>
 
               <div class="form-field">
+                  <label for="blood-type">혈액형</label>
+                  <select id="blood-type" name="memberBloodType" required>
+                      <option value="" disabled selected>혈액형을 선택하세요</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                  </select>
+              </div>
+
+              <div class="form-field">
                   <label for="email">이메일</label>
                   <input type="email" id="email" name="email" placeholder="이메일" />
               </div>
 
-              <div class="form-field">
-                  <label for="notes">특이사항(기저질환, 알레르기)</label>
-                  <input type="text" id="notes" name="notes" placeholder="특이사항" />
+              <div class="form-field full-width">
+                  <label for="allergy">알레르기</label>
+                  <input type="text" id="allergy" name="allergy" placeholder="ex) 약물,음식,환경" />
               </div>
 
-              <button type="submit" class="btn-submit">예약하기</button>
+              <div class="form-field">
+                  <label for="notes">만성질환</label>
+                  <input type="text" id="chronicDisease" name="chronicDisease" placeholder="ex) 고혈압,당뇨,빈혈" />
+              </div>
+
+              <button type="submit" class="btn-submit">등록하기</button>
           </form>
       </div>
       </div>

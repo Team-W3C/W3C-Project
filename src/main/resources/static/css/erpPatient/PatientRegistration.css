@@ -94,6 +94,7 @@
 
 .register-modal .patient-form {
     display: grid;
+    /* 필드 개수에 맞게 2열 그리드 유지 */
     grid-template-columns: repeat(2, 1fr);
     gap: 24px 25px;
     margin-bottom: 24px;
@@ -108,8 +109,10 @@
 
 .register-modal .form-row {
     display: grid;
+    /* 주민등록번호 필드는 내부적으로 2열 */
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    /* 부모 폼의 1열을 차지 */
     grid-column: span 1;
 }
 
@@ -122,7 +125,9 @@
     color: #000000;
 }
 
-.register-modal .form-field input {
+/* ⚠️ 수정: input, select 모두에 스타일 적용 */
+.register-modal .form-field input,
+.register-modal .form-field select {
     height: 48px;
     padding: 12px 16px;
     background: #ffffff;
@@ -135,22 +140,42 @@
     color: #000000;
     outline: none;
     transition: box-shadow 0.2s;
+    /* select의 기본 시스템 스타일 제거 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* select 박스에 드롭다운 아이콘을 위한 공간 확보 */
+    padding-right: 30px;
+}
+
+/* select 요소에 사용자 정의 드롭다운 아이콘 추가 (선택 사항) */
+.register-modal .form-field select {
+    /* 커스텀 화살표 아이콘 추가 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23828282'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
 }
 
 .register-modal .form-field input::placeholder {
     color: #828282;
 }
 
-
-
-.register-modal .form-field input:focus {
+/* ⚠️ 수정: input, select 모두에 focus 스타일 적용 */
+.register-modal .form-field input:focus,
+.register-modal .form-field select:focus {
     box-shadow: 0 0 0 3px rgba(14, 120, 124, 0.1);
 }
 
+/* select의 첫 번째(placeholder) 옵션 스타일링 (선택 사항) */
+.register-modal .form-field select option[value=""][disabled] {
+    color: #828282;
+}
 
 
 /* 예약하기 버튼 */
 .register-modal .btn-submit {
+    /* 2열 레이아웃에서 2번째 칸에 위치 */
     grid-column: 2;
     justify-self: end;
     width: 143px;
@@ -197,6 +222,14 @@
 .register-modal .patient-content::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+
+.register-modal .form-field select {
+    color: #828282; /* 기본 텍스트 색상을 플레이스홀더 색상과 일치 */
+}
+
+.register-modal .form-field select:not([value=""]):valid {
+    color: #000000;
+}
 /* 반응형: 태블릿 (1024px 이하) */
 @media (max-width: 1024px) {
     .register-modal {
@@ -210,10 +243,12 @@
     }
 
     .register-modal .patient-form {
+        /* 1열 그리드 */
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
+    /* ⚠️ 수정: 1열 레이아웃에서는 span 1이 불필요하여 제거했습니다. */
     .register-modal .form-row {
         grid-column: span 1;
     }
@@ -244,7 +279,8 @@
         font-size: 14px;
     }
 
-    .register-modal .form-field input {
+    .register-modal .form-field input,
+    .register-modal .form-field select {
         height: 44px;
         font-size: 14px;
     }
