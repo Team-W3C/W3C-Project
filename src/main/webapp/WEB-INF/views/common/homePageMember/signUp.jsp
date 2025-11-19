@@ -83,7 +83,7 @@
                     <div class="signup-field-ssn">
                         <div class="signup-field-group">
                             <label for="ssnFront" class="signup-label">주민등록번호</label>
-                            <input type="text" id="ssnFront" name="memberSsnFront" class="signup-input signup-input-ssn" required placeholder="주민등록번호" maxlength="6">
+                            <input type="text" id="ssnFront" name="memberSsnFront" class="signup-input signup-input-ssn" required placeholder="앞자리" maxlength="6">
                         </div>
                         <span class="signup-ssn-dash">-</span>
                         <input type="password" id="ssnBack" name="memberSsnBack" class="signup-input signup-input-ssn" required placeholder="뒷자리" maxlength="7">
@@ -92,7 +92,7 @@
                     <!-- 전화번호 -->
                     <div class="signup-field-group">
                         <label for="phone" class="signup-label">전화번호</label>
-                        <input type="tel" id="phone" name="memberPhone" class="signup-input signup-input-short" required placeholder="전화번호">
+                        <input type="tel" id="phone" name="memberPhone" class="signup-input signup-input-short" required placeholder="예) 010-XXXX-XXXX">
                     </div>
                 </div>
 
@@ -118,6 +118,7 @@
                     </div>
                     <!-- 알레르기 -->
                     <div class="signup-field-group signup-field-notes">
+                        <label for="notes" class="signup-label">알레르기</label>
                         <input type="text" id="note-allergy" name="memberAllergy" class="signup-input signup-input-short" required placeholder="예) 망고 알레르기, 없음 등">
                     </div>
                 </div>
