@@ -1,7 +1,7 @@
 package com.w3c.spring.controller.api.erp.facilityReservation;
 
+import com.w3c.spring.model.vo.erp.facilityReservation.FacilityInfo;
 import com.w3c.spring.model.vo.erp.facilityReservation.FacilityReservation;
-import com.w3c.spring.model.vo.erp.facilityReservation.Facility;
 import com.w3c.spring.service.erp.facilityReservation.FacilityReservationService;
 import com.w3c.spring.service.member.MemberService;
 import com.w3c.spring.model.vo.Member;
@@ -55,6 +55,27 @@ public class FacilityReservationController {
     }
 
     /**
+     * 시설 목록 조회
+     */
+    @GetMapping("/facilities")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getFacilities() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<FacilityInfo> facilities = reservationService.selectAllFacilities();
+            result.put("success", true);
+            result.put("facilities", facilities);
+            log.debug("시설 목록 조회 성공: {} 건", facilities.size());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", e.getMessage());
+            log.error("시설 목록 조회 실패", e);
+            return ResponseEntity.ok(result);
+        }
+    }
+
+    /**
      * 특정 날짜의 예약 조회
      */
     @GetMapping("/date")
@@ -103,26 +124,6 @@ public class FacilityReservationController {
     }
 
     /**
-     * 시설 목록 조회
-     */
-    @GetMapping("/facilities")
-    public ResponseEntity<Map<String, Object>> getFacilityList() {
-        Map<String, Object> result = new HashMap<>();
-        try {
-            List<Facility> facilities = reservationService.getAllFacilities();
-            result.put("success", true);
-            result.put("facilities", facilities);
-            log.debug("시설 목록 조회 성공: {} 건", facilities.size());
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            log.error("시설 목록 조회 실패", e);
-            result.put("success", false);
-            result.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-        }
-    }
-
-    /**
      * 예약 추가
      */
     @PostMapping("/insert")
@@ -161,7 +162,11 @@ public class FacilityReservationController {
         Map<String, Object> result = new HashMap<>();
         try {
             String date = (String) params.get("date");
-            Integer facilityNo = (Integer) params.get("facilityNo");
+            Object facilityNoObj = params.get("facilityNo");
+            Integer facilityNo = null;
+            if (facilityNoObj != null) {
+                facilityNo = Integer.parseInt(String.valueOf(facilityNoObj));
+            }
 
             if (date == null || facilityNo == null) {
                 result.put("success", false);

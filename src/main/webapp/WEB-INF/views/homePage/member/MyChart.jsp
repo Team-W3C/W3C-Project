@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -177,10 +180,23 @@
                                     <span class="reservation-type">${reservation.type}</span>
                                 </div>
 
+<%--                                <div class="card-actions">--%>
+<%--                                    <c:if test="${reservation.status == 'CONFIRMED' || reservation.status == 'PENDING'}">--%>
+<%--                                        <button class="btn btn-secondary btn-edit">변경</button>--%>
+<%--                                        <button class="btn btn-outline btn-cancel">취소</button>--%>
+<%--                                    </c:if>--%>
+<%--                                </div>--%>
                                 <div class="card-actions">
                                     <c:if test="${reservation.status == 'CONFIRMED' || reservation.status == 'PENDING'}">
-                                        <button class="btn btn-secondary btn-edit">변경</button>
-                                        <button class="btn btn-outline btn-cancel">취소</button>
+                                        <%-- 오늘 날짜와 예약 날짜 비교 --%>
+                                        <jsp:useBean id="now" class="java.util.Date"/>
+                                        <fmt:parseDate value="${reservation.date}" pattern="yyyy-MM-dd" var="reservationDate"/>
+
+                                        <%-- 예약 날짜가 오늘 이후인 경우만 버튼 표시 --%>
+                                        <c:if test="${reservationDate >= now}">
+                                            <button class="btn btn-secondary btn-edit">변경</button>
+                                            <button class="btn btn-outline btn-cancel">취소</button>
+                                        </c:if>
                                     </c:if>
                                 </div>
                             </div>

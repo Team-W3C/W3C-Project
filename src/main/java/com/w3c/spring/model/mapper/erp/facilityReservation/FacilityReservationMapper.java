@@ -1,7 +1,7 @@
 package com.w3c.spring.model.mapper.erp.facilityReservation;
 
+import com.w3c.spring.model.vo.erp.facilityReservation.FacilityInfo;
 import com.w3c.spring.model.vo.erp.facilityReservation.FacilityReservation;
-import com.w3c.spring.model.vo.erp.facilityReservation.Facility;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,7 +34,6 @@ public interface FacilityReservationMapper {
             @Param("date") String date,
             @Param("facilityNo") int facilityNo
     );
-    
-    // ✅ 시설 목록 조회
-    List<Facility> selectAllFacilities();
+
+    List<FacilityInfo> selectAllFacilities();
 }

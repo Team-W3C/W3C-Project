@@ -18,7 +18,7 @@
 
 
     <style>
-        /* ... (기존 style 태그 내용은 동일) ... */
+        /* ===== 모달 기본 스타일 ===== */
         .guest-modal-overlay,
         .guest-check-modal-overlay {
             position: fixed;
@@ -34,7 +34,24 @@
             padding: 40px 0;
         }
 
-        /* ... (중략: 기존 스타일) ... */
+        .guest-modal-overlay.is-open,
+        .guest-check-modal-overlay.is-open {
+            display: flex !important;
+        }
+
+        .guest-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
 
         .info-value {
             color: #111;
@@ -42,16 +59,474 @@
             font-size: 15px;
         }
 
-        <%-- ▼▼▼ [추가] 비활성화된 버튼 스타일 ▼▼▼ --%>
+        /* 비활성화된 버튼 스타일 */
         .btn-primary.disabled,
         .btn-primary:disabled {
-            background-color: #ccc; /* 회색 배경 */
-            color: #888; /* 어두운 회색 텍스트 */
-            cursor: not-allowed; /* '불가능' 커서 */
+            background-color: #ccc;
+            color: #888;
+            cursor: not-allowed;
             opacity: 0.6;
-            pointer-events: none; /* 클릭 이벤트 차단 */
+            pointer-events: none;
         }
-        <%-- ▲▲▲ [추가 완료] ▲▲▲ --%>
+
+        /* ===== 비회원 예약 모달 스타일 ===== */
+        .patient-modal {
+            background: #fff;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1001;
+        }
+
+        .patient-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .icon-user {
+            flex-shrink: 0;
+        }
+
+        .btn-close-header {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close-header:hover {
+            opacity: 0.7;
+        }
+
+        .patient-content {
+            padding: 24px;
+        }
+
+        .patient-form h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .patient-form h3:first-child {
+            margin-top: 0;
+        }
+
+        .form-field {
+            margin-bottom: 16px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-field input[type="text"],
+        .form-field input[type="password"],
+        .form-field input[type="tel"],
+        .form-field input[type="email"],
+        .form-field input[type="date"],
+        .form-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #111;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .form-field input:focus,
+        .form-field select:focus {
+            outline: none;
+            border-color: #0E787C;
+            box-shadow: 0 0 0 3px rgba(14, 120, 124, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-field {
+            flex: 1;
+        }
+
+        /* 진료과 그리드 */
+        #guest-dept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        #guest-dept-grid p {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        .guest-dept-btn {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .guest-dept-btn img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .guest-dept-btn:hover {
+            border-color: #0E787C;
+            background: #f0f9fa;
+        }
+
+        .guest-dept-btn.selected {
+            border-color: #0E787C;
+            background: #0E787C;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* 시간 그리드 */
+        #guest-timeslot-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        #guest-timeslot-grid p {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .guest-time-btn {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            transition: all 0.2s;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .guest-time-btn:hover:not(:disabled) {
+            border-color: #0E787C;
+            background: #f0f9fa;
+        }
+
+        .guest-time-btn.selected {
+            border-color: #0E787C;
+            background: #0E787C;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .guest-time-btn:disabled {
+            background: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* 예약하기 버튼 */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #0E787C;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: opacity 0.2s;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* ===== 비회원 조회 모달 스타일 ===== */
+        .modal-container {
+            background: #fff;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1001;
+            padding: 32px;
+        }
+
+        .modal-content {
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+        }
+
+        .modal-close:hover {
+            color: #111;
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+            margin: 0 0 8px 0;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .reservation-form {
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #0E787C;
+            box-shadow: 0 0 0 3px rgba(14, 120, 124, 0.1);
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-wrapper .input-field {
+            width: 100%;
+        }
+
+        .input-wrapper-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel,
+        .btn-confirm {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-confirm {
+            background: #0E787C;
+            color: #fff;
+        }
+
+        .btn-confirm:hover {
+            opacity: 0.9;
+        }
+
+        .btn-confirm:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .info-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 24px;
+        }
+
+        .section-header {
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #111;
+            margin: 0;
+        }
+
+        .alert-danger {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* 조회 결과 카드 */
+        .info-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .info-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            #guest-dept-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #guest-timeslot-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .patient-modal,
+            .modal-container {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal-container {
+                padding: 24px;
+            }
+
+            .guest-modal-overlay,
+            .guest-check-modal-overlay {
+                padding: 20px 0;
+            }
+        }
     </style>
 </head>
 
@@ -524,8 +999,10 @@
                                 required
                         />
 
-                        <button type="button" class="btn-cancel" id="guest-check-cancel-btn">취소</button>
-                        <button type="submit" class="btn-confirm" id="guest-check-submit-btn">확인</button>
+                        <div class="input-wrapper-buttons">
+                            <button type="button" class="btn-cancel" id="guest-check-cancel-btn">취소</button>
+                            <button type="submit" class="btn-confirm" id="guest-check-submit-btn">확인</button>
+                        </div>
                     </div>
                 </div>
             </form>

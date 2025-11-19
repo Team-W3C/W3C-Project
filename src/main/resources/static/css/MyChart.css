@@ -289,14 +289,14 @@ body {
 .status-icon.check::after {
     content: '';
     position: absolute;
-    width: 5px;
+    width: 7px;
     height: 3px;
     border: 1.67px solid #00A63D;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
-    top: 8px;
-    left: 8px;
+    top: 6px;
+    left: 6px;
 }
 
 .status-icon.warning {
@@ -310,8 +310,8 @@ body {
     width: 0;
     height: 3px;
     border: 1.67px solid #FF6900;
-    top: 6px;
-    left: 10px;
+    top: 5px;
+    left: 8px;
 }
 
 .status-icon.warning::after {
@@ -320,8 +320,8 @@ body {
     width: 0;
     height: 0;
     border: 1.67px solid #FF6900;
-    top: 13px;
-    left: 10px;
+    top: 12px;
+    left: 8px;
 }
 
 .status-text {

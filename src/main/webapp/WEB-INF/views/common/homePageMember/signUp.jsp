@@ -114,12 +114,11 @@
                     <!-- 기저질환 -->
                     <div class="signup-field-group signup-field-notes">
                         <label for="notes" class="signup-label">기저질환</label>
-                        <input type="text" id="note-underlying-disease" name="memberChronicDisease" class="signup-input signup-input-short" required placeholder="기저질환">
+                        <input type="text" id="note-underlying-disease" name="memberChronicDisease" class="signup-input signup-input-short" required placeholder="예) 천식, 없음 등">
                     </div>
                     <!-- 알레르기 -->
                     <div class="signup-field-group signup-field-notes">
-                        <label for="notes" class="signup-label">알레르기</label>
-                        <input type="text" id="note-allergy" name="memberAllergy" class="signup-input signup-input-short" required placeholder="알레르기">
+                        <input type="text" id="note-allergy" name="memberAllergy" class="signup-input signup-input-short" required placeholder="예) 망고 알레르기, 없음 등">
                     </div>
                 </div>
 

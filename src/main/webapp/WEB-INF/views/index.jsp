@@ -84,18 +84,21 @@
             <section class="announcements">
                 <h2 class="announcements-title">공지</h2>
                 <ul class="announcements-list">
-                    <li class="announcement-item">
-                        <span class="announcement-text">메디플로우 주치료 충족공지 안내</span>
-                        <span class="announcement-date">2025.09.19</span>
+                    <c:forEach var="n" items="${list}">
+
+                    <li class="announcement-item" onclick="location.href='${pageContext.request.contextPath}/member/notice?cpage=1'">
+                        <span class="announcement-text">${n.notificationTitle}</span>
+                        <span class="announcement-date">${n.notificationDate}</span>
                     </li>
-                    <li class="announcement-item">
-                        <span class="announcement-text">메디플로우 관리자 2024년 신년 인사</span>
-                        <span class="announcement-date">2025.01.18</span>
-                    </li>
-                    <li class="announcement-item">
-                        <span class="announcement-text">제공약 항목 추수료 변경 안내</span>
-                        <span class="announcement-date">2025.01.28</span>
-                    </li>
+<%--                    <li class="announcement-item">--%>
+<%--                        <span class="announcement-text">메디플로우 관리자 2024년 신년 인사</span>--%>
+<%--                        <span class="announcement-date">2025.01.18</span>--%>
+<%--                    </li>--%>
+<%--                    <li class="announcement-item">--%>
+<%--                        <span class="announcement-text">제공약 항목 추수료 변경 안내</span>--%>
+<%--                        <span class="announcement-date">2025.01.28</span>--%>
+<%--                    </li>--%>
+                    </c:forEach>
                 </ul>
             </section>
         </div>
