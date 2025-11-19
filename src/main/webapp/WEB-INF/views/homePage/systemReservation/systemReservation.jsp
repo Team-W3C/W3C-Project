@@ -169,7 +169,7 @@
                     <span class="info-value" id="facilityLocation">-</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">일일 수용량</span>
+                    <span class="info-label">예약 시간 단위</span>
                     <span class="info-value" id="facilityDuration">-</span>
                 </div>
                 <div class="info-item">
