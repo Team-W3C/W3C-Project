@@ -27,6 +27,7 @@ public class ErpPatientReservationController {
         System.out.println(today);
         Map<String, List<ReservationDetailVO>> todayReservation = reservationService.selectReservationDetailByDate(today);
 
+
         model.addAttribute("todayReservation", todayReservation);
         model.addAttribute("today", today);
 

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -233,6 +232,13 @@ public class MemberController {
         String currentPassword = payload.get("currentPassword");
         String newPassword = payload.get("newPassword");
 
+        // [추가된 로직] 현재 비밀번호와 새 비밀번호가 같은지 확인
+        if (currentPassword != null && currentPassword.equals(newPassword)) {
+            response.put("success", false);
+            response.put("message", "새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.");
+            return response;
+        }
+
         boolean isPasswordCorrect = memberService.checkPassword(memberId, currentPassword);
 
         if (!isPasswordCorrect) {
@@ -261,11 +267,7 @@ public class MemberController {
 
     @GetMapping("/logout.me")
     public String logout(HttpSession session) {
-        // 세션에 저장된 loginMember 정보만 삭제하는 대신,
-        // 세션 전체를 무효화(invalidate)하는 것이 가장 안전하고 확실한 로그아웃입니다.
         session.invalidate();
-
-        // 메인 페이지로 리다이렉트
         return "redirect:/member/loginPage";
     }
 
@@ -280,7 +282,6 @@ public class MemberController {
 
     /**
      * (AJAX) 회원 탈퇴 처리
-     * (이전 턴에서 작업한 withdrawal.jsp의 AJAX 요청을 처리합니다)
      */
     @PostMapping("/deleteAccount")
     @ResponseBody
@@ -353,7 +354,6 @@ public class MemberController {
         }
         int memberNo = loginMember.getMemberNo();
 
-        // [변경] Map 리스트로 받음
         List<Map<String, Object>> diagnosisList = myChartService.getDiagnosisRecords(memberNo);
         List<Map<String, Object>> testList = myChartService.getTestResults(memberNo);
 
