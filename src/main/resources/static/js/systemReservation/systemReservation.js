@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const calendarBody = document.getElementById('calendarBody');
     const yearSelect = document.getElementById('yearSelect');
     const monthSelect = document.getElementById('monthSelect');
@@ -51,28 +51,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 renderFacilityButtons();
             } else {
                 console.error("시설 목록 조회 실패:", result.message);
+                facilitiesData = [];
             }
         } catch (error) {
             console.error("API 호출 중 오류:", error);
+            facilitiesData = [];
         }
     }
 
     function renderFacilityButtons() {
-        // '전체' 버튼만 남기고 초기화 (혹은 유지하고 뒤에 추가)
-        // roomList.innerHTML = ''; // 기존 '전체' 버튼 유지를 위해 주석 처리
-
-        // 중복 생성 방지를 위해 기존에 스크립트로 추가된 버튼들이 있다면 제거하는 로직이 필요할 수 있음
-        // 현재는 init에서 한 번만 호출되므로 그대로 둡니다.
+        // 이전에 동적으로 추가된 버튼들 제거
+        const dynamicButtons = roomList.querySelectorAll(".room-btn:not([data-room='all'])");
+        dynamicButtons.forEach(btn => btn.remove());
 
         facilitiesData.forEach(facility => {
             const btn = document.createElement('button');
             btn.type = "button";
             btn.classList.add("room-btn");
 
-            // 시설 이름에 따라 CSS 클래스 매핑 (DB이름 -> CSS클래스)
             const cssClass = mapFacilityToCssClass(facility.facilityName);
             btn.setAttribute("data-room", cssClass);
-            btn.setAttribute("data-facility-no", facility.facilityNo); // 시설 번호 저장
+            btn.setAttribute("data-facility-no", facility.facilityNo);
             btn.setAttribute("aria-pressed", "false");
 
             btn.innerHTML = `
@@ -81,25 +80,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 <span class="room-code">(${facility.facilityCode})</span>
             `;
 
-            // 클릭 이벤트 리스너 추가
             btn.addEventListener("click", handleRoomFilterClick);
-
             roomList.appendChild(btn);
         });
 
-        // '전체' 버튼에도 리스너 재확인/추가
         const allBtn = roomList.querySelector('[data-room="all"]');
-        if(allBtn) {
-            // 이벤트 리스너 중복 방지를 위해 제거 후 추가하거나, 한 번만 추가되도록 유의
+        if (allBtn) {
             allBtn.removeEventListener("click", handleRoomFilterClick);
             allBtn.addEventListener("click", handleRoomFilterClick);
         }
     }
 
-    // 시설명을 CSS 클래스로 매핑하는 헬퍼 함수
     function mapFacilityToCssClass(name) {
         if (!name) return "default";
-        const lowerName = name.toLowerCase().replace(/\s/g, ""); // 소문자 변환 및 공백 제거
+        const lowerName = name.toLowerCase().replace(/\s/g, "");
         if (lowerName.includes("mri")) return "mri";
         if (lowerName.includes("초음파")) return "ultrasound";
         if (lowerName.includes("ct")) return "ct";
@@ -116,8 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         this.classList.add("active");
         this.setAttribute("aria-pressed", "true");
-
-        applyRoomFilter(); // 필터 적용하여 다시 표시
+        applyRoomFilter();
     }
 
     // ===========================================
@@ -132,16 +125,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 allReservations = result.reservations;
             } else {
                 console.error("예약 목록 조회 실패:", result.message);
+                allReservations = [];
             }
         } catch (error) {
             console.error("API 호출 중 오류:", error);
+            allReservations = [];
         }
     }
 
-    // 날짜와 시설 번호로 예약 수 계산
     function getReservationCount(dateStr, facilityNo) {
-        // dateStr 형식: YYYY-MM-DD
-        // allReservations의 treatmentDate는 'YYYY-MM-DD HH:mm:ss' 형식이므로 앞 10자리 비교
         return allReservations.filter(res =>
             res.treatmentDate.startsWith(dateStr) && res.facilityNo == facilityNo
         ).length;
@@ -155,8 +147,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const yearParam = parseInt(urlParams.get('year'));
         const monthParam = parseInt(urlParams.get('month'));
 
-        if (!isNaN(yearParam) && !isNaN(monthParam) &&
-            new Date(yearParam, monthParam - 1, 1) >= new Date(todayYear, todayMonth - 1, 1)) {
+        const todayForCompare = new Date(todayYear, todayMonth - 1, 1);
+        const paramDate = new Date(yearParam, monthParam - 1, 1);
+
+        if (!isNaN(yearParam) && !isNaN(monthParam) && paramDate >= todayForCompare) {
             currentYear = yearParam;
             currentMonth = monthParam;
         } else {
@@ -186,17 +180,15 @@ document.addEventListener("DOMContentLoaded", function() {
             monthSelect.appendChild(option);
         }
 
-        yearSelect.onchange = function() {
+        yearSelect.onchange = function () {
             currentYear = parseInt(this.value);
             if (currentYear === todayYear && currentMonth < todayMonth) {
                 currentMonth = todayMonth;
-            } else if (currentYear !== todayYear && currentMonth < 1) {
-                currentMonth = 1;
             }
             updateCalendarAndURL();
         };
 
-        monthSelect.onchange = function() {
+        monthSelect.onchange = function () {
             currentMonth = parseInt(this.value);
             updateCalendarAndURL();
         };
@@ -225,69 +217,55 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (i === 0 && j < startDayOfWeek) {
                     calendarCell.classList.add('empty');
-                }
-                else if (dayCounter <= daysInMonth) {
-                    // 날짜 포맷팅 (YYYY-MM-DD)
-                    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(dayCounter).padStart(2, '0')}`;
-                    const currentDate = new Date(year, month - 1, dayCounter);
-
+                } else if (dayCounter <= daysInMonth) {
+                    const currentDay = dayCounter;
+                    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(currentDay).padStart(2, '0')}`;
+                    const currentDate = new Date(year, month - 1, currentDay);
                     const isToday = (currentDate.toDateString() === today.toDateString());
                     const isPast = (currentDate < today && !isToday);
 
                     if (isPast) calendarCell.classList.add('is-past');
                     else if (isToday) calendarCell.classList.add('today');
-
                     if (j === 0) calendarCell.classList.add('sunday');
                     if (j === 6) calendarCell.classList.add('saturday');
 
                     const dateSpan = document.createElement('span');
                     dateSpan.classList.add(isToday ? 'date-today' : 'date');
-                    dateSpan.textContent = dayCounter;
+                    dateSpan.textContent = currentDay;
                     calendarCell.appendChild(dateSpan);
 
-                    // 상태 목록 컨테이너 생성
                     const statusList = document.createElement('ul');
                     statusList.classList.add('status-list');
 
-                    // *** 동적 상태 생성 ***
                     facilitiesData.forEach(facility => {
-                        // 1. 상태 계산
+                        const reservationUnit = parseInt(facility.reservationUnit || '60', 10);
+                        const capacity = Math.floor((18 * 60 - 9 * 60) / reservationUnit);
                         const count = getReservationCount(dateStr, facility.facilityNo);
-                        const capacity = 8;
-                        const fixDate = facility.fixDate; // 점검일 (YYYY-MM-DD 문자열로 가정)
+                        const fixDate = facility.fixDate;
 
                         let status = 'available';
                         let text = `${facility.facilityName} 가능`;
 
-                        // 점검일 체크
-                        if (fixDate && fixDate === dateStr) {
+                        if (fixDate && fixDate.startsWith(dateStr)) {
                             status = 'closed';
                             text = `${facility.facilityName} 점검`;
-                        }
-                        // 예약 마감 체크
-                        else if (count >= capacity) {
+                        } else if (count >= capacity) {
                             status = 'full';
                             text = `${facility.facilityName} 마감`;
                         }
 
-                        // 2. DOM 요소 생성
                         const statusItem = document.createElement('li');
                         const cssClass = mapFacilityToCssClass(facility.facilityName);
-
                         statusItem.classList.add('status-item', cssClass, status);
-                        // 필터링을 위해 데이터 속성 추가
                         statusItem.setAttribute('data-room-class', cssClass);
-
                         statusItem.innerHTML = `<span class="status-dot"></span><span class="status-text">${text}</span>`;
 
-                        // 클릭 이벤트 (모달 열기)
                         if (!isPast) {
-                            statusItem.addEventListener('click', function(e) {
-                                e.stopPropagation(); // 버블링 방지
-                                openModal(year, month, dayCounter, facility, status);
+                            statusItem.addEventListener('click', function (e) {
+                                e.stopPropagation();
+                                openModal(year, month, currentDay, facility, status);
                             });
                         }
-
                         statusList.appendChild(statusItem);
                     });
 
@@ -301,7 +279,6 @@ document.addEventListener("DOMContentLoaded", function() {
             calendarBody.appendChild(calendarRow);
             if (dayCounter > daysInMonth) break;
         }
-
         applyRoomFilter();
     }
 
@@ -311,20 +288,13 @@ document.addEventListener("DOMContentLoaded", function() {
     function applyRoomFilter() {
         const activeBtn = roomList.querySelector(".room-btn.active");
         const selectedRoomClass = activeBtn ? activeBtn.getAttribute('data-room') : 'all';
-
         const allItems = document.querySelectorAll(".status-list .status-item");
 
         allItems.forEach(item => {
-            // '전체' 선택 시 모든 항목 보이기
-            if (selectedRoomClass === 'all') {
-                item.style.display = ''; // CSS 기본값으로 복원
+            if (selectedRoomClass === 'all' || item.getAttribute('data-room-class') === selectedRoomClass) {
+                item.style.display = '';
             } else {
-                // 선택된 룸 클래스를 포함하는지 확인
-                if (item.classList.contains(selectedRoomClass)) {
-                    item.style.display = ''; // 보이기
-                } else {
-                    item.style.display = 'none'; // 직접 display: none 적용하여 숨김
-                }
+                item.style.display = 'none';
             }
         });
     }
@@ -340,39 +310,76 @@ document.addEventListener("DOMContentLoaded", function() {
         const modalTitle = document.getElementById('modalTitle');
         const modalSubtitle = document.getElementById('modalSubtitle');
         const modalRoomIndicator = document.getElementById('modalRoomIndicator');
-
         const contentClosed = document.getElementById('modalClosedContent');
         const contentFull = document.getElementById('modalFullContent');
         const contentAvailable = document.getElementById('modalAvailableContent');
 
-        // 시설 정보 매핑
         document.getElementById('facilityLocation').textContent = facility.facilityLocation || '정보 없음';
         document.getElementById('facilityManager').textContent = facility.facilityRepresentative || '정보 없음';
         document.getElementById('facilityContact').textContent = facility.facilityPhone || '정보 없음';
-        document.getElementById('facilityDuration').textContent = (facility.reservationUnit) + '명/일' || '-';
+        document.getElementById('facilityDuration').textContent = `${facility.reservationUnit || '-'}분`;
 
-        // 헤더 설정
         modalTitle.textContent = `${facility.facilityName} - ${month}월 ${day}일`;
         modalSubtitle.textContent = facility.facilityLocation;
 
-        // 색상 클래스 적용
         const cssClass = mapFacilityToCssClass(facility.facilityName);
-        modalRoomIndicator.className = 'modal-room-indicator'; // reset
+        modalRoomIndicator.className = 'modal-room-indicator';
         modalRoomIndicator.classList.add(cssClass);
 
-        // 컨텐츠 표시/숨김
-        contentClosed.classList.add('hidden');
-        contentFull.classList.add('hidden');
-        contentAvailable.classList.add('hidden');
+        [contentClosed, contentFull, contentAvailable].forEach(el => el.classList.add('hidden'));
 
         if (status === 'closed') {
             contentClosed.classList.remove('hidden');
         } else if (status === 'full') {
             contentFull.classList.remove('hidden');
         } else {
+            // [수정됨] 버튼 대신 div로 단순 출력
+            contentAvailable.innerHTML = '';
+            const message = document.createElement('p');
+            message.textContent = '예약 가능한 시간대 목록입니다.'; // 문구 약간 변경 (선택X -> 목록)
+            message.style.color = "#374151";
+            message.style.marginBottom = "12px";
+            message.style.fontWeight = "500";
+            contentAvailable.appendChild(message);
+
+            const timeSlotsContainer = document.createElement('div');
+            timeSlotsContainer.className = 'time-grid'; // 기존 ID 대신 클래스 사용 (CSS 매칭)
+            contentAvailable.appendChild(timeSlotsContainer);
+
+            const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const bookedTimes = allReservations
+                .filter(res => res.treatmentDate.startsWith(dateStr) && res.facilityNo == facility.facilityNo)
+                .map(res => res.treatmentDate.substring(11, 16));
+
+            const reservationUnit = parseInt(facility.reservationUnit || '60', 10);
+            const startTimeInMinutes = 9 * 60;
+            const endTimeInMinutes = 16 * 60 + 1;
+            let hasAvailableSlots = false;
+
+            for (let timeInMinutes = startTimeInMinutes; timeInMinutes < endTimeInMinutes; timeInMinutes += reservationUnit) {
+                const hours = Math.floor(timeInMinutes / 60);
+                const minutes = timeInMinutes % 60;
+                const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+                const timeSlotEl = document.createElement('div');
+                timeSlotEl.className = 'time-slot-display'; // 새로 만든 CSS 클래스 적용
+                timeSlotEl.textContent = timeStr;
+
+                if (bookedTimes.includes(timeStr)) {
+                    timeSlotEl.classList.add('booked');
+                    // 마감된 시간은 클릭 불가 및 스타일 적용
+                } else {
+                    hasAvailableSlots = true;
+                    timeSlotEl.classList.add('available');
+                }
+                timeSlotsContainer.appendChild(timeSlotEl);
+            }
+
+            if (!hasAvailableSlots) {
+                message.textContent = '선택하신 날짜에는 예약 가능한 시간이 없습니다.';
+            }
             contentAvailable.classList.remove('hidden');
         }
-
         modal.classList.add('show');
     }
 
@@ -382,8 +389,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     modalCloseBtn.addEventListener('click', closeModal);
     modalCancelBtn.addEventListener('click', closeModal);
-    // 모달 바깥 클릭 시 닫기
-    modal.addEventListener('click', function(e) {
+    modal.addEventListener('click', e => {
         if (e.target === modal) closeModal();
     });
 
@@ -392,55 +398,44 @@ document.addEventListener("DOMContentLoaded", function() {
     // ===========================================
     function updateCalendarAndURL() {
         const selectedDate = new Date(currentYear, currentMonth - 1, 1);
-        const todayDate = new Date(todayYear, todayMonth - 1, 1);
+        const todayForNav = new Date(todayYear, todayMonth - 1, 1);
 
-        if (selectedDate < todayDate) {
+        if (selectedDate < todayForNav) {
             currentYear = todayYear;
             currentMonth = todayMonth;
         }
 
-        renderCalendar(currentYear, currentMonth);
         populateYearMonthSelects();
+        renderCalendar(currentYear, currentMonth);
 
-        const newUrl = window.location.origin + window.location.pathname + '?year=' + currentYear + '&month=' + currentMonth;
-        window.history.pushState({ path: newUrl }, '', newUrl);
+        const newUrl = `${window.location.pathname}?year=${currentYear}&month=${currentMonth}`;
+        window.history.pushState({path: newUrl}, '', newUrl);
 
         updateNavButtons();
     }
 
     function updateNavButtons() {
-        const prevMonth = new Date(currentYear, currentMonth - 2, 1);
-        const todayMonthStart = new Date(todayYear, todayMonth - 1, 1);
-        prevMonthBtn.disabled = (prevMonth < todayMonthStart);
-        nextMonthBtn.disabled = false;
+        const prevMonthDate = new Date(currentYear, currentMonth - 2, 1);
+        const todayForNav = new Date(todayYear, todayMonth - 1, 1);
+        prevMonthBtn.disabled = prevMonthDate < todayForNav;
     }
 
-    prevMonthBtn.addEventListener('click', function() {
-        if(this.disabled) return;
-        let newMonth = currentMonth - 1;
-        let newYear = currentYear;
-        if (newMonth < 1) {
-            newMonth = 12;
-            newYear--;
+    prevMonthBtn.addEventListener('click', function () {
+        if (this.disabled) return;
+        currentMonth--;
+        if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
         }
-        const prevDate = new Date(newYear, newMonth - 1, 1);
-        const todayDate = new Date(todayYear, todayMonth - 1, 1);
-        if (prevDate < todayDate) return;
-
-        currentYear = newYear;
-        currentMonth = newMonth;
         updateCalendarAndURL();
     });
 
-    nextMonthBtn.addEventListener('click', function() {
-        let newMonth = currentMonth + 1;
-        let newYear = currentYear;
-        if (newMonth > 12) {
-            newMonth = 1;
-            newYear++;
+    nextMonthBtn.addEventListener('click', function () {
+        currentMonth++;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
         }
-        currentYear = newYear;
-        currentMonth = newMonth;
         updateCalendarAndURL();
     });
 
