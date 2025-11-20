@@ -156,7 +156,7 @@
             RESERVATION R
                 JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
         WHERE
-            R.RESERVATION_NO = #{reservationNo}
+            R.RESERVATION_NO = #{reservationNo} 
           AND R.MEMBER_NO = #{memberNo}
           AND R.RESERVATION_STATUS IN ('진행중', '대기')
     </select>
