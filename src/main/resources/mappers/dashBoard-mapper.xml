@@ -56,7 +56,7 @@
     <select id="getEquipmentUtilizationIncreaseRate" resultType="double">
         SELECT
         NVL(( COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND RESERVATION_STATUS = '완료' THEN 1 END) /
-        NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '진행중' OR
+        NULLIF(COUNT(CASE WHEN trunc(TREATMENT_DATE) = trunc(sysdate) AND (RESERVATION_STATUS = '대기' OR
         RESERVATION_STATUS = '완료') THEN 1 END), 0)) * 100, 0) AS ProgressRate
         FROM
         FACILITY_RESERVATION
@@ -93,7 +93,7 @@
         WHEN f.FACILITY_NAME LIKE '%MRI%' THEN 'MRI'
         WHEN f.FACILITY_NAME LIKE '%CT%' AND f.FACILITY_NAME NOT LIKE '%PET%' THEN 'CT'
         WHEN f.FACILITY_NAME LIKE '%초음파%' THEN '초음파'
-        WHEN f.FACILITY_NAME LIKE '%X-Ray%' THEN 'X-RAY'
+        WHEN f.FACILITY_NAME LIKE '%X-RAY%' THEN 'X-RAY'
         WHEN f.FACILITY_NAME LIKE '%내시경%' THEN '내시경'
         ELSE '기타'
         END AS CATEGORY,
@@ -106,14 +106,14 @@
         f.FACILITY_NAME LIKE '%MRI%'
         OR f.FACILITY_NAME LIKE '%CT%'
         OR f.FACILITY_NAME LIKE '%초음파%'
-        OR f.FACILITY_NAME LIKE '%X-Ray%'
+        OR f.FACILITY_NAME LIKE '%X-RAY%'
         OR f.FACILITY_NAME LIKE '%내시경%'
         GROUP BY
         CASE
         WHEN f.FACILITY_NAME LIKE '%MRI%' THEN 'MRI'
         WHEN f.FACILITY_NAME LIKE '%CT%' AND f.FACILITY_NAME NOT LIKE '%PET%' THEN 'CT'
         WHEN f.FACILITY_NAME LIKE '%초음파%' THEN '초음파'
-        WHEN f.FACILITY_NAME LIKE '%X-Ray%' THEN 'X-RAY'
+        WHEN f.FACILITY_NAME LIKE '%X-RAY%' THEN 'X-RAY'
         WHEN f.FACILITY_NAME LIKE '%내시경%' THEN '내시경'
         ELSE '기타'
         END

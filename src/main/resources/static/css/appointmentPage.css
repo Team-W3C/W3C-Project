@@ -285,7 +285,6 @@ a {
 */
 @media (max-width: 1024px) {
 
-    /* ▼▼▼ [수정] 클래스 이름 변경 및 "병원 안내" CSS와 맞춤 ▼▼▼ */
     .page-wrapper {
         /* 태블릿에서는 사이드바와 콘텐츠가 세로로 쌓이도록 변경 */
         flex-direction: column;
@@ -305,7 +304,6 @@ a {
         padding: 20px 0;
         font-size: 24px;
     }
-    /* ▲▲▲ [수정 완료] ▲▲▲ */
 
 
     .reservation-cards-container {
@@ -321,13 +319,6 @@ a {
         width: 100%;
     }
 
-    /* .patientReservation-phone-banner {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-    padding-top: 20px;
-    margin-top: 20px;
-  } */
     .reservation-quick-nav {
         padding-top: 20px;
         margin-top: 20px;
