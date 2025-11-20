@@ -2,16 +2,31 @@
 병원 시설 관리와 예약 기능을 갖춘 JSP 기반 웹 애플리케이션 병원 ERP 시스템
 
 ## 개요 👋
-W3C 프로젝트는 병원 내 특수장비(초음파, MRI 등) 예약 과정에서 발생하는 비효율적인 수작업을 최소화하고,  
-예약·시설·회원·직원 정보를 통합 관리할 수 있는 **병원 ERP 시스템**을 구축하는 것을 목표로 합니다.  
+W3C 프로젝트는 병원 내 특수장비(초음파, MRI 등) 예약 과정에서 발생하던 비효율적인 수작업을 개선하고,
+예약·시설·회원·직원 정보를 하나의 시스템에서 통합 관리할 수 있도록 구축한 병원 ERP 시스템입니다.
 
-현재 일반 진료 예약은 전산으로 처리되지만,  
-특수장비 예약은 간호사와 시설관리자 간의 수동 조율이 필요해 업무 부담이 증가하고  
-비효율적인 커뮤니케이션 구조가 형성되는 문제가 있습니다.  
+기존에는 일반 진료 예약만 전산화되어 있었고,
+특수장비 예약은 간호사와 시설관리자가 수동으로 조율해야 해 업무가 과도하게 증가하고
+동일한 내용을 여러 번 확인해야 하는 비효율적인 구조가 존재했습니다.
 
-본 시스템은 이러한 문제를 해결하기 위해  
-**실시간 시설 예약, 직원 및 회원 관리, 등급별 예약 우선순위 설정, 알림 연동 기능** 등을 포함하여  
-병원 운영 효율성을 높이고 인력 낭비를 줄이는 것을 목표로 합니다.
+본 프로젝트에서는 이러한 문제를 해결하기 위해 다음 기능들을 개발하여 실제 동작 가능한 형태로 구현했습니다.
+
+- 실시간 시설·장비 예약 관리
+
+- 병원의 시설예약 현황을 투명하게 공개
+
+- 직원·회원 관리 및 권한 설정
+
+- 예약 등급에 따른 우선순위 처리
+
+- 커뮤니티(공지/문의) 기능 및 검색·필터링 지원
+
+- 대시보드 통계 시각화 및 병원 운영 현황 조회
+
+
+
+이 시스템은 병원 내 업무 효율성을 높이고 인력 낭비를 줄이는 것을 목표로 하며,
+특수장비 예약뿐 아니라 전반적인 병원 운영을 통합적으로 관리할 수 있는 ERP로 완성되었습니다.
 
 ## 🧱 기술 스택 (Tech Stack)
 | 구분 | 사용 기술 |
@@ -74,6 +89,21 @@ project/
 - JSP 내 JSTL / EL 사용으로 동적 페이지 구현
 - git 협업 툴 학습
 
+
+| 기능 | 미리보기 |
+|------|-----------|
+| 메인 화면 | ![Main Page](./src/main/resources/static/img/gitImg/main.png) |
+| 병원 진료 예약  | ![reservation Page](./src/main/resources/static/img/gitImg/reservaion_detail.png) |
+| 시설 예약 현황 | ![system reservaion Page](./src/main/resources/static/img/gitImg/system_reservaion.png) |
+| 문의사항 | ![inquiry List](./src/main/resources/static/img/gitImg/inquiry.png) |
+| ERP 대시보드 | ![DashBoard](./src/main/resources/static/img/gitImg/DashBoardv1.png) |
+| 직원 관리 | ![Employee care](./src/main/resources/static/img/gitImg/Employee_care.png) |
+| 환자 관리 | ![patient care](./src/main/resources/static/img/gitImg/patient_care.png) |
+| 예약 관리 | ![reservaion care](./src/main/resources/static/img/gitImg/reservaion_care.png) |
+| 진료 관리 | ![medical care](./src/main/resources/static/img/gitImg/medical_care.png) |
+| 직원 근태 관리 | ![Attendance care](./src/main/resources/static/img/gitImg/Attendance.png) |
+
+
 ## 📂 Commit convention-
 
 | prefix   | definition                                                      |
@@ -101,11 +131,16 @@ feat: 로그인 구현 기능 #1
 
 ## 팀원 소개
 
-| 이름 | 포지션 | Contact |
-| --- | --- | --- |
-| 최승호 | 조장 | dreamdpsh@gmail.com |
-| 신동호 | DB 관리자 | ICEH0TCH0C0@gmail.com |
-| 조치호 | DB 관리자 | chiho3898@gmail.com |
-| 신한서 | 이슈 관리자 | hanseo.lab@gmail.com |
-| 이채진 | 일정 관리자 | jinking0930@gmail.com |
-| 장원석 | 형상 관리자 | jang1suk9155@gmail.com |
+| 이름 | GitHub | 이메일 | 역할 |
+|------|--------|---------|------|
+| 최승호 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/Coseung) | [dreamdpsh@gmail.com](mailto:dreamdpsh@gmail.com) | 조장 |
+| 신동호 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/ICEH0TCH0C0) | [ICEH0TCH0C0@gmail.com](mailto:ICEH0TCH0C0@gmail.com) | DB 관리자 |
+| 조치호 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/xxh3898) | [chiho3898@gmail.com](mailto:chiho3898@gmail.com) | DB 관리자 |
+| 신한서 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/hanseo-lab) | [hanseo.lab@gmail.com](mailto:hanseo.lab@gmail.com) | 이슈 관리자 |
+| 이채진 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/sleepEjin) | [jinking0930@gmail.com](mailto:jinking0930@gmail.com) | 일정 관리자 |
+| 장원석 | [![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/1suk) | [jang1suk9155@gmail.com](mailto:jang1suk9155@gmail.com) | 형상 관리자 |
+
+
+
+
+
