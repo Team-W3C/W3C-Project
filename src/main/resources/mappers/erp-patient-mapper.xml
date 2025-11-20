@@ -91,6 +91,7 @@
         SELECT COUNT(MEMBER_NO)
         FROM MEMBER M
         WHERE M.MEMBER_STATUS = 'T'
+        AND STAFF_NO IS NULL
     </select>
 
     <select id="selectPatientListCount" parameterType="map" resultType="_int">
@@ -99,6 +100,7 @@
         LEFT JOIN GRADE G USING (MEMBER_NO)
         <where>
             M.MEMBER_STATUS = 'T'
+            AND STAFF_NO IS NULL
             <if test="keyword != null and keyword != ''">
                 AND (
                 MEMBER_NAME LIKE '%' || #{keyword} || '%'
