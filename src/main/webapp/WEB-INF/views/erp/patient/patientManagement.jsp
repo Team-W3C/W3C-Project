@@ -344,10 +344,6 @@
           </div>
           <footer class="modal-footer">
               <button class="modal-btn modal-btn-secondary" id="modal-btn-close">닫기</button>
-              <div class="modal-actions">
-                  <button class="modal-btn modal-btn-outline" id="modal-btn-edit">정보 수정</button>
-                  <button class="modal-btn modal-btn-primary" id="modal-btn-add-reservation">예약 추가</button>
-              </div>
           </footer>
       </div>
     </div>
@@ -394,7 +390,7 @@
 
               <div class="form-field">
                   <label for="phone">전화번호</label>
-                  <input type="tel" id="phone" name="phone" placeholder="전화번호" required />
+                  <input type="tel" id="phone" name="phone" placeholder="전화번호(- 포함해서 입력)" required />
               </div>
 
               <div class="form-field">
@@ -406,14 +402,10 @@
                   <label for="blood-type">혈액형</label>
                   <select id="blood-type" name="memberBloodType" required>
                       <option value="" disabled selected>혈액형을 선택하세요</option>
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="O">O</option>
+                      <option value="AB">AB</option>
                   </select>
               </div>
 
