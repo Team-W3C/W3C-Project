@@ -448,6 +448,7 @@
     background-color: #e5e7eb;
     color: #1f2937;
     border-color: #d1d5db;
+    display: flex;
 }
 
 .modal-patient-detail .modal-btn-secondary:hover {
