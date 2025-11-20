@@ -74,7 +74,7 @@
         WHERE
             department_no = #{departmentId}
           AND TRUNC(treatment_date) = TO_DATE(#{date}, 'YYYY-MM-DD')
-          AND reservation_status IN ('확정', '대기')
+          AND reservation_status IN ('진행중', '대기')
         GROUP BY
             TO_CHAR(treatment_date, 'HH24:MI')
     </select>
@@ -112,7 +112,7 @@
         SELECT
             R.RESERVATION_NO        AS RESERVATION_NO,
             CASE R.RESERVATION_STATUS
-                WHEN '확정' THEN 'CONFIRMED'
+                WHEN '진행중' THEN 'CONFIRMED'
                 WHEN '대기' THEN 'PENDING'
                 WHEN '완료' THEN 'COMPLETED'
                 WHEN '취소' THEN 'CANCELLED'
@@ -141,7 +141,7 @@
         WHERE
             RESERVATION_NO = #{reservationNo}
           AND MEMBER_NO = #{memberNo}
-          AND RESERVATION_STATUS IN ('확정', '대기')
+          AND RESERVATION_STATUS IN ('진행중', '대기')
     </update>
 
     <select id="selectReservationForUpdate" resultMap="ReservationUpdateMap" parameterType="map">
@@ -156,9 +156,9 @@
             RESERVATION R
                 JOIN DEPARTMENT D ON R.DEPARTMENT_NO = D.DEPARTMENT_NO
         WHERE
-            R.RESERVATION_NO = #{reservationNo}
+            R.RESERVATION_NO = #{reservationNo} 
           AND R.MEMBER_NO = #{memberNo}
-          AND R.RESERVATION_STATUS IN ('확정', '대기')
+          AND R.RESERVATION_STATUS IN ('진행중', '대기')
     </select>
     <update id="updateReservation" parameterType="com.w3c.spring.model.vo.ReservationRequestVO">
         UPDATE RESERVATION
@@ -171,7 +171,7 @@
         WHERE
             RESERVATION_NO = #{reservationNo}
           AND MEMBER_NO = #{memberNo}
-          AND RESERVATION_STATUS IN ('확정', '대기')
+          AND RESERVATION_STATUS IN ('진행중', '대기')
     </update>
 
     <select id="selectReservationDetailByDate" resultMap="ReservationDetailMap">
