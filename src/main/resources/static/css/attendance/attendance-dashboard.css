@@ -81,6 +81,16 @@ body {
     /* 원본 .v506_271 */
 }
 
+.badge-info {
+    /* 원본 .v506_270 (지각) */
+    background-color: #fec2d0;
+    color: #e70b0b;
+    /* 원본 .v506_271 */
+}
+ .badge-etc{
+     background-color: #eeeeee;
+     color: #3b3838;
+ }
 
 /* === 페이지 레이아웃 === */
 .attendance-status-main {
