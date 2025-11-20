@@ -134,6 +134,12 @@
             padding: 24px;
         }
 
+        .patient-form {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
         .patient-form h3 {
             font-size: 16px;
             font-weight: bold;
